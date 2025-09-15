@@ -1,7 +1,5 @@
 {
-  "framework": "angular",
-  "buildCommand": "ng build --configuration production",
-  "outputDirectory": "dist/frontend",
+  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/(.*)",
