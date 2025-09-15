@@ -18,7 +18,7 @@
   ],
   "headers": [
     {
-      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|webp|mp4|webm|ogg|mp3|wav|flac|aac|json|xml|txt))",
+      "source": "/static/(.*)",
       "headers": [
         {
           "key": "cache-control",
