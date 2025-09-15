@@ -1,0 +1,1509 @@
+<!-- Enhanced Goals Component - Improved UX/UI Design -->
+<div class="goals-container">
+  <!-- Loading Screen -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-icon">🎯</div>
+      <div class="loading-text">Chargement de vos objectifs...</div>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Notification -->
+  <div *ngIf="showSuccessMessage" class="notification success" [@slideInOut]>
+    <span class="notification-icon">✅</span>
+    <span>{{ successMessage }}</span>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero-section" [@cardAnimation]>
+    <div class="hero-background"></div>
+    <div class="hero-content">
+      <!-- Title Section -->
+      <div class="title-section">
+        <div class="title-icon">🎯</div>
+        <div class="title-content">
+          <h1 class="page-title">Mes Objectifs</h1>
+          <p class="page-subtitle">
+            Transformez vos rêves fitness en réalité mesurable
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="quick-stats">
+        <div class="stat-card">
+          <div class="stat-icon">⚡️</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ getActiveGoalsCount() }}</span>
+            <span class="stat-label">En cours</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ getCompletedGoalsCount() }}</span>
+            <span class="stat-label">Terminés</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📊</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ getAverageProgress() }}%</span>
+            <span class="stat-label">Progression</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ getMotivationScore() }}</span>
+            <span class="stat-label">Score</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Quick Actions (Inspired by Challenges) -->
+      <div class="quick-actions">
+        <button class="action-btn primary" (click)="openAddGoal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>Nouvel Objectif</span>
+        </button>
+        
+        <button class="action-btn secondary" (click)="exportGoals()" [disabled]="goals.length === 0">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7,10 12,15 17,10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <span>Exporter</span>
+        </button>
+        
+        <label class="action-btn tertiary" for="import-goals">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17,8 12,3 7,8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span>Importer</span>
+          <input
+            type="file"
+            id="import-goals"
+            accept=".json"
+            (change)="importGoals($event)"
+            hidden
+          />
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Filters Section -->
+  <div class="filters-section" [@cardAnimation]>
+    <div class="filters-card">
+      <!-- Filter Controls Grid -->
+      <div class="filter-controls-grid">
+        <!-- Status Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <span>⏱️</span>
+            <span>Statut</span>
+          </label>
+          <select
+            [(ngModel)]="filters.status"
+            (change)="applyFilters()"
+            class="filter-select"
+          >
+            <option *ngFor="let status of statusFilters" [value]="status.value">
+              {{ status.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <span>📚</span>
+            <span>Catégorie</span>
+          </label>
+          <select
+            [(ngModel)]="filters.category"
+            (change)="applyFilters()"
+            class="filter-select"
+          >
+            <option value="all">Toutes les catégories</option>
+            <option
+              *ngFor="let category of goalCategories"
+              [value]="category.value"
+            >
+              {{ category.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Priority Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <span>🔥</span>
+            <span>Priorité</span>
+          </label>
+          <select
+            [(ngModel)]="filters.priority"
+            (change)="applyFilters()"
+            class="filter-select"
+          >
+            <option value="all">Toutes les priorités</option>
+            <option
+              *ngFor="let priority of priorityLevels"
+              [value]="priority.value"
+            >
+              {{ priority.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Sort Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <span>⇅</span>
+            <span>Trier par</span>
+          </label>
+          <select
+            [(ngModel)]="filters.sortBy"
+            (change)="applyFilters()"
+            class="filter-select"
+          >
+            <option value="priority">Priorité</option>
+            <option value="progress">Progression</option>
+            <option value="deadline">Échéance</option>
+            <option value="name">Nom</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Goals Grid -->
+  <div
+    class="goals-grid"
+    [class]="viewMode"
+    [@staggerAnimation]="filteredGoals.length"
+  >
+    <!-- Empty State -->
+    <div *ngIf="filteredGoals.length === 0 && !isLoading" class="empty-state">
+      <div class="empty-content">
+        <div class="empty-icon">🎯</div>
+        <h3 *ngIf="!hasActiveFilters()">Aucun objectif pour le moment</h3>
+        <h3 *ngIf="hasActiveFilters()">
+          Aucun objectif ne correspond aux filtres
+        </h3>
+        <p *ngIf="!hasActiveFilters()">
+          Commencez votre parcours en créant votre premier objectif !
+        </p>
+        <p *ngIf="hasActiveFilters()">
+          Essayez de modifier vos critères de recherche
+        </p>
+
+        <div class="empty-actions">
+          <button
+            *ngIf="!hasActiveFilters()"
+            (click)="openAddGoal()"
+            class="btn btn-primary"
+          >
+            ➕ Créer mon premier objectif
+          </button>
+
+          <button
+            *ngIf="hasActiveFilters()"
+            (click)="clearFilters()"
+            class="btn btn-outline"
+          >
+            Effacer les filtres
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Goal Cards -->
+    <div
+      *ngFor="let goal of filteredGoals; trackBy: trackByGoal; let i = index"
+      class="goal-card-enhanced"
+      [class.completed]="goal.status === 'completed'"
+      [class.started]="goal.status === 'active'"
+      [class.paused]="goal.status === 'paused'"
+      [class.not-started]="goal.status === 'not-started'"
+      [style.animation-delay.ms]="i * 100"
+      (click)="openGoalDetails(goal)"
+      [@cardAnimation]
+    >
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="category-badge" [attr.data-category]="goal.category">
+          <span class="category-icon">{{ goal.categoryInfo?.icon }}</span>
+          <span class="category-text">{{ goal.categoryInfo?.label }}</span>
+        </div>
+
+        <div class="status-indicators">
+          <span
+            class="status-badge difficulty"
+            [attr.data-level]="goal.priority"
+          >
+            {{ goal.priorityInfo?.label }}
+          </span>
+          <span class="status-badge" [class.active]="goal.status === 'active'">
+            {{ getStatusLabel(goal.status) }}
+          </span>
+          <span
+            *ngIf="goal.isEndingSoon"
+            class="status-badge warning"
+            title="Se termine bientôt"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+              />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            Bientôt
+          </span>
+          <span
+            *ngIf="goal.isOnFire"
+            class="status-badge success"
+            title="En feu ! Performance élevée"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"
+              />
+            </svg>
+            En feu
+          </span>
+        </div>
+      </div>
+
+      <!-- Card Content (Enhanced) -->
+      <div class="card-content">
+        <div class="goal-header">
+          <h3 class="goal-title">{{ goal.title }}</h3>
+          <p class="goal-description">
+            {{
+              goal.showFullDescription || (goal.description?.length || 0) < 100
+                ? goal.description
+                : (goal.description | slice : 0 : 97) + "..."
+            }}
+            <span
+              *ngIf="(goal.description?.length || 0) >= 100"
+              class="read-more-toggle"
+              (click)="toggleDescription(goal); $event.stopPropagation()"
+            >
+              {{ goal.showFullDescription ? "Lire moins" : "Lire plus" }}
+            </span>
+          </p>
+        </div>
+
+        <!-- goal Stats - Enhanced -->
+        <div class="goal-stats">
+          <div class="stat-item">
+            <svg
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            <span>{{ formatDate(goal.target_date) }}</span>
+          </div>
+          <div class="stat-item" *ngIf="goal.daysRemaining !== undefined">
+            <svg
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12,6 12,12 16,14" />
+            </svg>
+            <span>
+              <span *ngIf="!goal.isOverdue && goal.status !== 'completed'">
+                {{ goal.daysRemaining }} jour(s) restant(s)
+              </span>
+              <span *ngIf="goal.isOverdue">En retard</span>
+              <span *ngIf="goal.status === 'completed'">Terminé</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- goal Progress - Enhanced -->
+        <div class="goal-progress">
+          <div class="progress-info">
+            <span class="progress-label">Progression</span>
+            <span class="progress-value"
+              >{{ goal.progressPercentage | number : "1.0-0" }}%</span
+            >
+          </div>
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              [style.width.%]="goal.progressPercentage"
+              [style.background]="goal.progressColor"
+            ></div>
+          </div>
+          <div class="progress-detail">
+            {{ goal.current_value }} / {{ goal.target_value }} {{ goal.unit }}
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <!-- NOT STARTED STATE -->
+          <button
+            *ngIf="goal.status === 'not-started'"
+            class="btn btn-success"
+            (click)="startGoal(goal); $event.stopPropagation()"
+            [disabled]="isGoalLoading(goal.id!)"
+          >
+            <div *ngIf="isGoalLoading(goal.id!)" class="loading-spinner"></div>
+            <svg
+              *ngIf="!isGoalLoading(goal.id!)"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <polygon points="5,3 19,12 5,21" />
+            </svg>
+            <span>{{ getGoalActionLabel(goal.id!, 'Commencer') }}</span>
+          </button>
+
+          <!-- ACTIVE STATE -->
+          <button
+            *ngIf="goal.status === 'active'"
+            class="btn btn-primary"
+            (click)="completeGoal(goal); $event.stopPropagation()"
+            [disabled]="isGoalLoading(goal.id!)"
+          >
+            <div *ngIf="isGoalLoading(goal.id!) && getGoalActionState(goal.id!) === 'completing'" class="loading-spinner"></div>
+            <svg
+              *ngIf="!isGoalLoading(goal.id!) || getGoalActionState(goal.id!) !== 'completing'"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <polyline points="20,6 9,17 4,12" />
+            </svg>
+            <span>{{ getGoalActionState(goal.id!) === 'completing' ? getGoalActionLabel(goal.id!, 'Marquer comme accompli') : 'Marquer comme accompli' }}</span>
+          </button>
+
+          <button
+            *ngIf="goal.status === 'active'"
+            class="btn btn-secondary"
+            (click)="toggleGoalStatus(goal); $event.stopPropagation()"
+            [disabled]="isGoalLoading(goal.id!)"
+          >
+            <div *ngIf="isGoalLoading(goal.id!) && getGoalActionState(goal.id!) === 'pausing'" class="loading-spinner"></div>
+            <svg
+              *ngIf="!isGoalLoading(goal.id!) || getGoalActionState(goal.id!) !== 'pausing'"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <circle cx="12" cy="12" r="10"/>
+              <rect x="9" y="9" width="6" height="6"/>
+            </svg>
+            <span>{{ getGoalActionState(goal.id!) === 'pausing' ? getGoalActionLabel(goal.id!, 'Mettre en pause') : 'Mettre en pause' }}</span>
+          </button>
+
+          <!-- PAUSED STATE -->
+          <button
+            *ngIf="goal.status === 'paused'"
+            class="btn btn-success"
+            (click)="toggleGoalStatus(goal); $event.stopPropagation()"
+            [disabled]="isGoalLoading(goal.id!)"
+          >
+            <div *ngIf="isGoalLoading(goal.id!) && getGoalActionState(goal.id!) === 'starting'" class="loading-spinner"></div>
+            <svg
+              *ngIf="!isGoalLoading(goal.id!) || getGoalActionState(goal.id!) !== 'starting'"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <polygon points="5,3 19,12 5,21" />
+            </svg>
+            <span>{{ getGoalActionState(goal.id!) === 'starting' ? getGoalActionLabel(goal.id!, 'Reprendre') : 'Reprendre' }}</span>
+          </button>
+
+          <!-- COMPLETED STATE -->
+          <button
+            *ngIf="goal.status === 'completed'"
+            class="btn btn-completed"
+            disabled
+          >
+            <svg
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <polyline points="20,6 9,17 4,12" />
+            </svg>
+            <span>🎉 Accompli!</span>
+          </button>
+
+          <button
+            *ngIf="goal.status === 'completed'"
+            class="btn btn-warning"
+            (click)="resetGoal(goal); $event.stopPropagation()"
+            [disabled]="isGoalLoading(goal.id!)"
+            title="Remettre l'objectif à zéro et recommencer"
+          >
+            <div *ngIf="isGoalLoading(goal.id!) && getGoalActionState(goal.id!) === 'resetting'" class="loading-spinner"></div>
+            <svg
+              *ngIf="!isGoalLoading(goal.id!) || getGoalActionState(goal.id!) !== 'resetting'"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.95 3.58-7.95 8s3.53 8 7.95 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+              />
+            </svg>
+            <span>{{ getGoalActionState(goal.id!) === 'resetting' ? getGoalActionLabel(goal.id!, 'Recommencer') : 'Recommencer' }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Actions Overlay -->
+      <div class="card-actions-overlay" (click)="$event.stopPropagation()">
+        <button
+          class="quick-action"
+          (click)="shareGoal(goal)"
+          [attr.aria-label]="'Partager ' + goal.title"
+          title="Partager cet objectif"
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16,6 12,2 8,6" />
+            <line x1="12" y1="2" x2="12" y2="15" />
+          </svg>
+        </button>
+
+        <button
+          class="quick-action"
+          *ngIf="goal.status === 'active'"
+          (click)="toggleQuickUpdateMode(goal)"
+          [attr.aria-label]="'Activer la mise à jour rapide de ' + goal.title"
+          [title]="
+            isQuickUpdateMode(goal)
+              ? 'Annuler la mise à jour rapide'
+              : 'Activer la mise à jour rapide'
+          "
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path *ngIf="!isQuickUpdateMode(goal)" d="M12 5v14M5 12h14" />
+            <path *ngIf="isQuickUpdateMode(goal)" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick Update Controls -->
+      <div
+        *ngIf="isQuickUpdateMode(goal)"
+        class="quick-update-controls"
+        (click)="$event.stopPropagation()"
+      >
+        <button
+          class="btn-quick-update"
+          (click)="decrementValue(goal)"
+          [disabled]="isDecrementDisabled(goal)"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
+        <input
+          type="number"
+          [(ngModel)]="quickUpdateValues[goal.id!]"
+          (change)="updateGoalProgress(goal)"
+          (blur)="updateGoalProgress(goal)"
+          min="0"
+          [max]="goal.target_value"
+          step="{{ calculateSmartIncrement(goal) }}"
+          class="quick-update-input"
+        />
+        <button
+          class="btn-quick-update"
+          (click)="incrementValue(goal)"
+          [disabled]="isIncrementDisabled(goal)"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
+        <button
+          class="btn-quick-update confirm"
+          (click)="updateGoalProgress(goal)"
+          title="Confirmer la mise à jour"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="20,6 9,17 4,12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Goal Details Modal -->
+  <div
+    *ngIf="showGoalDetails && selectedGoal"
+    class="modal-overlay"
+    (click)="closeGoalDetails()"
+    [@modalAnimation]
+  >
+    <div class="modal modal-details" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <div
+            class="title-icon"
+            [style.color]="selectedGoal.categoryInfo?.color"
+          >
+            {{ selectedGoal.icon || selectedGoal.categoryInfo?.icon || "🎯" }}
+          </div>
+          {{ selectedGoal.title }}
+        </div>
+        <button (click)="closeGoalDetails()" class="modal-close">×</button>
+      </div>
+
+      <div class="modal-body modal-details-body">
+        <div class="goal-details-content">
+          <!-- Goal Overview -->
+          <div class="details-section">
+            <h3 class="details-title">Vue d'ensemble</h3>
+            <div class="overview-grid">
+              <div class="overview-item">
+                <span class="overview-label">Catégorie</span>
+                <div
+                  class="category-display"
+                  [style.background]="selectedGoal.categoryInfo?.gradient"
+                >
+                  <span class="category-icon">{{
+                    selectedGoal.categoryInfo?.icon
+                  }}</span>
+                  <span>{{ selectedGoal.categoryInfo?.label }}</span>
+                </div>
+              </div>
+              <div class="overview-item">
+                <span class="overview-label">Priorité</span>
+                <div
+                  class="priority-display"
+                  [style.color]="selectedGoal.priorityInfo?.color"
+                >
+                  <span class="priority-icon">{{
+                    selectedGoal.priorityInfo?.icon
+                  }}</span>
+                  <span>{{ selectedGoal.priorityInfo?.label }}</span>
+                </div>
+              </div>
+              <div class="overview-item">
+                <span class="overview-label">Statut</span>
+                <div
+                  class="status-display"
+                  [style.color]="selectedGoal.statusColor"
+                >
+                  <span class="status-icon">{{
+                    getStatusIcon(selectedGoal.status)
+                  }}</span>
+                  <span>{{ getStatusLabel(selectedGoal.status) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Section -->
+          <div class="details-section">
+            <h3 class="details-title">Progression</h3>
+            <div class="progress-details">
+              <div class="progress-visual">
+                <div class="large-progress-bar">
+                  <div
+                    class="large-progress-fill"
+                    [style.width.%]="selectedGoal.progressPercentage"
+                    [style.background]="selectedGoal.progressColor"
+                  ></div>
+                </div>
+                <div class="progress-stats">
+                  <div class="progress-stat">
+                    <span class="stat-value"
+                      >{{
+                        selectedGoal.progressPercentage | number : "1.0-0"
+                      }}%</span
+                    >
+                    <span class="stat-label">Complété</span>
+                  </div>
+                  <div class="progress-stat">
+                    <span class="stat-value">{{
+                      selectedGoal.current_value
+                    }}</span>
+                    <span class="stat-label">Actuel</span>
+                  </div>
+                  <div class="progress-stat">
+                    <span class="stat-value">{{
+                      selectedGoal.target_value
+                    }}</span>
+                    <span class="stat-label">Objectif</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline Section -->
+          <div class="details-section">
+            <h3 class="details-title">Calendrier</h3>
+            <div class="timeline-info">
+              <div class="timeline-item">
+                <div class="timeline-icon">📅</div>
+                <div class="timeline-content">
+                  <span class="timeline-label">Date limite</span>
+                  <span class="timeline-value">{{
+                    formatDate(selectedGoal.target_date)
+                  }}</span>
+                </div>
+              </div>
+              <div
+                class="timeline-item"
+                *ngIf="selectedGoal.daysRemaining !== undefined"
+              >
+                <div class="timeline-icon">⏱️</div>
+                <div class="timeline-content">
+                  <span class="timeline-label">Temps restant</span>
+                  <span class="timeline-value">
+                    <span
+                      *ngIf="
+                        !selectedGoal.isOverdue &&
+                        selectedGoal.status !== 'completed'
+                      "
+                    >
+                      {{ selectedGoal.daysRemaining }} jour(s)
+                    </span>
+                    <span *ngIf="selectedGoal.isOverdue" class="overdue"
+                      >En retard</span
+                    >
+                    <span
+                      *ngIf="selectedGoal.status === 'completed'"
+                      class="completed"
+                      >Terminé</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="timeline-item" *ngIf="selectedGoal.created_at">
+                <div class="timeline-icon">🚀</div>
+                <div class="timeline-content">
+                  <span class="timeline-label">Créé le</span>
+                  <span class="timeline-value">{{
+                    formatDate(selectedGoal.created_at)
+                  }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Section -->
+          <div class="details-section" *ngIf="selectedGoal.description">
+            <h3 class="details-title">Description</h3>
+            <p class="goal-description-full">{{ selectedGoal.description }}</p>
+          </div>
+
+          <!-- Notes Section -->
+          <div class="details-section" *ngIf="selectedGoal.notes">
+            <h3 class="details-title">Notes</h3>
+            <p class="goal-notes">{{ selectedGoal.notes }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-actions">
+          <button (click)="deleteGoal(selectedGoal)" class="btn btn-danger">
+            <svg
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path
+                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+              ></path>
+            </svg>
+            Supprimer
+          </button>
+          <button
+            (click)="openEditGoal(selectedGoal)"
+            class="btn btn-secondary"
+          >
+            <svg
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              />
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              />
+            </svg>
+            Modifier
+          </button>
+          <button (click)="closeGoalDetails()" class="btn btn-primary">
+            Fermer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Add/Edit Goal Modal -->
+  <div
+    *ngIf="isAddingGoal"
+    class="modal-overlay"
+    (click)="closeAddGoal()"
+    [@modalAnimation]
+  >
+    <div class="modal modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          {{ isEditMode ? 'Modifier un objectif' : 'Créer un nouvel objectif' }}
+        </div>
+        <button class="btn-close" (click)="closeAddGoal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="goalForm" (ngSubmit)="saveGoal()" class="goal-form">
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="title" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+                Titre de l'objectif <span class="required">*</span>
+              </label>
+              <input
+                id="title"
+                type="text"
+                class="form-control"
+                formControlName="title"
+                placeholder="Ex: Perdre 10 kg, Courir un marathon..."
+                [class.is-invalid]="
+                  goalForm.get('title')?.invalid &&
+                  goalForm.get('title')?.touched
+                "
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="goalForm.get('title')?.invalid && goalForm.get('title')?.touched"
+              >
+                <div *ngIf="goalForm.get('title')?.errors?.['required']">Le titre est requis.</div>
+                <div *ngIf="goalForm.get('title')?.errors?.['minlength']">Le titre doit contenir au moins 3 caractères.</div>
+                <div *ngIf="goalForm.get('title')?.errors?.['maxlength']">Le titre ne doit pas dépasser 100 caractères.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="description" class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14,2 14,8 20,8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10,9 9,9 8,9" />
+              </svg>
+              Description <span class="required">*</span>
+            </label>
+            <textarea
+              id="description"
+              class="form-control"
+              formControlName="description"
+              placeholder="Décrivez votre objectif en détail..."
+              rows="4"
+              [class.is-invalid]="
+                goalForm.get('description')?.invalid &&
+                goalForm.get('description')?.touched
+              "
+            ></textarea>
+            <div
+              class="invalid-feedback"
+              *ngIf="goalForm.get('description')?.invalid && goalForm.get('description')?.touched"
+            >
+              <div *ngIf="goalForm.get('description')?.errors?.['required']">La description est requise.</div>
+              <div *ngIf="goalForm.get('description')?.errors?.['minlength']">La description doit contenir au moins 10 caractères.</div>
+              <div *ngIf="goalForm.get('description')?.errors?.['maxlength']">La description ne doit pas dépasser 500 caractères.</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                Catégorie <span class="required">*</span>
+              </label>
+              <select id="category" class="form-control" formControlName="category"
+                [class.is-invalid]="goalForm.get('category')?.invalid && goalForm.get('category')?.touched">
+                <option
+                  *ngFor="let category of goalCategories"
+                  [value]="category.value"
+                >
+                  {{ category.label }}
+                </option>
+              </select>
+              <div *ngIf="goalForm.get('category')?.invalid && goalForm.get('category')?.touched" class="invalid-feedback">
+                <div *ngIf="goalForm.get('category')?.errors?.['required']">La catégorie est requise.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="priority" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+                Priorité <span class="required">*</span>
+              </label>
+              <select id="priority" class="form-control" formControlName="priority"
+                [class.is-invalid]="goalForm.get('priority')?.invalid && goalForm.get('priority')?.touched">
+                <option
+                  *ngFor="let priority of priorityLevels"
+                  [value]="priority.value"
+                >
+                  {{ priority.label }}
+                </option>
+              </select>
+              <div *ngIf="goalForm.get('priority')?.invalid && goalForm.get('priority')?.touched" class="invalid-feedback">
+                <div *ngIf="goalForm.get('priority')?.errors?.['required']">La priorité est requise.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="current_value" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Valeur actuelle <span class="required">*</span>
+              </label>
+              <input
+                id="current_value"
+                type="number"
+                class="form-control"
+                formControlName="current_value"
+                min="0"
+                step="0.1"
+                placeholder="0"
+                [class.is-invalid]="goalForm.get('current_value')?.invalid && goalForm.get('current_value')?.touched"
+              />
+              <div *ngIf="goalForm.get('current_value')?.invalid && goalForm.get('current_value')?.touched" class="invalid-feedback">
+                <div *ngIf="goalForm.get('current_value')?.errors?.['required']">La valeur actuelle est requise.</div>
+                <div *ngIf="goalForm.get('current_value')?.errors?.['min']">La valeur actuelle doit être au moins 0.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="target_value" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                Objectif cible <span class="required">*</span>
+              </label>
+              <input
+                id="target_value"
+                type="number"
+                class="form-control"
+                formControlName="target_value"
+                min="1"
+                step="0.1"
+                placeholder="100"
+                [class.is-invalid]="goalForm.get('target_value')?.invalid && goalForm.get('target_value')?.touched"
+              />
+              <div *ngIf="goalForm.get('target_value')?.invalid && goalForm.get('target_value')?.touched" class="invalid-feedback">
+                <div *ngIf="goalForm.get('target_value')?.errors?.['required']">L'objectif cible est requis.</div>
+                <div *ngIf="goalForm.get('target_value')?.errors?.['min']">L'objectif cible doit être au moins 1.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="unit" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 13h10" />
+                  <path d="M7 9h10" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                Unité <span class="required">*</span>
+              </label>
+              <input
+                id="unit"
+                type="text"
+                class="form-control"
+                formControlName="unit"
+                placeholder="kg, km, répétitions..."
+                [class.is-invalid]="goalForm.get('unit')?.invalid && goalForm.get('unit')?.touched"
+              />
+              <div *ngIf="goalForm.get('unit')?.invalid && goalForm.get('unit')?.touched" class="invalid-feedback">
+                <div *ngIf="goalForm.get('unit')?.errors?.['required']">L'unité est requise.</div>
+                <div *ngIf="goalForm.get('unit')?.errors?.['maxlength']">L'unité ne doit pas dépasser 20 caractères.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="target_date" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                Date limite <span class="required">*</span>
+              </label>
+              <input
+                id="target_date"
+                type="date"
+                class="form-control"
+                formControlName="target_date"
+                [min]="minDate"
+                [class.is-invalid]="goalForm.get('target_date')?.invalid && goalForm.get('target_date')?.touched"
+              />
+              <div *ngIf="goalForm.get('target_date')?.invalid && goalForm.get('target_date')?.touched" class="invalid-feedback">
+                <div *ngIf="goalForm.get('target_date')?.errors?.['required']">La date limite est requise.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview -->
+          <div
+            class="progress-preview"
+            *ngIf="
+              goalForm.get('current_value')?.value != null &&
+              goalForm.get('target_value')?.value != null
+            "
+          >
+            <div class="preview-header">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              Aperçu
+            </div>
+            <div class="preview-content">
+              <div class="preview-values">
+                {{ goalForm.get("current_value")?.value || 0 }}/{{
+                  goalForm.get("target_value")?.value || 1
+                }}
+                {{ goalForm.get("unit")?.value || "unités" }}
+              </div>
+              <div class="preview-percentage">
+                {{
+                  ((goalForm.get("current_value")?.value || 0) /
+                    (goalForm.get("target_value")?.value || 1)) *
+                    100 | number : "1.0-0"
+                }}%
+              </div>
+            </div>
+            <div class="preview-bar">
+              <div
+                class="preview-fill"
+                [style.width.%]="
+                  ((goalForm.get('current_value')?.value || 0) /
+                    (goalForm.get('target_value')?.value || 1)) *
+                  100
+                "
+              ></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="notes" class="form-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14,2 14,8 20,8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10,9 9,9 8,9" />
+                </svg>
+                Notes
+              </label>
+              <textarea
+                id="notes"
+                class="form-control"
+                formControlName="notes"
+                placeholder="Notes, stratégies, motivations..."
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <input id="is_public" type="checkbox" formControlName="is_public" />
+              <label for="is_public">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M4.93 4.93l1.41 1.41" />
+                  <path d="M17.66 17.66l1.41 1.41" />
+                  <path d="M2 12h2" />
+                  <path d="M20 12h2" />
+                  <path d="M6.34 17.66l-1.41 1.41" />
+                  <path d="M19.07 4.93l-1.41 1.41" />
+                </svg>
+                <span>Objectif public</span>
+              </label>
+            </div>
+
+            <div class="form-group checkbox-group">
+              <input id="enable_reminders" type="checkbox" formControlName="enable_reminders" />
+              <label for="enable_reminders">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12,6 12,12 16,14" />
+                </svg>
+                <span>Activer les rappels</span>
+              </label>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-actions">
+          <button
+            type="button"
+            (click)="closeAddGoal()"
+            class="btn btn-outline"
+            [disabled]="isSaving"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            (click)="saveGoal()"
+            class="btn btn-primary"
+            [disabled]="goalForm.invalid || isSaving"
+          >
+            <div *ngIf="isSaving" class="loading-spinner"></div>
+            <span *ngIf="!isSaving">{{ isEditMode ? 'Enregistrer les modifications' : 'Créer l\'objectif' }}</span>
+            <span *ngIf="isSaving">
+              <span *ngIf="isEditMode">Enregistrement...</span>
+              <span *ngIf="!isEditMode">Création en cours...</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Milestone Modal -->
+  <div
+    *ngIf="isAddingMilestone"
+    class="modal-overlay"
+    (click)="closeAddMilestone()"
+    [@modalAnimation]
+  >
+    <div class="modal milestone-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          Nouvelle étape
+        </div>
+        <button (click)="closeAddMilestone()" class="btn-close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form
+          [formGroup]="milestoneForm"
+          (ngSubmit)="saveMilestone()"
+          class="milestone-form"
+        >
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+                Titre de l'étape <span class="required">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="title"
+                placeholder="Ex: Perdre 5 kg, atteindre 100 séances..."
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                Valeur cible <span class="required">*</span>
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="target_value"
+                min="1"
+                step="0.1"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                Date limite <span class="required">*</span>
+              </label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="target_date"
+                [min]="minDate"
+              />
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  />
+                  <polyline points="14,2 14,8 20,8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10,9 9,9 8,9" />
+                </svg>
+                Description
+              </label>
+              <textarea
+                class="form-control"
+                formControlName="description"
+                placeholder="Décrivez cette étape..."
+                rows="2"
+              ></textarea>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6" />
+                  <path d="M2 7h20v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7Z" />
+                  <path d="M12 22V7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7Z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z" />
+                </svg>
+                Récompense
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="reward"
+                placeholder="Ex: nouveau livre, sortie ciné..."
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+
+      </div>
+      
+      <div class="modal-footer">
+        <div class="modal-actions">
+          <button
+            type="button"
+            (click)="closeAddMilestone()"
+            class="btn btn-outline"
+            [disabled]="isSaving"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            (click)="saveMilestone()"
+            class="btn btn-primary"
+            [disabled]="milestoneForm.invalid || isSaving"
+          >
+            <div *ngIf="isSaving" class="loading-spinner"></div>
+            <span *ngIf="!isSaving">Ajouter l'étape</span>
+            <span *ngIf="isSaving">Création en cours...</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Reset All Goals Confirmation Modal -->
+  <div
+    *ngIf="resetAllGoalsConfirmation"
+    class="modal-overlay"
+    (click)="closeResetAllGoalsConfirmation()"
+    [@modalAnimation]
+  >
+    <div class="modal modal-danger" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Réinitialiser tous les objectifs
+        </div>
+        <button (click)="closeResetAllGoalsConfirmation()" class="btn-close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Êtes-vous sûr de vouloir réinitialiser tous vos objectifs ? Cette
+          action est irréversible.
+        </p>
+        <p>
+          Tous les objectifs seront marqués comme "non commencés" et leur
+          progression sera remise à zéro.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-actions">
+          <button
+            type="button"
+            (click)="closeResetAllGoalsConfirmation()"
+            class="btn btn-outline"
+          >
+            Annuler
+          </button>
+          <button 
+            type="button"
+            (click)="confirmResetAllGoals()" 
+            class="btn btn-danger">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            Confirmer la réinitialisation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Reset Single Goal Confirmation Modal -->
+  <div
+    *ngIf="resetGoalConfirmation && goalToReset"
+    class="modal-overlay"
+    (click)="closeResetGoalConfirmation()"
+    [@modalAnimation]
+  >
+    <div class="modal modal-danger" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Réinitialiser l'objectif "{{ goalToReset.title }}"
+        </div>
+        <button (click)="closeResetGoalConfirmation()" class="btn-close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Êtes-vous sûr de vouloir réinitialiser cet objectif ? Cette action est
+          irréversible.
+        </p>
+        <p>
+          L'objectif "{{ goalToReset.title }}" sera marqué comme "non commencé"
+          et sa progression sera remise à zéro.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-actions">
+          <button 
+            type="button"
+            (click)="closeResetGoalConfirmation()" 
+            class="btn btn-outline">
+            Annuler
+          </button>
+          <button 
+            type="button"
+            (click)="confirmResetGoal()" 
+            class="btn btn-danger">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.95 3.58-7.95 8s3.53 8 7.95 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+            </svg>
+            Confirmer la réinitialisation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

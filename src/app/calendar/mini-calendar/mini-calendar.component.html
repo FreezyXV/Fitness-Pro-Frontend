@@ -1,0 +1,197 @@
+<div class="mini-calendar-container">
+  <!-- Header with navigation -->
+  <div class="calendar-header">
+    <button class="nav-btn" 
+            (click)="previousMonth()" 
+            [disabled]="isNavigating"
+            aria-label="Mois précédent"
+            type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+        <polyline points="15,18 9,12 15,6"></polyline>
+      </svg>
+    </button>
+
+    <div class="month-year" (click)="showMonthPicker()">
+      <span class="month">{{ currentMonth }}</span>
+      <span class="year">{{ currentYear }}</span>
+    </div>
+
+    <button class="nav-btn" 
+            (click)="nextMonth()" 
+            [disabled]="isNavigating"
+            aria-label="Mois suivant"
+            type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+        <polyline points="9,18 15,12 9,6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div class="calendar-loading" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+    <span>Chargement...</span>
+  </div>
+
+  <!-- Calendar grid -->
+  <div class="calendar-grid" *ngIf="!isLoading">
+    <!-- Day headers -->
+    <div class="day-header" *ngFor="let day of daysOfWeek">
+      {{ day }}
+    </div>
+
+    <!-- Calendar days -->
+    <div *ngFor="let day of calendarDays; trackBy: trackByDay"
+         class="calendar-day"
+         [class.other-month]="!day.isCurrentMonth"
+         [class.today]="day.isToday"
+         [class.selected]="day.isSelected"
+         [class.has-workout]="day.hasWorkout"
+         [class.has-goal]="day.hasGoal"
+         [class.has-rest]="day.hasRest"
+         [class.disabled]="day.isDisabled"
+         [attr.aria-label]="getDayAriaLabel(day)"
+         [attr.aria-selected]="day.isSelected"
+         [attr.tabindex]="day.isCurrentMonth ? 0 : -1"
+         (click)="selectDay(day)"
+         (keydown.enter)="selectDay(day)"
+         (keydown.space)="selectDay(day)"
+         role="gridcell">
+      
+      <span class="day-number">{{ day.date }}</span>
+      
+      <!-- Activity indicators -->
+      <div class="activity-indicators" *ngIf="hasActivities(day)">
+        <div class="indicator workout" 
+             *ngIf="day.hasWorkout" 
+             title="Entraînement prévu"
+             [attr.data-count]="day.workoutCount"></div>
+        <div class="indicator goal" 
+             *ngIf="day.hasGoal" 
+             title="Objectif"
+             [attr.data-count]="day.goalCount"></div>
+        <div class="indicator rest" 
+             *ngIf="day.hasRest" 
+             title="Jour de repos"></div>
+      </div>
+
+      <!-- Completion status -->
+      <div class="completion-status" *ngIf="day.completionRate > 0">
+        <div class="completion-bar" 
+             [style.width.%]="day.completionRate"
+             [title]="day.completionRate + '% complété'"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="calendar-actions">
+    <button class="action-btn today-btn" 
+            (click)="goToToday()"
+            [disabled]="isToday(selectedDay?.fullDate)"
+            type="button">
+      <i class="fas fa-calendar-day"></i>
+      Aujourd'hui
+    </button>
+    <button class="action-btn schedule-btn" 
+            (click)="scheduleWorkout()"
+            [disabled]="!selectedDay"
+            type="button">
+      <i class="fas fa-plus"></i>
+      Planifier
+    </button>
+  </div>
+
+  <!-- Selected day details -->
+  <div class="selected-day-info" *ngIf="selectedDay">
+    <div class="selected-day-header">
+      <h4>{{ getSelectedDateText() }}</h4>
+      <div class="day-stats" *ngIf="getDayStats(selectedDay)">
+        <span class="stat-item">
+          <i class="fas fa-dumbbell"></i>
+          {{ getDayStats(selectedDay).workouts }}
+        </span>
+        <span class="stat-item">
+          <i class="fas fa-fire"></i>
+          {{ getDayStats(selectedDay).calories }}cal
+        </span>
+      </div>
+    </div>
+
+    <div class="selected-day-content">
+      <ng-container *ngIf="selectedDay.activities && selectedDay.activities.length > 0; else emptyDay">
+        <div class="activity-list">
+          <div class="activity-item" 
+               *ngFor="let activity of selectedDay.activities; trackBy: trackByActivity"
+               [class.completed]="activity.completed"
+               [class]="'activity-' + activity.type">
+            <div class="activity-icon">
+              <span [innerHTML]="activity.icon"></span>
+            </div>
+            <div class="activity-content">
+              <span class="activity-title">{{ activity.title }}</span>
+              <small class="activity-time" *ngIf="activity.time">{{ activity.time }}</small>
+              <small class="activity-duration" *ngIf="activity.duration">
+                {{ activity.duration }} min
+              </small>
+            </div>
+            <div class="activity-actions" *ngIf="activity.type === 'workout'">
+              <button class="btn-icon" 
+                      (click)="toggleActivityComplete(activity)"
+                      [title]="activity.completed ? 'Marquer comme non terminé' : 'Marquer comme terminé'"
+                      type="button">
+                <i class="fas" 
+                   [class.fa-check]="activity.completed" 
+                   [class.fa-circle]="!activity.completed"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #emptyDay>
+        <div class="no-activities">
+          <i class="fas fa-calendar-plus"></i>
+          <p>Aucune activité prévue</p>
+          <button class="btn btn-sm btn-outline" 
+                  (click)="scheduleWorkout()"
+                  type="button">
+            Ajouter une activité
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Month picker modal -->
+  <div class="month-picker-modal" *ngIf="showMonthPickerModal">
+    <div class="month-picker-content">
+      <div class="month-picker-header">
+        <h3>Sélectionner le mois</h3>
+        <button class="btn-close" 
+                (click)="hideMonthPicker()"
+                type="button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="month-picker-grid">
+        <button *ngFor="let month of monthList; let i = index"
+                class="month-option"
+                [class.selected]="i === currentDate.getMonth()"
+                (click)="selectMonth(i)"
+                type="button">
+          {{ month }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error state -->
+  <div class="calendar-error" *ngIf="error">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p>{{ error }}</p>
+    <button class="btn btn-sm" (click)="retryLoad()" type="button">
+      Réessayer
+    </button>
+  </div>
+</div>

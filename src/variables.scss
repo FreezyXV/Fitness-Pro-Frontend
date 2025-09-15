@@ -1,0 +1,595 @@
+// =============================================
+// UNIFIED DESIGN SYSTEM - FITNESS APP
+// Centralized variables for consistent UX/UI
+// =============================================
+
+// =============================================
+// CORE COLOR PALETTE
+// =============================================
+
+// Primary Brand Colors - Keep original values first, then modern updates
+$primary-color: #21bf73;  // Updated to modern green
+$primary-light: #48C9B0;
+$primary-dark: #1da460;   // Updated to match modern system
+$primary-darker: #168049;
+$primary-lighter: #7DCEA0;
+
+// Primary variants for consistency
+$primary-400: #34d399;
+$primary-500: #21bf73;
+$primary-600: #1da460;
+$primary-700: #168049;
+$primary-800: #0f5132;
+
+// Secondary Colors - Enhanced harmony
+$secondary-color: #00b5ad;  // Updated to modern teal
+$secondary-light: #5DADE2;
+$secondary-dark: #2E86C1;
+$secondary-darker: #2874A6;
+$secondary-500: #00b5ad;
+$secondary-600: #009b94;
+$accent-color: #667eea;     // Updated to modern purple
+
+// Accent variants
+$accent-400: #818cf8;
+$accent-500: #667eea;
+$accent-600: #5a67d8;
+
+// Status Colors System - More nuanced and accessible
+$success-color: #059669;    // Updated for better contrast
+$success-light: #58D68D;
+$success-dark: #1E8449;
+$warning-color: #d97706;    // Updated for better contrast
+$warning-light: #F8C471;
+$warning-dark: #D68910;
+$error-color: #dc2626;      // Updated for better contrast
+$danger-color: #dc2626;     // Same as error for consistency
+$error-light: #F1948A;
+$error-dark: #C0392B;
+$info-color: #2563eb;       // Updated for better contrast
+$info-light: #7FB3D3;
+$info-dark: #2874A6;
+
+// IMPORTANT: Keep these aliases for component compatibility
+$success: #059669;
+$warning: #d97706;
+$error: #dc2626;
+$info: #2563eb;
+$danger: #dc2626;
+
+// Additional color aliases for compatibility
+$light: #f1f5f9;
+$dark: #1e293b;
+
+// Enhanced grays for better contrast - Modern system
+$gray-25: #fcfcfd;
+$gray-50: #f8fafc;
+$gray-100: #f1f5f9;
+$gray-200: #e2e8f0;
+$gray-300: #cbd5e1;
+$gray-400: #94a3b8;
+$gray-500: #64748b;
+$gray-600: #475569;
+$gray-700: #334155;
+$gray-800: #1e293b;
+$gray-900: #0f172a;
+
+// Background Colors - Enhanced depth
+$bg-primary: #ffffff;
+$bg-secondary: #F8FFFE;
+$bg-tertiary: #F1F8F6;
+$bg-dark: #2C3E50;
+$bg-color: #ffffff;
+
+// Text Colors - Better hierarchy
+$text-primary: #0f172a;     // Updated for better contrast
+$text-secondary: #334155;   // Updated for better contrast
+$text-muted: #64748b;
+$text-light: #94a3b8;
+$text-inverse: #ffffff;
+
+// =============================================
+// TYPOGRAPHY
+// =============================================
+
+$font-family-sans-serif: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-family-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+$font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+$font-size-xs: 0.75rem;   // 12px
+$font-size-sm: 0.875rem;  // 14px
+$font-size-base: 1rem;    // 16px
+$font-size-lg: 1.125rem;  // 18px
+$font-size-xl: 1.25rem;   // 20px
+$font-size-2xl: 1.5rem;   // 24px
+$font-size-3xl: 1.875rem; // 30px
+$font-size-4xl: 2.25rem;  // 36px
+$font-size-5xl: 3rem;
+
+// Text size aliases
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem;
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 1.875rem;
+$text-4xl: 2.25rem;
+$text-5xl: 3rem;
+
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+$font-weight-black: 900;
+
+// Font weight aliases
+$font-normal: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+$font-black: 900;
+
+$line-height-tight: 1.25;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// =============================================
+// SPACING
+// =============================================
+
+$spacing-xs: 0.25rem;   // 4px
+$spacing-sm: 0.5rem;    // 8px
+$spacing-md: 1rem;      // 16px
+$spacing-lg: 1.5rem;    // 24px
+$spacing-xl: 2rem;      // 32px
+$spacing-2xl: 3rem;     // 48px
+$spacing-3xl: 4rem;     // 64px
+$spacing-4xl: 5rem;     // 80px
+$spacing-5xl: 6rem;     // 96px
+$spacing-6xl: 8rem;     // 128px
+
+// Spacing scale
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+$space-10: 2.5rem;
+$space-12: 3rem;
+$space-16: 4rem;
+$space-20: 5rem;
+$space-24: 6rem;
+
+// Enhanced section spacing with better proportions
+$major-section-spacing: $spacing-5xl; // 96px between major sections
+$section-spacing: $spacing-4xl; // 80px between sections
+$card-spacing: $spacing-3xl; // 64px between cards
+
+// =============================================
+// BORDERS & RADIUS
+// =============================================
+
+$border-width: 1px;
+$border-width-thick: 2px;
+
+$border-color: #e2e8f0;
+$border-color-focus: #21bf73;
+
+// Border radius system
+$border-radius: 0.75rem;      // Base border radius - 12px
+$border-radius-sm: 0.375rem;  // 6px
+$border-radius-md: 0.75rem;   // 12px
+$border-radius-lg: 1rem;      // 16px
+$border-radius-xl: 1.5rem;    // 24px
+$border-radius-2xl: 2rem;     // 32px
+$border-radius-3xl: 2.5rem;   // 40px
+$border-radius-4xl: 2.5rem;   // 40px
+$border-radius-full: 9999px;
+
+// Border radius aliases
+$radius-xs: 0.25rem;
+$radius-sm: 0.5rem;
+$radius-md: 0.75rem;
+$radius-lg: 1rem;
+$radius-xl: 1.25rem;
+$radius-2xl: 2rem;
+$radius-3xl: 3rem;
+$radius-4xl: 2.5rem;
+$radius-full: 50%;
+
+// =============================================
+// SHADOWS
+// =============================================
+
+$shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8px 16px -4px rgba(0, 0, 0, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.08);
+$shadow-xl: 0 16px 32px -8px rgba(0, 0, 0, 0.18), 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+$shadow-2xl: 0 24px 48px -12px rgba(0, 0, 0, 0.25);
+$shadow-3xl: 0 35px 60px -12px rgba(0, 0, 0, 0.3);
+
+// Base shadow alias
+$shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+// =============================================
+// BREAKPOINTS
+// =============================================
+
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+$breakpoints: (
+  "xs": 320px,
+  "sm": 480px,
+  "md": 768px,
+  "lg": 1024px,
+  "xl": 1200px,
+  "xxl": 1400px,
+  "xxxl": 1600px,
+);
+
+// =============================================
+// Z-INDEX
+// =============================================
+
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-modal: 1000;
+$z-popover: 1100;
+$z-tooltip: 1200;
+$z-toast: 1300;
+
+// Enhanced Z-Index for Premium Components
+$z-base: 0;
+$z-floating-orb: 1;
+$z-card: 2;
+$z-card-content: 3;
+$z-input: 4;
+$z-input-icon: 5;
+$z-validation-icon: 6;
+$z-premium: 10;
+
+// Z-Index System (Enhanced)
+$z-background: -1;
+$z-under: 1;
+$z-normal: 10;
+$z-above: 20;
+$z-fixed: 300;
+$z-sidebar: 400;
+$z-header: 500;
+$z-overlay: 800;
+$z-modal-backdrop: 900;
+$z-floating-action: 1400;
+$z-debug: 9999;
+$z-dev-tools: 10000;
+
+// =============================================
+// TRANSITIONS
+// =============================================
+
+$transition-base: 0.2s ease-in-out;
+$transition-fast: 0.15s ease-in-out;
+$transition-normal: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// Enhanced Transitions with premium curves
+$transition-premium: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+$transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+$transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+$transition-slower: all 0.8s ease-in-out;
+$transition-elastic: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Animation Durations
+$animation-fast: 0.2s;
+$animation-normal: 0.3s;
+$animation-slow: 0.5s;
+$animation-slower: 0.8s;
+$animation-slowest: 1.2s;
+
+// Transform Presets
+$transform-hover: translateY(-2px);
+$transform-hover-lg: translateY(-4px) scale(1.02);
+$transform-hover-xl: translateY(-6px) scale(1.05);
+$transform-active: translateY(-1px) scale(0.98);
+$transform-focus: translateY(-1px);
+
+// =============================================
+// FITNESS SPECIFIC COLORS - Enhanced
+// =============================================
+
+$workout-color: #21bf73;
+$cardio-color: #E74C3C;
+$strength-color: #2C3E50;
+$flexibility-color: #9B59B6;
+$nutrition-color: #d97706;
+$rest-color: #95A5A6;
+
+// Difficulty Colors
+$difficulty-beginner: #059669;
+$difficulty-intermediate: #d97706;
+$difficulty-advanced: #dc2626;
+
+// Nutrition colors
+$calories-color: #ff6b6b;
+$protein-color: #4ecdc4;
+$carbs-color: #45b7d1;
+$fat-color: #96ceb4;
+$water-color: #74b9ff;
+$fiber-color: #a29bfe;
+
+// BMI Status Colors with Better Contrast
+$bmi-underweight: #2563eb;
+$bmi-normal: #059669;
+$bmi-overweight: #d97706;
+$bmi-obese: #dc2626;
+
+// =============================================
+// COMPONENT SPECIFIC
+// =============================================
+
+// Buttons
+$btn-padding-x: 1rem;
+$btn-padding-y: 0.5rem;
+$btn-font-weight: $font-weight-medium;
+
+// Enhanced Button Variables (for auth pages)
+$btn-border-radius-enhanced: $border-radius-lg;
+$btn-padding-lg-x: 1.5rem;
+$btn-padding-lg-y: 0.75rem;
+
+// Component Design Tokens
+$btn-padding-sm: 0.5rem 1rem;
+$btn-padding-md: 0.75rem 1.5rem;
+$btn-padding-lg: 1rem 2rem;
+$btn-padding-xl: 1.25rem 2.5rem;
+$btn-border-radius: $border-radius;
+$btn-border-radius-lg: $border-radius-lg;
+$btn-min-height: 44px;
+$btn-transition: $transition-smooth;
+
+// Cards
+$card-bg: $bg-primary;
+$card-border: $border-color;
+$card-shadow: $shadow-md;
+$card-padding: 1.5rem;
+
+// Enhanced Card Variables (for auth pages)
+$card-premium-bg: rgba(255, 255, 255, 0.98);
+$card-premium-border: rgba(255, 255, 255, 0.3);
+$card-border-radius-enhanced: $border-radius-2xl;
+
+// Additional card variables
+$card-bg-glass: rgba(255, 255, 255, 0.95);
+$card-bg-glass-dark: rgba(255, 255, 255, 0.08);
+$card-border-glass: rgba(255, 255, 255, 0.20);
+$card-padding-sm: 1rem;
+$card-padding-md: 1.5rem;
+$card-padding-lg: 2rem;
+$card-padding-xl: 2.5rem;
+$card-border-radius: $border-radius-xl;
+$card-transition: $transition-smooth;
+
+// Forms
+$form-input-bg: $bg-primary;
+$form-input-border: $border-color;
+$form-input-focus-border: $primary-color;
+$form-input-padding-x: 0.75rem;
+$form-input-padding-y: 0.5rem;
+
+// Enhanced Form Variables (for auth pages only)
+$form-input-bg-enhanced: rgba(255, 255, 255, 0.9);
+$form-input-padding: 0.75rem 1rem;
+$form-input-padding-lg: 1rem 1.25rem;
+$form-input-border-radius: $border-radius;
+$form-input-transition: all 0.3s ease;
+$form-label-font-weight: $font-weight-semibold;
+$form-error-color: $error-color;
+$form-success-color: $success-color;
+
+// Navigation
+$nav-bg: $bg-primary;
+$nav-border: $border-color;
+$nav-link-color: $text-secondary;
+$nav-link-active-color: $primary-color;
+
+// Additional navigation variables
+$nav-bg-glass: rgba(255, 255, 255, 0.95);
+$nav-link-hover-bg: rgba(33, 191, 115, 0.05);
+$nav-link-active-bg: rgba(33, 191, 115, 0.1);
+$nav-link-padding: 1rem 1.5rem;
+$nav-link-border-radius: $border-radius;
+$nav-link-transition: $transition-smooth;
+
+// =============================================
+// BOOTSTRAP COMPATIBILITY
+// =============================================
+
+// Spacers map (Bootstrap-style)
+$spacers: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 1rem,
+  4: 1.5rem,
+  5: 3rem,
+  6: 4rem,
+  7: 5rem,
+  8: 6rem,
+  9: 8rem,
+  10: 10rem,
+  11: 12rem,
+  12: 16rem
+);
+
+// =============================================
+// GRADIENT SYSTEM - UNIFIED APPROACH
+// =============================================
+
+// Primary Gradients - More sophisticated
+$gradient-primary: linear-gradient(135deg, #21bf73 0%, #00b5ad 50%, #21bf73 100%);
+$primary-gradient: linear-gradient(135deg, #21bf73 0%, #00b5ad 50%, #21bf73 100%);
+$gradient-primary-simple: linear-gradient(135deg, #21bf73 0%, #1da460 100%);
+$gradient-primary-reverse: linear-gradient(135deg, #1da460 0%, #21bf73 100%);
+
+// Secondary Gradients
+$secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+$gradient-secondary: linear-gradient(135deg, #00b5ad 0%, #5DADE2 100%);
+$gradient-secondary-reverse: linear-gradient(135deg, #5DADE2 0%, #00b5ad 100%);
+
+// Status Gradients
+$success-gradient: linear-gradient(135deg, #059669 0%, #1da460 100%);
+$gradient-success: linear-gradient(135deg, #059669 0%, #58D68D 100%);
+$warning-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+$gradient-warning: linear-gradient(135deg, #d97706 0%, #F8C471 100%);
+$danger-gradient: linear-gradient(135deg, #dc2626 0%, #ee5a52 100%);
+$gradient-danger: linear-gradient(135deg, #dc2626 0%, #F1948A 100%);
+$info-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+$gradient-info: linear-gradient(135deg, #2563eb 0%, #7FB3D3 100%);
+
+// Accent Gradients
+$accent-gradient: linear-gradient(135deg, #667eea 0%, #21bf73 100%);
+$premium-gradient: linear-gradient(135deg, #21bf73 0%, #00b5ad 30%, #667eea 70%, #21bf73 100%);
+
+// Special Effect Gradients - Enhanced
+$gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+$gradient-multi: linear-gradient(135deg, #059669 0%, #21bf73 50%, #2563eb 100%);
+$gradient-sunset: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+$gradient-ocean: linear-gradient(135deg, #21bf73 0%, #00b5ad 100%);
+$gradient-fire: linear-gradient(135deg, #E74C3C 0%, #F39C12 100%);
+$gradient-forest: linear-gradient(135deg, #059669 0%, #48C9B0 100%);
+$dark-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+$light-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+
+// Backwards Compatibility - Premium Gradient Variations  
+$gradient-success-enhanced: linear-gradient(135deg, #059669 0%, #21bf73 100%);
+$gradient-info-enhanced: linear-gradient(135deg, #2563eb 0%, #00b5ad 100%);
+
+// =============================================
+// PREMIUM ENHANCEMENTS (FOR LOGIN/REGISTER)
+// =============================================
+
+// Premium Shadow System
+$shadow-premium: 0 32px 64px -12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+$shadow-premium-hover: 0 40px 80px -12px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.15);
+
+// Component-specific premium shadows
+$shadow-button: 0 8px 20px rgba(33, 191, 115, 0.4), 0 4px 8px rgba(33, 191, 115, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+$shadow-button-hover: 0 15px 35px rgba(33, 191, 115, 0.5), 0 8px 16px rgba(33, 191, 115, 0.4);
+$shadow-card-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+// Interactive Shadows - Updated for new primary color
+$shadow-primary: 0 8px 25px rgba(33, 191, 115, 0.3);
+$shadow-primary-hover: 0 15px 35px rgba(33, 191, 115, 0.4);
+$shadow-secondary: 0 8px 25px rgba(0, 181, 173, 0.3);
+$shadow-secondary-hover: 0 15px 35px rgba(0, 181, 173, 0.4);
+$shadow-danger: 0 8px 25px rgba(220, 38, 38, 0.3);
+$shadow-danger-hover: 0 15px 35px rgba(220, 38, 38, 0.4);
+
+// Glassmorphism & Focus Shadows
+$shadow-glass: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+$shadow-glass-hover: 0 40px 80px -12px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.15);
+$shadow-focus: 0 0 0 4px rgba(33, 191, 115, 0.15), 0 8px 25px rgba(33, 191, 115, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+$shadow-focus-danger: 0 0 0 4px rgba(220, 38, 38, 0.15), 0 8px 25px rgba(220, 38, 38, 0.2);
+$form-input-shadow-focus: 0 0 0 4px rgba(33, 191, 115, 0.15), 0 8px 25px rgba(33, 191, 115, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+// Glassmorphism Variables
+$glass-bg: rgba(255, 255, 255, 0.98);
+$glass-bg-light: rgba(255, 255, 255, 0.9);
+$glass-bg-medium: rgba(255, 255, 255, 0.95);
+$glass-border: rgba(255, 255, 255, 0.3);
+$glass-border-light: rgba(255, 255, 255, 0.2);
+
+// =============================================
+// OPACITY & STATE SYSTEM
+// =============================================
+
+// Opacity Levels
+$opacity-disabled: 0.6;
+$opacity-loading: 0.7;
+$opacity-hover: 0.8;
+$opacity-active: 0.9;
+$opacity-light: 0.3;
+$opacity-medium: 0.5;
+$opacity-heavy: 0.8;
+$opacity-subtle: 0.1;
+$opacity-faint: 0.05;
+
+// State Colors with Alpha - Updated for new primary color
+$primary-alpha-05: rgba(33, 191, 115, 0.05);
+$primary-alpha-10: rgba(33, 191, 115, 0.1);
+$primary-alpha-15: rgba(33, 191, 115, 0.15);
+$primary-alpha-20: rgba(33, 191, 115, 0.2);
+$primary-alpha-30: rgba(33, 191, 115, 0.3);
+$primary-alpha-40: rgba(33, 191, 115, 0.4);
+
+$secondary-alpha-05: rgba(0, 181, 173, 0.05);
+$secondary-alpha-10: rgba(0, 181, 173, 0.1);
+$secondary-alpha-15: rgba(0, 181, 173, 0.15);
+$secondary-alpha-20: rgba(0, 181, 173, 0.2);
+$secondary-alpha-30: rgba(0, 181, 173, 0.3);
+
+$danger-alpha-05: rgba(220, 38, 38, 0.05);
+$danger-alpha-10: rgba(220, 38, 38, 0.1);
+$danger-alpha-15: rgba(220, 38, 38, 0.15);
+$danger-alpha-20: rgba(220, 38, 38, 0.2);
+
+$success-alpha-05: rgba(5, 150, 105, 0.05);
+$success-alpha-10: rgba(5, 150, 105, 0.1);
+$success-alpha-15: rgba(5, 150, 105, 0.15);
+$success-alpha-20: rgba(5, 150, 105, 0.2);
+
+$warning-alpha-05: rgba(217, 119, 6, 0.05);
+$warning-alpha-10: rgba(217, 119, 6, 0.1);
+$warning-alpha-15: rgba(217, 119, 6, 0.15);
+$warning-alpha-20: rgba(217, 119, 6, 0.2);
+
+$info-alpha-05: rgba(37, 99, 235, 0.05);
+$info-alpha-10: rgba(37, 99, 235, 0.1);
+$info-alpha-15: rgba(37, 99, 235, 0.15);
+
+// Glass Effect Colors  
+$glass-white-90: rgba(255, 255, 255, 0.9);
+$glass-white-95: rgba(255, 255, 255, 0.95);
+$glass-white-98: rgba(255, 255, 255, 0.98);
+$glass-white-20: rgba(255, 255, 255, 0.2);
+$glass-white-30: rgba(255, 255, 255, 0.3);
+$glass-white-15: rgba(255, 255, 255, 0.15);
+$glass-white-08: rgba(255, 255, 255, 0.08);
+$glass-white-05: rgba(255, 255, 255, 0.05);
+
+// Backwards compatibility aliases
+$primary-rgba-05: $primary-alpha-05;
+$primary-rgba-10: $primary-alpha-10;
+$primary-rgba-15: $primary-alpha-15;
+$primary-rgba-20: $primary-alpha-20;
+$primary-rgba-30: $primary-alpha-30;
+$danger-rgba-05: $danger-alpha-05;
+$danger-rgba-10: $danger-alpha-10;
+$danger-rgba-15: $danger-alpha-15;
+$success-rgba-05: $success-alpha-05;
+$success-rgba-10: $success-alpha-10;
+$white-rgba-90: $glass-white-90;
+$white-rgba-95: $glass-white-95;
+$white-rgba-98: $glass-white-98;
+$white-rgba-20: $glass-white-20;
+$white-rgba-30: $glass-white-30;

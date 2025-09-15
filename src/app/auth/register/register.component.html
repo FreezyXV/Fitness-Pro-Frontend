@@ -1,0 +1,190 @@
+<!-- Enhanced register.component.html -->
+<div class="register-wrapper">
+  <!-- Floating elements for enhanced visual appeal -->
+  <div class="floating-element"></div>
+  <div class="floating-element"></div>
+  <div class="floating-element"></div>
+  <div class="floating-element"></div>
+  
+  <div class="register-card">
+    <!-- Enhanced logo section -->
+    <div class="logo-section">
+      <div class="logo-icon">F</div>
+      <h2>Créer un compte</h2>
+      <p class="subtitle">Rejoignez la communauté FitnessPro</p>
+    </div>
+
+    <!-- Enhanced registration form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Nom et prénom sur la même ligne -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">Prénom</label>
+          <div class="input-wrapper">
+            <input 
+              id="firstName" 
+              formControlName="firstName" 
+              type="text" 
+              placeholder="Votre prénom"
+              [class.error]="isFieldInvalid('firstName')"
+              [class.valid]="isFieldValid('firstName')"
+            />
+            <i *ngIf="isFieldValid('firstName')" 
+               class="validation-icon fas fa-check valid"></i>
+          </div>
+          <div *ngIf="isFieldInvalid('firstName')" 
+               class="error-message">
+            {{ getFieldError('firstName') }}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nom</label>
+          <div class="input-wrapper">
+            <input 
+              id="lastName" 
+              formControlName="lastName" 
+              type="text" 
+              placeholder="Votre nom"
+              [class.error]="isFieldInvalid('lastName')"
+              [class.valid]="isFieldValid('lastName')"
+            />
+            <i *ngIf="isFieldValid('lastName')" 
+               class="validation-icon fas fa-check valid"></i>
+          </div>
+          <div *ngIf="isFieldInvalid('lastName')" 
+               class="error-message">
+            {{ getFieldError('lastName') }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Email avec validation renforcée -->
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <div class="input-wrapper">
+          <input 
+            id="email" 
+            formControlName="email" 
+            type="email" 
+            placeholder="exemple@email.com"
+            [class.error]="isFieldInvalid('email')"
+            [class.valid]="isFieldValid('email')"
+          />
+          <i *ngIf="isFieldValid('email')" 
+             class="validation-icon fas fa-check valid"></i>
+          <i *ngIf="isFieldInvalid('email')" 
+             class="validation-icon fas fa-times invalid"></i>
+        </div>
+        <div *ngIf="isFieldInvalid('email')" 
+             class="error-message">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+
+      <!-- Mot de passe avec indicateur de force -->
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrapper">
+          <input 
+            id="password" 
+            formControlName="password" 
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Choisissez un mot de passe"
+            [class.error]="isFieldInvalid('password')"
+            [class.valid]="isFieldValid('password')"
+            (input)="checkPasswordStrength()"
+          />
+          <div *ngIf="passwordStrength && registerForm.get('password')?.value" 
+               class="password-strength-indicator" 
+               [class]="passwordStrength">
+            {{ getPasswordStrengthIcon() }}
+          </div>
+          <i class="input-icon fas" 
+             [class.fa-eye]="!showPassword"
+             [class.fa-eye-slash]="showPassword"
+             (click)="togglePasswordVisibility()"
+             [style.right.rem]="passwordStrength ? 3.5 : 1"
+             style="cursor: pointer;"></i>
+        </div>
+        
+        <!-- Indicateurs de force du mot de passe -->
+        <div *ngIf="showPasswordRequirements" 
+             class="password-requirements">
+          <div class="requirement" 
+               *ngFor="let requirement of passwordRequirements; let i = index">
+            <span class="check-icon" 
+                  [class.valid]="requirement.isValid"
+                  [class.invalid]="!requirement.isValid">
+              {{ requirement.isValid ? '✓' : '○' }}
+            </span>
+            {{ requirement.label }}
+          </div>
+        </div>
+
+        <div *ngIf="isFieldInvalid('password')" 
+             class="error-message">
+          {{ getFieldError('password') }}
+        </div>
+      </div>
+
+      <!-- Confirmation mot de passe -->
+      <div class="form-group">
+        <label for="passwordConfirmation">Confirmer le mot de passe</label>
+        <div class="input-wrapper">
+          <input 
+            id="passwordConfirmation" 
+            formControlName="passwordConfirmation" 
+            type="password"
+            placeholder="Confirmez votre mot de passe"
+            [class.error]="isFieldInvalid('passwordConfirmation')"
+            [class.valid]="isFieldValid('passwordConfirmation')"
+          />
+          <i *ngIf="isFieldValid('passwordConfirmation')" 
+             class="validation-icon fas fa-check valid"></i>
+          <i *ngIf="isFieldInvalid('passwordConfirmation')" 
+             class="validation-icon fas fa-times invalid"></i>
+        </div>
+        <div *ngIf="isFieldInvalid('passwordConfirmation')" 
+             class="error-message">
+          {{ getFieldError('passwordConfirmation') }}
+        </div>
+      </div>
+
+      <!-- Conditions d'utilisation améliorées -->
+      <div class="terms-conditions">
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="terms" formControlName="acceptTerms" />
+          <label for="terms">
+            J'accepte les <a href="#" target="_blank">conditions d'utilisation</a> 
+            et la <a href="#" target="_blank">politique de confidentialité</a>
+          </label>
+        </div>
+        <div *ngIf="isFieldInvalid('acceptTerms')" 
+             class="error-message">
+          {{ getFieldError('acceptTerms') }}
+        </div>
+      </div>
+
+      <!-- Message d'erreur global -->
+      <div *ngIf="errorMessage" class="global-error">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Bouton de soumission amélioré -->
+      <button 
+        type="submit"
+        [disabled]="registerForm.invalid || isLoading"
+        [class.loading]="isLoading"
+        class="submit-btn">
+        {{ isLoading ? 'Création en cours...' : 'Créer mon compte' }}
+      </button>
+    </form>
+
+    <!-- Lien vers la connexion amélioré -->
+    <div class="text-link">
+      Déjà un compte ?
+      <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">Se connecter</a>
+    </div>
+  </div>
+</div>

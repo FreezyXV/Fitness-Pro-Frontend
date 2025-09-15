@@ -1,0 +1,470 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# ==============================================
+# ANGULAR & TYPESCRIPT BUILD FILES
+# ==============================================
+
+# Compiled Output
+/dist/
+/build/
+/out/
+/tmp/
+/temp/
+/out-tsc/
+/bazel-out/
+
+# Angular Cache
+/.angular/cache/
+/.angular/
+.ng_build_cache/
+.ng_pkg_build/
+
+# TypeScript
+*.tsbuildinfo
+.tscache/
+
+# ==============================================
+# NODE.JS & PACKAGE MANAGERS
+# ==============================================
+
+# Dependencies
+/node_modules/
+/jspm_packages/
+
+# Package Manager Files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.pnpm-store/
+.yarn/
+.yarn-integrity
+
+# Package Manager Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==============================================
+# ENVIRONMENT & CONFIGURATION FILES
+# ==============================================
+
+# Environment Variables (CRITICAL SECURITY)
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging
+.env.backup
+
+# Configuration Files
+config.json
+config-local.json
+app-config.json
+local-config.js
+local-config.ts
+
+# Firebase Config (if used)
+firebase-config.js
+firebase-config.ts
+.firebaserc.local
+
+# ==============================================
+# SECURITY & SENSITIVE FILES
+# ==============================================
+
+# API Keys & Secrets
+*api-key*
+*secret*
+*token*
+*.key
+*.pem
+*.crt
+*.cert
+*.p12
+*.pfx
+credentials.json
+secrets.json
+
+# Authentication Files
+auth-config.js
+auth-config.ts
+oauth-config.json
+
+# SSL Certificates
+ssl/
+certificates/
+
+# Service Account Keys
+service-account*.json
+*service-account*.json
+
+# ==============================================
+# DEVELOPMENT & IDE FILES
+# ==============================================
+
+# IDEs and Editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
+.metadata/
+
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json.example
+!.vscode/tasks.json.example
+!.vscode/launch.json.example
+!.vscode/extensions.json.example
+.history/
+
+# Sublime Text
+*.sublime-*
+sftp-config.json
+
+# WebStorm
+.webstorm/
+*.iml
+
+# Vim & Emacs
+*~
+*.swp
+*.swo
+*#
+.#*
+
+# ==============================================
+# OPERATING SYSTEM FILES
+# ==============================================
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================
+# TESTING & COVERAGE FILES
+# ==============================================
+
+# Test Coverage
+/coverage/
+/.coverage/
+*.lcov
+coverage.xml
+clover.xml
+.nyc_output/
+coverage-final.json
+coverage-summary.json
+
+# Test Results
+/test-results/
+/tests/e2e/results/
+/tests/screenshots/
+/tests/videos/
+junit.xml
+test-report.html
+
+# Jest
+jest.config.local.js
+jest-coverage/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+cypress.config.local.js
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# ==============================================
+# LOGS & DEBUGGING FILES
+# ==============================================
+
+# Log Files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+debug.log
+error.log
+access.log
+combined.log
+
+# Angular CLI Logs
+angular-cli.log
+
+# Webpack Bundle Analyzer
+/webpack-report.html
+/bundle-analyzer-report.html
+webpack-stats.json
+
+# Source Maps (if not needed)
+*.js.map
+*.css.map
+
+# ==============================================
+# RUNTIME & TEMPORARY FILES
+# ==============================================
+
+# Runtime Data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Cache Directories
+.cache/
+.parcel-cache/
+.sass-cache/
+.eslintcache
+.stylelintcache
+
+# Connection Files
+/connect.lock
+/libpeerconnection.log
+
+# Angular Testing
+testem.log
+/typings
+
+# ==============================================
+# DEPLOYMENT & CI/CD FILES
+# ==============================================
+
+# Deployment Scripts
+deploy.sh
+deploy.js
+deploy.ts
+deploy.json
+deploy.yml
+deploy.yaml
+deployment.log
+
+# Docker (if not used)
+Dockerfile.local
+docker-compose.override.yml
+.dockerignore.local
+
+# CI/CD Secrets
+.github/secrets/
+.gitlab-ci-local.yml
+.travis.local.yml
+.circleci/local.yml
+
+# Vercel
+.vercel
+.now
+
+# Netlify
+.netlify/
+_site/
+.publish/
+
+# ==============================================
+# PERFORMANCE & MONITORING FILES
+# ==============================================
+
+# Lighthouse Reports
+lighthouse-report*.html
+lighthouse-report*.json
+
+# Performance Budgets
+performance-budget.json
+
+# Bundle Analysis
+bundle-report.html
+bundle-stats.json
+size-plugin.json
+
+# ==============================================
+# THIRD-PARTY & EXTERNAL FILES
+# ==============================================
+
+# Payment Gateway Configs
+stripe-config.js
+stripe-config.ts
+paypal-config.js
+paypal-config.ts
+
+# Analytics Configs
+google-analytics-config.js
+mixpanel-config.js
+segment-config.js
+
+# Social Media Configs
+facebook-config.js
+twitter-config.js
+oauth-providers.json
+
+# CDN & External Resources
+cdn-config.json
+external-libs/
+
+# ==============================================
+# MEDIA & ASSET FILES (LARGE FILES)
+# ==============================================
+
+# Large Media Files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.mkv
+*.flv
+*.webm
+
+# Large Images
+*.psd
+*.ai
+*.eps
+*.tiff
+*.tif
+*.bmp
+*.raw
+
+# Audio Files
+*.wav
+*.flac
+*.aac
+*.ogg
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+# ==============================================
+# CUSTOM PROJECT FILES
+# ==============================================
+
+# Claude Code Assistant
+claude/
+.claude/
+
+# Custom Development Tools
+dev-tools/
+development/
+local-scripts/
+dev-scripts/
+
+# Project Documentation (if sensitive)
+docs/internal/
+docs/private/
+docs/drafts/
+
+# Design Files
+design/
+mockups/
+wireframes/
+*.sketch
+*.fig
+*.xd
+
+# Custom Logs
+custom.log
+app-specific.log
+debug-*.log
+
+# Local Database Files
+*.sqlite
+*.sqlite3
+*.db
+
+# Backup Files
+backup-*
+archive-*
+*.backup
+
+# ==============================================
+# ANGULAR SPECIFIC EXCLUSIONS
+# ==============================================
+
+# Angular Material Themes (Generated)
+/src/themes/generated/
+
+# i18n Generated Files
+/src/locale/
+/src/i18n/generated/
+
+# PWA Files (if not using)
+/src/manifest.json.local
+/src/sw.js
+
+# Angular Service Worker
+/ngsw-config.json.local
+/ngsw-worker.js
+
+# Angular Universal (if not using)
+/dist-server/
+
+# Angular Elements
+/elements/
+
+# ==============================================
+# STORYBOOK (IF USED)
+# ==============================================
+
+# Storybook
+.out/
+storybook-static/
+.storybook/local.js
+
+# Chromatic
+chromatic-build-*
+
+# ==============================================
+# MICRO-FRONTEND SPECIFIC
+# ==============================================
+
+# Module Federation
+/remoteEntry.js
+/webpack.config.local.js
+federation-config.local.json

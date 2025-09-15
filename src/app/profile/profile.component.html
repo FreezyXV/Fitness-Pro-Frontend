@@ -1,0 +1,889 @@
+<!-- src/app/profile/profile.component.html - Enhanced Dashboard Style -->
+<div class="profile-container">
+    <!-- Hero Section - Enhanced Dashboard Style -->
+    <div class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <!-- Header with Breadcrumb -->
+        <div class="breadcrumb-section">
+          <nav class="breadcrumb">
+            <a href="/dashboard" class="breadcrumb-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M17 14v6h-10v-6"/>
+                <path d="M6 10l6-6 6 6"/>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-item active">Mon profil</span>
+          </nav>
+        </div>
+  
+        <!-- Title Section -->
+        <div class="title-section">
+          <div class="title-icon">👤</div>
+          <div class="title-content">
+            <h1 class="page-title">Mon Profil</h1>
+            <p class="page-subtitle">Gérez vos informations personnelles et vos préférences</p>
+          </div>
+        </div>
+  
+        <!-- Profile Overview - Quick Stats -->
+        <div class="profile-overview-stats">
+          <!-- User Info Card -->
+          <div class="user-info-card">
+            <div class="user-avatar">
+              <img [src]="user?.profilePhotoUrl || 'default-avatar.png'" 
+                   [alt]="user?.name || 'Avatar'" 
+                   class="avatar-image">
+              <div class="avatar-badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </div>
+              <div class="avatar-overlay">
+                <input type="file" accept="image/*" style="display: none" id="avatarInput" (change)="onAvatarChange($event)">
+                <button class="btn-upload" onclick="document.getElementById('avatarInput').click()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <div class="user-details">
+              <h2 class="user-name">{{ user?.name || 'Utilisateur' }}</h2>
+              <div class="user-meta">
+                <div class="meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  <span>Membre depuis {{ getMembershipDuration() }} jours</span>
+                </div>
+                <div class="meta-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  <span>{{ calculateAge() }} ans</span>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Health Stats Grid -->
+          <div class="health-stats-grid">
+            <div class="stat-card weight-stat">
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value">{{ user?.weight || '-' }}<span class="unit">kg</span></div>
+                <div class="stat-label">Poids</div>
+              </div>
+            </div>
+  
+            <div class="stat-card height-stat">
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 12l2 2 4-4"/>
+                  <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+                  <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+                  <path d="M3 12h6m6 0h6"/>
+                </svg>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value">{{ user?.height || '-' }}<span class="unit">cm</span></div>
+                <div class="stat-label">Taille</div>
+              </div>
+            </div>
+  
+            <div class="stat-card bmi-stat" (click)="switchToTab('health')">
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value" [style.color]="getBMIColor()">{{ calculateBMI() }}</div>
+                <div class="stat-label">IMC</div>
+                <div class="stat-status">
+                  <span class="status-badge" [style.background-color]="getBMIColor()">{{ getBMIStatus() }}</span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="stat-card completion-stat">
+              <div class="stat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+              <div class="stat-content">
+                <div class="stat-value">85<span class="unit">%</span></div>
+                <div class="stat-label">Profil</div>
+                <div class="stat-info">
+                  <span>Complété</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="action-btn primary" (click)="toggleEditMode()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            <span>{{ editMode ? 'Annuler' : 'Modifier' }}</span>
+          </button>
+          
+          <button class="action-btn secondary" (click)="exportData()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <span>Exporter</span>
+          </button>
+  
+          <button class="action-btn secondary" (click)="switchToTab('security')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <circle cx="12" cy="16" r="1"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <span>Sécurité</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Navigation Tabs Section - Enhanced -->
+    <div class="navigation-section">
+      <div class="nav-card">
+        <div class="nav-tabs">
+          <button class="nav-tab" [class.active]="activeTab === 'personal'" (click)="switchToTab('personal')">
+            <div class="tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="tab-content">
+              <span class="tab-title">Informations personnelles</span>
+              <span class="tab-subtitle">Identité et profil</span>
+            </div>
+          </button>
+          
+          <button class="nav-tab" [class.active]="activeTab === 'health'" (click)="switchToTab('health')">
+            <div class="tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7z"/>
+              </svg>
+            </div>
+            <div class="tab-content">
+              <span class="tab-title">Santé et fitness</span>
+              <span class="tab-subtitle">Métriques corporelles</span>
+            </div>
+          </button>
+          
+          <button class="nav-tab" [class.active]="activeTab === 'preferences'" (click)="switchToTab('preferences')">
+            <div class="tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m11-7a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2z"/>
+              </svg>
+            </div>
+            <div class="tab-content">
+              <span class="tab-title">Préférences</span>
+              <span class="tab-subtitle">Paramètres de l'app</span>
+            </div>
+          </button>
+          
+          <button class="nav-tab" [class.active]="activeTab === 'security'" (click)="switchToTab('security')">
+            <div class="tab-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <div class="tab-content">
+              <span class="tab-title">Sécurité</span>
+              <span class="tab-subtitle">Mot de passe et sessions</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-section">
+      <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Chargement de votre profil...</p>
+      </div>
+    </div>
+  
+    <!-- Tab Content Sections -->
+    <div *ngIf="!isLoading" class="tab-content-container">
+      <!-- Personal Information Tab -->
+      <section class="tab-pane" [class.active]="activeTab === 'personal'" id="personal-tab">
+        <div class="section-header">
+          <div class="section-title-wrapper">
+            <h2 class="section-title">Informations personnelles</h2>
+            <p class="section-description">Gérez vos informations de base et votre profil public</p>
+          </div>
+        </div>
+  
+        <div class="form-container">
+          <form class="profile-form" [formGroup]="personalForm" (ngSubmit)="savePersonalInfo()">
+            <!-- Identity Section -->
+            <div class="form-section">
+              <div class="section-header-card">
+                <div class="section-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-heading">Identité</h3>
+                  <p class="section-subtext">Informations de base de votre profil</p>
+                </div>
+              </div>
+              
+              <div class="form-fields">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Prénom</span>
+                      <span class="label-required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                          <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                      </div>
+                      <input type="text" 
+                             class="form-control" 
+                             formControlName="firstName"
+                             placeholder="Votre prénom" 
+                             [readonly]="!editMode">
+                    </div>
+                    <div *ngIf="getFieldError(personalForm, 'firstName')" class="form-error">
+                      {{ getFieldError(personalForm, 'firstName') }}
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Nom</span>
+                      <span class="label-required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                          <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                      </div>
+                      <input type="text" 
+                             class="form-control" 
+                             formControlName="lastName"
+                             placeholder="Votre nom" 
+                             [readonly]="!editMode">
+                    </div>
+                    <div *ngIf="getFieldError(personalForm, 'lastName')" class="form-error">
+                      {{ getFieldError(personalForm, 'lastName') }}
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Email</span>
+                      <span class="label-required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                          <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                      </div>
+                      <input type="email" 
+                             class="form-control" 
+                             formControlName="email"
+                             placeholder="votre@email.com" 
+                             [readonly]="!editMode">
+                    </div>
+                    <div *ngIf="getFieldError(personalForm, 'email')" class="form-error">
+                      {{ getFieldError(personalForm, 'email') }}
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Téléphone</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                      </div>
+                      <input type="tel" 
+                             class="form-control" 
+                             formControlName="phone"
+                             placeholder="+33 1 23 45 67 89" 
+                             [readonly]="!editMode">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Personal Details Section -->
+            <div class="form-section">
+              <div class="section-header-card">
+                <div class="section-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                    <line x1="9" y1="9" x2="9.01" y2="9"/>
+                    <line x1="15" y1="9" x2="15.01" y2="9"/>
+                  </svg>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-heading">Informations personnelles</h3>
+                  <p class="section-subtext">Détails complémentaires de votre profil</p>
+                </div>
+              </div>
+              
+              <div class="form-fields">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Date de naissance</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                          <line x1="16" y1="2" x2="16" y2="6"/>
+                          <line x1="8" y1="2" x2="8" y2="6"/>
+                          <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                      </div>
+                      <input type="date" 
+                             class="form-control" 
+                             formControlName="dateOfBirth"
+                             [readonly]="!editMode">
+                    </div>
+                    <small class="form-hint">Utilisée pour calculer votre âge</small>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Genre</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="18" cy="6" r="3"/>
+                          <circle cx="6" cy="18" r="3"/>
+                          <path d="M13 6h3a2 2 0 0 1 2 2v7"/>
+                          <line x1="9" y1="18" x2="21" y2="6"/>
+                        </svg>
+                      </div>
+                      <select class="form-control" formControlName="gender" [disabled]="!editMode">
+                        <option *ngFor="let option of genderOptions" [value]="option.value">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Groupe sanguin</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+                          <path d="M12.56 6.6A13.1 13.1 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 6.12s3.83 2.96 4.14 5.98c0 3.31-2.69 6.02-6 6.02s-6-2.71-6-6.02c0-1.19.61-2.4 1.61-3.39.2-.2.4-.4.61-.59.05-.06.09-.11.16-.14z"/>
+                        </svg>
+                      </div>
+                      <select class="form-control" formControlName="bloodGroup" [disabled]="!editMode">
+                        <option value="">Sélectionner</option>
+                        <option *ngFor="let group of bloodGroups" [value]="group">{{ group }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Localisation</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                          <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                      </div>
+                      <input type="text" 
+                             class="form-control" 
+                             formControlName="location"
+                             placeholder="Ville, Pays" 
+                             [readonly]="!editMode">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Biography Section -->
+            <div class="form-section">
+              <div class="section-header-card">
+                <div class="section-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10,9 9,9 8,9"/>
+                  </svg>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-heading">Biographie</h3>
+                  <p class="section-subtext">Partagez votre histoire et vos motivations</p>
+                </div>
+              </div>
+              
+              <div class="form-fields">
+                <div class="form-group full-width">
+                  <label class="form-label">
+                    <span class="label-text">Parlez-nous de vous</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <textarea class="form-control" 
+                              rows="4" 
+                              formControlName="bio"
+                              placeholder="Parlez-nous de vous, vos motivations, votre parcours fitness..." 
+                              [readonly]="!editMode"></textarea>
+                  </div>
+                  <small class="form-hint">Maximum 500 caractères</small>
+                </div>
+              </div>
+            </div>
+  
+            <!-- Form Actions -->
+            <div class="form-actions" *ngIf="editMode">
+              <button type="button" class="btn btn-outline btn-cancel" (click)="cancelEdit()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                <span>Annuler</span>
+              </button>
+              <button type="submit" class="btn btn-primary btn-save" [disabled]="personalForm.invalid || isLoading">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                <span>Enregistrer</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+  
+      <!-- Health Tab -->
+      <section class="tab-pane" [class.active]="activeTab === 'health'" id="health-tab">
+        <div class="section-header">
+          <div class="section-title-wrapper">
+            <h2 class="section-title">Santé et fitness</h2>
+            <p class="section-description">Gérez vos métriques corporelles et votre bien-être</p>
+          </div>
+        </div>
+  
+        <div class="form-container">
+          <form class="profile-form" [formGroup]="healthForm" (ngSubmit)="saveHealthInfo()">
+            <!-- Health Metrics Section -->
+            <div class="form-section">
+              <div class="section-header-card">
+                <div class="section-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7z"/>
+                  </svg>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-heading">Métriques corporelles</h3>
+                  <p class="section-subtext">Votre taille, poids et calculs de santé</p>
+                </div>
+              </div>
+              
+              <div class="form-fields">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Taille</span>
+                      <span class="label-required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M9 12l2 2 4-4"/>
+                          <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+                          <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+                          <path d="M3 12h6m6 0h6"/>
+                        </svg>
+                      </div>
+                      <input type="number" 
+                             class="form-control" 
+                             formControlName="height"
+                             placeholder="164" 
+                             min="100" 
+                             max="250"
+                             [readonly]="!editMode">
+                      <span class="input-suffix">cm</span>
+                    </div>
+                    <div *ngIf="getFieldError(healthForm, 'height')" class="form-error">
+                      {{ getFieldError(healthForm, 'height') }}
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">
+                      <span class="label-text">Poids</span>
+                      <span class="label-required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                      <div class="input-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                      </div>
+                      <input type="number" 
+                             class="form-control" 
+                             formControlName="weight"
+                             placeholder="68" 
+                             min="30" 
+                             max="300"
+                             [readonly]="!editMode">
+                      <span class="input-suffix">kg</span>
+                    </div>
+                    <div *ngIf="getFieldError(healthForm, 'weight')" class="form-error">
+                      {{ getFieldError(healthForm, 'weight') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+<!-- BMI Info Section with Dashboard Style -->
+<div class="bmi-info" *ngIf="user?.height && user?.weight">
+    <div class="bmi-card">
+      <div class="bmi-header">
+        <span class="bmi-title">Indice de Masse Corporelle</span>
+        <span class="bmi-value">{{ calculateBMI() }}</span>
+      </div>
+      <div class="bmi-bar">
+        <div class="bmi-indicator" [style.left.%]="getBMIPosition()"></div>
+      </div>
+      <div class="bmi-labels">
+        <span>Sous-poids</span>
+        <span>Normal</span>
+        <span>Surpoids</span>
+      </div>
+      <p class="bmi-status">{{ getBMIStatus() }}</p>
+      <p class="bmi-recommendation">{{ getBMIRecommendation() }}</p>
+    </div>
+  </div>
+  
+            <!-- Form Actions -->
+            <div class="form-actions" *ngIf="editMode">
+              <button type="button" class="btn btn-outline btn-cancel" (click)="cancelEdit()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                <span>Annuler</span>
+              </button>
+              <button type="submit" class="btn btn-primary btn-save" [disabled]="healthForm.invalid || isLoading">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                <span>Enregistrer</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+  
+      <!-- Preferences Tab -->
+      <section class="tab-pane" [class.active]="activeTab === 'preferences'" id="preferences-tab">
+        <div class="section-header">
+          <div class="section-title-wrapper">
+            <h2 class="section-title">Préférences</h2>
+            <p class="section-description">Personnalisez votre expérience FitnessPro</p>
+          </div>
+        </div>
+  
+        <div class="form-container">
+          <div class="form-section">
+            <div class="section-header-card">
+              <div class="section-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m11-7a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2z"/>
+                </svg>
+              </div>
+
+            </div>
+            
+            <div class="preference-items">
+              <div class="preference-item">
+                <div class="preference-content">
+                  <h4>Notifications d'entraînement</h4>
+                  <p>Recevez des rappels pour vos séances d'entraînement</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+  
+              <div class="preference-item">
+                <div class="preference-content">
+                  <h4>Mode sombre</h4>
+                  <p>Utilisez un thème sombre pour l'interface</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+              </div>
+  
+              <div class="preference-item">
+                <div class="preference-content">
+                  <h4>Partage automatique</h4>
+                  <p>Partagez automatiquement vos performances</p>
+                </div>
+                <label class="switch">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Security Tab -->
+      <section class="tab-pane" [class.active]="activeTab === 'security'" id="security-tab">
+        <div class="section-header">
+          <div class="section-title-wrapper">
+            <h2 class="section-title">Sécurité</h2>
+            <p class="section-description">Gérez votre mot de passe et la sécurité de votre compte</p>
+          </div>
+        </div>
+  
+        <div class="form-container">
+          <form class="profile-form" [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+            <!-- Password Section -->
+            <div class="form-section">
+              <div class="section-header-card">
+                <div class="section-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <circle cx="12" cy="16" r="1"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-heading">Changement de mot de passe</h3>
+                  <p class="section-subtext">Maintenez votre compte sécurisé</p>
+                </div>
+              </div>
+              
+              <div class="form-fields">
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="label-text">Mot de passe actuel</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <circle cx="12" cy="16" r="1"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      </svg>
+                    </div>
+                    <input type="password" 
+                           class="form-control" 
+                           formControlName="currentPassword"
+                           placeholder="Mot de passe actuel">
+                  </div>
+                  <div *ngIf="getFieldError(passwordForm, 'currentPassword')" class="form-error">
+                    {{ getFieldError(passwordForm, 'currentPassword') }}
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="label-text">Nouveau mot de passe</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <circle cx="12" cy="16" r="1"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      </svg>
+                    </div>
+                    <input type="password" 
+                           class="form-control" 
+                           formControlName="newPassword"
+                           placeholder="Nouveau mot de passe">
+                  </div>
+                  <div *ngIf="getFieldError(passwordForm, 'newPassword')" class="form-error">
+                    {{ getFieldError(passwordForm, 'newPassword') }}
+                  </div>
+                  
+                  <!-- Password Strength Indicator -->
+                  <div *ngIf="passwordForm.get('newPassword')?.value" class="password-strength">
+                    <div class="strength-bar">
+                      <div class="strength-fill" 
+                           [style.width]="(getPasswordStrength().score * 20) + '%'"
+                           [style.background-color]="getPasswordStrength().color"></div>
+                    </div>
+                    <span class="strength-label" [style.color]="getPasswordStrength().color">
+                      {{ getPasswordStrength().label }}
+                    </span>
+                    <div class="strength-requirements">
+                      <div *ngFor="let req of getPasswordStrength().requirements" 
+                           class="requirement" 
+                           [class.met]="req.met">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="20 6 9 17 4 12" *ngIf="req.met"/>
+                          <line x1="18" y1="6" x2="6" y2="18" *ngIf="!req.met"/>
+                          <line x1="6" y1="6" x2="18" y2="18" *ngIf="!req.met"/>
+                        </svg>
+                        <span>{{ req.label }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="label-text">Confirmer le mot de passe</span>
+                    <span class="label-required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                    <div class="input-icon">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <circle cx="12" cy="16" r="1"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      </svg>
+                    </div>
+                    <input type="password" 
+                           class="form-control" 
+                           formControlName="confirmPassword"
+                           placeholder="Confirmez le mot de passe">
+                  </div>
+                  <div *ngIf="getFieldError(passwordForm, 'confirmPassword')" class="form-error">
+                    {{ getFieldError(passwordForm, 'confirmPassword') }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-actions">
+                <div class="form-actions-btns">
+                <button type="button" class="btn btn-outline" (click)="passwordForm.reset()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"/>
+                  </svg>
+                  <span>Réinitialiser</span>
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid || isLoading">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                    <polyline points="17 21 17 13 7 13 7 21"/>
+                    <polyline points="7 3 7 8 15 8"/>
+                  </svg>
+                  <span>Changer le mot de passe</span>
+                </button>
+              </div>
+              </div>
+            </div>
+  
+            <!-- Form Actions -->
+
+          </form>
+        </div>
+      </section>
+    </div>
+  
+    <!-- Success Message -->
+    <div *ngIf="showSuccessMessage" class="success-message">
+      <div class="success-content">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        <span>{{ successMessage }}</span>
+      </div>
+    </div>
+  
+    <!-- Upload Progress -->
+    <div *ngIf="isUploading" class="upload-progress">
+      <div class="progress-card">
+        <div class="progress-content">
+          <span>Upload en cours...</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width]="uploadProgress + '%'"></div>
+          </div>
+          <span>{{ uploadProgress }}%</span>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Floating Action Button -->
+    <div class="floating-actions">
+      <button 
+        (click)="toggleEditMode()"
+        class="fab primary"
+        title="Modifier le profil">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </button>
+    </div>
+  </div>

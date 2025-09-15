@@ -1,0 +1,2323 @@
+<!-- src/app/nutrition/nutrition.component.html - VERSION COMPLÈTE CORRIGÉE -->
+<div class="nutrition-container">
+  <!-- ===== HERO SECTION ===== -->
+  <div class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+      <div class="title-section">
+        <div class="title-icon">🍎</div>
+        <div class="title-content">
+          <h1 class="page-title">Nutrition Pro</h1>
+          <p class="page-subtitle">
+            Base de données complète • Régimes personnalisés • Suivi intelligent
+          </p>
+        </div>
+      </div>
+
+      <!-- Stats nutritionnelles rapides -->
+      <div class="quick-stats">
+        <div class="stat-item">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ dailyNutrition.calories }}</span>
+            <span class="stat-label">Calories</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">💪</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ dailyNutrition.protein }}g</span>
+            <span class="stat-label">Protéines</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">💧</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ dailyNutrition.water }}L</span>
+            <span class="stat-label">Hydratation</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">🍽️</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ foodDatabase.length }}</span>
+            <span class="stat-label">Aliments</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions rapides étendues -->
+      <div class="quick-actions">
+        <button class="action-btn primary" (click)="openAddFoodModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span>Ajouter Aliment</span>
+        </button>
+
+        <button class="action-btn secondary" (click)="openCreateDietModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <polyline points="14,2 14,8 20,8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10,9 9,9 8,9" />
+          </svg>
+          <span>Créer Régime</span>
+        </button>
+
+        <button class="action-btn tertiary" (click)="openMealTemplatesModal()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5" />
+            <path d="M3 17h18v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2z" />
+          </svg>
+          <span>Templates</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Gamification -->
+    <div class="gamification-section">
+      <div class="level-progress">
+        <div class="level-badge">
+          <span class="level-icon">⭐</span>
+          <span class="level-text">Niveau {{ userLevel }}</span>
+        </div>
+        <div class="xp-progress">
+          <div class="xp-bar">
+            <div
+              class="xp-fill"
+              [style.width.%]="(userXP / nextLevelXP) * 100"
+            ></div>
+          </div>
+          <span class="xp-text">{{ userXP }} / {{ nextLevelXP }} XP</span>
+        </div>
+      </div>
+      <div class="achievements-preview">
+        <span class="points">🏆 {{ totalPoints }} pts</span>
+        <span class="streak">🔥 {{ weeklyStreak }} jours</span>
+        <span class="database">📚 {{ foodDatabase.length }} aliments</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DATE NAVIGATION ===== -->
+  <div class="date-navigation-section">
+    <div class="date-card">
+      <button
+        class="nav-btn"
+        (click)="previousDay()"
+        [disabled]="!canNavigateBack()"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="15,18 9,12 15,6" />
+        </svg>
+      </button>
+      <div class="selected-date">
+        <h2>{{ formatDate(selectedDate) }}</h2>
+        <span class="date-subtitle" *ngIf="isToday()">Aujourd'hui</span>
+      </div>
+      <button
+        class="nav-btn"
+        (click)="nextDay()"
+        [disabled]="!canNavigateForward()"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="9,18 15,12 9,6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== NAVIGATION ÉTENDUE ===== -->
+  <nav class="main-navigation">
+    <div class="nav-container">
+      <button
+        class="nav-tab"
+        [class.active]="activeTab === 'dashboard'"
+        (click)="setActiveTab('dashboard')"
+      >
+        <div class="nav-icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="9" />
+            <rect x="14" y="3" width="7" height="5" />
+            <rect x="14" y="12" width="7" height="9" />
+            <rect x="3" y="16" width="7" height="5" />
+          </svg>
+        </div>
+        <span>Dashboard</span>
+      </button>
+
+      <button
+        class="nav-tab"
+        [class.active]="activeTab === 'database'"
+        (click)="setActiveTab('database')"
+      >
+        <div class="nav-icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+          </svg>
+        </div>
+        <span>Base Aliments</span>
+      </button>
+
+      <button
+        class="nav-tab"
+        [class.active]="activeTab === 'meals'"
+        (click)="setActiveTab('meals')"
+      >
+        <div class="nav-icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5" />
+            <path d="M3 17h18v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2z" />
+          </svg>
+        </div>
+        <span>Mes Repas</span>
+      </button>
+
+      <button
+        class="nav-tab"
+        [class.active]="activeTab === 'diets'"
+        (click)="setActiveTab('diets')"
+      >
+        <div class="nav-icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+            <line x1="16" y1="8" x2="2" y2="22" />
+            <line x1="17.5" y1="15" x2="9" y2="15" />
+          </svg>
+        </div>
+        <span>Régimes</span>
+      </button>
+
+      <button
+        class="nav-tab"
+        [class.active]="activeTab === 'insights'"
+        (click)="setActiveTab('insights')"
+      >
+        <div class="nav-icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M3 3v18h18" />
+            <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+          </svg>
+        </div>
+        <span>Analyses</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== CONTENU DYNAMIQUE ===== -->
+  <div class="content-wrapper">
+    <!-- ===== ONGLET BASE DE DONNÉES D'ALIMENTS ===== -->
+    <div class="tab-content" *ngIf="activeTab === 'database'">
+      <!-- En-tête de la base de données -->
+      <div class="database-header-card">
+        <div class="card-header">
+          <div class="header-icon">📚</div>
+          <div class="header-content">
+            <h2>Base de Données Nutritionnelle</h2>
+            <p>
+              {{ foodDatabase.length }} aliments avec valeurs nutritionnelles
+              complètes
+            </p>
+          </div>
+        </div>
+
+        <!-- Recherche avancée -->
+        <div class="advanced-search-section">
+          <div class="search-input-wrapper">
+            <div class="search-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              placeholder="Rechercher dans {{
+                foodDatabase.length
+              }} aliments..."
+              [(ngModel)]="searchTerm"
+              (input)="searchFoods()"
+              class="search-input advanced"
+            />
+            <button
+              class="filters-toggle"
+              (click)="showAdvancedFilters = !showAdvancedFilters"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Filtres avancés -->
+          <div class="advanced-filters" [class.expanded]="showAdvancedFilters">
+            <div class="filters-row">
+              <div class="filter-group">
+                <label>Catégorie:</label>
+                <select
+                  [(ngModel)]="searchFilters.category"
+                  (change)="searchFoods()"
+                >
+                  <option [ngValue]="null">Toutes</option>
+                  <option
+                    *ngFor="let category of foodCategories"
+                    [ngValue]="category"
+                  >
+                    {{ getFoodCategoryIcon(category) }} {{ category }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label>Max Calories:</label>
+                <input
+                  type="number"
+                  [(ngModel)]="searchFilters.maxCalories"
+                  placeholder="ex: 100"
+                  (input)="searchFoods()"
+                />
+              </div>
+
+              <div class="filter-group">
+                <label>Min Protéines:</label>
+                <input
+                  type="number"
+                  [(ngModel)]="searchFilters.minProtein"
+                  placeholder="ex: 10"
+                  (input)="searchFoods()"
+                />
+              </div>
+            </div>
+
+            <div class="filters-row">
+              <div class="filter-group restrictions">
+                <label>Régimes compatibles:</label>
+                <div class="restriction-tags">
+                  <button
+                    *ngFor="
+                      let restriction of [
+                        DietaryRestriction.VEGAN,
+                        DietaryRestriction.KETO,
+                        DietaryRestriction.GLUTEN_FREE,
+                        DietaryRestriction.HIGH_PROTEIN
+                      ]
+                    "
+                    class="restriction-tag"
+                    [class.active]="
+                      searchFilters.restrictions.includes(restriction)
+                    "
+                    (click)="toggleSearchRestriction(restriction)"
+                  >
+                    {{ getDietaryRestrictionLabel(restriction) }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Catégories d'aliments -->
+      <div class="food-categories-card">
+        <div class="card-header">
+          <div class="header-icon">🏷️</div>
+          <div class="header-content">
+            <h3>Explorer par Catégorie</h3>
+            <p>Parcourez notre base de données organisée</p>
+          </div>
+        </div>
+
+        <div class="categories-grid">
+          <button
+            *ngFor="let category of foodCategories"
+            class="category-card"
+            [class.selected]="selectedFoodCategory === category"
+            (click)="selectFoodCategory(category)"
+          >
+            <div class="category-icon">{{ getFoodCategoryIcon(category) }}</div>
+            <div class="category-info">
+              <h4>{{ category }}</h4>
+              <span class="category-count">
+                {{ (foodDatabase | filter : { category: category }).length }}
+                aliments
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Résultats de recherche/navigation -->
+      <div class="search-results-card" *ngIf="searchResults.length > 0">
+        <div class="card-header">
+          <div class="header-icon">🔍</div>
+          <div class="header-content">
+            <h3>Résultats</h3>
+            <p>{{ searchResults.length }} aliment(s) trouvé(s)</p>
+          </div>
+        </div>
+
+        <div class="foods-grid">
+          <div
+            *ngFor="let food of searchResults"
+            class="food-card detailed"
+            (click)="openFoodInfoModal(food)"
+          >
+            <div class="food-image-container">
+              <img [src]="food.imageUrl" [alt]="food.name" class="food-image" />
+              <div class="food-badges">
+                <span class="verified-badge" *ngIf="food.verified">✓</span>
+                <span
+                  class="sustainability-badge"
+                  [ngClass]="'sustainability-' + food.sustainability"
+                >
+                  {{
+                    food.sustainability === "high"
+                      ? "🌱"
+                      : food.sustainability === "medium"
+                      ? "🟡"
+                      : "🟠"
+                  }}
+                </span>
+              </div>
+            </div>
+
+            <div class="food-info">
+              <h4>{{ food.name }}</h4>
+              <p class="food-category">{{ food.category }}</p>
+              <p class="food-description">{{ food.description }}</p>
+
+              <!-- Valeurs nutritionnelles principales -->
+              <div class="nutrition-preview">
+                <div class="nutrition-item">
+                  <span class="nutrition-value">{{ food.calories }}</span>
+                  <span class="nutrition-unit">cal</span>
+                </div>
+                <div class="nutrition-item">
+                  <span class="nutrition-value">{{ food.protein }}g</span>
+                  <span class="nutrition-unit">prot.</span>
+                </div>
+                <div class="nutrition-item">
+                  <span class="nutrition-value">{{ food.carbs }}g</span>
+                  <span class="nutrition-unit">gluc.</span>
+                </div>
+                <div class="nutrition-item">
+                  <span class="nutrition-value">{{ food.fat }}g</span>
+                  <span class="nutrition-unit">lip.</span>
+                </div>
+              </div>
+
+              <!-- Tags diététiques -->
+              <div
+                class="dietary-tags"
+                *ngIf="food.dietaryRestrictions.length > 0"
+              >
+                <span
+                  *ngFor="
+                    let restriction of food.dietaryRestrictions.slice(0, 3)
+                  "
+                  class="dietary-tag"
+                >
+                  {{ getDietaryRestrictionLabel(restriction) }}
+                </span>
+                <span
+                  *ngIf="food.dietaryRestrictions.length > 3"
+                  class="more-tags"
+                >
+                  +{{ food.dietaryRestrictions.length - 3 }}
+                </span>
+              </div>
+            </div>
+
+            <div class="food-actions">
+              <button
+                class="btn-icon"
+                (click)="$event.stopPropagation(); selectFood(food)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </button>
+              <button
+                class="btn-icon"
+                (click)="$event.stopPropagation(); suggestAlternatives(food)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                  />
+                  <polyline points="7.5,4.21 12,6.81 16.5,4.21" />
+                  <polyline points="7.5,19.79 7.5,14.6 3,12" />
+                  <polyline points="21,12 16.5,14.6 16.5,19.79" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ONGLET RÉGIMES AVANCÉ ===== -->
+    <div class="tab-content" *ngIf="activeTab === 'diets'">
+      <!-- Actions régimes -->
+      <div class="diet-actions-card">
+        <div class="card-header">
+          <div class="header-icon">🎯</div>
+          <div class="header-content">
+            <h2>Gestion des Régimes</h2>
+            <p>Régimes professionnels et créations personnalisées</p>
+          </div>
+        </div>
+
+        <div class="diet-actions-grid">
+          <button
+            class="action-card create-diet"
+            (click)="openCreateDietModal()"
+          >
+            <div class="action-icon">➕</div>
+            <div class="action-content">
+              <h3>Créer un Régime</h3>
+              <p>Personnalisez votre plan nutritionnel</p>
+            </div>
+          </button>
+
+          <button
+            class="action-card templates"
+            (click)="openMealTemplatesModal()"
+          >
+            <div class="action-icon">📋</div>
+            <div class="action-content">
+              <h3>Templates Repas</h3>
+              <p>Modèles pré-configurés</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Régimes professionnels -->
+      <div class="professional-diets-card">
+        <div class="card-header">
+          <div class="header-icon">🏆</div>
+          <div class="header-content">
+            <h3>Régimes Professionnels</h3>
+            <p>Conçus par des nutritionnistes sportifs</p>
+          </div>
+        </div>
+
+        <div class="diets-grid">
+          <div
+            *ngFor="let diet of professionalDiets"
+            class="diet-card professional"
+            [class.currently-followed]="currentlyFollowedDiet?.id === diet.id"
+          >
+            <div class="diet-header">
+              <div class="diet-icon">🏆</div>
+              <div class="diet-title">
+                <h4>{{ diet.name }}</h4>
+                <span
+                  class="diet-difficulty"
+                  [ngClass]="'difficulty-' + diet.difficulty"
+                >
+                  {{ diet.difficulty }}
+                </span>
+              </div>
+              <div class="diet-calories">{{ diet.calorieTarget }} cal</div>
+            </div>
+
+            <p class="diet-description">{{ diet.description }}</p>
+
+            <!-- Distribution macro -->
+            <div class="macro-distribution">
+              <div class="macro-bar">
+                <div
+                  class="macro-segment carbs"
+                  [style.width.%]="diet.macroDistribution.carbsPercentage"
+                >
+                  <span class="macro-label"
+                    >G {{ diet.macroDistribution.carbsPercentage }}%</span
+                  >
+                </div>
+                <div
+                  class="macro-segment protein"
+                  [style.width.%]="diet.macroDistribution.proteinPercentage"
+                >
+                  <span class="macro-label"
+                    >P {{ diet.macroDistribution.proteinPercentage }}%</span
+                  >
+                </div>
+                <div
+                  class="macro-segment fat"
+                  [style.width.%]="diet.macroDistribution.fatPercentage"
+                >
+                  <span class="macro-label"
+                    >L {{ diet.macroDistribution.fatPercentage }}%</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Objectifs -->
+            <div class="diet-objectives">
+              <div
+                class="objective-tag"
+                *ngFor="let objective of diet.objectives.slice(0, 2)"
+              >
+                {{ objective }}
+              </div>
+            </div>
+
+            <!-- Tags et durée -->
+            <div class="diet-meta">
+              <div class="diet-tags">
+                <span
+                  *ngFor="let tag of diet.tags.slice(0, 2)"
+                  class="diet-tag"
+                >
+                  {{ tag }}
+                </span>
+              </div>
+              <div class="diet-duration" *ngIf="diet.duration">
+                {{ diet.duration }} jours
+              </div>
+            </div>
+
+            <!-- Actions du régime -->
+            <div class="diet-actions">
+              <button
+                class="btn-action preview"
+                (click)="$event.stopPropagation(); previewDiet(diet)"
+                title="Aperçu rapide"
+              >
+                👁️
+              </button>
+              <button
+                class="btn-action details"
+                (click)="selectDiet(diet)"
+                title="Voir les détails"
+              >
+                📋
+              </button>
+              <button
+                *ngIf="currentlyFollowedDiet?.id !== diet.id"
+                class="btn-action adopt"
+                (click)="$event.stopPropagation(); adoptDiet(diet)"
+                title="Adopter ce régime"
+              >
+                ✅
+              </button>
+              <button
+                *ngIf="currentlyFollowedDiet?.id === diet.id"
+                class="btn-action stop"
+                (click)="$event.stopPropagation(); stopDiet()"
+                title="Arrêter le régime"
+              >
+                🛑
+              </button>
+            </div>
+
+            <!-- Badge si suivi actuellement -->
+            <div
+              class="active-badge"
+              *ngIf="currentlyFollowedDiet?.id === diet.id"
+            >
+              🎯 En cours - Jour {{ dietDayCount }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mes régimes personnalisés -->
+      <div class="custom-diets-card" *ngIf="customDiets.length > 0">
+        <div class="card-header">
+          <div class="header-icon">👨‍🍳</div>
+          <div class="header-content">
+            <h3>Mes Régimes Personnalisés</h3>
+            <p>{{ customDiets.length }} régime(s) créé(s)</p>
+          </div>
+        </div>
+
+        <div class="diets-grid">
+          <div
+            *ngFor="let diet of customDiets"
+            class="diet-card custom"
+            (click)="selectDiet(diet)"
+          >
+            <div class="diet-header">
+              <div class="diet-icon">👨‍🍳</div>
+              <div class="diet-title">
+                <h4>{{ diet.name }}</h4>
+                <span class="custom-badge">Personnalisé</span>
+              </div>
+              <div class="diet-calories">{{ diet.calorieTarget }} cal</div>
+            </div>
+
+            <p class="diet-description">{{ diet.description }}</p>
+
+            <!-- Actions régime personnalisé -->
+            <div class="custom-diet-actions">
+              <button
+                class="btn-icon edit"
+                (click)="$event.stopPropagation(); editCustomDiet(diet)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                  />
+                  <path
+                    d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                  />
+                </svg>
+              </button>
+              <button
+                class="btn-icon share"
+                (click)="$event.stopPropagation(); shareCustomDiet(diet)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                  <polyline points="16,6 12,2 8,6" />
+                  <line x1="12" y1="2" x2="12" y2="15" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD EXISTANT ===== -->
+    <div class="tab-content" *ngIf="activeTab === 'dashboard'">
+      <!-- Contexte d'entraînement -->
+      <div class="workout-context-card" *ngIf="workoutContext.hasWorkoutToday">
+        <div class="card-header">
+          <div class="header-icon">💪</div>
+          <div class="header-content">
+            <h3>{{ workoutContext.workoutType }} prévu</h3>
+            <p>
+              {{ workoutContext.workoutDuration }}min -
+              {{ workoutContext.estimatedCaloriesBurned }}cal
+            </p>
+          </div>
+        </div>
+        <div class="context-tags">
+          <span class="tag pre-workout" *ngIf="workoutContext.isPreWorkout">
+            ⚡ Pré-entraînement
+          </span>
+          <span class="tag post-workout" *ngIf="workoutContext.isPostWorkout">
+            🔋 Post-entraînement
+          </span>
+        </div>
+      </div>
+
+      <!-- Conseils personnalisés -->
+      <div class="personalized-tips-card">
+        <div class="card-header">
+          <div class="header-icon">💡</div>
+          <div class="header-content">
+            <h3>Conseils personnalisés</h3>
+            <p>Recommandations basées sur vos données</p>
+          </div>
+        </div>
+        <div class="tips-grid">
+          <div
+            class="tip-card"
+            *ngFor="let tip of personalizedTips.slice(0, 3)"
+            [ngClass]="'priority-' + tip.priority"
+          >
+            <div class="tip-header">
+              <span class="tip-icon">{{ tip.icon }}</span>
+              <h4>{{ tip.title }}</h4>
+            </div>
+            <p class="tip-description">{{ tip.description }}</p>
+            <div class="tip-action">
+              <strong>{{ tip.actionable }}</strong>
+            </div>
+            <small class="tip-science">💡 {{ tip.scientificBasis }}</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Macronutriments principaux -->
+      <div class="macros-overview-card">
+        <div class="card-header">
+          <div class="header-icon">📊</div>
+          <div class="header-content">
+            <h3>Macronutriments</h3>
+            <p>Suivi quotidien de vos apports</p>
+          </div>
+        </div>
+        <div class="macros-grid">
+          <!-- Calories -->
+          <div class="macro-card calories">
+            <div class="macro-header">
+              <div class="macro-icon">🔥</div>
+              <div class="macro-info">
+                <h4>Calories</h4>
+                <div class="macro-values">
+                  <span class="current">{{ dailyNutrition.calories }}</span>
+                  <span class="separator">/</span>
+                  <span class="goal">{{ dailyGoals.calories }}</span>
+                </div>
+              </div>
+              <div class="macro-percentage">
+                {{
+                  Math.round(
+                    getProgressPercentage(
+                      dailyNutrition.calories,
+                      dailyGoals.calories
+                    )
+                  )
+                }}%
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  [style.width.%]="
+                    getProgressPercentage(
+                      dailyNutrition.calories,
+                      dailyGoals.calories
+                    )
+                  "
+                  [style.background-color]="
+                    getProgressColor(
+                      dailyNutrition.calories,
+                      dailyGoals.calories
+                    )
+                  "
+                ></div>
+              </div>
+              <div class="remaining-info" *ngIf="dailyGoals.caloriesBurned">
+                <small
+                  >Nettes:
+                  {{
+                    dailyNutrition.calories - (dailyGoals.caloriesBurned || 0)
+                  }}cal</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Protéines -->
+          <div class="macro-card protein">
+            <div class="macro-header">
+              <div class="macro-icon">💪</div>
+              <div class="macro-info">
+                <h4>Protéines</h4>
+                <div class="macro-values">
+                  <span class="current">{{ dailyNutrition.protein }}g</span>
+                  <span class="separator">/</span>
+                  <span class="goal">{{ dailyGoals.protein }}g</span>
+                </div>
+              </div>
+              <div class="macro-percentage">
+                {{
+                  Math.round(
+                    getProgressPercentage(
+                      dailyNutrition.protein,
+                      dailyGoals.protein
+                    )
+                  )
+                }}%
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  [style.width.%]="
+                    getProgressPercentage(
+                      dailyNutrition.protein,
+                      dailyGoals.protein
+                    )
+                  "
+                ></div>
+              </div>
+              <small class="remaining"
+                >Restant:
+                {{
+                  getRemainingNutrient(
+                    dailyNutrition.protein,
+                    dailyGoals.protein
+                  )
+                }}g</small
+              >
+            </div>
+          </div>
+
+          <!-- Glucides -->
+          <div class="macro-card carbs">
+            <div class="macro-header">
+              <div class="macro-icon">⚡</div>
+              <div class="macro-info">
+                <h4>Glucides</h4>
+                <div class="macro-values">
+                  <span class="current">{{ dailyNutrition.carbs }}g</span>
+                  <span class="separator">/</span>
+                  <span class="goal">{{ dailyGoals.carbs }}g</span>
+                </div>
+              </div>
+              <div class="macro-percentage">
+                {{
+                  Math.round(
+                    getProgressPercentage(
+                      dailyNutrition.carbs,
+                      dailyGoals.carbs
+                    )
+                  )
+                }}%
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  [style.width.%]="
+                    getProgressPercentage(
+                      dailyNutrition.carbs,
+                      dailyGoals.carbs
+                    )
+                  "
+                ></div>
+              </div>
+              <small class="remaining"
+                >Restant:
+                {{
+                  getRemainingNutrient(dailyNutrition.carbs, dailyGoals.carbs)
+                }}g</small
+              >
+            </div>
+          </div>
+
+          <!-- Lipides -->
+          <div class="macro-card fat">
+            <div class="macro-header">
+              <div class="macro-icon">🥑</div>
+              <div class="macro-info">
+                <h4>Lipides</h4>
+                <div class="macro-values">
+                  <span class="current">{{ dailyNutrition.fat }}g</span>
+                  <span class="separator">/</span>
+                  <span class="goal">{{ dailyGoals.fat }}g</span>
+                </div>
+              </div>
+              <div class="macro-percentage">
+                {{
+                  Math.round(
+                    getProgressPercentage(dailyNutrition.fat, dailyGoals.fat)
+                  )
+                }}%
+              </div>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  [style.width.%]="
+                    getProgressPercentage(dailyNutrition.fat, dailyGoals.fat)
+                  "
+                ></div>
+              </div>
+              <small class="remaining"
+                >Restant:
+                {{
+                  getRemainingNutrient(dailyNutrition.fat, dailyGoals.fat)
+                }}g</small
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suivi du régime actuel -->
+      <div class="current-diet-card" *ngIf="currentlyFollowedDiet">
+        <div class="card-header">
+          <div class="header-icon">🎯</div>
+          <div class="header-content">
+            <h3>Régime Actuel : {{ currentlyFollowedDiet.name }}</h3>
+            <p>
+              Jour {{ dietDayCount }} • Score : {{ dietScore }}% • Streak :
+              {{ dietStreak }} jours
+            </p>
+          </div>
+          <div
+            class="diet-score"
+            [ngClass]="
+              'score-' +
+              (dietScore >= 80
+                ? 'excellent'
+                : dietScore >= 60
+                ? 'good'
+                : 'needs-improvement')
+            "
+          >
+            {{ dietScore }}%
+          </div>
+        </div>
+
+        <div class="diet-progress" *ngIf="currentlyFollowedDiet.duration">
+          <div class="progress-info">
+            <span>Progrès</span>
+            <span>{{ getDietProgressPercentage() }}%</span>
+          </div>
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              [style.width.%]="getDietProgressPercentage()"
+            ></div>
+          </div>
+        </div>
+
+        <div class="diet-quick-actions">
+          <button
+            class="btn small secondary"
+            (click)="selectDiet(currentlyFollowedDiet)"
+          >
+            📊 Détails
+          </button>
+          <button class="btn small warning" (click)="stopDiet()">
+            🛑 Arrêter
+          </button>
+        </div>
+      </div>
+
+      <!-- Hydratation interactive -->
+      <div class="hydration-card">
+        <div class="card-header">
+          <div class="header-icon">💧</div>
+          <div class="header-content">
+            <h3>Hydratation</h3>
+            <p>{{ dailyNutrition.water }}L / {{ dailyGoals.water }}L</p>
+          </div>
+          <div class="hydration-percentage">
+            {{
+              Math.round(
+                getProgressPercentage(dailyNutrition.water, dailyGoals.water)
+              )
+            }}%
+          </div>
+        </div>
+
+        <div class="hydration-visual">
+          <div class="water-container">
+            <div
+              class="water-level"
+              [style.height.%]="
+                getProgressPercentage(dailyNutrition.water, dailyGoals.water)
+              "
+            >
+              <div class="water-waves"></div>
+            </div>
+          </div>
+
+          <div class="water-controls">
+            <div class="quick-water">
+              <button
+                class="water-btn"
+                *ngFor="let amount of waterAmounts"
+                (click)="addWater(amount)"
+              >
+                +{{ amount }}L
+              </button>
+            </div>
+            <div class="custom-water">
+              <input
+                type="number"
+                class="water-input"
+                [(ngModel)]="customWaterAmount"
+                placeholder="0.0"
+                step="0.1"
+                min="0"
+                max="2"
+              />
+              <button class="water-add-btn" (click)="addCustomWater()">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ONGLET REPAS ===== -->
+    <div class="tab-content" *ngIf="activeTab === 'meals'">
+      <!-- Actions rapides -->
+      <div class="meal-actions-card">
+        <div class="actions-grid">
+          <button class="action-card primary" (click)="openAddFoodModal()">
+            <div class="action-icon">➕</div>
+            <div class="action-content">
+              <h3>Ajouter un aliment</h3>
+              <p>Recherchez et ajoutez des aliments</p>
+            </div>
+          </button>
+          <button class="action-card secondary" (click)="openGoalsModal()">
+            <div class="action-icon">🎯</div>
+            <div class="action-content">
+              <h3>Mes objectifs</h3>
+              <p>Personnalisez vos besoins nutritionnels</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Types de repas -->
+      <div class="meals-container">
+        <div class="meal-card" *ngFor="let mealType of mealTypes">
+          <div class="meal-header">
+            <div class="meal-info">
+              <div class="meal-icon">{{ mealType.icon }}</div>
+              <div class="meal-details">
+                <h3>{{ mealType.label }}</h3>
+                <p class="meal-description">{{ mealType.description }}</p>
+                <span class="meal-timing">{{ mealType.idealTiming }}</span>
+              </div>
+            </div>
+            <button
+              class="add-meal-btn"
+              (click)="openAddFoodModal(mealType.key)"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="meal-content">
+            <div
+              class="meal-entries"
+              *ngIf="
+                getFilteredEntries(mealType.key).length > 0;
+                else emptyMeal
+              "
+            >
+              <div
+                class="food-entry"
+                *ngFor="let entry of getFilteredEntries(mealType.key)"
+              >
+                <div class="entry-food">
+                  <div class="food-image-container">
+                    <img
+                      class="food-image"
+                      [src]="
+                        entry.food.imageUrl || 'assets/Aliments/nourriture.png'
+                      "
+                      [alt]="entry.food.name"
+                    />
+                  </div>
+                  <div class="food-details">
+                    <h4>{{ entry.food.name }}</h4>
+                    <p>{{ entry.quantity }}g - {{ entry.calories }}cal</p>
+                  </div>
+                </div>
+                <div class="entry-nutrition">
+                  <div class="nutrition-item">
+                    <span class="value">{{ entry.protein }}g</span>
+                    <span class="unit">Prot.</span>
+                  </div>
+                  <div class="nutrition-item">
+                    <span class="value">{{ entry.carbs }}g</span>
+                    <span class="unit">Gluc.</span>
+                  </div>
+                  <div class="nutrition-item">
+                    <span class="value">{{ entry.fat }}g</span>
+                    <span class="unit">Lip.</span>
+                  </div>
+                </div>
+                <button class="remove-btn" (click)="removeEntry(entry.id)">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="3,6 5,6 21,6" />
+                    <path
+                      d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <ng-template #emptyMeal>
+              <div class="empty-meal">
+                <div class="empty-icon">🍽️</div>
+                <p>Aucun aliment ajouté</p>
+                <button
+                  class="add-first-btn"
+                  (click)="openAddFoodModal(mealType.key)"
+                >
+                  Ajouter le premier aliment
+                </button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ONGLET INSIGHTS ===== -->
+    <div class="tab-content" *ngIf="activeTab === 'insights'">
+      <!-- Analytics nutritionnels -->
+      <div class="insights-overview-card">
+        <div class="card-header">
+          <div class="header-icon">📈</div>
+          <div class="header-content">
+            <h2>Analyses Nutritionnelles</h2>
+            <p>Insights personnalisés basés sur vos données</p>
+          </div>
+        </div>
+
+        <!-- Conseils principaux -->
+        <div class="main-insights">
+          <div
+            class="insight-card"
+            *ngFor="let tip of personalizedTips"
+            [ngClass]="'priority-' + tip.priority"
+          >
+            <div class="insight-header">
+              <span class="insight-icon">{{ tip.icon }}</span>
+              <h3>{{ tip.title }}</h3>
+              <span
+                class="insight-priority"
+                [ngClass]="'priority-' + tip.priority"
+              >
+                {{
+                  tip.priority === "high"
+                    ? "Urgent"
+                    : tip.priority === "medium"
+                    ? "Important"
+                    : "Info"
+                }}
+              </span>
+            </div>
+            <p class="insight-description">{{ tip.description }}</p>
+            <div class="insight-action">
+              <strong>Action recommandée:</strong> {{ tip.actionable }}
+            </div>
+            <div class="insight-science">
+              <small>{{ tip.scientificBasis }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistiques hebdomadaires -->
+      <div class="weekly-stats-card">
+        <div class="card-header">
+          <div class="header-icon">📊</div>
+          <div class="header-content">
+            <h3>Statistiques Hebdomadaires</h3>
+            <p>Analyse de vos 7 derniers jours</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ weeklyStats.goalsAchieved }}%</span>
+              <span class="stat-label">Objectifs atteints</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">💧</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ weeklyStats.waterConsumed }}L</span>
+              <span class="stat-label">Eau consommée</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">💪</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ weeklyStats.avgProtein }}g</span>
+              <span class="stat-label">Protéines/jour</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ weeklyStats.avgCalories }}</span>
+              <span class="stat-label">Calories/jour</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Achievements -->
+      <div class="achievements-card">
+        <div class="card-header">
+          <div class="header-icon">🏆</div>
+          <div class="header-content">
+            <h3>Achievements</h3>
+            <p>Vos accomplissements nutritionnels</p>
+          </div>
+        </div>
+
+        <div class="achievements-grid">
+          <div
+            class="achievement-item"
+            *ngFor="let achievement of achievements"
+            [ngClass]="'rarity-' + achievement.rarity"
+          >
+            <div class="achievement-icon">{{ achievement.icon }}</div>
+            <div class="achievement-info">
+              <h4>{{ achievement.name }}</h4>
+              <p>{{ achievement.description }}</p>
+              <div
+                class="achievement-progress"
+                *ngIf="achievement.progress !== undefined"
+              >
+                <div class="progress-bar">
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="
+                      (achievement.progress! / achievement.maxProgress!) * 100
+                    "
+                  ></div>
+                </div>
+                <span class="progress-text"
+                  >{{ achievement.progress }} /
+                  {{ achievement.maxProgress }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Défis actifs -->
+      <div class="challenges-card">
+        <div class="card-header">
+          <div class="header-icon">⚡</div>
+          <div class="header-content">
+            <h3>Défis Actifs</h3>
+            <p>Vos challenges en cours</p>
+          </div>
+        </div>
+
+        <div class="challenges-grid">
+          <div
+            class="challenge-item"
+            *ngFor="let challenge of activeChallenges"
+            [ngClass]="'status-' + challenge.status"
+          >
+            <div class="challenge-header">
+              <h4>{{ challenge.name }}</h4>
+              <span class="challenge-reward">{{ challenge.reward }} XP</span>
+            </div>
+            <p class="challenge-description">{{ challenge.description }}</p>
+            <div class="challenge-progress">
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  [style.width.%]="(challenge.current / challenge.target) * 100"
+                ></div>
+              </div>
+              <span class="progress-text"
+                >{{ challenge.current }} / {{ challenge.target }}
+                {{ challenge.unit }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODALES ===== -->
+
+  <!-- Modal Ajout Aliment -->
+  <div
+    class="modal-overlay"
+    *ngIf="showAddFoodModal"
+    (click)="closeAddFoodModal()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Ajouter un Aliment</h2>
+        <button class="close-btn" (click)="closeAddFoodModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Recherche d'aliment -->
+        <div class="search-section">
+          <div class="search-input-wrapper">
+            <input
+              type="text"
+              placeholder="Rechercher un aliment..."
+              [(ngModel)]="searchTerm"
+              (input)="searchFoods()"
+              class="search-input"
+            />
+          </div>
+
+          <!-- Résultats de recherche -->
+          <div class="search-results" *ngIf="searchResults.length > 0">
+            <div
+              class="food-result"
+              *ngFor="let food of searchResults.slice(0, 5)"
+              (click)="selectFood(food)"
+              [class.selected]="selectedFood?.id === food.id"
+            >
+              <div class="food-info">
+                <h4>{{ food.name }}</h4>
+                <p>{{ food.calories }}cal - {{ food.protein }}g prot.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aliment sélectionné -->
+        <div class="selected-food-section" *ngIf="selectedFood">
+          <h3>{{ selectedFood.name }}</h3>
+
+          <!-- Sélection du type de repas -->
+          <div class="meal-type-section">
+            <label>Type de repas:</label>
+            <select [(ngModel)]="selectedMealType" class="meal-type-select">
+              <option *ngFor="let mealType of mealTypes" [value]="mealType.key">
+                {{ mealType.icon }} {{ mealType.label }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Quantité -->
+          <div class="quantity-section">
+            <label>Quantité (g):</label>
+            <input
+              type="number"
+              [(ngModel)]="quantity"
+              min="1"
+              max="1000"
+              class="quantity-input"
+            />
+          </div>
+
+          <!-- Aperçu nutritionnel -->
+          <div class="nutrition-preview">
+            <div class="nutrition-item">
+              <span class="label">Calories:</span>
+              <span class="value">{{ calculateCalories() }}</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Protéines:</span>
+              <span class="value">{{ calculateProtein() }}g</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Glucides:</span>
+              <span class="value">{{ calculateCarbs() }}g</span>
+            </div>
+            <div class="nutrition-item">
+              <span class="label">Lipides:</span>
+              <span class="value">{{ calculateFat() }}g</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn secondary" (click)="closeAddFoodModal()">
+          Annuler
+        </button>
+        <button
+          class="btn primary"
+          (click)="addFood()"
+          [disabled]="!selectedFood"
+        >
+          Ajouter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Création Régime -->
+  <div
+    class="modal-overlay"
+    *ngIf="showCreateDietModal"
+    (click)="closeCreateDietModal()"
+  >
+    <div class="modal-content large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Créer un Régime Personnalisé</h2>
+        <button class="close-btn" (click)="closeCreateDietModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <form class="diet-form">
+          <!-- Informations de base -->
+          <div class="form-section">
+            <h3>Informations de Base</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nom du régime *</label>
+                <input
+                  type="text"
+                  [(ngModel)]="dietCreationForm.name"
+                  name="dietName"
+                  placeholder="Mon régime personnalisé"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Objectif calorique *</label>
+                <input
+                  type="number"
+                  [(ngModel)]="dietCreationForm.calorieTarget"
+                  name="calorieTarget"
+                  min="1200"
+                  max="5000"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Description</label>
+              <textarea
+                [(ngModel)]="dietCreationForm.description"
+                name="dietDescription"
+                placeholder="Description de votre régime..."
+              >
+              </textarea>
+            </div>
+          </div>
+
+          <!-- Distribution des macronutriments -->
+          <div class="form-section">
+            <h3>Distribution des Macronutriments</h3>
+            <div class="macro-sliders">
+              <div class="macro-slider">
+                <label>Glucides: {{ dietCreationForm.carbsPercentage }}%</label>
+                <input
+                  type="range"
+                  [(ngModel)]="dietCreationForm.carbsPercentage"
+                  name="carbsPercentage"
+                  min="10"
+                  max="70"
+                  (input)="adjustMacroPercentages()"
+                />
+              </div>
+              <div class="macro-slider">
+                <label
+                  >Protéines: {{ dietCreationForm.proteinPercentage }}%</label
+                >
+                <input
+                  type="range"
+                  [(ngModel)]="dietCreationForm.proteinPercentage"
+                  name="proteinPercentage"
+                  min="15"
+                  max="50"
+                  (input)="adjustMacroPercentages()"
+                />
+              </div>
+              <div class="macro-slider">
+                <label>Lipides: {{ dietCreationForm.fatPercentage }}%</label>
+                <input
+                  type="range"
+                  [(ngModel)]="dietCreationForm.fatPercentage"
+                  name="fatPercentage"
+                  min="15"
+                  max="60"
+                  (input)="adjustMacroPercentages()"
+                />
+              </div>
+            </div>
+
+            <!-- Visualisation des macros -->
+            <div class="macro-visualization">
+              <div class="macro-bar">
+                <div
+                  class="macro-segment carbs"
+                  [style.width.%]="dietCreationForm.carbsPercentage"
+                ></div>
+                <div
+                  class="macro-segment protein"
+                  [style.width.%]="dietCreationForm.proteinPercentage"
+                ></div>
+                <div
+                  class="macro-segment fat"
+                  [style.width.%]="dietCreationForm.fatPercentage"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Restrictions alimentaires -->
+          <div class="form-section">
+            <h3>Restrictions Alimentaires</h3>
+            <div class="restrictions-grid">
+              <button
+                type="button"
+                *ngFor="
+                  let restriction of [
+                    DietaryRestriction.VEGAN,
+                    DietaryRestriction.VEGETARIAN,
+                    DietaryRestriction.KETO,
+                    DietaryRestriction.PALEO,
+                    DietaryRestriction.GLUTEN_FREE,
+                    DietaryRestriction.HIGH_PROTEIN
+                  ]
+                "
+                class="restriction-btn"
+                [class.active]="
+                  dietCreationForm.restrictions.includes(restriction)
+                "
+                (click)="toggleDietaryRestriction(restriction)"
+              >
+                {{ getDietaryRestrictionLabel(restriction) }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Objectifs -->
+          <div class="form-section">
+            <h3>Objectifs</h3>
+            <div class="objectives-grid">
+              <button
+                type="button"
+                *ngFor="
+                  let objective of [
+                    'Perte de poids',
+                    'Prise de masse',
+                    'Performance sportive',
+                    'Récupération',
+                    'Définition musculaire',
+                    'Endurance'
+                  ]
+                "
+                class="objective-btn"
+                [class.active]="dietCreationForm.objectives.includes(objective)"
+                (click)="toggleObjective(objective)"
+              >
+                {{ objective }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn secondary" (click)="closeCreateDietModal()">
+          Annuler
+        </button>
+        <button class="btn primary" (click)="createCustomDiet()">
+          Créer le Régime
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Templates de Repas -->
+  <div
+    class="modal-overlay"
+    *ngIf="showMealTemplatesModal"
+    (click)="closeMealTemplatesModal()"
+  >
+    <div class="modal-content large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Templates de Repas</h2>
+        <button class="close-btn" (click)="closeMealTemplatesModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="templates-grid">
+          <div
+            class="template-card"
+            *ngFor="let template of mealTemplates"
+            [class.selected]="selectedMealTemplate?.id === template.id"
+          >
+            <div class="template-header">
+              <div class="template-icon">
+                {{ getMealTypeIcon(template.type) }}
+              </div>
+              <div class="template-info">
+                <h3>{{ template.name }}</h3>
+                <p class="template-type">
+                  {{ getMealTypeLabel(template.type) }}
+                </p>
+              </div>
+              <div class="template-meta">
+                <span class="calories">{{ template.totalCalories }}cal</span>
+                <span class="time">{{ template.preparationTime }}min</span>
+              </div>
+            </div>
+
+            <p class="template-description">{{ template.description }}</p>
+
+            <!-- Aliments du template -->
+            <div class="template-foods">
+              <div class="food-item" *ngFor="let food of template.foods">
+                <span class="food-name">{{
+                  getFoodNameById(food.foodId)
+                }}</span>
+                <span class="food-quantity">{{ food.quantity }}g</span>
+              </div>
+            </div>
+
+            <div class="template-actions">
+              <button
+                class="btn secondary small"
+                (click)="selectMealTemplate(template)"
+              >
+                Sélectionner
+              </button>
+              <button
+                class="btn primary small"
+                (click)="addMealFromTemplate(template)"
+              >
+                Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn secondary" (click)="closeMealTemplatesModal()">
+          Fermer
+        </button>
+        <button
+          class="btn primary"
+          *ngIf="selectedMealTemplate"
+          (click)="customizeMealTemplate(selectedMealTemplate)"
+        >
+          Personnaliser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL DÉTAILS RÉGIME ===== -->
+  <div
+    class="modal-overlay"
+    *ngIf="showDietDetailsModal"
+    (click)="closeDietDetailsModal()"
+  >
+    <div class="modal-content large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ selectedDiet?.name }}</h2>
+        <button class="close-btn" (click)="closeDietDetailsModal()">×</button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedDiet">
+        <!-- Informations principales -->
+        <div class="diet-overview">
+          <div class="diet-stats">
+            <div class="stat-card">
+              <div class="stat-icon">🔥</div>
+              <div class="stat-content">
+                <span class="stat-value">{{ selectedDiet.calorieTarget }}</span>
+                <span class="stat-label">Calories/jour</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⏱️</div>
+              <div class="stat-content">
+                <span class="stat-value">{{
+                  selectedDiet.duration || "∞"
+                }}</span>
+                <span class="stat-label">Jours</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📈</div>
+              <div class="stat-content">
+                <span class="stat-value">{{ selectedDiet.difficulty }}</span>
+                <span class="stat-label">Difficulté</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="diet-description">
+            <p>{{ selectedDiet.description }}</p>
+          </div>
+        </div>
+
+        <!-- Distribution des macronutriments -->
+        <div class="macro-details">
+          <h3>Distribution des Macronutriments</h3>
+          <div class="macro-breakdown">
+            <div class="macro-item">
+              <div class="macro-header">
+                <span class="macro-name">Glucides</span>
+                <span class="macro-percentage"
+                  >{{ selectedDiet.macroDistribution.carbsPercentage }}%</span
+                >
+              </div>
+              <div class="macro-bar">
+                <div
+                  class="macro-fill carbs"
+                  [style.width.%]="
+                    selectedDiet.macroDistribution.carbsPercentage
+                  "
+                ></div>
+              </div>
+              <span class="macro-grams"
+                >{{
+                  Math.round(
+                    (selectedDiet.calorieTarget *
+                      selectedDiet.macroDistribution.carbsPercentage) /
+                      400
+                  )
+                }}g</span
+              >
+            </div>
+
+            <div class="macro-item">
+              <div class="macro-header">
+                <span class="macro-name">Protéines</span>
+                <span class="macro-percentage"
+                  >{{ selectedDiet.macroDistribution.proteinPercentage }}%</span
+                >
+              </div>
+              <div class="macro-bar">
+                <div
+                  class="macro-fill protein"
+                  [style.width.%]="
+                    selectedDiet.macroDistribution.proteinPercentage
+                  "
+                ></div>
+              </div>
+              <span class="macro-grams"
+                >{{
+                  Math.round(
+                    (selectedDiet.calorieTarget *
+                      selectedDiet.macroDistribution.proteinPercentage) /
+                      400
+                  )
+                }}g</span
+              >
+            </div>
+
+            <div class="macro-item">
+              <div class="macro-header">
+                <span class="macro-name">Lipides</span>
+                <span class="macro-percentage"
+                  >{{ selectedDiet.macroDistribution.fatPercentage }}%</span
+                >
+              </div>
+              <div class="macro-bar">
+                <div
+                  class="macro-fill fat"
+                  [style.width.%]="selectedDiet.macroDistribution.fatPercentage"
+                ></div>
+              </div>
+              <span class="macro-grams"
+                >{{
+                  Math.round(
+                    (selectedDiet.calorieTarget *
+                      selectedDiet.macroDistribution.fatPercentage) /
+                      900
+                  )
+                }}g</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Objectifs et restrictions -->
+        <div class="diet-details-grid">
+          <div class="objectives-section">
+            <h4>Objectifs</h4>
+            <div class="tags-list">
+              <span
+                class="objective-tag"
+                *ngFor="let objective of selectedDiet.objectives"
+              >
+                {{ objective }}
+              </span>
+            </div>
+          </div>
+
+          <div class="restrictions-section">
+            <h4>Restrictions</h4>
+            <div class="tags-list">
+              <span
+                class="restriction-tag"
+                *ngFor="let restriction of selectedDiet.restrictions"
+              >
+                {{ getDietaryRestrictionLabel(restriction) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Suivi actuel si le régime est adopté -->
+        <div
+          class="current-tracking"
+          *ngIf="currentlyFollowedDiet?.id === selectedDiet.id"
+        >
+          <h4>🎯 Suivi Actuel</h4>
+          <div class="tracking-stats">
+            <div class="tracking-item">
+              <span class="label">Jour:</span>
+              <span class="value">{{ dietDayCount }}</span>
+            </div>
+            <div class="tracking-item">
+              <span class="label">Score:</span>
+              <span class="value">{{ dietScore }}%</span>
+            </div>
+            <div class="tracking-item">
+              <span class="label">Streak:</span>
+              <span class="value">{{ dietStreak }} jours</span>
+            </div>
+          </div>
+
+          <div class="progress-section" *ngIf="selectedDiet.duration">
+            <div class="progress-label">
+              Progrès: {{ getDietProgressPercentage() }}%
+            </div>
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                [style.width.%]="getDietProgressPercentage()"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn secondary" (click)="closeDietDetailsModal()">
+          Fermer
+        </button>
+        <button class="btn tertiary" (click)="previewDiet(selectedDiet!)">
+          👁️ Aperçu
+        </button>
+        <button
+          class="btn primary"
+          *ngIf="currentlyFollowedDiet?.id !== selectedDiet?.id"
+          (click)="adoptDiet(selectedDiet!)"
+        >
+          ✅ Adopter ce Régime
+        </button>
+        <button
+          class="btn warning"
+          *ngIf="currentlyFollowedDiet?.id === selectedDiet?.id"
+          (click)="stopDiet()"
+        >
+          🛑 Arrêter le Régime
+        </button>
+        <button
+          class="btn secondary"
+          *ngIf="selectedDiet && !selectedDiet?.id?.startsWith('professional_')"
+          (click)="customizeDiet(selectedDiet)"
+        >
+          🔧 Personnaliser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL INFORMATIONS ALIMENT ===== -->
+  <div
+    class="modal-overlay"
+    *ngIf="showFoodInfoModal"
+    (click)="closeFoodInfoModal()"
+  >
+    <div class="modal-content large" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="food-modal-title">
+          <div class="food-icon">
+            <img
+              [src]="
+                selectedFoodForInfo?.imageUrl ||
+                'assets/Aliments/nourriture.png'
+              "
+              [alt]="selectedFoodForInfo?.name"
+              class="food-modal-image"
+            />
+          </div>
+          <div class="title-content">
+            <h2>{{ selectedFoodForInfo?.name }}</h2>
+            <p class="food-category">
+              {{ getFoodCategoryIcon(selectedFoodForInfo?.category!) }}
+              {{ selectedFoodForInfo?.category }}
+            </p>
+          </div>
+        </div>
+        <button class="close-btn" (click)="closeFoodInfoModal()">×</button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedFoodForInfo">
+        <!-- Informations générales -->
+        <div class="food-overview">
+          <div class="main-nutrients">
+            <div class="nutrient-highlight calories">
+              <div class="nutrient-icon">🔥</div>
+              <div class="nutrient-content">
+                <span class="nutrient-value">{{
+                  selectedFoodForInfo.calories
+                }}</span>
+                <span class="nutrient-unit">kcal/100g</span>
+              </div>
+            </div>
+            <div class="nutrient-highlight protein">
+              <div class="nutrient-icon">💪</div>
+              <div class="nutrient-content">
+                <span class="nutrient-value">{{
+                  selectedFoodForInfo.protein
+                }}</span>
+                <span class="nutrient-unit">g/100g</span>
+              </div>
+            </div>
+            <div class="nutrient-highlight carbs">
+              <div class="nutrient-icon">🌾</div>
+              <div class="nutrient-content">
+                <span class="nutrient-value">{{
+                  selectedFoodForInfo.carbs
+                }}</span>
+                <span class="nutrient-unit">g/100g</span>
+              </div>
+            </div>
+            <div class="nutrient-highlight fat">
+              <div class="nutrient-icon">🥑</div>
+              <div class="nutrient-content">
+                <span class="nutrient-value">{{
+                  selectedFoodForInfo.fat
+                }}</span>
+                <span class="nutrient-unit">g/100g</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description et bénéfices -->
+          <div class="food-description" *ngIf="selectedFoodForInfo.description">
+            <h3>📝 Description</h3>
+            <p>{{ selectedFoodForInfo.description }}</p>
+          </div>
+
+          <div
+            class="health-benefits"
+            *ngIf="
+              selectedFoodForInfo.healthBenefits &&
+              selectedFoodForInfo.healthBenefits.length > 0
+            "
+          >
+            <h3>✨ Bienfaits Santé</h3>
+            <div class="benefits-list">
+              <span
+                class="benefit-tag"
+                *ngFor="let benefit of selectedFoodForInfo.healthBenefits"
+              >
+                {{ benefit }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tableau nutritionnel complet -->
+        <div class="complete-nutrition">
+          <h3>📊 Valeurs Nutritionnelles Complètes</h3>
+
+          <div class="nutrients-grid">
+            <div
+              class="nutrient-category"
+              *ngFor="let category of nutrientCategories"
+            >
+              <h4 class="category-title">
+                <span class="category-icon">{{
+                  getNutrientCategoryIcon(category)
+                }}</span>
+                {{ getNutrientCategoryLabel(category) }}
+              </h4>
+
+              <div class="nutrients-list">
+                <div
+                  class="nutrient-row"
+                  *ngFor="let nutrient of getFilteredNutrients(category)"
+                >
+                  <div class="nutrient-info">
+                    <span class="nutrient-name">{{ nutrient.name }}</span>
+                  </div>
+
+                  <div class="nutrient-value-container">
+                    <span class="nutrient-value">{{ nutrient.value }}</span>
+                    <span class="nutrient-unit">{{ nutrient.unit }}</span>
+                  </div>
+
+                  <!-- Barre de progression pour certains nutriments importants -->
+                  <div
+                    class="nutrient-bar"
+                    *ngIf="isMainNutrient(nutrient.name)"
+                  >
+                    <div
+                      class="nutrient-fill"
+                      [ngClass]="getNutrientClass(nutrient.name)"
+                      [style.width.%]="getNutrientPercentage(nutrient.value)"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Restrictions et allergènes -->
+        <div class="food-restrictions" *ngIf="hasAllergens()">
+          <h3>⚠️ Allergènes et Restrictions</h3>
+          <div class="allergens-list">
+            <span
+              class="allergen-tag warning"
+              *ngFor="let allergen of getAllergens()"
+            >
+              {{ allergen }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Index glycémique et autres indicateurs -->
+        <div class="food-indicators">
+          <div class="indicator-grid">
+            <div
+              class="indicator-card"
+              *ngIf="selectedFoodForInfo?.glycemicIndex"
+            >
+              <div class="indicator-icon">📈</div>
+              <div class="indicator-content">
+                <span class="indicator-label">Index Glycémique</span>
+                <span class="indicator-value">{{
+                  selectedFoodForInfo.glycemicIndex
+                }}</span>
+              </div>
+            </div>
+
+            <div class="indicator-card" *ngIf="selectedFoodForInfo?.fiber">
+              <div class="indicator-icon">🌿</div>
+              <div class="indicator-content">
+                <span class="indicator-label">Fibres</span>
+                <span class="indicator-value"
+                  >{{ selectedFoodForInfo.fiber }}g</span
+                >
+              </div>
+            </div>
+
+            <div class="indicator-card" *ngIf="selectedFoodForInfo?.category">
+              <div class="indicator-icon">📂</div>
+              <div class="indicator-content">
+                <span class="indicator-label">Catégorie</span>
+                <span class="indicator-value">{{
+                  selectedFoodForInfo.category
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conseils de préparation -->
+        <div class="preparation-tips" *ngIf="hasPreparationTips()">
+          <h3>👨‍🍳 Conseils de Préparation</h3>
+          <ul class="tips-list">
+            <li *ngFor="let tip of getPreparationTips()">
+              {{ tip }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Actions du modal -->
+      <div class="modal-actions">
+        <button
+          class="btn secondary"
+          (click)="suggestAlternatives(selectedFoodForInfo)"
+          *ngIf="selectedFoodForInfo"
+        >
+          🔄 Alternatives Similaires
+        </button>
+        <button
+          class="btn primary"
+          (click)="addFoodFromInfoModal(selectedFoodForInfo)"
+          *ngIf="selectedFoodForInfo"
+        >
+          ➕ Ajouter à mon Repas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FLOATING ACTION BUTTON ===== -->
+  <div class="floating-actions">
+    <button
+      (click)="openAddFoodModal()"
+      class="fab primary"
+      title="Ajouter un aliment"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- ===== NOTIFICATIONS ===== -->
+  <div class="notifications-container">
+    <div
+      class="notification"
+      *ngFor="let notification of notifications"
+      [ngClass]="'notification-' + notification.type"
+    >
+      <div class="notification-icon" *ngIf="notification.icon">
+        {{ notification.icon }}
+      </div>
+      <div class="notification-content">
+        <span class="notification-message">{{ notification.message }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LOADING OVERLAY ===== -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Chargement...</p>
+    </div>
+  </div>
+</div>

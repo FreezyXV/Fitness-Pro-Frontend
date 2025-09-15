@@ -1,0 +1,667 @@
+<!-- Enhanced Workout Plan Detail Component HTML -->
+<div class="workout-detail-container" *ngIf="workoutPlan && !isLoading; else loadingTemplate">
+  <div class="content-wrapper">
+    
+    <!-- Enhanced Hero Section with Session Progress -->
+    <div class="hero-section">
+      <div class="hero-content">
+        
+        <!-- Session Progress Indicator -->
+        <div class="session-progress-banner" *ngIf="workoutSessionStarted">
+          <div class="progress-header">
+            <div class="session-status">
+              <div class="status-indicator active"></div>
+              <span class="status-text">Session active</span>
+            </div>
+            <div class="progress-stats">
+              <span class="progress-text">{{ getProgressPercentage() }}% terminé</span>
+              <span class="exercise-count">{{ getCompletedExercisesCount() }}/{{ workoutPlan.exercises?.length || 0 }} exercices</span>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+          </div>
+        </div>
+
+        <!-- Navigation Header -->
+        <div class="navigation-header">
+          <button class="back-button" (click)="goBack()" [attr.aria-label]="'Retour aux programmes'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Retour</span>
+          </button>
+          
+          <div class="header-actions">
+            <button class="action-btn" (click)="shareWorkoutPlan()" title="Partager ce programme">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16,6 12,2 8,6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+              </svg>
+            </button>
+            <button class="action-btn favorite-btn" 
+                    [class.active]="isFavorite" 
+                    (click)="toggleFavorite()"
+                    title="{{ isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" 
+                   [attr.fill]="isFavorite ? 'currentColor' : 'none'" 
+                   stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Enhanced Plan Meta -->
+        <div class="plan-meta-section">
+          <div class="meta-badges">
+            <div class="difficulty-badge" [attr.data-level]="workoutPlan.difficultyLevel">
+              <div class="badge-icon">{{ getDifficultyIcon(workoutPlan.difficultyLevel) }}</div>
+              <span class="badge-text">{{ getDifficultyLabel(workoutPlan.difficultyLevel) }}</span>
+            </div>
+            <div class="category-badge" [attr.data-category]="workoutPlan.category">
+              <div class="badge-icon">{{ getCategoryIcon(workoutPlan.category) }}</div>
+              <span class="badge-text">{{ getCategoryLabel(workoutPlan.category) }}</span>
+            </div>
+            <div class="status-badge" *ngIf="workoutPlan.isCustom">
+              <div class="badge-icon">✏️</div>
+              <span class="badge-text">Personnalisé</span>
+            </div>
+            <div class="status-badge" *ngIf="workoutPlan.isPublic">
+              <div class="badge-icon">🌍</div>
+              <span class="badge-text">Public</span>
+            </div>
+            <div class="status-badge session-active" *ngIf="workoutSessionStarted">
+              <div class="badge-icon">⚡</div>
+              <span class="badge-text">En cours</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Enhanced Title Section -->
+        <div class="title-section">
+          <h1 class="plan-title">{{ workoutPlan.name }}</h1>
+          <p class="plan-description" *ngIf="workoutPlan.description">
+            {{ workoutPlan.description }}
+          </p>
+        </div>
+
+        <!-- Enhanced Quick Stats -->
+        <div class="quick-stats-grid">
+          <div class="stat-card" *ngIf="workoutPlan.estimatedDuration">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ formatDuration(workoutPlan.estimatedDuration) }}</span>
+              <span class="stat-label">durée</span>
+            </div>
+          </div>
+
+          <div class="stat-card" *ngIf="workoutPlan.estimatedCalories">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ formatCalories(workoutPlan.estimatedCalories) }}</span>
+              <span class="stat-label">calories</span>
+            </div>
+          </div>
+
+          <div class="stat-card" *ngIf="workoutPlan.exercises?.length">
+            <div class="stat-icon">💪</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ workoutPlan.exercises?.length }}</span>
+              <span class="stat-label">exercices</span>
+            </div>
+          </div>
+
+          <div class="stat-card" *ngIf="getTotalSets() > 0">
+            <div class="stat-icon">📈</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ getTotalSets() }}</span>
+              <span class="stat-label">séries</span>
+            </div>
+          </div>
+
+          <div class="stat-card" *ngIf="getTargetMuscles().length">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ getTargetMuscles().length }}</span>
+              <span class="stat-label">zones</span>
+            </div>
+          </div>
+
+          <div class="stat-card session-progress" *ngIf="workoutSessionStarted">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-content">
+              <span class="stat-value">{{ getProgressPercentage() }}%</span>
+              <span class="stat-label">progression</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Main Content Layout -->
+    <div class="main-content-layout">
+      
+      <!-- Enhanced Exercises Section -->
+      <div class="exercises-main-section">
+        <div class="exercises-card">
+          <div class="card-header">
+            <h2 class="section-title">
+              <span class="title-icon">💪</span>
+              <span class="title-text">Exercices du programme</span>
+              <span class="exercise-counter">({{ workoutPlan.exercises?.length || 0 }})</span>
+            </h2>
+            <div class="section-controls">
+              <button class="control-btn" 
+                      (click)="toggleExpandAll()"
+                      [class.active]="allExpanded"
+                      title="Tout développer/réduire">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+                <span>{{ allExpanded ? "Réduire" : "Développer" }}</span>
+              </button>
+              <button class="control-btn" 
+                      (click)="toggleCompactView()"
+                      [class.active]="compactView"
+                      title="Vue compacte">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="9" y1="9" x2="15" y2="9"/>
+                  <line x1="9" y1="15" x2="15" y2="15"/>
+                </svg>
+                <span>Compact</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="exercises-content">
+            <div class="exercises-list" *ngIf="workoutPlan.exercises && workoutPlan.exercises.length > 0; else noExercises">
+              <div class="exercise-item" 
+                   *ngFor="let exercise of workoutPlan.exercises; let i = index"
+                   [class.expanded]="expandedExercises.has(i)"
+                   [class.compact]="compactView"
+                   [class]="getExerciseStatusClass(i)"
+                   [attr.data-exercise-index]="i">
+                
+                <!-- Enhanced Exercise Header -->
+                <div class="exercise-header" (click)="toggleExerciseExpansion(i)">
+                  <div class="exercise-number-indicator">
+                    <span class="exercise-number">{{ i + 1 }}</span>
+                    <div class="status-ring" [class]="'status-' + getExerciseStatus(i)"></div>
+                  </div>
+                  
+                  <div class="exercise-main-info">
+                    <div class="exercise-title-row">
+                      <h4 class="exercise-name">{{ exercise.name }}</h4>
+                      <div class="exercise-status-badge" [class]="'status-' + getExerciseStatus(i)">
+                        <span *ngIf="getExerciseStatus(i) === 'completed'">✓ Terminé</span>
+                        <span *ngIf="getExerciseStatus(i) === 'in_progress'">⏵ En cours</span>
+                        <span *ngIf="getExerciseStatus(i) === 'not_started'">⏸ À faire</span>
+                      </div>
+                    </div>
+                    
+                    <div class="exercise-quick-stats">
+                      <div class="quick-stat" *ngIf="exercise.sets">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="3"/>
+                          <path d="m12 1 0 6m0 6 0 6"/>
+                        </svg>
+                        <span>{{ exercise.sets }} séries</span>
+                      </div>
+                      <div class="quick-stat" *ngIf="exercise.reps">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="m6 9 6 6 6-6"/>
+                        </svg>
+                        <span>{{ exercise.reps }} reps</span>
+                      </div>
+                      <div class="quick-stat" *ngIf="exercise.durationSeconds">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="10"/>
+                          <polyline points="12,6 12,12 16,14"/>
+                        </svg>
+                        <span>{{ formatSeconds(exercise.durationSeconds) }}</span>
+                      </div>
+                      <div class="difficulty-indicator" [attr.data-level]="exercise.difficulty">
+                        <span>{{ getDifficultyIcon(exercise.difficulty) }}</span>
+                        <span>{{ getDifficultyLabel(exercise.difficulty) }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="expand-toggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Enhanced Exercise Details -->
+                <div class="exercise-details" *ngIf="expandedExercises.has(i)">
+                  
+                  <!-- Exercise Description -->
+                  <div class="exercise-description" *ngIf="exercise.description">
+                    <h5 class="detail-section-title">
+                      <span class="section-icon">📋</span>
+                      <span>Description</span>
+                    </h5>
+                    <p class="description-text">{{ exercise.description }}</p>
+                  </div>
+
+                  <!-- Exercise Configuration -->
+                  <div class="exercise-configuration">
+                    <h5 class="detail-section-title">
+                      <span class="section-icon">⚙️</span>
+                      <span>Configuration</span>
+                    </h5>
+                    <div class="config-grid">
+                      <div class="config-item" *ngIf="exercise.sets">
+                        <div class="config-icon">📊</div>
+                        <div class="config-info">
+                          <span class="config-label">Séries</span>
+                          <span class="config-value">{{ exercise.sets }}</span>
+                        </div>
+                      </div>
+                      <div class="config-item" *ngIf="exercise.reps">
+                        <div class="config-icon">🔄</div>
+                        <div class="config-info">
+                          <span class="config-label">Répétitions</span>
+                          <span class="config-value">{{ exercise.reps }}</span>
+                        </div>
+                      </div>
+                      <div class="config-item" *ngIf="exercise.durationSeconds">
+                        <div class="config-icon">⏱️</div>
+                        <div class="config-info">
+                          <span class="config-label">Durée</span>
+                          <span class="config-value">{{ formatSeconds(exercise.durationSeconds) }}</span>
+                        </div>
+                      </div>
+                      <div class="config-item" *ngIf="exercise.restTimeSeconds">
+                        <div class="config-icon">😴</div>
+                        <div class="config-info">
+                          <span class="config-label">Repos</span>
+                          <span class="config-value">{{ formatSeconds(exercise.restTimeSeconds) }}</span>
+                        </div>
+                      </div>
+                      <div class="config-item" *ngIf="exercise.targetWeight">
+                        <div class="config-icon">🏋️</div>
+                        <div class="config-info">
+                          <span class="config-label">Poids cible</span>
+                          <span class="config-value">{{ exercise.targetWeight }} kg</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Exercise Meta Information -->
+                  <div class="exercise-meta-details">
+                    <div class="meta-grid">
+                      <div class="meta-item">
+                        <div class="meta-icon">🎯</div>
+                        <div class="meta-content">
+                          <span class="meta-label">Partie du corps</span>
+                          <span class="meta-value">{{ getBodyPartLabel(exercise.bodyPart) }}</span>
+                        </div>
+                      </div>
+                      <div class="meta-item">
+                        <div class="meta-icon">📊</div>
+                        <div class="meta-content">
+                          <span class="meta-label">Difficulté</span>
+                          <span class="meta-value">{{ getDifficultyLabel(exercise.difficulty) }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Muscle Groups -->
+                    <div class="muscle-groups" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
+                      <div class="muscle-groups-header">
+                        <div class="meta-icon">💪</div>
+                        <span class="meta-label">Muscles ciblés</span>
+                      </div>
+                      <div class="muscle-tags">
+                        <span class="muscle-tag" *ngFor="let muscle of exercise.muscleGroups">
+                          {{ muscle }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Exercise Notes -->
+                  <div class="exercise-notes" *ngIf="exercise.notes">
+                    <h5 class="detail-section-title">
+                      <span class="section-icon">📝</span>
+                      <span>Notes</span>
+                    </h5>
+                    <p class="notes-text">{{ exercise.notes }}</p>
+                  </div>
+
+                  <!-- Enhanced Exercise Actions -->
+                  <div class="exercise-actions">
+                    <!-- Always show exercise details button -->
+                    <button class="action-btn view-details" (click)="viewExerciseDetail(exercise.id)">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      </svg>
+                      <span>Voir détails</span>
+                    </button>
+
+                    <!-- Exercise Status Actions -->
+                    <ng-container [ngSwitch]="getExerciseStatus(i)">
+                      
+                      <!-- Not Started Actions -->
+                      <ng-container *ngSwitchCase="'not_started'">
+                        <button class="action-btn start-exercise" 
+                                (click)="startSingleExercise(exercise, i)"
+                                [disabled]="!workoutSessionStarted">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                          </svg>
+                          <span>Démarrer</span>
+                        </button>
+                      </ng-container>
+
+                      <!-- In Progress Actions -->
+                      <ng-container *ngSwitchCase="'in_progress'">
+                        <button class="action-btn complete-exercise" (click)="completeExercise(exercise, i)">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22,4 12,14.01 9,11.01"/>
+                          </svg>
+                          <span>Terminer</span>
+                        </button>
+                        <button class="action-btn pause-exercise" (click)="pauseExercise(exercise, i)">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="6" y="4" width="4" height="16"/>
+                            <rect x="14" y="4" width="4" height="16"/>
+                          </svg>
+                          <span>Pause</span>
+                        </button>
+                      </ng-container>
+
+                      <!-- Completed Actions -->
+                      <ng-container *ngSwitchCase="'completed'">
+                        <div class="completion-badge">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22,4 12,14.01 9,11.01"/>
+                          </svg>
+                          <span>Exercice terminé</span>
+                        </div>
+                        <button class="action-btn reset-exercise" (click)="resetExercise(exercise, i)">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                          </svg>
+                          <span>Recommencer</span>
+                        </button>
+                      </ng-container>
+                      
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Exercises Template -->
+            <ng-template #noExercises>
+              <div class="no-exercises-placeholder">
+                <div class="no-exercises-content">
+                  <div class="no-exercises-icon">💪</div>
+                  <h3 class="no-exercises-title">Aucun exercice configuré</h3>
+                  <p class="no-exercises-description">Ce programme ne contient pas encore d'exercices.</p>
+                  <button class="btn btn-primary" 
+                          *ngIf="workoutPlan.isCustom" 
+                          (click)="editWorkoutPlan()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                    </svg>
+                    <span>Ajouter des exercices</span>
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Secondary Content -->
+      <div class="secondary-content">
+        
+        <!-- Enhanced Plan Information -->
+        <div class="info-card">
+          <div class="card-header">
+            <h3 class="section-title">
+              <span class="title-icon">📊</span>
+              <span>Informations</span>
+            </h3>
+          </div>
+          
+          <div class="info-items">
+            <div class="info-item">
+              <div class="info-icon">⏱️</div>
+              <div class="info-text">
+                <span class="info-label">Durée estimée</span>
+                <span class="info-value">{{ formatDuration(workoutPlan.estimatedDuration) || "Non spécifiée" }}</span>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-icon">🔥</div>
+              <div class="info-text">
+                <span class="info-label">Calories estimées</span>
+                <span class="info-value">{{ formatCalories(workoutPlan.estimatedCalories) }}</span>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-icon">🎯</div>
+              <div class="info-text">
+                <span class="info-label">Catégorie</span>
+                <span class="info-value">{{ getCategoryLabel(workoutPlan.category) }}</span>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <div class="info-icon">📈</div>
+              <div class="info-text">
+                <span class="info-label">Niveau</span>
+                <span class="info-value">{{ getDifficultyLabel(workoutPlan.difficultyLevel) }}</span>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="workoutPlan.creatorName">
+              <div class="info-icon">👤</div>
+              <div class="info-text">
+                <span class="info-label">Créateur</span>
+                <span class="info-value">{{ workoutPlan.creatorName }}</span>
+              </div>
+            </div>
+
+            <div class="info-item" *ngIf="workoutPlan.usageCount">
+              <div class="info-icon">📊</div>
+              <div class="info-text">
+                <span class="info-label">Utilisations</span>
+                <span class="info-value">{{ workoutPlan.usageCount }} fois</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced Workout Overview -->
+        <div class="workout-overview-card">
+          <div class="card-header">
+            <h3 class="section-title">
+              <span class="title-icon">🏋️</span>
+              <span>Vue d'ensemble</span>
+            </h3>
+          </div>
+          
+          <div class="overview-items">
+            <div class="overview-item">
+              <div class="overview-icon">👥</div>
+              <div class="overview-content">
+                <span class="overview-label">Partie du corps</span>
+                <span class="overview-value">{{ getWorkoutBodyFocus() }}</span>
+              </div>
+            </div>
+            
+            <div class="overview-item">
+              <div class="overview-icon">⚡</div>
+              <div class="overview-content">
+                <span class="overview-label">Type d'entraînement</span>
+                <span class="overview-value">{{ getWorkoutTypeLabel() }}</span>
+              </div>
+            </div>
+            
+            <div class="overview-item">
+              <div class="overview-icon">📊</div>
+              <div class="overview-content">
+                <span class="overview-label">Intensité</span>
+                <span class="overview-value">{{ getWorkoutIntensity() }}</span>
+              </div>
+            </div>
+            
+            <div class="overview-item" *ngIf="getRequiredEquipment() !== 'Aucun'">
+              <div class="overview-icon">🏋️</div>
+              <div class="overview-content">
+                <span class="overview-label">Équipement</span>
+                <span class="overview-value">{{ getRequiredEquipment() }}</span>
+              </div>
+            </div>
+            
+            <div class="overview-item">
+              <div class="overview-icon">🎯</div>
+              <div class="overview-content">
+                <span class="overview-label">Objectif principal</span>
+                <span class="overview-value">{{ getWorkoutGoal() }}</span>
+              </div>
+            </div>
+            
+            <div class="overview-item" *ngIf="getWorkoutFrequency()">
+              <div class="overview-icon">📅</div>
+              <div class="overview-content">
+                <span class="overview-label">Fréquence recommandée</span>
+                <span class="overview-value">{{ getWorkoutFrequency() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Floating Action Bar -->
+    <div class="floating-action-bar">
+      <div class="action-buttons">
+        <button [class]="getWorkoutSessionButtonClass()"
+                (click)="startSession(workoutPlan!)"
+                [disabled]="isStartingWorkout">
+          <div class="btn-icon">
+            <svg *ngIf="!isStartingWorkout && !workoutSessionStarted"
+                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <svg *ngIf="isStartingWorkout"
+                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinning">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <svg *ngIf="workoutSessionStarted"
+                 width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22,4 12,14.01 9,11.01"/>
+            </svg>
+          </div>
+          <span class="btn-text">{{ getWorkoutSessionStatusText() }}</span>
+        </button>
+
+        <button class="secondary-action-btn" (click)="addToCalendar(workoutPlan!)">
+          <div class="btn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <span class="btn-text">Calendrier</span>
+        </button>
+
+        <button *ngIf="workoutSessionStarted" 
+                class="completion-action-btn" 
+                (click)="completeWorkoutSession()">
+          <div class="btn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22,4 12,14.01 9,11.01"/>
+            </svg>
+          </div>
+          <span class="btn-text">Terminer</span>
+        </button>
+
+        <button class="tertiary-action-btn" (click)="duplicatePlan(workoutPlan!)">
+          <div class="btn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </div>
+          <span class="btn-text">Dupliquer</span>
+        </button>
+
+        <button *ngIf="workoutPlan.isCustom" 
+                class="edit-action-btn" 
+                (click)="editPlan(workoutPlan!)">
+          <div class="btn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+            </svg>
+          </div>
+          <span class="btn-text">Modifier</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Enhanced Loading Template -->
+<ng-template #loadingTemplate>
+  <div class="loading-container">
+    <div class="loading-content">
+      <div class="loading-animation">
+        <div class="loading-spinner"></div>
+      </div>
+      <p class="loading-text">Chargement du programme...</p>
+      <div class="loading-progress" *ngIf="loadingProgress > 0">
+        <div class="progress-track"></div>
+        <div class="progress-fill" [style.width.%]="loadingProgress"></div>
+        <span class="progress-text">{{ loadingProgress | number:'1.0-0' }}%</span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Enhanced Error State -->
+<div class="error-container" *ngIf="error">
+  <div class="error-content">
+    <div class="error-icon">⚠️</div>
+    <h3 class="error-title">Erreur de chargement</h3>
+    <p class="error-message">{{ error }}</p>
+    <div class="error-actions">
+      <button class="btn btn-primary" (click)="retry()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"/>
+        </svg>
+        <span>Réessayer</span>
+      </button>
+      <button class="btn btn-secondary" (click)="goBack()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Retour</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,718 @@
+<!-- src/app/workout/workout.component.html - Enhanced Dashboard Style -->
+<div class="workout-container">
+  <!-- Hero Section - Enhanced Dashboard Style -->
+  <div class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+      <div class="title-section">
+        <div class="title-icon">🏋️‍♂️</div>
+        <div class="title-content">
+          <h1 class="page-title">Mes Programmes d'Entraînement</h1>
+          <p class="page-subtitle">{{ motivationalQuote }}</p>
+        </div>
+      </div>
+
+      <!-- Quick Stats - Enhanced Dashboard Style -->
+      <div class="quick-stats">
+        <div class="stat-item">
+          <div class="stat-icon">📋</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ getTotalCount() }}</span>
+            <span class="stat-label">Programmes</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ getFilteredCount() }}</span>
+            <span class="stat-label">Affichés</span>
+          </div>
+        </div>
+        <div class="stat-item" *ngIf="workoutStats">
+          <div class="stat-icon">📊</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ workoutStats.totalWorkouts }}</span>
+            <span class="stat-label">Séances</span>
+          </div>
+        </div>
+        <div class="stat-item" *ngIf="workoutStats">
+          <div class="stat-icon">🔥</div>
+          <div class="stat-content">
+            <span class="stat-value">{{ workoutStats.currentStreak }}</span>
+            <span class="stat-label">Série</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button class="action-btn primary" (click)="createCustomWorkout()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span>Créer un programme</span>
+        </button>
+
+        <button class="action-btn secondary" (click)="viewWorkoutHistory()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12,6 12,12 16,14" />
+          </svg>
+          <span>Historique</span>
+        </button>
+
+        <button class="action-btn secondary" (click)="viewWorkoutStats()">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          <span>Statistiques</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug Section (pour développement) -->
+  <div class="debug-section" *ngIf="error || isLoading">
+    <div class="debug-card">
+      <div class="debug-controls">
+        <button (click)="testConnection()" class="btn btn-outline btn-sm">
+          🧪 Test API
+        </button>
+        <button (click)="refreshData()" class="btn btn-outline btn-sm">
+          🔄 Actualiser
+        </button>
+        <button (click)="clearCache()" class="btn btn-outline btn-sm">
+          🗑️ Vider cache
+        </button>
+      </div>
+
+      <div class="debug-info">
+        <p>
+          <strong>Status:</strong>
+          <span
+            [class]="
+              isLoading
+                ? 'status-loading'
+                : error
+                ? 'status-error'
+                : 'status-success'
+            "
+          >
+            {{ isLoading ? "Chargement..." : error ? "Erreur" : "OK" }}
+          </span>
+        </p>
+        <p><strong>Programmes chargés:</strong> {{ getTotalCount() }}</p>
+        <p>
+          <strong>Utilisateur:</strong>
+          {{ currentUser?.email || "Non connecté" }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Filters Section -->
+  <div class="filters-section">
+    <div class="filters-card">
+      <!-- Search Container -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <div class="search-icon">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+          </div>
+          <input
+            #searchInput
+            type="text"
+            [(ngModel)]="filters.searchTerm"
+            (input)="onSearchChange(filters.searchTerm)"
+            placeholder="Rechercher un programme..."
+            class="search-input"
+          />
+          <button
+            *ngIf="filters.searchTerm"
+            (click)="filters.searchTerm = ''; onSearchChange('')"
+            class="clear-search-btn"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter Controls Grid -->
+      <div class="filter-controls-grid">
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+            </svg>
+            <span>Catégorie</span>
+          </label>
+          <select
+            [(ngModel)]="filters.activeFilter"
+            (change)="setFilter(filters.activeFilter)"
+            class="filter-select"
+          >
+            <option value="all">Toutes les catégories</option>
+            <option
+              *ngFor="let category of categories"
+              [value]="category.value"
+            >
+              {{ category.icon }} {{ category.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Difficulty Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+            <span>Difficulté</span>
+          </label>
+          <select
+            [(ngModel)]="filters.activeDifficultyFilter"
+            (change)="setDifficultyFilter(filters.activeDifficultyFilter)"
+            class="filter-select"
+          >
+            <option value="all">Tous les niveaux</option>
+            <option
+              *ngFor="let difficulty of difficultyLevels"
+              [value]="difficulty.value"
+            >
+              {{ difficulty.icon }} {{ difficulty.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Sort Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12l7-7 7 7" />
+            </svg>
+            <span>Trier par</span>
+          </label>
+          <select
+            [(ngModel)]="filters.sortBy"
+            (change)="setSortBy(filters.sortBy)"
+            class="filter-select"
+          >
+            <option *ngFor="let option of sortOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Advanced Filters Toggle -->
+        <div class="filter-group">
+          <button
+            (click)="toggleAdvancedFilters()"
+            class="advanced-filters-toggle"
+            [class.active]="showAdvancedFilters"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+            </svg>
+            <span>Filtres avancés</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Advanced Filters -->
+      <div class="advanced-filters" *ngIf="showAdvancedFilters">
+        <div class="advanced-filter-row">
+          <label class="checkbox-filter">
+            <input
+              type="checkbox"
+              [(ngModel)]="filters.showOnlyCustom"
+              (change)="toggleCustomFilter()"
+            />
+            <span class="checkbox-label">Mes programmes seulement</span>
+          </label>
+
+          <label class="checkbox-filter">
+            <input
+              type="checkbox"
+              [(ngModel)]="filters.showOnlyPublic"
+              (change)="togglePublicFilter()"
+            />
+            <span class="checkbox-label">Programmes publics seulement</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Active Filters and Actions -->
+      <div
+        class="filter-actions"
+        *ngIf="hasActiveFilters() || filteredWorkoutTemplates.length > 0"
+      >
+        <div class="active-filters" *ngIf="hasActiveFilters()">
+          <span class="active-filter-label">Filtres actifs:</span>
+
+          <span *ngIf="filters.activeFilter !== 'all'" class="filter-tag">
+            {{ getCategoryInfo(filters.activeFilter).label }}
+            <button (click)="filters.activeFilter = 'all'; setFilter('all')">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </span>
+
+          <button (click)="clearFilters()" class="clear-all-filters">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+            </svg>
+            <span>Effacer tout</span>
+          </button>
+        </div>
+
+        <!-- View Controls -->
+        <div class="view-controls">
+          <div class="view-mode-toggle">
+            <button
+              (click)="setViewMode('grid')"
+              [class.active]="viewMode === 'grid'"
+              class="view-mode-btn"
+              title="Vue grille"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+              </svg>
+            </button>
+            <button
+              (click)="setViewMode('list')"
+              [class.active]="viewMode === 'list'"
+              class="view-mode-btn"
+              title="Vue liste"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <line x1="8" y1="6" x2="21" y2="6" />
+                <line x1="8" y1="12" x2="21" y2="12" />
+                <line x1="8" y1="18" x2="21" y2="18" />
+                <line x1="3" y1="6" x2="3.01" y2="6" />
+                <line x1="3" y1="12" x2="3.01" y2="12" />
+                <line x1="3" y1="18" x2="3.01" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- State Sections -->
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-section">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Chargement des programmes d'entraînement...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-section">
+    <div class="error-card">
+      <div class="error-icon">
+        <svg
+          width="64"
+          height="64"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <path
+            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+          />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      </div>
+      <h3 class="error-title">Erreur de chargement</h3>
+      <p class="error-message">{{ error }}</p>
+      <div class="error-actions">
+        <button (click)="retryLoad()" class="btn btn-primary">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="23 4 23 10 17 10" />
+            <path
+              d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"
+            />
+          </svg>
+          <span>Réessayer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Results State -->
+  <div
+    *ngIf="
+      !isLoading &&
+      !error &&
+      filteredWorkoutTemplates.length === 0 &&
+      workoutTemplates.length > 0
+    "
+    class="no-results-section"
+  >
+    <div class="no-results-card">
+      <div class="no-results-icon">
+        <svg
+          width="80"
+          height="80"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+      </div>
+      <h3 class="no-results-title">Aucun programme trouvé</h3>
+      <p class="no-results-message">
+        Essayez de modifier vos critères de recherche ou vos filtres.
+      </p>
+      <div class="no-results-actions">
+        <button (click)="clearFilters()" class="btn btn-secondary">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M3 6h18" />
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+          </svg>
+          <span>Effacer les filtres</span>
+        </button>
+        <button (click)="createCustomWorkout()" class="btn btn-primary">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span>Créer un programme</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!isLoading && !error && workoutTemplates.length === 0"
+    class="empty-section"
+  >
+    <div class="empty-card">
+      <div class="empty-icon">🏋️‍♂️</div>
+      <h3 class="empty-title">Aucun programme d'entraînement</h3>
+      <p class="empty-message">
+        Commencez par créer votre premier programme d'entraînement personnalisé
+        !
+      </p>
+      <div class="empty-actions">
+        <button (click)="createCustomWorkout()" class="btn btn-primary">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          <span>Créer un programme</span>
+        </button>
+        <button (click)="refreshData()" class="btn btn-secondary">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="23 4 23 10 17 10" />
+            <path
+              d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"
+            />
+          </svg>
+          <span>Actualiser</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Workout Templates Grid/List -->
+  <div
+    *ngIf="!isLoading && !error && filteredWorkoutTemplates.length > 0"
+    class="workout-templates-content"
+    [class.grid-view]="viewMode === 'grid'"
+    [class.list-view]="viewMode === 'list'"
+  >
+    <div class="workout-templates-grid">
+      <app-workout-plan-card
+        *ngFor="
+          let template of filteredWorkoutTemplates;
+          trackBy: trackByWorkoutTemplate
+        "
+        [plan]="template"
+        [viewMode]="viewMode"
+        (startSession)="startWorkoutSession($event)"
+        (viewDetails)="viewWorkoutTemplate($event)"
+        (addToCalendar)="addToCalendar($event)"
+        (duplicatePlan)="duplicateWorkoutTemplate($event)"
+        (editPlan)="editWorkoutTemplate($event)"
+        (activatePlan)="activatePlan($event)"
+        class="workout-template-card-wrapper"
+      >
+      </app-workout-plan-card>
+    </div>
+  </div>
+
+  <!-- Recent Sessions Quick Preview -->
+  <div *ngIf="workoutSessions.length > 0" class="recent-sessions-section">
+    <div class="section-card">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="title-icon">📅</span>
+          <span>Dernières sessions</span>
+        </h2>
+        <button (click)="viewWorkoutHistory()" class="btn btn-link">
+          Voir tout
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="7" y1="17" x2="17" y2="7" />
+            <polyline points="7 7 17 7 17 17" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="recent-sessions-grid">
+        <div
+          *ngFor="let session of workoutSessions.slice(0, 3)"
+          class="session-card"
+        >
+          <div class="session-header">
+            <h4 class="session-title">{{ session.name }}</h4>
+            <span class="session-status" [class]="session.status">
+              {{
+                session.status === "completed"
+                  ? "✅"
+                  : session.status === "in_progress"
+                  ? "⏳"
+                  : "📋"
+              }}
+            </span>
+          </div>
+          <div class="session-info">
+            <span *ngIf="session.durationMinutes" class="session-stat">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12,6 12,12 16,14" />
+              </svg>
+              {{ formatDuration(session.durationMinutes) }}
+            </span>
+            <span *ngIf="session.caloriesBurned" class="session-stat">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+              {{ formatCalories(session.caloriesBurned) }}
+            </span>
+            <span *ngIf="session.completedAt" class="session-stat">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              {{ getTemplateAge(session) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <div class="floating-actions">
+    <button
+      (click)="createCustomWorkout()"
+      class="fab primary"
+      title="Créer un programme"
+    >
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<!-- Enhanced login.component.html -->
+<div class="login-wrapper">
+  <!-- Floating orbs for enhanced visual appeal -->
+  <div class="floating-orb"></div>
+  <div class="floating-orb"></div>
+  <div class="floating-orb"></div>
+  
+  <div class="login-card">
+    <!-- Enhanced logo section -->
+    <div class="logo-section">
+      <div class="logo-icon">F</div>
+      <h2>Connexion</h2>
+      <p class="subtitle">Connectez-vous à votre compte FitnessPro</p>
+    </div>
+
+    <!-- Enhanced form with better validation UI -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- Email field with enhanced styling -->
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <div class="input-wrapper">
+          <input 
+            id="email" 
+            formControlName="email" 
+            type="email" 
+            placeholder="exemple@email.com"
+            [class.error]="isFieldInvalid('email')"
+            [class.valid]="isFieldValid('email')"
+          />
+          <i class="input-icon fas fa-envelope"></i>
+          <i *ngIf="isFieldValid('email')" 
+             class="validation-icon fas fa-check valid"></i>
+        </div>
+        <div *ngIf="isFieldInvalid('email')" 
+             class="text-error">
+          {{ getFieldError('email') }}
+        </div>
+      </div>
+
+      <!-- Password field with enhanced visibility toggle -->
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <div class="input-wrapper">
+          <input 
+            id="password" 
+            formControlName="password" 
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Votre mot de passe"
+            [class.error]="isFieldInvalid('password')"
+            [class.valid]="isFieldValid('password')"
+          />
+          <i class="input-icon fas" 
+             [class.fa-eye]="!showPassword"
+             [class.fa-eye-slash]="showPassword"
+             (click)="togglePasswordVisibility()"
+             style="cursor: pointer;"></i>
+        </div>
+        <div *ngIf="isFieldInvalid('password')" 
+             class="text-error">
+          {{ getFieldError('password') }}
+        </div>
+      </div>
+
+      <!-- Enhanced additional options -->
+      <div class="additional-options">
+        <label class="remember-me">
+          <input type="checkbox" formControlName="rememberMe" />
+          Se souvenir de moi
+        </label>
+        <a href="#" class="forgot-password" (click)="onForgotPassword(); $event.preventDefault()">
+          Mot de passe oublié ?
+        </a>
+      </div>
+
+      <!-- Global error message -->
+      <div *ngIf="errorMessage" class="global-error">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Enhanced submit button -->
+      <button 
+        type="submit"
+        [disabled]="loginForm.invalid || isLoading"
+        [class.loading]="isLoading"
+        class="submit-btn">
+        {{ isLoading ? 'Connexion en cours...' : 'Se connecter' }}
+      </button>
+    </form>
+
+    <!-- Enhanced navigation link -->
+    <div class="text-link">
+      Pas encore de compte ?
+      <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }">Créer un compte</a>
+    </div>
+  </div>
+</div>

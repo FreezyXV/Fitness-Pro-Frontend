@@ -1,0 +1,704 @@
+<!-- src/app/challenges/challenges.component.html - Enhanced Dashboard Style -->
+
+<div class="challenges-container">
+  <!-- Hero Section - Enhanced Workout Style -->
+  <div class="hero-section">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+      <div class="title-section">
+        <div class="title-icon">🏆</div>
+        <div class="title-content">
+          <h1 class="page-title">Défis et Challenges</h1>
+          <p class="page-subtitle">Relevez des défis et battez vos records !</p>
+        </div>
+      </div>
+      
+      <!-- Enhanced Quick Stats -->
+      <div class="quick-stats">
+        <div class="stat-item">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-content">
+            <span class="stat-value">{{getActiveChallengesCount()}}</span>
+            <span class="stat-label">En cours</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-content">
+            <span class="stat-value">{{getCompletedChallengesCount()}}</span>
+            <span class="stat-label">Terminés</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-content">
+            <span class="stat-value">{{getTotalPoints()}}</span>
+            <span class="stat-label">Points</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon">🥇</div>
+          <div class="stat-content">
+            <span class="stat-value">#{{getCurrentUserRank()}}</span>
+            <span class="stat-label">Rang</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Quick Actions -->
+      <div class="quick-actions">
+        <button class="action-btn primary" (click)="createCustomChallenge()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>Créer un défi</span>
+        </button>
+        
+        <button class="action-btn secondary" (click)="openLeaderboard()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M14 15V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2z"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 1 0 5H18"/>
+          </svg>
+          <span>Classement</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Filters Section -->
+  <div class="filters-section">
+    <div class="filters-card">
+      <div class="filter-controls-grid">
+        <!-- Status Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12,6 12,12 16,14"/>
+            </svg>
+            <span>Statut</span>
+          </label>
+          <select [(ngModel)]="activeFilter" (change)="setFilter(activeFilter)" class="filter-select">
+            <option value="all">Tous les statuts</option>
+            <option value="available">Disponibles</option>
+            <option value="active">En cours</option>
+            <option value="completed">Terminés</option>
+          </select>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+            <span>Catégorie</span>
+          </label>
+          <select [(ngModel)]="activeCategoryFilter" (change)="setCategoryFilter(activeCategoryFilter)" class="filter-select">
+            <option value="all">Toutes les catégories</option>
+            <option *ngFor="let category of challengeCategories" [value]="category.value">
+              {{ category.icon }} {{ category.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Difficulty Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <span>Difficulté</span>
+          </label>
+          <select [(ngModel)]="activeDifficultyFilter" (change)="setDifficultyFilter(activeDifficultyFilter)" class="filter-select">
+            <option value="all">Tous les niveaux</option>
+            <option *ngFor="let difficulty of difficultyLevels" [value]="difficulty.value">
+              {{ difficulty.label }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Sort Filter -->
+        <div class="filter-group">
+          <label class="filter-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12l7-7 7 7"/>
+            </svg>
+            <span>Trier par</span>
+          </label>
+          <select [(ngModel)]="sortBy" (change)="setSortBy(sortBy)" class="filter-select">
+            <option value="popularity">Popularité</option>
+            <option value="difficulty">Difficulté</option>
+            <option value="endDate">Date de fin</option>
+            <option value="reward">Récompense</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Challenge Cards Grid -->
+  <div class="challenges-content">
+    <div class="challenges-grid">
+      <div class="challenge-card-enhanced" 
+           *ngFor="let challenge of filteredChallenges; trackBy: trackByChallenge"
+           [class.ending-soon]="isEndingSoon(challenge)"
+           [class.user-joined]="isUserInChallenge(challenge)"
+           [class.completed]="getUserChallengeData(challenge)?.status === 'completed'"
+           [class.custom-challenge]="challenge.id > 1000"
+           (click)="openChallengeDetails(challenge)">
+        
+        <!-- Enhanced Card Header with Status Indicators -->
+        <div class="card-header">
+          <!-- Category Badge -->
+          <div class="category-badge" [attr.data-category]="challenge.category">
+            <span class="category-icon">{{ getCategoryInfo(challenge.category).icon }}</span>
+            <span class="category-text">{{ getCategoryInfo(challenge.category).label }}</span>
+          </div>
+
+          <!-- Status Indicators -->
+          <div class="status-indicators">
+            <span *ngIf="challenge.difficulty" class="status-badge difficulty" 
+                  [attr.data-level]="challenge.difficulty">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+              {{ getDifficultyInfo(challenge.difficulty).label }}
+            </span>
+            
+            <span *ngIf="isUserInChallenge(challenge)" class="status-badge active">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20,6 9,17 4,12"/>
+              </svg>
+              {{ getStatusLabel(getUserChallengeData(challenge)?.status || challenge.status) }}
+            </span>
+
+            <span *ngIf="isEndingSoon(challenge)" class="status-badge warning">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+              Bientôt fini
+            </span>
+          </div>
+        </div>
+
+        <!-- Enhanced Card Content -->
+        <div class="card-content">
+          <!-- Challenge Header -->
+          <div class="challenge-header">
+            <h3 class="challenge-title" [title]="challenge.title">{{ challenge.title }}</h3>
+            <p class="challenge-description" 
+               *ngIf="challenge.description" 
+               [title]="challenge.description">
+              {{ challenge.description }}
+            </p>
+          </div>
+
+          <!-- Enhanced Challenge Stats -->
+          <div class="challenge-stats">
+            <div class="stat-item" *ngIf="challenge.participants">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <span>{{ challenge.participants }} participant{{ challenge.participants > 1 ? 's' : '' }}</span>
+            </div>
+
+            <div class="stat-item" *ngIf="challenge.daysRemaining !== undefined">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+              <span>{{ challenge.daysRemaining }} jour{{ challenge.daysRemaining > 1 ? 's' : '' }} restant{{ challenge.daysRemaining > 1 ? 's' : '' }}</span>
+            </div>
+
+            <div class="stat-item" *ngIf="challenge.target && challenge.unit">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h4l3 3h3a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-3-3z"/>
+                <path d="M5 17l3-3 3 3"/>
+              </svg>
+              <span>{{ challenge.target }} {{ challenge.unit }}</span>
+            </div>
+
+            <div class="stat-item" *ngIf="challenge.rewardPoints">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <span>{{ challenge.rewardPoints }} points</span>
+            </div>
+          </div>
+
+          <!-- Enhanced Progress Bar for Active Challenges -->
+          <div class="challenge-progress" *ngIf="isUserInChallenge(challenge) && getUserChallengeData(challenge)?.progress !== undefined">
+            <div class="progress-info">
+              <span class="progress-label">Progression</span>
+              <span class="progress-value">{{ getUserChallengeData(challenge)?.progress || 0 }}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" 
+                   [style.width.%]="getUserChallengeData(challenge)?.progress || 0">
+              </div>
+            </div>
+            <div class="progress-detail">
+              <span>{{ challenge.currentProgress || 0 }} / {{ challenge.target }} {{ challenge.unit }}</span>
+            </div>
+          </div>
+
+          <!-- Enhanced Action Buttons -->
+          <div class="action-buttons">
+            <button class="btn btn-primary" 
+                    *ngIf="!isUserInChallenge(challenge) && challenge.status === 'available'"
+                    (click)="joinChallenge(challenge); $event.stopPropagation()"
+                    [disabled]="challenge.maxParticipants && challenge.participants >= challenge.maxParticipants"
+                    [attr.aria-label]="'Rejoindre ' + challenge.title"
+                    title="Rejoindre ce défi">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span>Rejoindre</span>
+            </button>
+
+            
+
+            <button class="btn btn-danger" 
+                    *ngIf="isUserInChallenge(challenge) && getUserChallengeData(challenge)?.status === 'active'"
+                    (click)="leaveChallenge(challenge); $event.stopPropagation()"
+                    [attr.aria-label]="'Abandonner ' + challenge.title"
+                    title="Abandonner ce défi">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              <span>Abandonner</span>
+            </button>
+
+            <button class="btn btn-success" 
+                    *ngIf="isUserInChallenge(challenge) && getUserChallengeData(challenge)?.status === 'completed'"
+                    disabled
+                    title="Défi terminé avec succès">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20,6 9,17 4,12"/>
+              </svg>
+              <span>Terminé</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Enhanced Card Actions Overlay -->
+        <div class="card-actions-overlay" (click)="$event.stopPropagation()">
+          <button class="quick-action" 
+                  (click)="shareChallenge(challenge)"
+                  [attr.aria-label]="'Partager ' + challenge.title"
+                  title="Partager ce défi">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+              <polyline points="16,6 12,2 8,6"/>
+              <line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
+          </button>
+
+          <button class="quick-action" 
+                  *ngIf="isUserInChallenge(challenge) && getUserChallengeData(challenge)?.status === 'active'"
+                  (click)="updateChallengeProgress(challenge, 1)"
+                  [attr.aria-label]="'Mettre à jour la progression de ' + challenge.title"
+                  title="Mettre à jour la progression">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </button>
+        </div>
+
+
+
+      <!-- Enhanced Empty State -->
+      <div class="empty-state" *ngIf="filteredChallenges.length === 0">
+        <div class="empty-card">
+          <div class="empty-icon">🏆</div>
+          <h3 class="empty-title">Aucun défi trouvé</h3>
+          <p class="empty-message">
+            Essayez de modifier vos filtres ou créez votre premier défi personnalisé !
+          </p>
+          <div class="empty-actions">
+            <button class="btn btn-primary" (click)="createCustomChallenge()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span>Créer un défi</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Action Button -->
+  <div class="floating-actions">
+    <button 
+      (click)="createCustomChallenge()"
+      class="fab primary"
+      title="Créer un défi">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Modal Détails du défi -->
+  <div class="modal-overlay" *ngIf="showChallengeDetails && selectedChallenge" (click)="closeChallengeDetails()">
+    <div class="modal modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{selectedChallenge.title}}</h2>
+        <button class="btn-close" (click)="closeChallengeDetails()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="challenge-details">
+          <div class="detail-header">
+            <div class="detail-info">
+              <div class="detail-badges">
+                <span class="badge category" 
+                      [style.background-color]="getCategoryInfo(selectedChallenge.category).color">
+                  <span>{{getCategoryInfo(selectedChallenge.category).icon}}</span>
+                  {{getCategoryInfo(selectedChallenge.category).label}}
+                </span>
+                <span class="badge difficulty" 
+                      [style.background-color]="getDifficultyInfo(selectedChallenge.difficulty).color">
+                  {{getDifficultyInfo(selectedChallenge.difficulty).label}}
+                </span>
+              </div>
+              
+              <p class="detail-description">{{selectedChallenge.description}}</p>
+              
+              <div class="detail-stats">
+                <div class="stat">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                  </svg>
+                  <span>{{selectedChallenge.participants}} participants</span>
+                </div>
+                <div class="stat">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  <span>{{formatDate(selectedChallenge.startDate)}} - {{formatDate(selectedChallenge.endDate)}}</span>
+                </div>
+                <div class="stat">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                  </svg>
+                  <span>{{selectedChallenge.reward}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-progress" *ngIf="isUserInChallenge(selectedChallenge)">
+            <h3>Votre progression</h3>
+            <div class="progress-section">
+              <div class="progress-stats">
+                <div class="progress-stat">
+                  <span class="stat-value">{{getUserChallengeData(selectedChallenge).progress || 0}}%</span>
+                  <span class="stat-label">Progression</span>
+                </div>
+                <div class="progress-stat">
+                  <span class="stat-value">{{getUserChallengeData(selectedChallenge).points || 0}}</span>
+                  <span class="stat-label">Points</span>
+                </div>
+                <div class="progress-stat" *ngIf="getUserChallengeData(selectedChallenge).rank">
+                  <span class="stat-value">#{{getUserChallengeData(selectedChallenge).rank}}</span>
+                  <span class="stat-label">Rang</span>
+                </div>
+              </div>
+              
+              <div class="progress-bar large">
+                <div class="progress-fill" 
+                     [style.width.%]="getUserChallengeData(selectedChallenge).progress || 0">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-tasks" *ngIf="selectedChallenge.tasks && selectedChallenge.tasks.length > 0">
+            <h3>Tâches</h3>
+            <div class="tasks-list">
+              <div class="task-item" 
+                   *ngFor="let task of selectedChallenge.tasks"
+                   [class.completed]="task.isCompleted">
+                <div class="task-checkbox">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline *ngIf="task.isCompleted" points="20,6 9,17 4,12"/>
+                    <circle *ngIf="!task.isCompleted" cx="12" cy="12" r="10"/>
+                  </svg>
+                </div>
+                <div class="task-content">
+                  <h4>{{task.title}}</h4>
+                  <p>{{task.description}}</p>
+                  <div class="task-progress">
+                    <span>{{task.currentValue}} / {{task.targetValue}} {{task.unit}}</span>
+                    <span class="task-points">+{{task.points}} points</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="shareChallenge(selectedChallenge)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+            <polyline points="16,6 12,2 8,6"/>
+            <line x1="12" y1="2" x2="12" y2="15"/>
+          </svg>
+          Partager
+        </button>
+        
+        <button class="btn btn-primary" 
+                *ngIf="!isUserInChallenge(selectedChallenge) && selectedChallenge.status === 'available'"
+                (click)="joinChallenge(selectedChallenge); closeChallengeDetails()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Rejoindre le défi
+        </button>
+        
+        <button class="btn btn-danger" 
+                *ngIf="isUserInChallenge(selectedChallenge) && getUserChallengeData(selectedChallenge).status === 'active'"
+                (click)="leaveChallenge(selectedChallenge); closeChallengeDetails()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Abandonner
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Création de défi -->
+  <div class="modal-overlay" *ngIf="showCreateModal" (click)="closeCreateModal()">
+    <div class="modal modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Créer un nouveau défi
+        </h2>
+        <button class="btn-close" (click)="closeCreateModal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="challengeForm" (ngSubmit)="saveChallenge()" class="challenge-form">
+          <div class="form-group">
+            <label for="title">Titre du défi <span class="required">*</span></label>
+            <input id="title" type="text" formControlName="title" placeholder="Ex: Défi 30 jours de méditation"
+                   [class.is-invalid]="challengeForm.get('title')?.invalid && challengeForm.get('title')?.touched">
+            <div *ngIf="challengeForm.get('title')?.invalid && challengeForm.get('title')?.touched" class="invalid-feedback">
+              <div *ngIf="challengeForm.get('title')?.errors?.['required']">Le titre est requis.</div>
+              <div *ngIf="challengeForm.get('title')?.errors?.['minlength']">Le titre doit contenir au moins 3 caractères.</div>
+              <div *ngIf="challengeForm.get('title')?.errors?.['maxlength']">Le titre ne doit pas dépasser 100 caractères.</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description <span class="required">*</span></label>
+            <textarea id="description" formControlName="description" rows="4"
+                      placeholder="Décrivez votre défi en détail"
+                      [class.is-invalid]="challengeForm.get('description')?.invalid && challengeForm.get('description')?.touched"></textarea>
+            <div *ngIf="challengeForm.get('description')?.invalid && challengeForm.get('description')?.touched" class="invalid-feedback">
+              <div *ngIf="challengeForm.get('description')?.errors?.['required']">La description est requise.</div>
+              <div *ngIf="challengeForm.get('description')?.errors?.['minlength']">La description doit contenir au moins 10 caractères.</div>
+              <div *ngIf="challengeForm.get('description')?.errors?.['maxlength']">La description ne doit pas dépasser 500 caractères.</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category">Catégorie <span class="required">*</span></label>
+              <select id="category" formControlName="category"
+                      [class.is-invalid]="challengeForm.get('category')?.invalid && challengeForm.get('category')?.touched">
+                <option *ngFor="let cat of challengeCategories" [value]="cat.value">{{ cat.label }}</option>
+              </select>
+              <div *ngIf="challengeForm.get('category')?.invalid && challengeForm.get('category')?.touched" class="invalid-feedback">
+                <div *ngIf="challengeForm.get('category')?.errors?.['required']">La catégorie est requise.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="difficulty">Difficulté <span class="required">*</span></label>
+              <select id="difficulty" formControlName="difficulty"
+                      [class.is-invalid]="challengeForm.get('difficulty')?.invalid && challengeForm.get('difficulty')?.touched">
+                <option *ngFor="let diff of difficultyLevels.slice(1)" [value]="diff.value">{{ diff.label }}</option>
+              </select>
+              <div *ngIf="challengeForm.get('difficulty')?.invalid && challengeForm.get('difficulty')?.touched" class="invalid-feedback">
+                <div *ngIf="challengeForm.get('difficulty')?.errors?.['required']">La difficulté est requise.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="target">Objectif numérique <span class="required">*</span></label>
+              <input id="target" type="number" formControlName="target" placeholder="Ex: 10000"
+                     [class.is-invalid]="challengeForm.get('target')?.invalid && challengeForm.get('target')?.touched">
+              <div *ngIf="challengeForm.get('target')?.invalid && challengeForm.get('target')?.touched" class="invalid-feedback">
+                <div *ngIf="challengeForm.get('target')?.errors?.['required']">L'objectif est requis.</div>
+                <div *ngIf="challengeForm.get('target')?.errors?.['min']">L'objectif doit être au moins 1.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="unit">Unité de mesure <span class="required">*</span></label>
+              <input id="unit" type="text" formControlName="unit" placeholder="Ex: pas, km, minutes"
+                     [class.is-invalid]="challengeForm.get('unit')?.invalid && challengeForm.get('unit')?.touched">
+              <div *ngIf="challengeForm.get('unit')?.invalid && challengeForm.get('unit')?.touched" class="invalid-feedback">
+                <div *ngIf="challengeForm.get('unit')?.errors?.['required']">L'unité est requise.</div>
+                <div *ngIf="challengeForm.get('unit')?.errors?.['maxlength']">L'unité ne doit pas dépasser 20 caractères.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startDate">Date de début <span class="required">*</span></label>
+              <input id="startDate" type="date" formControlName="startDate"
+                     [class.is-invalid]="challengeForm.get('startDate')?.invalid && challengeForm.get('startDate')?.touched">
+              <div *ngIf="challengeForm.get('startDate')?.invalid && challengeForm.get('startDate')?.touched" class="invalid-feedback">
+                Le date de début est requise.
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="endDate">Date de fin <span class="required">*</span></label>
+              <input id="endDate" type="date" formControlName="endDate"
+                     [class.is-invalid]="challengeForm.get('endDate')?.invalid && challengeForm.get('endDate')?.touched">
+              <div *ngIf="challengeForm.get('endDate')?.invalid && challengeForm.get('endDate')?.touched" class="invalid-feedback">
+                La date de fin est requise.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="rewardPoints">Points de récompense <span class="required">*</span></label>
+              <input id="rewardPoints" type="number" formControlName="rewardPoints" placeholder="Ex: 200"
+                     [class.is-invalid]="challengeForm.get('rewardPoints')?.invalid && challengeForm.get('rewardPoints')?.touched">
+              <div *ngIf="challengeForm.get('rewardPoints')?.invalid && challengeForm.get('rewardPoints')?.touched" class="invalid-feedback">
+                <div *ngIf="challengeForm.get('rewardPoints')?.errors?.['required']">Les points de récompense sont requis.</div>
+                <div *ngIf="challengeForm.get('rewardPoints')?.errors?.['min']">Minimum 10 points.</div>
+                <div *ngIf="challengeForm.get('rewardPoints')?.errors?.['max']">Maximum 1000 points.</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="maxParticipants">Participants max (optionnel)</label>
+              <input id="maxParticipants" type="number" formControlName="maxParticipants" placeholder="Ex: 50"
+                     [class.is-invalid]="challengeForm.get('maxParticipants')?.invalid && challengeForm.get('maxParticipants')?.touched">
+              <div *ngIf="challengeForm.get('maxParticipants')?.invalid && challengeForm.get('maxParticipants')?.touched" class="invalid-feedback">
+                <div *ngIf="challengeForm.get('maxParticipants')?.errors?.['min']">Minimum 1 participant.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <input id="isPublic" type="checkbox" formControlName="isPublic">
+            <label for="isPublic">Rendre ce défi public</label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" (click)="closeCreateModal()">Annuler</button>
+            <button type="submit" class="btn btn-primary" [disabled]="challengeForm.invalid || isCreating">
+              <span *ngIf="!isCreating">Créer le défi</span>
+              <span *ngIf="isCreating">Création en cours...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Classement -->
+  <div class="modal-overlay" *ngIf="showLeaderboard" (click)="closeLeaderboard()">
+    <div class="modal modal-md" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M14 15V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2z"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 1 0 5H18"/>
+          </svg>
+          Classement général
+        </h2>
+        <button class="btn-close" (click)="closeLeaderboard()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="leaderboard">
+          <div class="leaderboard-item" 
+               *ngFor="let user of leaderboardData"
+               [class.current-user]="user.isCurrentUser">
+            
+            <div class="rank-badge" [class]="'rank-' + user.rank">
+              <span *ngIf="user.rank <= 3">
+                <span *ngIf="user.rank === 1">🥇</span>
+                <span *ngIf="user.rank === 2">🥈</span>
+                <span *ngIf="user.rank === 3">🥉</span>
+              </span>
+              <span *ngIf="user.rank > 3">#{{user.rank}}</span>
+            </div>
+            
+            <img [src]="user.avatar" [alt]="user.name" class="user-avatar" (error)="onAvatarError($event)">
+            
+            <div class="user-info">
+              <span class="user-name">{{user.name}}</span>
+              <span class="user-points">{{user.points}} points</span>
+            </div>
+            
+            <div class="user-badge" *ngIf="user.isCurrentUser">
+              <span class="badge badge-primary">Vous</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="closeLeaderboard()">
+          Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

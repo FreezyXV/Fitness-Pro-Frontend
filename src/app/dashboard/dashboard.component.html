@@ -1,0 +1,504 @@
+<!-- src/app/dashboard/dashboard.component.html - VERSION AMÉLIORÉE AVEC ICÔNES -->
+<div class="dashboard-container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+      <div class="hero-background"></div>
+      <div class="hero-content">
+        <div class="profile-section">
+          <div class="profile-avatar" (click)="navigateToProfile()" title="Voir mon profil">
+            <img [src]="user?.profilePhotoUrl || 'default-avatar.png'"
+              alt="Avatar"
+              class="avatar-img"
+            />
+            <div class="status-indicator"></div>
+            <div class="profile-overlay">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="welcome-text">
+            <h1 class="greeting">
+              <span class="greeting-time">{{ getGreeting() }}</span>
+              <span class="user-name">{{ getFirstName() }} !</span>
+            </h1>
+            <p class="welcome-subtitle">Prêt pour une nouvelle journée d'entraînement ?</p>
+          </div>
+  
+          <div class="quick-actions">
+            <button class="action-btn primary" (click)="startWorkout()" [disabled]="isLoading">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5,3 19,12 5,21"/>
+              </svg>
+              <span>Commencer un entraînement</span>
+            </button>
+            
+            <button class="action-btn secondary" (click)="viewProgress()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 3v18h18"/>
+                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+              </svg>
+              <span>Voir mes progrès</span>
+            </button>
+          </div>
+          
+          <div class="motivation-section" *ngIf="!isLoading && !error">
+            <div class="motivation-card">
+              <div class="motivation-content">
+                <h2 class="motivation-title">Citation du moment</h2>
+                <p class="motivation-text">{{ currentQuote }}</p>
+                <div class="motivation-actions">
+                  <button class="btn-motivation primary" (click)="viewProgress()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="3"/>
+                      <path d="M12 1v6m0 6v6"/>
+                      <path d="M1 12h6m6 0h6"/>
+                    </svg>
+                    Voir mes objectifs
+                  </button>
+                  <button class="btn-motivation secondary" (click)="startWorkout()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    Nouveau défi
+                  </button>
+                </div>
+              </div>
+              <div class="motivation-visual">
+                <div class="floating-shapes">
+                  <div class="shape circle"></div>
+                  <div class="shape triangle"></div>
+                  <div class="shape square"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Calendar Section -->
+        <div class="calendar-section">
+          <app-mini-calendar 
+            [showQuickActions]="true"
+            [showActivityDetails]="true"
+            [highlightToday]="true"
+            (daySelected)="onCalendarDaySelected($event)"
+            (activityClicked)="onCalendarActivityClicked($event)"
+            (scheduleRequested)="onCalendarScheduleRequested($event)">
+          </app-mini-calendar>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+      <div class="loading-spinner"></div>
+      <p>Chargement des données...</p>
+    </div>
+  
+    <!-- Error State -->
+    <div class="error-state" *ngIf="error && !isLoading">
+      <div class="error-icon">⚠️</div>
+      <h3>Erreur de chargement</h3>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="retryLoad()">
+        Réessayer
+      </button>
+    </div>
+  
+    <!-- Stats Grid -->
+    <div class="stats-grid" *ngIf="!isLoading && !error">
+      <!-- Physical Stats Card -->
+      <div class="stat-card physical-stats">
+        <div class="card-header">
+          <h3>Statistiques physiques</h3>
+          <div class="header-actions">
+            <button class="edit-btn" (click)="editProfile()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="stats-grid-inner">
+          <div class="stat-item age">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Âge</span>
+              <span class="stat-value">{{ user?.age || '-' }}</span>
+            </div>
+          </div>
+          
+          <div class="stat-item height">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M8 6l4-4 4 4M8 18l4 4 4-4"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Taille</span>
+              <span class="stat-value">{{ user?.height || '-' }}<small>cm</small></span>
+            </div>
+          </div>
+          
+          <div class="stat-item weight">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1L2 6l10 5 10-5-10-5z"/>
+                <path d="M2 16l10 5 10-5"/>
+                <path d="M2 11l10 5 10-5"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">Poids</span>
+              <span class="stat-value">{{ user?.weight || '-' }}<small>kg</small></span>
+            </div>
+          </div>
+          
+          <div class="stat-item ideal-weight">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="6"/>
+                <circle cx="12" cy="12" r="2"/>
+              </svg>
+            </div>
+            <div class="stat-content">
+              <span class="stat-label">IMC</span>
+              <span class="stat-value">{{ calculateBMI() }}</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- BMI Section -->
+        <div class="bmi-section" *ngIf="user?.height && user?.weight">
+          <div class="bmi-card">
+            <div class="bmi-header">
+              <span class="bmi-title">Indice de Masse Corporelle</span>
+              <span class="bmi-value">{{ calculateBMI() }}</span>
+            </div>
+            <div class="bmi-bar">
+              <div class="bmi-indicator" [style.left.%]="getBMIPosition()"></div>
+            </div>
+            <div class="bmi-labels">
+              <span>Sous-poids</span>
+              <span>Normal</span>
+              <span>Surpoids</span>
+            </div>
+            <p class="bmi-status">{{ getBMIStatus() }}</p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Today's Workout Card -->
+      <div class="stat-card todays-workout" *ngIf="todaysWorkout">
+        <div class="card-header">
+          <h3>Entraînement du jour</h3>
+        </div>
+        
+        <div class="workout-content">
+          <div class="workout-info">
+            <h4>{{ todaysWorkout.name }}</h4>
+            <p>{{ todaysWorkout.description }}</p>
+            <div class="workout-stats">
+              <span class="stat">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12,6 12,12 16,14"/>
+                </svg>
+                {{ todaysWorkout.estimatedDuration }} min
+              </span>
+              <span class="stat">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                  <path d="M2 17l10 5 10-5"/>
+                </svg>
+                ~{{ todaysWorkout.estimatedCalories }} cal
+              </span>
+            </div>
+          </div>
+          
+          <button class="start-workout-btn" (click)="startTodaysWorkout()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5,3 19,12 5,21"/>
+            </svg>
+            Commencer maintenant
+          </button>
+        </div>
+      </div>
+  
+      <!-- Calories Today Card -->
+      <div class="stat-card calories-card">
+        <div class="card-header">
+          <h3>Calories aujourd'hui</h3>
+        </div>
+        
+        <div class="calories-content">
+          <div class="calories-circle">
+            <svg viewBox="0 0 100 100" class="calories-svg">
+              <defs>
+                <linearGradient id="caloriesGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="40" class="calories-bg"/>
+              <circle 
+                cx="50" 
+                cy="50" 
+                r="40" 
+                class="calories-progress"
+                [style.stroke-dasharray]="'251 251'"
+                [style.stroke-dashoffset]="251 - (getCalorieProgress() / 100 * 251)"
+              />
+            </svg>
+            <div class="calories-text">
+              <span class="calories-burned">{{ caloriesBurnedToday }}</span>
+              <span class="calories-goal">/ {{ dailyCalorieGoal }}</span>
+            </div>
+          </div>
+          
+          <div class="calories-info">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="getCalorieProgress()"></div>
+            </div>
+            <p class="progress-text">
+              {{ getCalorieProgress() | number:'1.0-0' }}% de l'objectif atteint
+            </p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Workout Summary Card - VERSION AMÉLIORÉE -->
+      <div class="stat-card workout-summary">
+        <div class="card-header">
+          <h3>Résumé d'entraînement</h3>
+        </div>
+        
+        <div class="summary-stats">
+          <div class="summary-item">
+            <div class="summary-icon total-workouts">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+              </svg>
+            </div>
+            <div class="summary-content">
+              <span class="summary-number">{{ totalWorkouts }}</span>
+              <span class="summary-label">Total<br>Entraînements</span>
+            </div>
+          </div>
+          
+          <div class="summary-item">
+            <div class="summary-icon total-minutes">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+            </div>
+            <div class="summary-content">
+              <span class="summary-number">{{ totalMinutes }}</span>
+              <span class="summary-label">Minutes<br>d'Exercice</span>
+            </div>
+          </div>
+          
+          <div class="summary-item">
+            <div class="summary-icon current-streak">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+              </svg>
+            </div>
+            <div class="summary-content">
+              <span class="summary-number">{{ currentStreak }}</span>
+              <span class="summary-label">Jours<br>Consécutifs</span>
+            </div>
+          </div>
+          
+          <div class="summary-item">
+            <div class="summary-icon weekly-workouts">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+                <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
+              </svg>
+            </div>
+            <div class="summary-content">
+              <span class="summary-number">{{ weeklyWorkouts }}</span>
+              <span class="summary-label">Cette<br>Semaine</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Performance Chart Card - VERSION RÉVOLUTIONNÉE -->
+      <div class="stat-card performance-chart">
+        <div class="card-header">
+          <h3>Performances (30 derniers jours)</h3>
+        </div>
+        
+        <div class="chart-container">
+          <!-- Empty State for No Data -->
+          <div class="empty-chart-state" *ngIf="totalWorkouts === 0">
+            <div class="empty-chart-icon">
+              <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 3v18h18"/>
+                <path d="M7 12l3-3 3 3 5-5"/>
+              </svg>
+            </div>
+            <div class="empty-chart-content">
+              <h4>Aucune donnée d'entraînement</h4>
+              <p>Commencez votre premier entraînement pour voir vos performances ici !</p>
+              <button class="btn btn-primary" (click)="startWorkout()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5,3 19,12 5,21"/>
+                </svg>
+                Commencer maintenant
+              </button>
+            </div>
+          </div>
+  
+          <!-- Chart with Data -->
+          <div class="chart-placeholder" *ngIf="totalWorkouts > 0">
+            <svg width="100%" height="280" viewBox="0 0 500 280">
+              <!-- Enhanced grid -->
+              <defs>
+                <pattern id="modernGrid" width="50" height="28" patternUnits="userSpaceOnUse">
+                  <path d="M 50 0 L 0 0 0 28" fill="none" stroke="rgba(148, 163, 184, 0.3)" stroke-width="1"/>
+                </pattern>
+                <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#21BF73;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#00B5AD;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#667eea;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#21BF73;stop-opacity:0.3" />
+                  <stop offset="100%" style="stop-color:#21BF73;stop-opacity:0.05" />
+                </linearGradient>
+              </defs>
+              
+              <rect width="100%" height="100%" fill="url(#modernGrid)" />
+              
+              <!-- Area under curve -->
+              <path
+                fill="url(#areaGradient)"
+                d="M 30,220 L 80,200 L 130,180 L 180,160 L 230,140 L 280,130 L 330,125 L 380,115 L 430,110 L 470,100 L 470,240 L 30,240 Z"
+              />
+              
+              <!-- Main performance line -->
+              <path
+                fill="none"
+                stroke="url(#chartGradient)"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M 30,220 L 80,200 L 130,180 L 180,160 L 230,140 L 280,130 L 330,125 L 380,115 L 430,110 L 470,100"
+              />
+              
+              <!-- Enhanced data points with tooltips -->
+              <circle cx="30" cy="220" r="6" fill="#21BF73" stroke="white" stroke-width="3">
+                <title>Jour 1: 45 min, 280 cal</title>
+              </circle>
+              <circle cx="80" cy="200" r="6" fill="#21BF73" stroke="white" stroke-width="3">
+                <title>Jour 5: 50 min, 320 cal</title>
+              </circle>
+              <circle cx="130" cy="180" r="6" fill="#00B5AD" stroke="white" stroke-width="3">
+                <title>Jour 10: 55 min, 350 cal</title>
+              </circle>
+              <circle cx="180" cy="160" r="6" fill="#00B5AD" stroke="white" stroke-width="3">
+                <title>Jour 15: 60 min, 380 cal</title>
+              </circle>
+              <circle cx="230" cy="140" r="6" fill="#00B5AD" stroke="white" stroke-width="3">
+                <title>Jour 20: 65 min, 410 cal</title>
+              </circle>
+              <circle cx="280" cy="130" r="6" fill="#667eea" stroke="white" stroke-width="3">
+                <title>Jour 22: 70 min, 425 cal</title>
+              </circle>
+              <circle cx="330" cy="125" r="6" fill="#667eea" stroke="white" stroke-width="3">
+                <title>Jour 25: 72 min, 440 cal</title>
+              </circle>
+              <circle cx="380" cy="115" r="6" fill="#667eea" stroke="white" stroke-width="3">
+                <title>Jour 27: 75 min, 460 cal</title>
+              </circle>
+              <circle cx="430" cy="110" r="6" fill="#667eea" stroke="white" stroke-width="3">
+                <title>Jour 29: 78 min, 475 cal</title>
+              </circle>
+              <circle cx="470" cy="100" r="8" fill="#667eea" stroke="white" stroke-width="4">
+                <title>Aujourd'hui: 80 min, 490 cal</title>
+              </circle>
+            </svg>
+            
+            <!-- Chart Legend -->
+            <div class="chart-legend">
+              <div class="legend-item">
+                <div class="legend-color performance"></div>
+                <span>Performance</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color calories"></div>
+                <span>Calories</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color duration"></div>
+                <span>Durée</span>
+              </div>
+            </div>
+            
+            <!-- Chart Statistics -->
+            <div class="chart-stats">
+              <div class="chart-stat">
+                <div class="stat-value">+25%</div>
+                <div class="stat-label">Progression</div>
+              </div>
+              <div class="chart-stat">
+                <div class="stat-value">{{ totalCalories }}</div>
+                <div class="stat-label">Calories brûlées</div>
+              </div>
+              <div class="chart-stat">
+                <div class="stat-value">{{ Math.round(totalMinutes / totalWorkouts) || 0 }}</div>
+                <div class="stat-label">Durée moyenne</div>
+              </div>
+              <div class="chart-stat">
+                <div class="stat-value">{{ currentStreak }}</div>
+                <div class="stat-label">Meilleure série</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Quick Actions Toolbar (Mobile) -->
+    <div class="quick-actions-mobile" *ngIf="!isLoading">
+      <button class="quick-btn" (click)="startWorkout()" title="Commencer un entraînement">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5,3 19,12 5,21"/>
+        </svg>
+      </button>
+      
+      <button class="quick-btn" (click)="quickLogWorkout()" title="Enregistrer une séance rapide">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </button>
+      
+      <button class="quick-btn" (click)="viewProgress()" title="Voir les progrès">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 3v18h18"/>
+          <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+        </svg>
+      </button>
+    </div>
+  </div>

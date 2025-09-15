@@ -1,0 +1,1053 @@
+<!-- src/app/create-workout/create-workout.component.html - Style Dashboard -->
+<div class="create-workout-container">
+  <!-- Header -->
+  <div class="hero-header">
+    <div class="hero-content">
+      <div class="header-left">
+        <h1 class="page-title">
+          <div class="title-icon">
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" *ngIf="!isEditMode" />
+              <line x1="12" y1="8" x2="12" y2="16" *ngIf="!isEditMode" />
+              <line x1="8" y1="12" x2="16" y2="12" *ngIf="!isEditMode" />
+              <path
+                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+                *ngIf="isEditMode"
+              />
+            </svg>
+          </div>
+          <span>{{ getPageTitle() }}</span>
+        </h1>
+        <p class="page-subtitle">
+          {{
+            isEditMode
+              ? "Modifiez votre programme d'entraînement"
+              : "Créez votre programme personnalisé"
+          }}
+        </p>
+      </div>
+
+      <div class="header-stats">
+        <div class="stat-pill">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <polyline points="14,2 14,8 20,8" />
+          </svg>
+          <span class="stat-value">{{ currentStep }}</span>
+          <span class="stat-label">Étape</span>
+        </div>
+        <div class="stat-pill">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+          </svg>
+          <span class="stat-value">{{ selectedExercises.length }}</span>
+          <span class="stat-label">Exercices</span>
+        </div>
+        <div class="stat-pill" *ngIf="workoutSummary.estimatedDuration > 0">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12,6 12,12 16,14" />
+          </svg>
+          <span class="stat-value">{{ workoutSummary.estimatedDuration }}</span>
+          <span class="stat-label">Minutes</span>
+        </div>
+        <div class="stat-pill" *ngIf="workoutSummary.totalSets > 0">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+          </svg>
+          <span class="stat-value">{{ workoutSummary.totalSets }}</span>
+          <span class="stat-label">Séries</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="progress-steps">
+    <div class="steps-container">
+      <div
+        class="step-item"
+        *ngFor="let step of steps; let i = index"
+        [class.active]="currentStep >= i + 1"
+        [class.completed]="currentStep > i + 1"
+      >
+        <div class="step-circle">
+          <div class="step-number" *ngIf="currentStep <= i + 1">
+            {{ i + 1 }}
+          </div>
+          <svg
+            *ngIf="currentStep > i + 1"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+          >
+            <polyline points="20,6 9,17 4,12" />
+          </svg>
+        </div>
+        <div class="step-content">
+          <h4>{{ step.title }}</h4>
+          <p>{{ step.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug Section (développement) -->
+  <div class="debug-section" *ngIf="error || isLoading">
+    <div class="debug-card">
+      <div class="debug-controls">
+        <button (click)="testExerciseAPI()" class="btn btn-outline btn-sm">
+          🧪 Test API
+        </button>
+        <button (click)="loadInitialData()" class="btn btn-outline btn-sm">
+          🔄 Recharger
+        </button>
+        <button (click)="clearDraft()" class="btn btn-outline btn-sm">
+          🗑️ Vider brouillon
+        </button>
+      </div>
+
+      <div class="debug-info">
+        <p>
+          <strong>Status:</strong>
+          <span
+            [class]="
+              isLoading
+                ? 'status-loading'
+                : error
+                ? 'status-error'
+                : 'status-success'
+            "
+          >
+            {{ isLoading ? "Chargement..." : error ? "Erreur" : "OK" }}
+          </span>
+        </p>
+        <p>
+          <strong>Exercices disponibles:</strong>
+          {{ availableExercises.length }}
+        </p>
+        <p><strong>Mode:</strong> {{ isEditMode ? "Édition" : "Création" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Display -->
+  <div class="error-alert" *ngIf="error" role="alert">
+    <div class="alert-content">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="15" y1="9" x2="9" y2="15" />
+        <line x1="9" y1="9" x2="15" y2="15" />
+      </svg>
+      <span>{{ error }}</span>
+      <button (click)="clearError()">×</button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="loading-spinner"></div>
+    <p>Chargement des exercices...</p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" *ngIf="!isLoading">
+    <form [formGroup]="workoutForm" (ngSubmit)="onSubmit()">
+      <!-- Step 1: Basic Information -->
+      <div class="form-step-card" *ngIf="currentStep === 1">
+        <div class="step-header">
+          <h2>Informations de base</h2>
+          <p>
+            Définissez les caractéristiques de votre programme d\'entraînement
+          </p>
+        </div>
+
+        <div class="form-content">
+          <div class="form-group">
+            <label for="workout-name" class="form-label required"
+              >Nom du programme</label
+            >
+            <input
+              type="text"
+              id="workout-name"
+              formControlName="name"
+              class="form-input"
+              [class.error]="getFieldError('name')"
+              placeholder="Ex: Mon programme force du matin"
+              maxlength="100"
+            />
+            <div class="field-error" *ngIf="getFieldError('name')">
+              {{ getFieldError("name") }}
+            </div>
+            <div class="field-help">
+              Choisissez un nom descriptif pour votre programme
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="workout-description" class="form-label"
+              >Description</label
+            >
+            <textarea
+              id="workout-description"
+              formControlName="description"
+              class="form-textarea"
+              rows="4"
+              maxlength="500"
+              placeholder="Décrivez vos objectifs et le type d\'entraînement..."
+            ></textarea>
+            <div class="field-help">
+              Décrivez votre programme pour vous y retrouver facilement
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="workout-category" class="form-label required"
+                >Catégorie</label
+              >
+              <select
+                id="workout-category"
+                formControlName="category"
+                class="form-select"
+              >
+                <option
+                  *ngFor="let category of workoutCategories"
+                  [value]="category.value"
+                >
+                  {{ category.icon }} {{ category.label }}
+                </option>
+              </select>
+              <div class="field-help">Type principal d\'entraînement</div>
+            </div>
+
+            <div class="form-group">
+              <label for="workout-difficulty" class="form-label required"
+                >Niveau de difficulté</label
+              >
+              <select
+                id="workout-difficulty"
+                formControlName="difficulty_level"
+                class="form-select"
+              >
+                <option
+                  *ngFor="let difficulty of difficultyLevels"
+                  [value]="difficulty.value"
+                >
+                  {{ difficulty.icon }} {{ difficulty.label }}
+                </option>
+              </select>
+              <div class="field-help">Niveau recommandé pour ce programme</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="is_public" />
+              <span class="checkbox-text">
+                <strong>Rendre ce programme public</strong>
+                <small
+                  >D\'autres utilisateurs pourront voir et utiliser votre
+                  programme</small
+                >
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Exercise Selection -->
+      <div class="form-step-card" *ngIf="currentStep === 2">
+        <div class="step-header">
+          <h2>Sélection des exercices</h2>
+          <p>
+            Choisissez les exercices pour votre programme ({{
+              selectedExercises.length
+            }}
+            sélectionnés)
+          </p>
+        </div>
+
+        <!-- Exercise Filters -->
+        <div class="filters-card">
+          <div class="search-container">
+            <div class="search-input-wrapper">
+              <div class="search-icon">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                class="search-input"
+                placeholder="Rechercher un exercice..."
+                [(ngModel)]="exerciseFilter.search"
+                (input)="filterExercises()"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <button
+                *ngIf="exerciseFilter.search"
+                (click)="exerciseFilter.search = ''; filterExercises()"
+                class="clear-search-btn"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-controls-grid">
+            <div class="filter-group">
+              <label class="filter-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>Partie du corps</span>
+              </label>
+              <select
+                [(ngModel)]="exerciseFilter.bodyPart"
+                (change)="filterExercises()"
+                class="filter-select"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option
+                  *ngFor="let bodyPart of bodyParts"
+                  [value]="bodyPart.value"
+                >
+                  {{ bodyPart.label }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                </svg>
+                <span>Difficulté</span>
+              </label>
+              <select
+                [(ngModel)]="exerciseFilter.difficulty"
+                (change)="filterExercises()"
+                class="filter-select"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option value="all">Tous les niveaux</option>
+                <option
+                  *ngFor="let difficulty of difficultyLevels"
+                  [value]="difficulty.value"
+                >
+                  {{ difficulty.icon }} {{ difficulty.label }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+                <span>Type d\'exercice</span>
+              </label>
+              <select
+                [(ngModel)]="exerciseFilter.category"
+                (change)="filterExercises()"
+                class="filter-select"
+                [ngModelOptions]="{ standalone: true }"
+              >
+                <option
+                  *ngFor="let category of exerciseCategories"
+                  [value]="category.value"
+                >
+                  {{ category.label }}
+                </option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <button (click)="resetFilters()" class="reset-filters-btn">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="23 4 23 10 17 10" />
+                  <path
+                    d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"
+                  />
+                </svg>
+                <span>Réinitialiser</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Exercises Preview -->
+        <div class="selected-preview" *ngIf="selectedExercises.length > 0">
+          <h3>Exercices sélectionnés ({{ selectedExercises.length }})</h3>
+          <div class="preview-exercises">
+            <div
+              class="preview-exercise"
+              *ngFor="let exercise of selectedExercises; let i = index"
+            >
+              <div class="exercise-order">{{ i + 1 }}</div>
+              <div class="exercise-info">
+                <span class="exercise-name">{{ exercise.name }}</span>
+                <span class="exercise-body-part">{{
+                  getBodyPartLabel(exercise.bodyPart || "")
+                }}</span>
+              </div>
+              <div class="exercise-controls">
+                <button
+                  type="button"
+                  class="move-btn"
+                  (click)="moveExercise(i, i - 1)"
+                  [disabled]="i === 0"
+                  title="Monter"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="18 15 12 9 6 15" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="move-btn"
+                  (click)="moveExercise(i, i + 1)"
+                  [disabled]="i === selectedExercises.length - 1"
+                  title="Descendre"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="exercise-remove"
+                  (click)="removeExercise(i)"
+                  title="Supprimer"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exercise Grid -->
+        <div class="exercises-section">
+          <div class="section-header">
+            <h3>Exercices disponibles ({{ filteredExercises.length }})</h3>
+          </div>
+
+          <div class="exercises-grid" *ngIf="filteredExercises.length > 0">
+            <div
+              class="exercise-card"
+              *ngFor="let exercise of filteredExercises"
+              [class.selected]="isExerciseSelected(exercise)"
+              (click)="toggleExerciseSelection(exercise)"
+            >
+              <div class="exercise-header">
+                <h4>{{ exercise.name }}</h4>
+                <div class="exercise-badges">
+                  <span
+                    class="badge difficulty"
+                    [style.background-color]="
+                      getDifficultyInfo(exercise.difficulty || '')
+                        ?.color
+                    "
+                  >
+                    {{ getDifficultyIcon(exercise.difficulty || "") }}
+                  </span>
+                  <span
+                    class="badge selected"
+                    *ngIf="isExerciseSelected(exercise)"
+                    >✓</span
+                  >
+                </div>
+              </div>
+
+              <p
+                class="exercise-description"
+                *ngIf="exercise.description"
+              >
+                {{ exercise.description }}
+              </p>
+
+              <div class="exercise-metadata">
+                <div class="metadata-item">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                  <span>{{
+                    getBodyPartLabel(exercise.bodyPart || "")
+                  }}</span>
+                </div>
+                <div class="metadata-item" *ngIf="exercise.durationSeconds">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12,6 12,12 16,14" />
+                  </svg>
+                  <span>{{ formatDuration(exercise.durationSeconds) }}</span>
+                </div>
+                <div class="metadata-item" *ngIf="exercise.category">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                  </svg>
+                  <span>{{
+                    getCategoryLabel(exercise.category || "")
+                  }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- No Exercises State -->
+          <div class="empty-state" *ngIf="filteredExercises.length === 0">
+            <div class="empty-icon">
+              <svg
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </div>
+            <h3>Aucun exercice trouvé</h3>
+            <p>Essayez de modifier vos critères de recherche</p>
+            <button
+              type="button"
+              (click)="resetFilters()"
+              class="btn btn-secondary"
+            >
+              Réinitialiser les filtres
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Exercise Configuration -->
+      <div class="form-step-card" *ngIf="currentStep === 3">
+        <div class="step-header">
+          <h2>Configuration des exercices</h2>
+          <p>Personnalisez les paramètres de chaque exercice</p>
+        </div>
+
+        <div class="exercise-config-list">
+          <div
+            class="config-exercise"
+            *ngFor="let exercise of selectedExercises; let i = index"
+          >
+            <div class="config-header">
+              <div class="exercise-number">{{ i + 1 }}</div>
+              <div class="exercise-info">
+                <h4>{{ exercise.name }}</h4>
+                <div class="exercise-meta">
+                  <span class="meta-item">{{
+                    getBodyPartLabel(exercise.bodyPart || "")
+                  }}</span>
+                  <span
+                    class="meta-item difficulty"
+                    [style.color]="
+                      getDifficultyInfo(exercise.difficulty || '')
+                        ?.color
+                    "
+                  >
+                    {{ getDifficultyIcon(exercise.difficulty || "") }}
+                    {{ getDifficultyLabel(exercise.difficulty || "") }}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="remove-exercise"
+                (click)="removeExercise(i)"
+                title="Supprimer cet exercice"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M3 6h18" />
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="config-grid">
+              <div class="config-group">
+                <label>Séries</label>
+                <input
+                  type="number"
+                  [value]="exercise.sets"
+                  (input)="updateExerciseConfig(i, 'sets', $event)"
+                  class="config-input"
+                  min="1"
+                  max="10"
+                  placeholder="3"
+                />
+              </div>
+
+              <div class="config-group" *ngIf="!exercise.durationSeconds">
+                <label>Répétitions</label>
+                <input
+                  type="number"
+                  [value]="exercise.reps"
+                  (input)="updateExerciseConfig(i, 'reps', $event)"
+                  class="config-input"
+                  min="1"
+                  max="100"
+                  placeholder="10"
+                />
+              </div>
+
+              <div class="config-group" *ngIf="exercise.durationSeconds">
+                <label>Durée (secondes)</label>
+                <input
+                  type="number"
+                  [value]="exercise.durationSeconds"
+                  (input)="updateExerciseConfig(i, 'durationSeconds', $event)"
+                  class="config-input"
+                  min="5"
+                  max="300"
+                  placeholder="60"
+                />
+              </div>
+
+              <div class="config-group">
+                <label>Repos (secondes)</label>
+                <input
+                  type="number"
+                  [value]="exercise.restTimeSeconds"
+                  (input)="updateExerciseConfig(i, 'restTimeSeconds', $event)"
+                  class="config-input"
+                  min="0"
+                  max="300"
+                  placeholder="60"
+                />
+              </div>
+
+              <div class="config-group">
+                <label>Poids cible (kg)</label>
+                <input
+                  type="number"
+                  [value]="exercise.targetWeight"
+                  (input)="updateExerciseConfig(i, 'targetWeight', $event)"
+                  class="config-input"
+                  min="0"
+                  max="500"
+                  step="0.5"
+                  placeholder="Optional"
+                />
+              </div>
+
+              <div class="config-group full-width">
+                <label>Notes</label>
+                <input
+                  type="text"
+                  [value]="exercise.notes"
+                  (input)="updateExerciseConfig(i, 'notes', $event)"
+                  class="config-input"
+                  placeholder="Notes personnelles..."
+                  maxlength="200"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Final Summary -->
+        <div class="final-summary">
+          <h3>Résumé de votre programme</h3>
+          <div class="summary-stats">
+            <div class="summary-stat">
+              <div class="stat-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  />
+                  <polyline points="14,2 14,8 20,8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value">{{
+                  workoutSummary.totalExercises
+                }}</span>
+                <span class="stat-label">Exercices</span>
+              </div>
+            </div>
+            <div class="summary-stat">
+              <div class="stat-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12,6 12,12 16,14" />
+                </svg>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value">{{
+                  workoutSummary.estimatedDuration
+                }}</span>
+                <span class="stat-label">Minutes</span>
+              </div>
+            </div>
+            <div class="summary-stat">
+              <div class="stat-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+              </div>
+              <div class="stat-content">
+                <span class="stat-value"
+                  >~{{ workoutSummary.estimatedCalories }}</span
+                >
+                <span class="stat-label">Calories</span>
+              </div>
+            </div>
+            <div class="summary-stat">
+              <div class="stat-icon">💪</div>
+              <div class="stat-content">
+                <span class="stat-value">{{ workoutSummary.totalSets }}</span>
+                <span class="stat-label">Séries</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-details">
+            <div class="detail-item">
+              <strong>Catégorie:</strong>
+              <span class="category-badge">
+                {{ getCategoryIcon(workoutForm.value.category) }}
+                {{ getCategoryLabel(workoutForm.value.category) }}
+              </span>
+            </div>
+            <div class="detail-item">
+              <strong>Difficulté:</strong>
+              <span
+                class="difficulty-badge"
+                [style.color]="
+                  getDifficultyInfo(workoutForm.value.difficulty_level)?.color
+                "
+              >
+                {{ getDifficultyIcon(workoutForm.value.difficulty_level) }}
+                {{ getDifficultyLabel(workoutForm.value.difficulty_level) }}
+              </span>
+            </div>
+            <div class="detail-item" *ngIf="workoutForm.value.is_public">
+              <strong>Visibilité:</strong>
+              <span class="public-badge">🌍 Public</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="form-navigation">
+        <div class="nav-left">
+          <button type="button" class="nav-btn secondary" (click)="cancel()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+            <span>Annuler</span>
+          </button>
+        </div>
+
+        <div class="nav-right">
+          <button
+            type="button"
+            class="nav-btn secondary"
+            (click)="previousStep()"
+            *ngIf="currentStep > 1"
+            [disabled]="isSubmitting"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            <span>Précédent</span>
+          </button>
+
+          <button
+            type="button"
+            class="nav-btn primary"
+            (click)="nextStep()"
+            *ngIf="currentStep < totalSteps"
+            [disabled]="!canProceedToNextStep() || isSubmitting"
+          >
+            <span>Suivant</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+
+          <button
+            type="submit"
+            class="nav-btn primary"
+            *ngIf="currentStep === totalSteps"
+            [disabled]="!canCreateWorkout() || isSubmitting"
+          >
+            <svg
+              *ngIf="isSubmitting"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M21 12a9 9 0 11-6.219-8.56" />
+            </svg>
+            <svg
+              *ngIf="!isSubmitting"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="20,6 9,17 4,12" />
+            </svg>
+            <span *ngIf="isSubmitting">{{
+              isEditMode ? "Modification..." : "Création..."
+            }}</span>
+            <span *ngIf="!isSubmitting">{{
+              isEditMode ? "Modifier le programme" : "Créer le programme"
+            }}</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Quick Help Panel -->
+  <div
+    class="help-panel"
+    *ngIf="
+      currentStep === 2 &&
+      filteredExercises.length === 0 &&
+      availableExercises.length === 0
+    "
+  >
+    <div class="help-content">
+      <h3>Aucun exercice disponible</h3>
+      <p>
+        Il semble qu\'aucun exercice ne soit disponible dans la base de données.
+      </p>
+      <div class="help-actions">
+        <button (click)="testExerciseAPI()" class="btn btn-primary">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+            <line x1="9" y1="9" x2="9.01" y2="9" />
+            <line x1="15" y1="9" x2="15.01" y2="9" />
+          </svg>
+          <span>Tester la connexion</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Help Button -->
+  <div class="floating-help">
+    <button class="help-btn" title="Aide">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+        <line x1="12" y1="17" x2="12.01" y2="17" />
+      </svg>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,393 @@
+<!-- src/app/workout/workout-plan-card/workout-plan-card.component.html - Enhanced Dashboard Style -->
+
+<div
+  class="workout-plan-card-enhanced"
+  [class.list-view]="viewMode === 'list'"
+  [class.custom-template]="plan.isCustom"
+  [class.public-template]="plan.isPublic"
+  [class.active-template]="plan.isActive"
+  (click)="navigateToDetail()"
+>
+  <!-- Card Header with Enhanced Status -->
+  <div class="card-header">
+    <!-- Category Badge -->
+    <div class="category-badge" [attr.data-category]="plan.category">
+      <span class="category-icon">{{ getCategoryIcon(plan.category) }}</span>
+      <span class="category-text">{{ getCategoryLabel(plan.category) }}</span>
+    </div>
+
+    <!-- Status Indicators -->
+    <div class="status-indicators">
+      <span *ngIf="plan.isCustom" class="status-badge custom">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+        </svg>
+        Personnalisé
+      </span>
+      <span *ngIf="plan.isPublic" class="status-badge public">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path
+            d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"
+          />
+        </svg>
+        Public
+      </span>
+      <span *ngIf="plan.isActive" class="status-badge active">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polyline points="20,6 9,17 4,12" />
+        </svg>
+        Actif
+      </span>
+    </div>
+  </div>
+
+  <!-- Enhanced Card Content -->
+  <div class="card-content">
+    <!-- Plan Header -->
+    <div class="plan-header">
+      <h3 class="plan-title" [title]="plan.name">{{ plan.name }}</h3>
+      <div class="difficulty-badge" [attr.data-level]="plan.difficultyLevel">
+        <span class="difficulty-icon">{{
+          getDifficultyIcon(plan.difficultyLevel)
+        }}</span>
+        <span class="difficulty-text">{{
+          getDifficultyLabel(plan.difficultyLevel)
+        }}</span>
+      </div>
+    </div>
+
+    <!-- Plan Description -->
+    <p
+      class="plan-description"
+      *ngIf="plan.description"
+      [title]="plan.description"
+    >
+      {{ plan.description }}
+    </p>
+
+    <!-- Enhanced Plan Stats -->
+    <div class="plan-stats">
+      <div class="stat-item" *ngIf="plan.estimatedDuration">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12,6 12,12 16,14" />
+        </svg>
+        <span>{{ formatDuration(plan.estimatedDuration) }}</span>
+      </div>
+
+      <div class="stat-item" *ngIf="plan.estimatedCalories">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        </svg>
+        <span>{{ formatCalories(plan.estimatedCalories) }}</span>
+      </div>
+
+      <div class="stat-item" *ngIf="plan.exercises && plan.exercises.length">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          />
+          <polyline points="14,2 14,8 20,8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+        </svg>
+        <span
+          >{{ plan.exercises.length }} exercice{{
+            plan.exercises.length > 1 ? "s" : ""
+          }}</span
+        >
+      </div>
+
+      <!-- Creation Date -->
+      <div class="stat-item" *ngIf="plan.createdAt">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y1="10" />
+        </svg>
+        <span>{{ getTemplateAge(plan) }}</span>
+      </div>
+
+      <!-- Target Muscles -->
+      <div class="stat-item" *ngIf="getTargetMuscles(plan).length">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+          />
+        </svg>
+        <span
+          >{{ getTargetMuscles(plan).length }} zone{{
+            getTargetMuscles(plan).length > 1 ? "s" : ""
+          }}</span
+        >
+      </div>
+    </div>
+
+    <!-- Enhanced Action Buttons -->
+    <div class="action-buttons">
+      <button
+        class="btn btn-primary"
+        (click)="onStartSession($event)"
+        [attr.aria-label]="'Démarrer ' + plan.name"
+        title="Démarrer une session d'entraînement"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polygon points="5 3 19 12 5 21 5 3" />
+        </svg>
+        <span>Démarrer</span>
+      </button>
+
+      <button
+        class="btn btn-secondary"
+        (click)="onViewDetails($event)"
+        [attr.aria-label]="'Voir les détails de ' + plan.name"
+        title="Voir tous les détails de ce programme"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+        <span>Détails</span>
+      </button>
+    </div>
+
+    <!-- Enhanced Additional Info for List View -->
+    <div class="additional-info" *ngIf="viewMode === 'list'">
+      <!-- Enhanced Exercises Preview -->
+      <div
+        class="exercises-preview"
+        *ngIf="plan.exercises && plan.exercises.length"
+      >
+        <h4>🏋️‍♂️ Exercices inclus</h4>
+        <div class="exercises-list">
+          <span
+            *ngFor="let exercise of plan.exercises.slice(0, 3); let last = last"
+            class="exercise-name"
+          >
+            {{ exercise.name }}{{ !last ? ", " : "" }}
+          </span>
+          <span *ngIf="plan.exercises.length > 3" class="more-exercises">
+            et {{ plan.exercises.length - 3 }} autre{{
+              plan.exercises.length - 3 > 1 ? "s" : ""
+            }}...
+          </span>
+        </div>
+      </div>
+
+      <!-- Enhanced Target Areas -->
+      <div class="target-areas" *ngIf="getTargetMuscles(plan).length">
+        <h4>🎯 Zones ciblées</h4>
+        <div class="muscle-tags">
+          <span
+            *ngFor="let muscle of getTargetMuscles(plan).slice(0, 4)"
+            class="muscle-tag"
+          >
+            {{ muscle }}
+          </span>
+          <span *ngIf="getTargetMuscles(plan).length > 4" class="more-muscles">
+            +{{ getTargetMuscles(plan).length - 4 }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Enhanced Creator Info -->
+      <div class="creator-info" *ngIf="plan.creatorName">
+        <h4>👤 Créateur</h4>
+        <p>{{ plan.creatorName }}</p>
+      </div>
+
+      <!-- Enhanced Usage Stats -->
+      <div class="usage-stats" *ngIf="plan.usageCount">
+        <h4>📊 Popularité</h4>
+        <p>Utilisé {{ plan.usageCount }} fois</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Progress Indicator -->
+  <div
+    class="progress-indicator"
+    *ngIf="plan.completionRate && plan.completionRate > 0"
+  >
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="plan.completionRate"></div>
+    </div>
+    <span class="progress-text"
+      >{{ plan.completionRate | number : "1.0-0" }}% complété</span
+    >
+    <small class="progress-detail">Progression personnelle</small>
+  </div>
+
+  <!-- Enhanced Card Actions Overlay -->
+  <div class="card-actions-overlay">
+    <button
+      class="quick-action"
+      (click)="onAddToCalendar($event)"
+      [attr.aria-label]="'Ajouter ' + plan.name + ' au calendrier'"
+      title="Ajouter au calendrier"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y1="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+        <line x1="12" y1="14" x1="12" y2="18" />
+        <line x1="10" y1="16" x2="14" y2="16" />
+      </svg>
+    </button>
+
+    <button
+      class="quick-action"
+      (click)="onDuplicatePlan($event)"
+      [attr.aria-label]="'Dupliquer ' + plan.name"
+      title="Dupliquer ce programme"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      </svg>
+    </button>
+
+    <button
+      class="quick-action"
+      *ngIf="plan.isCustom"
+      (click)="onEditPlan($event)"
+      [attr.aria-label]="'Modifier ' + plan.name"
+      title="Modifier ce programme"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+      </svg>
+    </button>
+
+    <button
+      class="quick-action"
+      *ngIf="!plan.isActive"
+      (click)="onActivatePlan($event)"
+      [attr.aria-label]="'Activer ' + plan.name"
+      title="Activer ce programme"
+    >
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="20,6 9,17 4,12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Performance Indicators -->
+  <div class="performance-indicators" *ngIf="plan.stats">
+    <div class="indicator" *ngIf="plan.stats.successRate">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22,4 12,14 9,11" />
+      </svg>
+      <span>{{ plan.stats.successRate }}% réussite</span>
+    </div>
+  </div>
+</div>

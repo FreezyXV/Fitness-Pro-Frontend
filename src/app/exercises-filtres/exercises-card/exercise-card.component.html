@@ -1,0 +1,332 @@
+<!-- src/app/exercises-filtres/exercises-detail/exercise-card.component.html - Enhanced Dashboard Style -->
+
+<div class="exercise-card-enhanced" 
+     [class.list-view]="viewMode === 'list'"
+     [class.favorite]="exercise.isFavorite"
+     [class.has-video]="hasVideo"
+     (click)="navigateToDetail()">
+
+  <!-- Card Header with Enhanced Actions -->
+  <div class="card-header">
+    <!-- Favorite Button -->
+    <button class="favorite-btn" 
+            [class.active]="exercise.isFavorite"
+            (click)="toggleFavorite($event)"
+            [attr.aria-label]="exercise.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+            title="{{ exercise.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}">
+      <svg width="24" height="24" viewBox="0 0 24 24" 
+           [attr.fill]="exercise.isFavorite ? 'currentColor' : 'none'" 
+           stroke="currentColor" stroke-width="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+
+    <!-- Enhanced Difficulty Badge -->
+    <div class="difficulty-badge" [attr.data-level]="exercise.difficulty">
+      <span class="difficulty-icon">{{ getDifficultyIcon(exercise.difficulty) }}</span>
+      <span class="difficulty-text">{{ getDifficultyLabel(exercise.difficulty) }}</span>
+    </div>
+  </div>
+
+  <!-- Enhanced Video/Media Section -->
+  <div class="video-container" (click)="onMediaClick($event)">
+    <ng-container *ngIf="hasVideo; else noMediaTemplate">
+      <!-- Video Container -->
+      <div class="video-wrapper">
+        <video #videoElement
+               [src]="currentVideoSrc"
+               preload="metadata"
+               muted
+               loop
+               playsinline
+               class="exercise-video"
+               [class.playing]="isPlaying"
+               (loadedmetadata)="onVideoLoaded()"
+               (error)="onVideoError()"
+               (loadstart)="onVideoLoadStart()"
+               (play)="onVideoPlay()"
+               (pause)="onVideoPause()"
+               (timeupdate)="onTimeUpdate($event)"
+               (canplay)="onVideoCanPlay()"
+               (waiting)="onVideoWaiting()"
+               (playing)="onVideoPlaying()">
+        </video>
+
+        <!-- Enhanced Video Overlay -->
+        <div class="video-overlay" [class.hidden]="isPlaying && !showControls">
+          <!-- Main Play Button -->
+          <button class="play-button" 
+                  [class.playing]="isPlaying"
+                  (click)="toggleVideo($event)"
+                  [attr.aria-label]="isPlaying ? 'Pause la vidéo' : 'Jouer la vidéo'"
+                  title="{{ isPlaying ? 'Pause' : 'Lecture' }}">
+            <svg *ngIf="!isPlaying" width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <svg *ngIf="isPlaying" width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+
+          <!-- Video Info Overlay -->
+          <div class="video-info">
+            <div class="duration-badge" *ngIf="exercise.duration">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+              {{ exercise.duration }} min
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced Video Progress Bar -->
+        <div class="video-progress" *ngIf="isPlaying && videoDuration > 0">
+          <div class="progress-bar">
+            <div class="progress-fill" 
+                 [style.width.%]="(currentTime / videoDuration) * 100"></div>
+          </div>
+        </div>
+
+        <!-- Enhanced Loading State -->
+        <div class="video-loading" *ngIf="videoLoading">
+          <div class="loading-spinner"></div>
+          <span>Chargement de la vidéo...</span>
+        </div>
+
+        <!-- Enhanced Error State -->
+        <div class="video-error" *ngIf="videoError">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <span>Vidéo temporairement indisponible</span>
+          <button class="retry-btn" (click)="retryVideoLoad($event)" title="Réessayer le chargement">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"/>
+            </svg>
+            Réessayer
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Enhanced No Media Template -->
+    <ng-template #noMediaTemplate>
+      <div class="no-media-placeholder">
+        <div class="placeholder-content">
+          <div class="placeholder-icon">
+            {{ getBodyPartIcon(exercise.bodyPart) }}
+          </div>
+          <div class="placeholder-text">
+            <span class="primary-text" *ngIf="videoError">Vidéo non disponible</span>
+            <span class="primary-text" *ngIf="!exercise.videoUrl && !videoError">Démonstration bientôt disponible</span>
+            <span class="secondary-text">{{ getBodyPartLabel(exercise.bodyPart) }}</span>
+          </div>
+          <button class="retry-btn" 
+                  *ngIf="videoError && exercise.videoUrl" 
+                  (click)="retryVideoLoad($event)" 
+                  title="Réessayer de charger la vidéo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"/>
+            </svg>
+            Réessayer
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Enhanced Card Content -->
+  <div class="card-content">
+    <!-- Exercise Header -->
+    <div class="exercise-header">
+      <h3 class="exercise-title" [title]="exercise.name">{{ exercise.name }}</h3>
+      <div class="body-part-tag" [attr.data-body-part]="exercise.bodyPart">
+        <span class="body-part-icon">{{ getBodyPartIcon(exercise.bodyPart) }}</span>
+        <span class="body-part-text">{{ getBodyPartLabel(exercise.bodyPart) }}</span>
+      </div>
+    </div>
+
+    <!-- Exercise Description -->
+    <p class="exercise-description" 
+       *ngIf="exercise.description" 
+       [title]="exercise.description">
+      {{ exercise.description }}
+    </p>
+
+    <!-- Enhanced Exercise Stats -->
+    <div class="exercise-stats">
+      <div class="stat-item" *ngIf="exercise.duration">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12,6 12,12 16,14"/>
+        </svg>
+        <span>{{ exercise.duration }} min</span>
+      </div>
+
+      <div class="stat-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <span>{{ getDifficultyLabel(exercise.difficulty) }}</span>
+      </div>
+
+      <div class="stat-item" *ngIf="exercise.instructions && exercise.instructions.length">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14,2 14,8 20,8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+        <span>{{ exercise.instructions.length }} étapes</span>
+      </div>
+
+      <!-- Enhanced Video Status Indicator -->
+      <div class="stat-item" *ngIf="hasVideo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 7l-7 5 7 5V7z"/>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        </svg>
+        <span>Vidéo HD</span>
+      </div>
+
+      <!-- Muscle Groups Indicator -->
+      <div class="stat-item" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span>{{ exercise.muscleGroups.length }} muscle{{ exercise.muscleGroups.length > 1 ? 's' : '' }}</span>
+      </div>
+
+      <!-- Equipment Needed Indicator -->
+      <div class="stat-item" *ngIf="exercise.equipmentNeeded && exercise.equipmentNeeded !== 'none'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span>Équipement requis</span>
+      </div>
+    </div>
+
+    <!-- Enhanced Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-primary" 
+              (click)="navigateToDetail($event)"
+              [attr.aria-label]="'Voir le détail de ' + exercise.name"
+              title="Voir tous les détails de cet exercice">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span>Voir détails</span>
+      </button>
+
+      
+    </div>
+
+    <!-- Enhanced Additional Info for List View -->
+    <div class="additional-info" *ngIf="viewMode === 'list'">
+      <!-- Enhanced Tips Preview -->
+      <div class="tips-preview" *ngIf="exercise.tips && exercise.tips.length">
+        <h4>💡 Conseil d'expert</h4>
+        <p>{{ exercise.tips[0] }}</p>
+      </div>
+
+      <!-- Enhanced Equipment Info -->
+      <div class="equipment-info" *ngIf="exercise.equipmentNeeded && exercise.equipmentNeeded !== 'none'">
+        <h4>🏋️‍♂️ Équipement nécessaire</h4>
+        <p>{{ exercise.equipmentNeeded }}</p>
+      </div>
+
+      <!-- Enhanced Muscle Groups Info -->
+      <div class="muscle-groups-info" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
+        <h4>🎯 Muscles ciblés</h4>
+        <p>{{ exercise.muscleGroups.join(', ') }}</p>
+      </div>
+
+      <!-- Enhanced Video Status -->
+      <div class="video-status-info" *ngIf="exercise.videoUrl">
+        <h4>🎥 Démonstration vidéo</h4>
+        <p *ngIf="hasVideo && !videoError">Démonstration HD disponible - Cliquez pour voir</p>
+        <p *ngIf="videoError" class="error-text">
+          Vidéo temporairement indisponible
+          <button class="inline-retry-btn" (click)="retryVideoLoad($event)" title="Réessayer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"/>
+              <polyline points="1 20 1 14 7 14"/>
+              <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"/>
+            </svg>
+          </button>
+        </p>
+      </div>
+
+      <!-- Enhanced Estimated Calories -->
+      <div class="calories-info" *ngIf="exercise.estimatedCaloriesPerMinute">
+        <h4>🔥 Estimation calorique</h4>
+        <p>~{{ exercise.estimatedCaloriesPerMinute }} cal/min</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Progress Indicator -->
+  <div class="progress-indicator" *ngIf="exercise.progress && exercise.progress > 0">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="exercise.progress"></div>
+    </div>
+    <span class="progress-text">{{ exercise.progress | number:'1.0-0' }}% complété</span>
+  </div>
+
+  <!-- Enhanced Card Actions Overlay -->
+  <div class="card-actions-overlay">
+    <button class="quick-action" 
+            (click)="addToWorkout($event)"
+            [attr.aria-label]="'Ajouter ' + exercise.name + ' au workout'"
+            title="Ajouter au programme d'entraînement">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/>
+        <line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+
+    <button class="quick-action" 
+            (click)="shareExercise($event)"
+            [attr.aria-label]="'Partager ' + exercise.name"
+            title="Partager cet exercice">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+        <polyline points="16,6 12,2 8,6"/>
+        <line x1="12" y1="2" x2="12" y2="15"/>
+      </svg>
+    </button>
+
+    <button class="quick-action" 
+            (click)="createTimer($event)"
+            [attr.aria-label]="'Timer pour ' + exercise.name"
+            title="Créer un timer personnalisé">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12,6 12,12 16,14"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Performance Indicators -->
+  <div class="performance-indicators" *ngIf="exercise.stats">
+    <div class="indicator" *ngIf="exercise.stats.popularity">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      <span>{{ exercise.stats.popularity }}% populaire</span>
+    </div>
+  </div>
+</div>
