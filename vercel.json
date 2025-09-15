@@ -1,22 +1,11 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/frontend",
   "framework": "angular",
+  "buildCommand": "ng build --configuration production",
+  "outputDirectory": "dist/frontend",
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        }
-      ]
     }
   ]
 }

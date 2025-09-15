@@ -22,7 +22,7 @@ import { NutritionComponent } from './nutrition/nutrition.component';
 import { AuthGuard, GuestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   // Public routes (guest only)
   { 
