@@ -490,8 +490,8 @@ export class ExerciseUtils {
       estimatedCaloriesPerMinute: exercise.estimatedCaloriesPerMinute && exercise.estimatedCaloriesPerMinute > 0 
         ? exercise.estimatedCaloriesPerMinute 
         : undefined,
-      created_at: exercise.created_at,
-      updated_at: exercise.updated_at,
+      createdAt: exercise.createdAt,
+      updatedAt: exercise.updatedAt,
       isFavorite: exercise.isFavorite || false
     } as Exercise;
   }

@@ -339,7 +339,7 @@ export class CalendarService {
    * Toggle task completion status
    */
   toggleTaskCompletion(task: CalendarTask): Observable<CalendarTask | null> {
-    return task.is_completed
+    return task.isCompleted
       ? this.markTaskIncomplete(task.id!)
       : this.markTaskComplete(task.id!);
   }
@@ -455,21 +455,21 @@ export class CalendarService {
   formatTaskForDisplay(task: CalendarTask): any {
     return {
       ...task,
-      formattedDate: new Date(task.task_date).toLocaleDateString('fr-FR'),
-      formattedTime: task.reminder_time
-        ? new Date(task.reminder_time).toLocaleTimeString('fr-FR', {
+      formattedDate: new Date(task.taskDate).toLocaleDateString('fr-FR'),
+      formattedTime: task.reminderTime
+        ? new Date(task.reminderTime).toLocaleTimeString('fr-FR', {
             hour: '2-digit',
             minute: '2-digit',
           })
         : null,
       typeLabel:
-        this.getTaskTypes().find((t) => t.value === task.task_type)?.label ||
+        this.getTaskTypes().find((t) => t.value === task.taskType)?.label ||
         'Autre',
       typeIcon:
-        this.getTaskTypes().find((t) => t.value === task.task_type)?.icon ||
+        this.getTaskTypes().find((t) => t.value === task.taskType)?.icon ||
         '📝',
       typeColor:
-        this.getTaskTypes().find((t) => t.value === task.task_type)?.color ||
+        this.getTaskTypes().find((t) => t.value === task.taskType)?.color ||
         '#64748b',
       priorityLabel:
         this.getPriorityLevels().find((p) => p.value === task.priority)
@@ -512,8 +512,8 @@ export class CalendarService {
     endDate: string
   ): Observable<CalendarTask[]> {
     return this.getTasks({
-      date_from: startDate,
-      date_to: endDate,
+      dateFrom: startDate,
+      dateTo: endDate,
     });
   }
 
@@ -578,8 +578,8 @@ export class CalendarService {
     return {
       tasks: [],
       stats: {
-        total_tasks: 0,
-        completed_tasks: 0,
+        totalTasks: 0,
+        completedTasks: 0,
         pending_tasks: 0,
         completion_rate: 0,
         total_workouts: 0,
@@ -607,8 +607,8 @@ export class CalendarService {
       tasks: [],
       tasks_by_day: {},
       stats: {
-        total_tasks: 0,
-        completed_tasks: 0,
+        totalTasks: 0,
+        completedTasks: 0,
         pending_tasks: 0,
         completion_rate: 0,
         workouts: 0,

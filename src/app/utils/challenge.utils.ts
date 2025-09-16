@@ -23,12 +23,12 @@ import {
     }
   
     static isCompleted(challenge: Challenge): boolean {
-      return challenge.status === 'completed' || challenge.current_progress >= challenge.target;
+      return challenge.status === 'completed' || challenge.currentProgress >= challenge.target;
     }
   
     static canJoin(challenge: Challenge): boolean {
       return challenge.status === 'available' && 
-             !challenge.is_joined && 
+             !challenge.isJoined && 
              !this.isFull(challenge) &&
              !this.isExpired(challenge.endDate);
     }

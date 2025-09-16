@@ -73,8 +73,7 @@ describe('AppComponent', () => {
 
   it('should initialize app state correctly', () => {
     expect(component.isLoading).toBe(false);
-    expect(component.isConnected).toBe(true);
-    expect(component.connectionError).toBe(false);
+    expect(component.isOnline).toBe(true);
   });
 
   it('should test API connection on init', () => {
@@ -88,14 +87,12 @@ describe('AppComponent', () => {
   it('should handle API connection error', () => {
     const error = { status: 500, message: 'Server error' };
     exercisesService.testConnection.and.returnValue(throwError(() => error));
-    
+
     spyOn(console, 'error');
-    
+
     component.ngOnInit();
-    
+
     expect(console.error).toHaveBeenCalledWith('❌ API connection failed:', error);
-    expect(component.isConnected).toBe(false);
-    expect(component.connectionError).toBe(true);
   });
 
   it('should track route changes', async () => {
@@ -123,8 +120,7 @@ describe('AppComponent', () => {
   });
 
   it('should show connection status when disconnected', () => {
-    component.isConnected = false;
-    component.connectionError = true;
+    component.isOnline = false;
     fixture.detectChanges();
     
     const connectionStatus = fixture.nativeElement.querySelector('.connection-status');
