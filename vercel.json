@@ -1,7 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "ng build --configuration=production",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist/frontend",
+  "framework": null,
   "routes": [
     {
       "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))",
