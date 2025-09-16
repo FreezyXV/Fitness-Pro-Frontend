@@ -124,13 +124,13 @@ export const appConfig: ApplicationConfig = {
       useClass: GlobalErrorHandler
     },
 
-    // AUTH INITIALIZER - TEMPORAIREMENT DÉSACTIVÉ POUR DEBUG
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: initializeAuth,
-    //   deps: [AuthService],
-    //   multi: true
-    // },
+    // AUTH INITIALIZER - RÉACTIVÉ
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAuth,
+      deps: [AuthService],
+      multi: true
+    },
 
     // Zone change detection optimization
     provideZoneChangeDetection({ 
