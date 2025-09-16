@@ -1,0 +1,7 @@
+node_modules
+.angular
+*.log
+.env*
+src/**/*.spec.ts
+e2e
+docs
