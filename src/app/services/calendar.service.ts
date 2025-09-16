@@ -580,18 +580,18 @@ export class CalendarService {
       stats: {
         totalTasks: 0,
         completedTasks: 0,
-        pending_tasks: 0,
-        completion_rate: 0,
-        total_workouts: 0,
-        total_workout_hours: 0,
-        tasks_by_type: {
+        pendingTasks: 0,
+        completionRate: 0,
+        totalWorkouts: 0,
+        totalWorkoutHours: 0,
+        tasksByType: {
           workout: 0,
           goal: 0,
           rest: 0,
           nutrition: 0,
           other: 0,
         },
-        tasks_by_priority: {
+        tasksByPriority: {
           high: 0,
           medium: 0,
           low: 0,
@@ -605,37 +605,37 @@ export class CalendarService {
   private getEmptyWeekData(): WeeklyCalendarData {
     return {
       tasks: [],
-      tasks_by_day: {},
+      tasksByDay: {},
       stats: {
         totalTasks: 0,
         completedTasks: 0,
-        pending_tasks: 0,
-        completion_rate: 0,
+        pendingTasks: 0,
+        completionRate: 0,
         workouts: 0,
         goals: 0,
-        days_with_tasks: 0,
+        daysWithTasks: 0,
       },
-      week_start: new Date().toISOString().split('T')[0],
-      week_end: new Date().toISOString().split('T')[0],
+      weekStart: new Date().toISOString().split('T')[0],
+      weekEnd: new Date().toISOString().split('T')[0],
     };
   }
   private getEmptyStats(): CalendarStats {
     return {
-      total_tasks: 0,
-      completed_tasks: 0,
-      pending_tasks: 0,
-      overdue_tasks: 0,
-      completion_rate: 0,
-      current_streak: 0,
-      longest_streak: 0,
-      tasks_by_type: {
+      totalTasks: 0,
+      completedTasks: 0,
+      pendingTasks: 0,
+      overdueTasks: 0,
+      completionRate: 0,
+      currentStreak: 0,
+      longestStreak: 0,
+      tasksByType: {
         workout: 0,
         goal: 0,
         rest: 0,
         nutrition: 0,
         other: 0,
       },
-      tasks_by_priority: {
+      tasksByPriority: {
         high: 0,
         medium: 0,
         low: 0,
