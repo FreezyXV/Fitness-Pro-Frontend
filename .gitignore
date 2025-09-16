@@ -32,7 +32,7 @@
 /jspm_packages/
 
 # Package Manager Files
-package-lock.json
+# package-lock.json  # COMMENTED OUT - needed for deployment
 yarn.lock
 pnpm-lock.yaml
 .pnpm-store/
