@@ -14,16 +14,12 @@ import { NotificationUtils } from './shared/index';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <!-- DEBUG MODE - Version simplifié -->
-    <div style="padding: 20px; background: #f0f0f0; margin: 20px;">
-      <h1>🔧 FitnessPro - Mode Debug</h1>
-      <p>✅ AppComponent chargé correctement</p>
-      <p>📱 En ligne: {{ isOnline ? 'Oui' : 'Non' }}</p>
-      <p>⏳ Chargement: {{ isLoading ? 'Oui' : 'Non' }}</p>
-      <p>🛣️ Route actuelle: {{ currentRoute || 'Aucune' }}</p>
-      <button (click)="goToLogin()" style="padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; border-radius: 5px;">
-        🚀 Aller à Login
-      </button>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Chargement...</p>
+      </div>
     </div>
 
     <!-- Main Router Outlet -->
@@ -121,11 +117,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  // DEBUG METHOD
-  goToLogin(): void {
-    console.log('🚀 Navigation vers login...');
-    this.router.navigate(['/login']);
-  }
 
   private trackRouteChanges(): void {
     this.router.events.pipe(
