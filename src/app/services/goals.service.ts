@@ -162,7 +162,6 @@ export class GoalsService {
         description: "Créer votre premier objectif",
         icon: "🎯",
         points: 10,
-        type: "goal_creation",
         unlocked_at: "2024-01-15"
       },
       {
@@ -171,8 +170,7 @@ export class GoalsService {
         description: "Compléter 5 objectifs",
         icon: "💪",
         points: 50,
-        type: "goal_completion",
-        unlocked_at: null
+        unlocked_at: undefined
       }
     ];
 
@@ -180,9 +178,9 @@ export class GoalsService {
       total_points: 125,
       level: 3,
       achievements_unlocked: 1,
-      weekly_points: 25,
-      monthly_points: 125,
-      current_streak: 7
+      goals_completed: 3,
+      current_streak: 7,
+      next_level_points: 200
     };
 
     // Set demo data to subjects
@@ -397,7 +395,21 @@ export class GoalsService {
     // If no auth token, return current demo data
     if (!this.hasAuthToken()) {
       console.log('🔍 GoalsService: No auth token, returning demo user score');
-      return of(this.userScoreSubject.value);
+      const currentScore = this.userScoreSubject.value;
+      if (currentScore) {
+        return of(currentScore);
+      } else {
+        // Return default demo score if none exists
+        const defaultScore: UserScore = {
+          total_points: 125,
+          level: 3,
+          achievements_unlocked: 1,
+          goals_completed: 3,
+          current_streak: 7,
+          next_level_points: 200
+        };
+        return of(defaultScore);
+      }
     }
 
     return this.http.get<{success: boolean, data: UserScore, message: string}>(`${environment.apiUrl}/user/score`, {
@@ -412,9 +424,9 @@ export class GoalsService {
           total_points: 125,
           level: 3,
           achievements_unlocked: 1,
-          weekly_points: 25,
-          monthly_points: 125,
-          current_streak: 7
+          goals_completed: 3,
+          current_streak: 7,
+          next_level_points: 200
         };
         this.userScoreSubject.next(demoScore);
         return of(demoScore);
@@ -444,7 +456,6 @@ export class GoalsService {
             description: "Créer votre premier objectif",
             icon: "🎯",
             points: 10,
-            type: "goal_creation",
             unlocked_at: "2024-01-15"
           },
           {
@@ -453,8 +464,7 @@ export class GoalsService {
             description: "Compléter 5 objectifs",
             icon: "💪",
             points: 50,
-            type: "goal_completion",
-            unlocked_at: null
+            unlocked_at: undefined
           }
         ];
         this.achievementsSubject.next(demoAchievements);
