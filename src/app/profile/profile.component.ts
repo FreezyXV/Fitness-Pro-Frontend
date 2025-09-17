@@ -111,8 +111,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   activeTab: 'personal' | 'health' | 'security' | 'preferences' = 'personal';
   editMode = false;
   isLoading = false;
-  isUploading = false;
-  uploadProgress = 0;
   showSuccessMessage = false;
   successMessage = '';
   
@@ -673,75 +671,6 @@ getBMIPosition(): number {
     alert(message); // Replace with proper notification system
   }
 
-  // =============================================
-  // AVATAR UPLOAD
-  // =============================================
-
-  onAvatarChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (!input.files || input.files.length === 0) return;
-
-    const file = input.files[0];
-    
-    if (!file.type.startsWith('image/')) {
-      this.showError('Veuillez sélectionner une image valide');
-      return;
-    }
-
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      this.showError('Format d\'image non supporté. Utilisez JPG, PNG ou WebP');
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      this.showError('L\'image ne doit pas dépasser 5MB');
-      return;
-    }
-
-    this.uploadAvatar(file);
-  }
-
-  private uploadAvatar(file: File): void {
-    this.isUploading = true;
-    this.uploadProgress = 0;
-
-    const progressInterval = setInterval(() => {
-      this.uploadProgress += Math.random() * 15;
-      if (this.uploadProgress >= 90) {
-        clearInterval(progressInterval);
-        this.uploadProgress = 90;
-      }
-    }, 200);
-
-    // Call API
-    this.userService.updateProfilePhoto(file)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          clearInterval(progressInterval);
-          this.uploadProgress = 100;
-          
-          setTimeout(() => {
-            this.isUploading = false;
-            this.uploadProgress = 0;
-            
-            // Update user data
-            if (this.user) {
-              this.user.profilePhotoUrl = response.profile_photo_url;
-            }
-            this.showSuccess('Photo de profil mise à jour avec succès');
-          }, 500);
-        },
-        error: (error) => {
-          clearInterval(progressInterval);
-          this.isUploading = false;
-          this.uploadProgress = 0;
-          console.error('Failed to upload avatar:', error);
-          this.showError('Erreur lors du téléchargement de l\'avatar');
-        }
-      });
-  }
 
   // =============================================
   // PASSWORD STRENGTH

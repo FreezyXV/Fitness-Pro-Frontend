@@ -140,58 +140,6 @@ export class UserService {
       );
   }
 
-  updateProfilePhoto(
-    file: File
-  ): Observable<{ user: User; profile_photo_url: string }> {
-    console.log('🔄 UserService: Updating profile photo...');
-
-    if (!this.validateFile(file)) {
-      return throwError(() => new Error('Fichier invalide'));
-    }
-
-    const formData = new FormData();
-    formData.append('photo', file);
-
-    return this.http
-      .post<ApiResponse<{ user: User; profile_photo_url: string }>>(
-        `${APP_CONFIG.API_URL}/profile/photo`,
-        formData
-      )
-      .pipe(
-        timeout(30000), // Longer timeout for file upload
-        tap((response) =>
-          console.log('✅ UserService: Photo update response:', response)
-        ),
-        map((response) => {
-          if (response.success && response.data) {
-            const user = this.normalizeUserData(response.data.user);
-            this.profileSubject.next(user);
-            this.setCachedData('profile', user);
-            NotificationUtils.success('Photo de profil mise à jour');
-            return { user, profile_photo_url: response.data.profile_photo_url };
-          }
-          throw new Error(response.message || 'Failed to update profile photo');
-        }),
-        catchError((error) => {
-          console.error('❌ UserService: Photo update failed:', error);
-
-          // Simulate photo update locally
-          const currentUser = this.profileSubject.value;
-          if (currentUser) {
-            const mockPhotoUrl = URL.createObjectURL(file);
-            const updatedUser = {
-              ...currentUser,
-              profile_photo_url: mockPhotoUrl,
-            };
-            this.profileSubject.next(updatedUser);
-            NotificationUtils.success('Photo mise à jour localement');
-            return of({ user: updatedUser, profile_photo_url: mockPhotoUrl });
-          }
-
-          return this.handleError(error);
-        })
-      );
-  }
 
   changePassword(
     passwordData: PasswordChangeRequest
@@ -809,21 +757,6 @@ export class UserService {
     };
   }
 
-  private validateFile(file: File): boolean {
-    if (!file) return false;
-
-    if (file.size > APP_CONFIG.MAX_FILE_SIZE) {
-      NotificationUtils.error('Le fichier est trop volumineux (max 10MB)');
-      return false;
-    }
-
-    if (!APP_CONFIG.ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      NotificationUtils.error('Format de fichier non supporté');
-      return false;
-    }
-
-    return true;
-  }
 
   // =============================================
   // CACHE MANAGEMENT
