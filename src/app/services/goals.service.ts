@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { map, catchError, tap, delay } from 'rxjs/operators';
 // Environment configuration
 const environment = {
-  apiUrl: 'http://localhost:8000/api'
+  apiUrl: 'https://fitness-pro-backend.fly.dev/api'
 };
 
 // Enhanced interfaces matching backend structure
@@ -192,10 +192,22 @@ export class GoalsService {
 
   // CRUD Operations
   getGoals(filters?: any): Observable<Goal[]> {
-    // If no auth token, return current demo data
+    // If no auth token, use public endpoint
     if (!this.hasAuthToken()) {
-      console.log('🔍 GoalsService: No auth token, returning demo goals');
-      return of(this.goalsSubject.value);
+      console.log('🔍 GoalsService: No auth token, using public goals endpoint');
+      return this.http.get<{success: boolean, data: Goal[], message: string}>(`${environment.apiUrl}/goals/public`).pipe(
+        map(response => response.data || []),
+        tap(goals => {
+          this.goalsSubject.next(goals);
+          this.calculateStats(goals);
+        }),
+        catchError(error => {
+          console.error('🚨 GoalsService: Public API error, falling back to demo data:', error);
+          // Return demo data on API failure
+          this.loadDemoData();
+          return of(this.goalsSubject.value);
+        })
+      );
     }
 
     let params = new HttpParams();
@@ -212,10 +224,19 @@ export class GoalsService {
         this.calculateStats(goals);
       }),
       catchError(error => {
-        console.error('🚨 GoalsService: API error, falling back to demo data:', error);
-        // Return demo data on API failure
-        this.loadDemoData();
-        return of(this.goalsSubject.value);
+        console.error('🚨 GoalsService: API error, falling back to public endpoint:', error);
+        // Try public endpoint as fallback
+        return this.http.get<{success: boolean, data: Goal[], message: string}>(`${environment.apiUrl}/goals/public`).pipe(
+          map(response => response.data || []),
+          tap(goals => {
+            this.goalsSubject.next(goals);
+            this.calculateStats(goals);
+          }),
+          catchError(() => {
+            this.loadDemoData();
+            return of(this.goalsSubject.value);
+          })
+        );
       })
     );
   }
@@ -278,6 +299,12 @@ export class GoalsService {
 
   // Goal Actions
   updateProgress(id: number, progressValue: number): Observable<Goal> {
+    // If no auth token, show notification instead of making API call
+    if (!this.hasAuthToken()) {
+      console.log('🔍 GoalsService: Cannot update progress - authentication required for modifications');
+      return throwError(() => new Error('Connexion requise pour mettre à jour le progrès. Cette action est réservée aux utilisateurs connectés.'));
+    }
+
     return this.http.post<{success: boolean, data: Goal, message: string}>(`${this.API_URL}/${id}/progress`, {
       progress_value: progressValue
     }, {
@@ -307,6 +334,12 @@ export class GoalsService {
   }
 
   markComplete(id: number): Observable<Goal> {
+    // If no auth token, show notification instead of making API call
+    if (!this.hasAuthToken()) {
+      console.log('🔍 GoalsService: Cannot complete goal - authentication required for modifications');
+      return throwError(() => new Error('Connexion requise pour marquer un objectif comme accompli. Cette action est réservée aux utilisateurs connectés.'));
+    }
+
     return this.http.post<{success: boolean, data: Goal, message: string}>(`${this.API_URL}/${id}/complete`, {}, {
       headers: this.getHeaders()
     }).pipe(
@@ -327,6 +360,12 @@ export class GoalsService {
   }
 
   activateGoal(id: number): Observable<Goal> {
+    // If no auth token, show notification instead of making API call
+    if (!this.hasAuthToken()) {
+      console.log('🔍 GoalsService: Cannot activate goal - authentication required for modifications');
+      return throwError(() => new Error('Connexion requise pour activer un objectif. Cette action est réservée aux utilisateurs connectés.'));
+    }
+
     return this.http.post<{success: boolean, data: Goal, message: string}>(`${this.API_URL}/${id}/activate`, {}, {
       headers: this.getHeaders()
     }).pipe(
@@ -345,6 +384,12 @@ export class GoalsService {
   }
 
   pauseGoal(id: number): Observable<Goal> {
+    // If no auth token, show notification instead of making API call
+    if (!this.hasAuthToken()) {
+      console.log('🔍 GoalsService: Cannot pause goal - authentication required for modifications');
+      return throwError(() => new Error('Connexion requise pour mettre en pause un objectif. Cette action est réservée aux utilisateurs connectés.'));
+    }
+
     return this.http.post<{success: boolean, data: Goal, message: string}>(`${this.API_URL}/${id}/pause`, {}, {
       headers: this.getHeaders()
     }).pipe(
