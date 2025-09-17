@@ -504,9 +504,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   editWorkoutTemplate(template: Workout): void {
     console.log('Editing template:', template.name);
-    this.router.navigate(['/create-workout'], {
-      queryParams: { templateId: template.id },
-    });
+    this.router.navigate(['/workouts/edit', template.id]);
   }
 
   duplicateWorkoutTemplate(template: Workout): void {
@@ -577,7 +575,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   createCustomWorkout(): void {
     console.log('Creating custom workout template');
-    this.router.navigate(['/create-workout']);
+    this.router.navigate(['/workouts/create']);
   }
 
   viewWorkoutHistory(): void {

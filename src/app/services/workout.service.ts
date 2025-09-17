@@ -620,24 +620,54 @@ export class WorkoutService {
   // =============================================
 
   private extractDataFromResponse<T>(response: ApiResponse<T>): T | null {
+    let data: any = null;
+
     if (response && response.success && response.data !== undefined) {
-      return response.data;
-    }
-
-    // This part might be problematic if the API always returns ApiResponse structure
-    // and not raw arrays/objects directly.
-    // If response is an array directly (e.g., from a non-ApiResponse endpoint),
-    // it will be handled here.
-    if (Array.isArray(response)) {
-      return response as unknown as T;
-    }
-
-    if (response && !response.success) {
+      data = response.data;
+    } else if (Array.isArray(response)) {
+      // Handle direct array responses (e.g., from public endpoints)
+      data = response;
+    } else if (response && !response.success) {
       console.warn('API response not successful:', response.message);
       return null;
+    } else {
+      data = response;
     }
 
-    return (response as unknown as T) || null;
+    // Transform workout data to match frontend interface
+    if (data && (Array.isArray(data) && this.isWorkoutArray(data)) || this.isWorkout(data)) {
+      data = this.transformWorkoutData(data);
+    }
+
+    return data || null;
+  }
+
+  private isWorkout(data: any): boolean {
+    return data && typeof data === 'object' && 'name' in data && 'type' in data;
+  }
+
+  private isWorkoutArray(data: any[]): boolean {
+    return data.length > 0 && this.isWorkout(data[0]);
+  }
+
+  private transformWorkoutData(data: any): any {
+    if (Array.isArray(data)) {
+      return data.map(workout => this.transformSingleWorkout(workout));
+    }
+    return this.transformSingleWorkout(data);
+  }
+
+  private transformSingleWorkout(workout: any): any {
+    if (!workout) return workout;
+
+    return {
+      ...workout,
+      // Map API properties to frontend interface expectations
+      category: workout.type || workout.category,
+      difficultyLevel: workout.difficulty || workout.difficultyLevel,
+      durationMinutes: workout.estimatedDuration || workout.durationMinutes,
+      caloriesBurned: workout.estimatedCalories || workout.caloriesBurned,
+    };
   }
 
   private refreshTemplates(): void {
