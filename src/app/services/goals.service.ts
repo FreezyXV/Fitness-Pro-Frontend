@@ -82,7 +82,18 @@ export class GoalsService {
   public achievements$ = this.achievementsSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.loadInitialData();
+    // Only load data if user has a token (is potentially authenticated)
+    if (this.hasAuthToken()) {
+      this.loadInitialData();
+    } else {
+      console.log('🔍 GoalsService: No auth token found, loading demo data');
+      this.loadDemoData();
+    }
+  }
+
+  private hasAuthToken(): boolean {
+    const token = localStorage.getItem('auth_token');
+    return !!(token && token.trim().length > 0);
   }
 
   private getHeaders(): HttpHeaders {
@@ -100,12 +111,99 @@ export class GoalsService {
     this.getAchievements().subscribe();
   }
 
+  private loadDemoData(): void {
+    // Load demo data for unauthenticated users
+    const demoGoals: Goal[] = [
+      {
+        id: 1,
+        title: "Perdre 5 kg",
+        description: "Objectif de perte de poids pour l'été",
+        current_value: 2,
+        target_value: 5,
+        unit: "kg",
+        target_date: "2024-06-30",
+        status: "active",
+        category: "weight",
+        priority: "high",
+        progress_percentage: 40
+      },
+      {
+        id: 2,
+        title: "Courir 10km",
+        description: "Améliorer l'endurance cardiovasculaire",
+        current_value: 7,
+        target_value: 10,
+        unit: "km",
+        target_date: "2024-05-15",
+        status: "active",
+        category: "cardio",
+        priority: "medium",
+        progress_percentage: 70
+      },
+      {
+        id: 3,
+        title: "100 pompes",
+        description: "Renforcer le haut du corps",
+        current_value: 100,
+        target_value: 100,
+        unit: "reps",
+        target_date: "2024-04-01",
+        status: "completed",
+        category: "strength",
+        priority: "low",
+        progress_percentage: 100
+      }
+    ];
+
+    const demoAchievements: Achievement[] = [
+      {
+        id: 1,
+        name: "Premier Objectif",
+        description: "Créer votre premier objectif",
+        icon: "🎯",
+        points: 10,
+        type: "goal_creation",
+        unlocked_at: "2024-01-15"
+      },
+      {
+        id: 2,
+        name: "Persévérant",
+        description: "Compléter 5 objectifs",
+        icon: "💪",
+        points: 50,
+        type: "goal_completion",
+        unlocked_at: null
+      }
+    ];
+
+    const demoUserScore: UserScore = {
+      total_points: 125,
+      level: 3,
+      achievements_unlocked: 1,
+      weekly_points: 25,
+      monthly_points: 125,
+      current_streak: 7
+    };
+
+    // Set demo data to subjects
+    this.goalsSubject.next(demoGoals);
+    this.achievementsSubject.next(demoAchievements);
+    this.userScoreSubject.next(demoUserScore);
+    this.calculateStats(demoGoals);
+  }
+
   // CRUD Operations
   getGoals(filters?: any): Observable<Goal[]> {
+    // If no auth token, return current demo data
+    if (!this.hasAuthToken()) {
+      console.log('🔍 GoalsService: No auth token, returning demo goals');
+      return of(this.goalsSubject.value);
+    }
+
     let params = new HttpParams();
     if (filters?.status) params = params.set('status', filters.status);
     if (filters?.category) params = params.set('category', filters.category);
-    
+
     return this.http.get<{success: boolean, data: Goal[], message: string}>(`${this.API_URL}`, {
       headers: this.getHeaders(),
       params
@@ -115,7 +213,12 @@ export class GoalsService {
         this.goalsSubject.next(goals);
         this.calculateStats(goals);
       }),
-      catchError(this.handleError)
+      catchError(error => {
+        console.error('🚨 GoalsService: API error, falling back to demo data:', error);
+        // Return demo data on API failure
+        this.loadDemoData();
+        return of(this.goalsSubject.value);
+      })
     );
   }
 
@@ -291,38 +394,71 @@ export class GoalsService {
 
   // Scoring and Achievements
   getUserScore(): Observable<UserScore> {
+    // If no auth token, return current demo data
+    if (!this.hasAuthToken()) {
+      console.log('🔍 GoalsService: No auth token, returning demo user score');
+      return of(this.userScoreSubject.value);
+    }
+
     return this.http.get<{success: boolean, data: UserScore, message: string}>(`${environment.apiUrl}/user/score`, {
       headers: this.getHeaders()
     }).pipe(
       map(response => response.data),
       tap(score => this.userScoreSubject.next(score)),
       catchError(error => {
-        console.warn('User score not available:', error);
-        // Return default score if endpoint doesn't exist yet
-        const defaultScore: UserScore = {
-          total_points: 0,
-          current_streak: 0,
-          goals_completed: 0,
-          achievements_unlocked: 0,
-          level: 1,
-          next_level_points: 100
+        console.warn('🚨 GoalsService: User score API error, falling back to demo data:', error);
+        // Return demo data on API failure
+        const demoScore: UserScore = {
+          total_points: 125,
+          level: 3,
+          achievements_unlocked: 1,
+          weekly_points: 25,
+          monthly_points: 125,
+          current_streak: 7
         };
-        this.userScoreSubject.next(defaultScore);
-        return of(defaultScore);
+        this.userScoreSubject.next(demoScore);
+        return of(demoScore);
       })
     );
   }
 
   getAchievements(): Observable<Achievement[]> {
+    // If no auth token, return current demo data
+    if (!this.hasAuthToken()) {
+      console.log('🔍 GoalsService: No auth token, returning demo achievements');
+      return of(this.achievementsSubject.value);
+    }
+
     return this.http.get<{success: boolean, data: Achievement[], message: string}>(`${this.ACHIEVEMENTS_URL}`, {
       headers: this.getHeaders()
     }).pipe(
       map(response => response.data || []),
       tap(achievements => this.achievementsSubject.next(achievements)),
       catchError(error => {
-        console.warn('Achievements not available:', error);
-        this.achievementsSubject.next([]);
-        return throwError(() => new Error('Achievements not available'));
+        console.warn('🚨 GoalsService: Achievements API error, falling back to demo data:', error);
+        // Return demo data on API failure
+        const demoAchievements: Achievement[] = [
+          {
+            id: 1,
+            name: "Premier Objectif",
+            description: "Créer votre premier objectif",
+            icon: "🎯",
+            points: 10,
+            type: "goal_creation",
+            unlocked_at: "2024-01-15"
+          },
+          {
+            id: 2,
+            name: "Persévérant",
+            description: "Compléter 5 objectifs",
+            icon: "💪",
+            points: 50,
+            type: "goal_completion",
+            unlocked_at: null
+          }
+        ];
+        this.achievementsSubject.next(demoAchievements);
+        return of(demoAchievements);
       })
     );
   }

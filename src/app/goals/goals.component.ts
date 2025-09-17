@@ -37,7 +37,10 @@ import {
   map,
   startWith,
   switchMap,
+  filter,
+  take
 } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 import { GoalsService } from '../services/goals.service';
 
 /* =============================================
@@ -453,7 +456,8 @@ export class GoalsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
-    private goalsService: GoalsService
+    private goalsService: GoalsService,
+    private authService: AuthService
   ) {
     this.initializeForms();
     this.loadFiltersFromStorage();
@@ -465,7 +469,14 @@ export class GoalsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('GoalsComponent initialized');
-    this.loadGoals();
+    this.authService.isInitialized$.pipe(
+      filter(isInitialized => isInitialized),
+      take(1),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      console.log('AuthService is initialized, loading goals.');
+      this.loadGoals();
+    });
     this.setupKeyboardShortcuts();
   }
 
