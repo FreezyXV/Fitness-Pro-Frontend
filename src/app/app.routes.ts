@@ -47,7 +47,6 @@ export const routes: Routes = [
       { path: 'exercises', component: ExercisesComponent },
       { path: 'exercises/:id', component: ExercisesDetailComponent },
       { path: 'calendar', component: CalendarComponent },
-      { path: 'goals', component: GoalsComponent },
       
       // WORKOUT ROUTES - CORRECTED STRUCTURE
       { 
@@ -73,6 +72,15 @@ export const routes: Routes = [
       
       { path: 'nutrition', component: NutritionComponent },
       { path: 'challenges', component: ChallengesComponent },
+    ]
+  },
+
+  // Public portfolio routes (no authentication required)
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: 'goals', component: GoalsComponent },
     ]
   },
 
