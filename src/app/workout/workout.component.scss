@@ -91,14 +91,13 @@
 .workout-container {
   min-height: calc(100vh - 0px);
   background: $primary-dark;
-  background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
   position: relative;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 1rem;
   padding-bottom: 4rem;
 
   // Animated background pattern
@@ -141,7 +140,6 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 1600px;
   }
 }
 

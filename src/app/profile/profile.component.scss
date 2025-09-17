@@ -142,15 +142,14 @@
 // =============================================
 .profile-container {
   min-height: calc(100vh - 0px);
-  background: $premium-gradient;
-  background-size: 400% 400%;
+  background: $primary-dark;
   animation: gradientFlow 25s ease infinite;
   position: relative;
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: $spacing-2xl;
+  padding: 1rem;
   padding-bottom: 4rem;
 
   // Enhanced Background Patterns
@@ -200,7 +199,6 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 1600px;
   }
 }
 

@@ -180,7 +180,7 @@
 .workout-detail-container {
   min-height: 100vh;
   background: $primary-dark;
-  background-size: 400% 400%;
+
   animation: gradient-animation 25s ease infinite;
   position: relative;
   overflow-x: hidden;
@@ -224,7 +224,7 @@
   position: relative;
   z-index: 1;
   width: calc(100vw - 120px);
-  max-width: 1800px;
+
   margin: 0 auto;
   padding: 60px 0;
   display: flex;

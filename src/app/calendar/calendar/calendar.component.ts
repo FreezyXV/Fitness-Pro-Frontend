@@ -110,27 +110,16 @@ class NotificationUtils {
   styleUrls: ['./calendar.component.scss'],
   animations: [
     trigger('modalAnimation', [
-      state('void', style({ 
-        opacity: 0, 
-        transform: 'scale(0.7) translateY(-50px)', 
-        filter: 'blur(8px)' 
-      })),
-      state('*', style({ 
-        opacity: 1, 
-        transform: 'scale(1) translateY(0)', 
-        filter: 'blur(0px)' 
-      })),
-      transition('void => *', [
-        animate('0.5s cubic-bezier(0.34, 1.56, 0.64, 1)')
+      transition(':enter', [
+        style({ transform: 'scale(0.9)', opacity: 0 }),
+        animate(
+          '0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+          style({ transform: 'scale(1)', opacity: 1 })
+        ),
       ]),
-      transition('* => void', [
-        animate('0.3s cubic-bezier(0.5, 0, 0.75, 0)', 
-          style({ 
-            opacity: 0, 
-            transform: 'scale(0.8) translateY(-30px)',
-            filter: 'blur(4px)'
-          }))
-      ])
+      transition(':leave', [
+        animate('0.2s ease-in', style({ transform: 'scale(0.9)', opacity: 0 })),
+      ]),
     ]),
     trigger('overlayAnimation', [
       state('void', style({ opacity: 0 })),

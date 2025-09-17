@@ -451,12 +451,12 @@
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-size: 200% 200%;
+
         transition: all 0.3s ease;
         cursor: pointer;
 
         &:hover {
-          background-size: 400% 400%;
+
           animation: gradientShift 2s ease infinite;
         }
       }

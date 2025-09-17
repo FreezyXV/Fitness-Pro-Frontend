@@ -210,6 +210,28 @@ export class WorkoutService {
         }),
         catchError((error) => {
           console.error(`Error loading workout template ${id}:`, error);
+
+          // If it's a 401 or 404 error, try the public endpoint
+          if (error.status === 401 || error.status === 404) {
+            console.log(`Trying public endpoint for workout template ${id}`);
+            return this.http
+              .get<ApiResponse<Workout>>(`${this.API_BASE}/templates/public/${id}`)
+              .pipe(
+                timeout(APP_CONFIG.REQUEST_TIMEOUT),
+                map((response) => {
+                  const template = this.extractDataFromResponse<Workout>(response);
+                  if (template) {
+                    this.setCachedData(cacheKey, template);
+                  }
+                  return template;
+                }),
+                catchError((publicError) => {
+                  console.error(`Error loading public workout template ${id}:`, publicError);
+                  return of(null);
+                })
+              );
+          }
+
           return of(null);
         })
       );

@@ -373,42 +373,50 @@
   </div>
 
   <!-- Enhanced Event Modal -->
-  <div class="modal-overlay" *ngIf="showEventModal" (click)="closeEventModal()" [@overlayAnimation]>
-    <div class="modal-container">
-      <div class="modal-card" (click)="$event.stopPropagation()" [@modalAnimation]>
-      <div class="modal-header">
-        <h3>{{isEditingEvent ? 'Modifier l\'événement' : 'Nouvel événement'}}</h3>
-        <button class="close-btn" (click)="closeEventModal()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<div *ngIf="showEventModal" class="modal-overlay" (click)="closeEventModal()" [@overlayAnimation]>
+  <div class="modal modal-lg" (click)="$event.stopPropagation()" [@modalAnimation]>
+    <div class="modal-header">
+        <div class="modal-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          {{isEditingEvent ? 'Modifier l\'événement' : 'Nouvel événement'}}
+        </div>
+        <button class="btn-close" (click)="closeEventModal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
       </div>
-      
-      <div class="modal-content">
-        <form [formGroup]="eventForm" (ngSubmit)="saveEvent()">
-          
-          <!-- Title Field -->
-          <div class="form-group">
-            <label for="title">Titre de l'événement *</label>
+
+      <div class="modal-body">
+        <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" class="goal-form">
+          <div class="form-group full-width">
+            <label for="title" class="form-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              Titre de l\'événement <span class="required">*</span>
+            </label>
             <input 
               type="text" 
               id="title" 
               class="form-control"
               placeholder="Ex: Entraînement HIIT matinal"
               formControlName="title"
-              [class.error]="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
-            <div class="form-error" *ngIf="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
-              <small *ngIf="eventForm.get('title')?.errors?.['required']">Le titre est requis</small>
-              <small *ngIf="eventForm.get('title')?.errors?.['minlength']">Le titre doit contenir au moins 3 caractères</small>
+              [class.is-invalid]="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
+            <div class="invalid-feedback" *ngIf="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
+              <div *ngIf="eventForm.get('title')?.errors?.['required']">Le titre est requis</div>
+              <div *ngIf="eventForm.get('title')?.errors?.['minlength']">Le titre doit contenir au moins 3 caractères</div>
             </div>
           </div>
 
-          <!-- Type and Date Row -->
           <div class="form-row">
             <div class="form-group">
-              <label for="task_type">Type d'événement</label>
+              <label for="task_type" class="form-label">Type d\'événement</label>
               <select id="task_type" class="form-control" formControlName="task_type">
                 <option value="workout">💪 Entraînement</option>
                 <option value="goal">🎯 Objectif</option>
@@ -421,20 +429,19 @@
             </div>
             
             <div class="form-group">
-              <label for="task_date">Date *</label>
+              <label for="task_date" class="form-label">Date *</label>
               <input 
                 type="date" 
                 id="task_date" 
                 class="form-control"
                 formControlName="task_date"
-                [class.error]="eventForm.get('task_date')?.invalid && eventForm.get('task_date')?.touched">
+                [class.is-invalid]="eventForm.get('task_date')?.invalid && eventForm.get('task_date')?.touched">
             </div>
           </div>
 
-          <!-- Time and Duration Row -->
           <div class="form-row">
             <div class="form-group">
-              <label for="reminder_time">Heure</label>
+              <label for="reminder_time" class="form-label">Heure</label>
               <input 
                 type="time" 
                 id="reminder_time" 
@@ -443,7 +450,7 @@
             </div>
             
             <div class="form-group">
-              <label for="duration">Durée (minutes)</label>
+              <label for="duration" class="form-label">Durée (minutes)</label>
               <input 
                 type="number" 
                 id="duration" 
@@ -455,9 +462,8 @@
             </div>
           </div>
 
-          <!-- Description -->
-          <div class="form-group">
-            <label for="description">Description</label>
+          <div class="form-group full-width">
+            <label for="description" class="form-label">Description</label>
             <textarea 
               id="description" 
               class="form-control"
@@ -465,36 +471,26 @@
               placeholder="Détails supplémentaires sur cet événement..."
               formControlName="description"></textarea>
           </div>
-
-          <!-- Form Actions -->
-          <div class="form-actions">
-            <button type="button" class="btn btn-outline" (click)="closeEventModal()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-              Annuler
-            </button>
-            <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid || isSaving">
-              <div class="btn-content" *ngIf="!isSaving">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
-                  <polyline points="17,21 17,13 7,13 7,21"/>
-                  <polyline points="7,3 7,8 15,8"/>
-                </svg>
-                {{isEditingEvent ? 'Modifier' : 'Créer'}}
-              </div>
-              <div class="btn-loading" *ngIf="isSaving">
-                <div class="spinner"></div>
-                Enregistrement...
-              </div>
-            </button>
-          </div>
         </form>
       </div>
+
+      <div class="modal-footer">
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" (click)="closeEventModal()" [disabled]="isSaving">
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-primary" (click)="saveEvent()" [disabled]="eventForm.invalid || isSaving">
+            <div *ngIf="isSaving" class="loading-spinner"></div>
+            <span *ngIf="!isSaving">{{isEditingEvent ? 'Enregistrer les modifications' : 'Créer l\'événement'}}</span>
+            <span *ngIf="isSaving">
+              <span *ngIf="isEditingEvent">Enregistrement...</span>
+              <span *ngIf="!isEditingEvent">Création en cours...</span>
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
   </div>
+</div>
 
   <!-- Floating Action Button (Mobile) -->
   <button class="fab" (click)="addNewEvent()" title="Ajouter événement">

@@ -203,8 +203,8 @@
 // ==========================================
 .nutrition-container {
   min-height: 100vh;
-  background: $primary-gradient;
-  background-size: 200% 200%;
+  background: $primary-dark;
+
   animation: gradientShift 15s ease infinite;
   font-family: $font-family;
   display: flex;
@@ -248,13 +248,13 @@
 .hero-section {
   position: relative;
   z-index: 1;
-  margin: 2rem;
+  margin: 1rem;
   margin-bottom: 1.5rem;
   width: calc(100% - 4rem);
-  max-width: 1600px;
+
   @include glass-card(0.95);
   border-radius: $border-radius-3xl;
-  padding: 2.5rem;
+  padding: 1rem;
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
   .hero-background {
@@ -600,7 +600,7 @@
   z-index: 1;
   margin: 0 2rem 1.5rem 2rem;
   width: calc(100% - 4rem);
-  max-width: 1600px;
+
 
   .date-card {
     @include glass-card(0.95);
@@ -656,7 +656,6 @@
   z-index: 1;
   margin: 0 2rem 2rem 2rem;
   width: calc(100% - 4rem);
-  max-width: 1600px;
 
   .nav-container {
     @include glass-card(0.95);
@@ -738,7 +737,7 @@
 // ==========================================
 .content-wrapper {
   width: calc(100% - 4rem);
-  max-width: 1600px;
+
   margin: 0 2rem;
   position: relative;
   z-index: 1;

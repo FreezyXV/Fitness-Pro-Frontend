@@ -35,6 +35,8 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
       background: var(--gray-50);
       position: relative;
       width: 100%;
+      margin: 0;
+      padding: 0;
     }
 
     .main-content {
@@ -47,7 +49,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
       
       /* Mobile - pas de marge */
       @media (max-width: 768px) {
-        margin-left: 0;
+       
         width: 100%;
       }
     }
