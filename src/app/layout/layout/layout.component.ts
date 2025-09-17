@@ -53,7 +53,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
     }
 
     .content-wrapper {
-
+background : #1da460;
       max-width: 100%;
       min-height: calc(100vh - 4rem);
       

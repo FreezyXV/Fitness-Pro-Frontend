@@ -446,10 +446,12 @@ $spacers: (
 // =============================================
 
 // Primary Gradients - More sophisticated
-$gradient-primary: linear-gradient(135deg, #21bf73 0%, #00b5ad 50%, #21bf73 100%);
+$primary-dark: #1da460;
 $primary-gradient: linear-gradient(135deg, #21bf73 0%, #00b5ad 50%, #21bf73 100%);
-$gradient-primary-simple: linear-gradient(135deg, #21bf73 0%, #1da460 100%);
-$gradient-primary-reverse: linear-gradient(135deg, #1da460 0%, #21bf73 100%);
+
+$primary-dark-simple: linear-gradient(135deg, #21bf73 0%, #1da460 100%);
+$primary-dark-reverse: linear-gradient(135deg, #1da460 0%, #21bf73 100%);
+
 
 // Secondary Gradients
 $secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);

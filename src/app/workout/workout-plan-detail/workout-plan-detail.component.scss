@@ -179,7 +179,7 @@
 // Main Container
 .workout-detail-container {
   min-height: 100vh;
-  background: $gradient-primary;
+  background: $primary-dark;
   background-size: 400% 400%;
   animation: gradient-animation 25s ease infinite;
   position: relative;
@@ -760,7 +760,7 @@
           }
 
           &.active {
-            background: $gradient-primary;
+            background: $primary-dark;
             color: white;
             border-color: transparent;
             box-shadow: 0 8px 25px rgba($primary-color, 0.3);
@@ -1209,7 +1209,7 @@
                 }
 
                 &.start-exercise {
-                  @include enhanced-button($gradient-primary, white, small);
+                  @include enhanced-button($primary-dark, white, small);
                   border: none;
                 }
 
@@ -1279,7 +1279,7 @@
           }
 
           .btn {
-            @include enhanced-button($gradient-primary, white, medium);
+            @include enhanced-button($primary-dark, white, medium);
           }
         }
       }
@@ -1757,7 +1757,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $gradient-primary;
+  background: $primary-dark;
   background-size: 400% 400%;
   animation: gradient-animation 20s ease infinite;
   padding: 3rem;
@@ -1839,7 +1839,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $gradient-primary;
+  background: $primary-dark;
   background-size: 400% 400%;
   animation: gradient-animation 20s ease infinite;
   padding: 3rem;
@@ -1887,7 +1887,7 @@
       flex-wrap: wrap;
 
       .btn {
-        @include enhanced-button($gradient-primary, white, medium);
+        @include enhanced-button($primary-dark, white, medium);
 
         &.btn-secondary {
           @include enhanced-button(rgba(255, 255, 255, 0.95), $gray-700, medium);

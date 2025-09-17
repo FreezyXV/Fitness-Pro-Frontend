@@ -108,15 +108,51 @@ export class WorkoutService {
           count: 2,
           delay: (error, retryCount) => timer(1000 * retryCount),
         }),
-        map((response) => {
+        switchMap((response) => {
           const templates =
             this.extractDataFromResponse<Workout[]>(response) || [];
+
+          // Auto-seed demo workouts if no templates exist and no filters applied
+          if (templates.length === 0 && !filters) {
+            return this.seedPortfolioWorkouts().pipe(
+              switchMap(() => this.http.get<ApiResponse<Workout[]>>(`${this.API_BASE}/templates`, { params })),
+              map((retryResponse) => {
+                const retryTemplates = this.extractDataFromResponse<Workout[]>(retryResponse) || [];
+                this.workoutTemplatesSubject.next(retryTemplates);
+                this.setCachedData(cacheKey, retryTemplates);
+                return retryTemplates;
+              }),
+              catchError(() => {
+                this.workoutTemplatesSubject.next(templates);
+                this.setCachedData(cacheKey, templates);
+                return of(templates);
+              })
+            );
+          }
+
           this.workoutTemplatesSubject.next(templates);
           this.setCachedData(cacheKey, templates);
-          return templates;
+          return of(templates);
         }),
         catchError((error) => {
           console.error('Error loading workout templates:', error);
+
+          // If authentication error, try public endpoint for portfolio visitors
+          if (error.status === 401) {
+            return this.http.get<ApiResponse<Workout[]>>(`${APP_CONFIG.API_URL}/workouts/templates/public`).pipe(
+              map((publicResponse) => {
+                const publicTemplates = this.extractDataFromResponse<Workout[]>(publicResponse) || [];
+                this.workoutTemplatesSubject.next(publicTemplates);
+                this.setCachedData(cacheKey, publicTemplates);
+                return publicTemplates;
+              }),
+              catchError(() => {
+                this.workoutTemplatesSubject.next([]);
+                return of([]);
+              })
+            );
+          }
+
           this.workoutTemplatesSubject.next([]);
           return of([]);
         }),
@@ -523,6 +559,14 @@ export class WorkoutService {
           return of(0);
         })
       );
+  }
+
+  // =============================================
+  // PORTFOLIO SEEDING
+  // =============================================
+
+  private seedPortfolioWorkouts(): Observable<any> {
+    return this.http.post(`${APP_CONFIG.API_URL}/workouts-portfolio-seed`, {});
   }
 
   // =============================================

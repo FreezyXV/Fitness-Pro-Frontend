@@ -1,10 +1,8 @@
 /* src/app/workout/create-workout.component.scss - Enhanced Dashboard Style */
 
 @use "sass:color";
-@use '../../../variables.scss' as *;
-@use '../../../styles.scss' as *;
-
-
+@use "../../../variables.scss" as *;
+@use "../../../styles.scss" as *;
 
 // Enhanced glassmorphism effects
 @mixin glass-card($opacity: 0.95) {
@@ -105,7 +103,7 @@
 // Container principal
 .create-workout-container {
   min-height: 100vh;
-  background: $gradient-primary;
+  background: $primary-dark;
   background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
   padding: 2rem 1rem;
@@ -193,7 +191,7 @@
   font-size: 2.5rem;
   font-weight: 800;
   color: $gray-900;
-  background: $gradient-primary;
+  background: $primary-dark;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -208,7 +206,7 @@
 .title-icon {
   width: 56px;
   height: 56px;
-  background: $gradient-primary;
+  background: $primary-dark;
   border-radius: $border-radius-full;
   display: flex;
   align-items: center;
@@ -348,7 +346,7 @@
 }
 
 .step-item.active .step-circle {
-  background: $gradient-primary;
+  background: $primary-dark;
   color: white;
 }
 
@@ -818,7 +816,7 @@
   .exercise-order {
     width: 32px;
     height: 32px;
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     border-radius: $border-radius-full;
     display: flex;
@@ -1032,7 +1030,7 @@
   }
 
   .btn {
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     border: none;
     border-radius: $border-radius-xl;
@@ -1071,7 +1069,7 @@
   .exercise-number {
     width: 32px;
     height: 32px;
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     border-radius: $border-radius-full;
     display: flex;
@@ -1335,7 +1333,7 @@
   }
 
   &.primary {
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     box-shadow: 0 10px 30px rgba(33, 191, 115, 0.4);
 
@@ -1394,7 +1392,7 @@
       display: flex;
       justify-content: center;
       .btn {
-        background: $gradient-primary;
+        background: $primary-dark;
         color: white;
         border: none;
         padding: 0.75rem 1.5rem;

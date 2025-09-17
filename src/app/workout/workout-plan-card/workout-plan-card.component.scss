@@ -1,8 +1,7 @@
 /* src/app/workout/workout-plan-card/workout-plan-card.component.scss - Enhanced Dashboard Style */
-@use '../../../variables.scss' as *;
-@use '../../../styles.scss' as *;
+@use "../../../variables.scss" as *;
+@use "../../../styles.scss" as *;
 // Import du système de couleurs moderne du dashboard
-
 
 // Enhanced glassmorphism effects (same as dashboard)
 @mixin glass-card($opacity: 0.95) {
@@ -448,7 +447,7 @@
         color: $gray-900;
         margin: 0 0 1rem 0;
         line-height: 1.2;
-        background: $gradient-primary;
+        background: $primary-dark;
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -662,7 +661,7 @@
         }
 
         &.btn-primary {
-          background: $gradient-primary;
+          background: $primary-dark;
           color: white;
           box-shadow: 0 10px 30px rgba(33, 191, 115, 0.4);
 

@@ -1,7 +1,6 @@
 /* src/app/challenges/challenges.component.scss - Enhanced Dashboard Style */
-@use '../../variables.scss' as *;
-@use '../../styles.scss' as *;
-
+@use "../../variables.scss" as *;
+@use "../../styles.scss" as *;
 
 // Enhanced glassmorphism effects (same as dashboard)
 @mixin glass-card($opacity: 0.95) {
@@ -108,7 +107,7 @@
 // Main Challenges Container - Enhanced Dashboard Style
 .challenges-container {
   min-height: calc(100vh - 0px);
-  background: $gradient-primary;
+  background: $primary-dark;
   background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
   position: relative;
@@ -223,7 +222,7 @@
         font-weight: 800;
         color: $gray-900;
         margin: 0 0 0.5rem 0;
-        background: $gradient-primary;
+        background: $primary-dark;
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -267,7 +266,7 @@
         width: 56px;
         height: 56px;
         border-radius: $border-radius-xl;
-        background: $gradient-primary;
+        background: $primary-dark;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -333,7 +332,7 @@
       }
 
       &.primary {
-        background: $gradient-primary;
+        background: $primary-dark;
         color: white;
         box-shadow: 0 8px 30px rgba(33, 191, 115, 0.4);
 
@@ -743,7 +742,7 @@
             color: $gray-900;
             margin: 2rem 0 1rem 0;
             line-height: 1.2;
-            background: $gradient-primary;
+            background: $primary-dark;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -884,7 +883,7 @@
 
             .progress-fill {
               height: 100%;
-              background: $gradient-primary;
+              background: $primary-dark;
               transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
               border-radius: 20px;
               position: relative;
@@ -971,7 +970,7 @@
             }
 
             &.btn-primary {
-              background: $gradient-primary;
+              background: $primary-dark;
               color: white;
               box-shadow: 0 10px 30px rgba(33, 191, 115, 0.4);
 
@@ -1202,7 +1201,7 @@
     }
 
     &.primary {
-      background: $gradient-primary;
+      background: $primary-dark;
       color: white;
 
       &:hover {
@@ -1319,7 +1318,7 @@
               gap: 0.5rem;
 
               &.category {
-                background: $gradient-primary;
+                background: $primary-dark;
               }
 
               &.difficulty {
@@ -1405,7 +1404,7 @@
 
                 .progress-fill {
                   height: 100%;
-                  background: $gradient-primary;
+                  background: $primary-dark;
                   border-radius: 6px;
                 }
               }
@@ -1555,7 +1554,7 @@
           .user-badge {
             .badge {
               &.badge-primary {
-                background: $gradient-primary;
+                background: $primary-dark;
                 color: white;
                 padding: 0.25rem 0.75rem;
                 border-radius: 15px;
@@ -1622,7 +1621,7 @@
   }
 
   &.btn-primary {
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     box-shadow: 0 8px 20px rgba(33, 191, 115, 0.3);
 

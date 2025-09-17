@@ -1,8 +1,7 @@
 /* src/app/workout/workout.component.scss - Enhanced Dashboard Style */
-@use '../../variables.scss' as *;
-@use '../../styles.scss' as *;
+@use "../../variables.scss" as *;
+@use "../../styles.scss" as *;
 // Import du système de couleurs moderne
-
 
 // Enhanced glassmorphism effects
 @mixin glass-card($opacity: 0.95) {
@@ -91,7 +90,7 @@
 // Main Container - Enhanced Dashboard Style
 .workout-container {
   min-height: calc(100vh - 0px);
-  background: $gradient-primary;
+  background: $primary-dark;
   background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
   position: relative;
@@ -205,7 +204,7 @@
         font-weight: 800;
         color: $gray-900;
         margin: 0 0 0.5rem 0;
-        background: $gradient-primary;
+        background: $primary-dark;
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -249,7 +248,7 @@
         width: 56px;
         height: 56px;
         border-radius: $border-radius-xl;
-        background: $gradient-primary;
+        background: $primary-dark;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -315,7 +314,7 @@
       }
 
       &.primary {
-        background: $gradient-primary;
+        background: $primary-dark;
         color: white;
         box-shadow: 0 8px 30px rgba(33, 191, 115, 0.4);
 
@@ -1007,7 +1006,7 @@
     }
 
     &.primary {
-      background: $gradient-primary;
+      background: $primary-dark;
       color: white;
 
       &:hover {
@@ -1065,7 +1064,7 @@
   }
 
   &.btn-primary {
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     box-shadow: 0 8px 20px rgba(33, 191, 115, 0.3);
 

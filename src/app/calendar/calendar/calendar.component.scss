@@ -1,7 +1,5 @@
-@use '../../../variables.scss' as *;
-@use '../../../styles.scss' as *;
-
-
+@use "../../../variables.scss" as *;
+@use "../../../styles.scss" as *;
 
 @mixin glass-morphism($opacity: 0.25) {
   background: rgba(255, 255, 255, $opacity);
@@ -173,7 +171,7 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: $gradient-primary;
+      background: $primary-dark;
     }
   }
 
@@ -284,7 +282,7 @@
       box-shadow: $shadow-sm;
 
       &:hover {
-        background: $gradient-primary;
+        background: $primary-dark;
         color: white;
         transform: scale(1.05);
         box-shadow: $shadow-lg;
@@ -298,7 +296,7 @@
       .period-title {
         font-size: 2rem;
         font-weight: 900;
-        @include text-gradient($gradient-primary);
+        @include text-gradient($primary-dark);
         margin: 0 0 $space-4 0;
       }
 
@@ -379,7 +377,7 @@
         }
 
         &.active {
-          background: $gradient-primary;
+          background: $primary-dark;
           color: white;
           box-shadow: $shadow-sm;
         }
@@ -506,7 +504,7 @@
             border: 2px solid $primary-500;
 
             .day-number {
-              background: $gradient-primary;
+              background: $primary-dark;
               color: white;
               border-radius: 50%;
               width: 32px;
@@ -671,7 +669,7 @@
               }
 
               &.today {
-                background: $gradient-primary;
+                background: $primary-dark;
                 color: white;
                 box-shadow: $shadow-md;
               }
@@ -1000,7 +998,7 @@
           .stat-number {
             font-size: 1.25rem;
             font-weight: 900;
-            @include text-gradient($gradient-primary);
+            @include text-gradient($primary-dark);
             line-height: 1;
             margin-bottom: $space-1;
           }
@@ -1147,7 +1145,7 @@
         h4 {
           font-size: 1.125rem;
           font-weight: 700;
-          @include text-gradient($gradient-primary);
+          @include text-gradient($primary-dark);
           margin: 0 0 $space-3 0;
         }
 
@@ -1201,7 +1199,7 @@
   }
 
   &.btn-primary {
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     box-shadow: 0 4px 14px 0 rgba($primary-500, 0.4);
 
@@ -1350,7 +1348,7 @@
         left: 0;
         right: 0;
         height: 3px;
-        background: $gradient-primary;
+        background: $primary-dark;
       }
 
       &::after {
@@ -1439,7 +1437,7 @@
             left: 0;
             width: 24px;
             height: 2px;
-            background: $gradient-primary;
+            background: $primary-dark;
             border-radius: 1px;
           }
         }
@@ -1537,7 +1535,7 @@
           transform: translateX(-50%);
           width: 60px;
           height: 2px;
-          background: $gradient-primary;
+          background: $primary-dark;
           border-radius: 1px;
         }
 
@@ -1567,7 +1565,7 @@
           }
 
           &.btn-primary {
-            background: $gradient-primary;
+            background: $primary-dark;
             border: none;
             color: white;
             box-shadow: 0 4px 14px rgba($primary-500, 0.4),
@@ -1618,7 +1616,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: $gradient-primary;
+  background: $primary-dark;
   color: white;
   border: none;
   cursor: pointer;

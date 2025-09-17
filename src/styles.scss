@@ -517,7 +517,7 @@ a {
 
   // Button Variants
   &.btn-primary {
-    background: $gradient-primary;
+    background: $primary-dark;
     color: white;
     box-shadow: $shadow-primary;
 
@@ -1267,11 +1267,11 @@ a {
 .bg-success { background: $success-color !important; }
 .bg-warning { background: $warning-color !important; }
 .bg-danger { background: $danger-color !important; }
-.bg-gradient-primary { background: $gradient-primary !important; }
+.bg-gradient-primary { background: $primary-dark #1da460 !important; }
 .bg-gradient-secondary { background: $gradient-secondary !important; }
 
 // Text Utilities
-.text-gradient-primary { @include text-gradient($gradient-primary); }
+.text-gradient-primary { @include text-gradient($primary-dark #1da460); }
 .text-gradient-secondary { @include text-gradient($gradient-secondary); }
 .text-gradient-success { @include text-gradient($gradient-success); }
 

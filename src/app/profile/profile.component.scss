@@ -1,8 +1,6 @@
 /* src/app/profile/profile.component.scss - Enhanced UX with Better Contrast and BMI Gauge */
-@use '../../variables.scss' as *;
-@use '../../styles.scss' as *;
-
-
+@use "../../variables.scss" as *;
+@use "../../styles.scss" as *;
 
 // =============================================
 // ENHANCED MIXINS
@@ -1706,7 +1704,7 @@
     }
 
     &.primary {
-      background: $gradient-primary;
+      background: $primary-dark;
       color: white;
 
       &:hover {
