@@ -6,7 +6,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, catchError, tap, timeout, retry, finalize } from 'rxjs/operators';
+import { map, catchError, tap, timeout, retry, finalize, switchMap } from 'rxjs/operators';
 import {
   Exercise,
   ExerciseFilters,
@@ -46,6 +46,20 @@ export class ExercisesService {
   // ==============================================================================
 
   /**
+   * Seed demo data for portfolio visitors
+   */
+  private seedPortfolioData(): Observable<any> {
+    console.log('🌱 ExercisesService: Seeding portfolio demo data...');
+    return this.http.post(`${this.API_URL}/portfolio-seed`, {}).pipe(
+      tap(response => console.log('✅ Portfolio seeding response:', response)),
+      catchError(error => {
+        console.error('❌ Portfolio seeding failed:', error);
+        return of({ success: false, message: 'Seeding failed' });
+      })
+    );
+  }
+
+  /**
    * Get all exercises with optional filters
    */
   getExercises(filters?: ExerciseFilters): Observable<Exercise[]> {
@@ -81,6 +95,22 @@ export class ExercisesService {
       timeout(30000),
       retry({ count: 2, delay: 1000 }),
       map((response) => this.extractExercisesFromResponse(response)),
+      switchMap((exercises) => {
+        // If exercises are empty and no filters applied, try to seed demo data
+        if (exercises.length === 0 && !filters) {
+          console.log('🌱 No exercises found, attempting to seed demo data...');
+          return this.seedPortfolioData().pipe(
+            switchMap(() => {
+              // After seeding, try to fetch exercises again
+              return this.http.get<any>(url, { params }).pipe(
+                map((response) => this.extractExercisesFromResponse(response))
+              );
+            }),
+            catchError(() => of(exercises)) // Return original empty array if seeding fails
+          );
+        }
+        return of(exercises);
+      }),
       tap((exercises) => {
         this.exercisesSubject.next(exercises);
         this.setCachedData(cacheKey, exercises);
