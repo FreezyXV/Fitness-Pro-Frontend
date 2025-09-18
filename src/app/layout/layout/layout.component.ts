@@ -62,14 +62,7 @@ background : #1da460;
       @media (max-width: 768px) {
         min-height: calc(100vh - 2rem);
       }
-    }
-
-    /* Assurer la compatibilité complète */
-    :host {
-      display: block;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
+    
     }
   `]
 })

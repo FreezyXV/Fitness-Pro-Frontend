@@ -1,15 +1,15 @@
-@use "../../variables.scss" as *;
+@use "../../../variables.scss" as *;
 .app-container {
   display: flex;
   min-height: 100vh;
 
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 .main-content {
   flex: 1;
-  height: 100vh;
+  min-height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
