@@ -339,40 +339,10 @@ export class ExercisesService {
    */
   getAlternativeVideoUrls(originalUrl: string): string[] {
     if (!originalUrl) return [];
-
-    const filename = this.extractFilename(originalUrl);
-    const basePath = '/assets/ExercicesVideos/';
-    const nameWithoutExt = filename.replace(/\.(mp4|webm|mov)$/i, '');
-
-    const alternatives = [
-      originalUrl,
-      basePath + filename,
-      basePath + filename.toLowerCase(),
-      basePath + filename.replace(/\s+/g, '_'),
-      basePath + filename.replace(/\s+/g, '-'),
-      // Handle existing naming conventions
-      basePath + nameWithoutExt.replace(/\s+/g, '-') + '.mp4',
-      basePath + nameWithoutExt.replace(/\s+/g, '_') + '.mp4',
-      // Handle colons and special characters properly
-      basePath + nameWithoutExt.replace(/:/g, '-') + '.mp4',
-      basePath + nameWithoutExt.replace(/90:90/g, '90-90') + '.mp4',
-      // Handle truncated names (common issue with long filenames)
-      basePath + nameWithoutExt.substring(0, 25) + '.mp4',
-      // Handle capitalization patterns found in actual files
-      basePath + nameWithoutExt.toUpperCase().replace(/\s+/g, '-') + '.mp4',
-      // Specific fixes for known patterns
-      basePath + nameWithoutExt.replace(/\s+Hip\s+/gi, '-HIP-') + '.mp4',
-      basePath +
-        nameWithoutExt.replace(
-          /Overhead\s+Dumbell\s+Tric/gi,
-          'Overhead-Dumbell-Tricep-Extension'
-        ) +
-        '.mp4',
-      // Handle word boundaries and proper capitalization
-      basePath + this.titleCase(nameWithoutExt).replace(/\s+/g, '-') + '.mp4',
-    ];
-
-    return [...new Set(alternatives)];
+    
+    const normalizedUrl = this.normalizeVideoUrl(originalUrl);
+    
+    return [normalizedUrl];
   }
 
   private extractFilename(url: string): string {
@@ -468,22 +438,20 @@ export class ExercisesService {
 
   private normalizeVideoUrl(url?: string): string {
     if (!url) return '';
-
+  
+    // If it's already a full URL, return as is
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
-
-    if (url.startsWith('/assets/ExercicesVideos/')) {
-      return url;
-    }
-
-    // Handle URLs that start with 'assets/' (from database)
-    if (url.startsWith('assets/ExercicesVideos/')) {
-      return `/${url}`;
-    }
-
-    const filename = this.extractFilename(url);
-    return `/assets/ExercicesVideos/${filename}`;
+  
+    const baseUrl = 'https://fitness-pro-videos.s3.eu-west-3.amazonaws.com/';
+    const filename = url.split('/').pop() || url;
+  
+    // Construct the full URL
+    const fullUrl = `${baseUrl}${filename}`;
+  
+    console.log(`Normalized URL: ${fullUrl}`);
+    return fullUrl;
   }
 
   private handleError(

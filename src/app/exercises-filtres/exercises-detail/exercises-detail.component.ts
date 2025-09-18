@@ -342,25 +342,28 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
 
   private normalizeVideoUrl(url: string): string {
     if (!url) return '';
-    
+
+    if (url.includes('imgur.com')) {
+      const parts = url.split('/');
+      const imgurId = parts.pop() || '';
+      const directUrl = `https://i.imgur.com/${imgurId}.mp4`;
+      console.log(`Normalized Imgur URL: ${directUrl}`);
+      return directUrl;
+    }
+  
     // If it's already a full URL, return as is
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
-    
-    // If it already starts with /assets, return as is
-    if (url.startsWith('/assets/')) {
-      return url;
-    }
-    
-    // If it starts with assets/ (no slash), add the slash
-    if (url.startsWith('assets/')) {
-      return '/' + url;
-    }
-    
-    // Extract filename and construct proper path
+  
+    const baseUrl = 'https://fitness-pro-videos.s3.eu-west-3.amazonaws.com/';
     const filename = url.split('/').pop() || url;
-    return `/assets/ExercicesVideos/${filename}`;
+  
+    // Construct the full URL
+    const fullUrl = `${baseUrl}${filename}`;
+  
+    console.log(`Normalized URL: ${fullUrl}`);
+    return fullUrl;
   }
 
   private generateAlternativeUrls(originalUrl: string): string[] {
