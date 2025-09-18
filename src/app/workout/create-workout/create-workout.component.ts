@@ -407,7 +407,7 @@ export class CreateWorkoutComponent
   }
 
   calculateTotalDuration(): number {
-    return this.selectedExercises.reduce((total, exercise: WorkoutExercise) => {
+    const totalDuration = this.selectedExercises.reduce((total, exercise: WorkoutExercise) => {
       const sets = exercise.sets || 1;
       const exerciseTime = exercise.durationSeconds
         ? exercise.durationSeconds / 60
@@ -417,6 +417,7 @@ export class CreateWorkoutComponent
       const restTime = (exercise.restTimeSeconds || 60) * (sets - 1);
       return total + exerciseTime * sets + restTime / 60;
     }, 0);
+    return Math.round(totalDuration);
   }
 
   buildCreateRequest(): CreateWorkoutRequest {
