@@ -150,6 +150,17 @@
   }
 }
 
+@keyframes button-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 15px 40px rgba($success-color, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 18px 45px rgba($success-color, 0.5);
+  }
+}
+
 @keyframes exercise-progress-pulse {
   0%, 100% {
     border-color: $warning-color;
@@ -180,7 +191,8 @@
 .workout-detail-container {
   min-height: 100vh;
   background: $primary-dark;
-
+width: 100%;
+padding: 1rem;
   animation: gradient-animation 25s ease infinite;
   position: relative;
   overflow-x: hidden;
@@ -223,10 +235,9 @@
 .content-wrapper {
   position: relative;
   z-index: 1;
-  width: calc(100vw - 120px);
+  width: 100%;
+  margin: 1rem;
 
-  margin: 0 auto;
-  padding: 60px 0;
   display: flex;
   flex-direction: column;
   gap: 4rem;
@@ -1689,6 +1700,7 @@
       &.success.active {
         background: $success-gradient;
         box-shadow: 0 15px 40px rgba($success-color, 0.4);
+        animation: button-pulse 2s ease-in-out infinite !important;
       }
     }
 
