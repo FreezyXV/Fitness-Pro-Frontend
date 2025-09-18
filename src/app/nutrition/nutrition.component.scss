@@ -3773,7 +3773,7 @@
 // ==========================================
 // RESPONSIVE DESIGN
 // ==========================================
-@media (max-width: 1200px) {
+@media (max-width: $breakpoint-xl) {
   .nutrition-container {
     .hero-section,
     .date-navigation-section,
@@ -3809,7 +3809,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .nutrition-container {
     &::before,
     &::after {
@@ -4019,7 +4019,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: $breakpoint-sm) {
   .nutrition-container {
     .hero-section,
     .date-navigation-section,
