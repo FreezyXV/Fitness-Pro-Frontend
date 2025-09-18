@@ -481,21 +481,38 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   startWorkoutSession(template: Workout): void {
     console.log('Starting workout session for template:', template.name);
 
+    // Update the template's loading state
+    const templateIndex = this.workoutTemplates.findIndex(t => t.id === template.id);
+    if (templateIndex !== -1) {
+      this.workoutTemplates[templateIndex].isStarting = true;
+    }
+
     this.workoutService
       .startWorkoutSession(template.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (session) => {
+          // Update the template state to show it's started
+          if (templateIndex !== -1) {
+            this.workoutTemplates[templateIndex].isStarting = false;
+            this.workoutTemplates[templateIndex].hasActiveSession = true;
+            this.workoutTemplates[templateIndex].sessionId = session.id;
+          }
+
           NotificationUtils.success(`Session démarrée pour ${template.name}`);
           console.log('Session created:', session);
 
-          // For now, just show success message and stay on current page
-          // TODO: Navigate to workout session tracking page when implemented
-          // this.router.navigate(['/workouts/session'], {
-          //   queryParams: { sessionId: session.id }
-          // });
+          // Navigate to the workout detail page with the active session
+          this.router.navigate(['/workouts', template.id], {
+            queryParams: { sessionId: session.id }
+          });
         },
         error: (error) => {
+          // Reset loading state on error
+          if (templateIndex !== -1) {
+            this.workoutTemplates[templateIndex].isStarting = false;
+          }
+
           NotificationUtils.error('Erreur lors du démarrage de la session');
           console.error('Start session error:', error);
         },

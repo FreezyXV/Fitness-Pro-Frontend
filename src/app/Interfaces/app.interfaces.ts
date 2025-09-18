@@ -164,6 +164,11 @@ export interface Workout {
   // Exercises with flattened pivot data
   exercises?: Exercise[]; // This will contain the pivot data flattened
   orderedExercises?: Exercise[]; // Same as exercises, explicitly named for clarity from backend
+
+  // Session state properties for UI
+  isStarting?: boolean;
+  hasActiveSession?: boolean;
+  sessionId?: number;
 }
 
 export interface Goal {

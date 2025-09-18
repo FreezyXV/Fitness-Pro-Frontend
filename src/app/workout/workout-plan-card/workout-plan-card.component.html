@@ -186,10 +186,14 @@
       <button
         class="btn btn-primary"
         (click)="onStartSession($event)"
+        [class.loading]="plan.isStarting"
+        [class.active-session]="plan.hasActiveSession"
+        [disabled]="plan.isStarting"
         [attr.aria-label]="'Démarrer ' + plan.name"
         title="Démarrer une session d'entraînement"
       >
         <svg
+          *ngIf="!plan.isStarting && !plan.hasActiveSession"
           width="18"
           height="18"
           viewBox="0 0 24 24"
@@ -199,7 +203,46 @@
         >
           <polygon points="5 3 19 12 5 21 5 3" />
         </svg>
-        <span>Démarrer</span>
+
+        <!-- Loading spinner -->
+        <svg
+          *ngIf="plan.isStarting"
+          class="spinner"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10" opacity="0.3"/>
+          <path d="M22 12A10 10 0 0 0 12 2" stroke-dasharray="8 8" opacity="1">
+            <animateTransform
+              attributeName="transform"
+              type="rotate"
+              values="0 12 12;360 12 12"
+              dur="1s"
+              repeatCount="indefinite"/>
+          </path>
+        </svg>
+
+        <!-- Active session icon -->
+        <svg
+          *ngIf="plan.hasActiveSession && !plan.isStarting"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12,6 12,12 16,14" />
+        </svg>
+
+        <span *ngIf="!plan.isStarting && !plan.hasActiveSession">Démarrer</span>
+        <span *ngIf="plan.isStarting">Démarrage...</span>
+        <span *ngIf="plan.hasActiveSession && !plan.isStarting">En cours</span>
       </button>
 
       <button

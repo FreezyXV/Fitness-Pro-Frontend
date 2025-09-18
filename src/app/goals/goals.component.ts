@@ -2033,6 +2033,23 @@ export class GoalsComponent implements OnInit, OnDestroy {
   }
 
   /* =============================================
+     AUTHENTICATION HELPERS
+     ============================================= */
+
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated;
+  }
+
+  canModifyGoals(): boolean {
+    return this.isAuthenticated;
+  }
+
+  navigateToLogin(): void {
+    // Navigate to login page
+    window.location.href = '/login';
+  }
+
+  /* =============================================
      NOTIFICATION SYSTEM
      ============================================= */
 

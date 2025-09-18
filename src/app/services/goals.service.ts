@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { map, catchError, tap, delay } from 'rxjs/operators';
+import { APP_CONFIG, StorageUtils } from '../shared';
 // Environment configuration
 const environment = {
   apiUrl: 'https://fitness-pro-backend.fly.dev/api'
@@ -92,12 +93,12 @@ export class GoalsService {
   }
 
   private hasAuthToken(): boolean {
-    const token = localStorage.getItem('auth_token');
+    const token = StorageUtils.getItem<string>(APP_CONFIG.TOKEN_KEY);
     return !!(token && token.trim().length > 0);
   }
 
   private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('auth_token');
+    const token = StorageUtils.getItem<string>(APP_CONFIG.TOKEN_KEY);
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': token ? `Bearer ${token}` : ''
@@ -628,7 +629,7 @@ export class GoalsService {
     
     return this.http.post<{success: boolean, message: string, imported_count: number}>(`${this.API_URL}/import`, formData, {
       headers: new HttpHeaders({
-        'Authorization': localStorage.getItem('auth_token') ? `Bearer ${localStorage.getItem('auth_token')}` : ''
+        'Authorization': StorageUtils.getItem<string>(APP_CONFIG.TOKEN_KEY) ? `Bearer ${StorageUtils.getItem<string>(APP_CONFIG.TOKEN_KEY)}` : ''
       })
     }).pipe(
       tap(() => {

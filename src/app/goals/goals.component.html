@@ -381,7 +381,7 @@
         <div class="action-buttons">
           <!-- NOT STARTED STATE -->
           <button
-            *ngIf="goal.status === 'not-started'"
+            *ngIf="goal.status === 'not-started' && canModifyGoals()"
             class="btn btn-success"
             (click)="startGoal(goal); $event.stopPropagation()"
             [disabled]="isGoalLoading(goal.id!)"
@@ -402,7 +402,7 @@
 
           <!-- ACTIVE STATE -->
           <button
-            *ngIf="goal.status === 'active'"
+            *ngIf="goal.status === 'active' && canModifyGoals()"
             class="btn btn-primary"
             (click)="completeGoal(goal); $event.stopPropagation()"
             [disabled]="isGoalLoading(goal.id!)"
@@ -422,7 +422,7 @@
           </button>
 
           <button
-            *ngIf="goal.status === 'active'"
+            *ngIf="goal.status === 'active' && canModifyGoals()"
             class="btn btn-secondary"
             (click)="toggleGoalStatus(goal); $event.stopPropagation()"
             [disabled]="isGoalLoading(goal.id!)"
@@ -444,7 +444,7 @@
 
           <!-- PAUSED STATE -->
           <button
-            *ngIf="goal.status === 'paused'"
+            *ngIf="goal.status === 'paused' && canModifyGoals()"
             class="btn btn-success"
             (click)="toggleGoalStatus(goal); $event.stopPropagation()"
             [disabled]="isGoalLoading(goal.id!)"
@@ -482,7 +482,7 @@
           </button>
 
           <button
-            *ngIf="goal.status === 'completed'"
+            *ngIf="goal.status === 'completed' && canModifyGoals()"
             class="btn btn-warning"
             (click)="resetGoal(goal); $event.stopPropagation()"
             [disabled]="isGoalLoading(goal.id!)"
@@ -503,6 +503,17 @@
             </svg>
             <span>{{ getGoalActionState(goal.id!) === 'resetting' ? getGoalActionLabel(goal.id!, 'Recommencer') : 'Recommencer' }}</span>
           </button>
+
+          <!-- AUTH MESSAGE FOR UNAUTHENTICATED USERS -->
+          <div *ngIf="!canModifyGoals() && (goal.status === 'not-started' || goal.status === 'active' || goal.status === 'paused')" class="auth-message">
+            <div class="auth-icon">🔐</div>
+            <div class="auth-text">
+              <span>Connectez-vous pour interagir avec les objectifs</span>
+              <button class="auth-link" (click)="navigateToLogin()" type="button">
+                Se connecter
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -530,7 +541,7 @@
 
         <button
           class="quick-action"
-          *ngIf="goal.status === 'active'"
+          *ngIf="goal.status === 'active' && canModifyGoals()"
           (click)="toggleQuickUpdateMode(goal)"
           [attr.aria-label]="'Activer la mise à jour rapide de ' + goal.title"
           [title]="
