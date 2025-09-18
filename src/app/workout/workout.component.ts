@@ -162,11 +162,11 @@ export class WorkoutComponent implements OnInit, OnDestroy {
       this.viewMode = savedViewMode;
     }
 
-    const savedFilters =
-      StorageUtils.getItem<WorkoutFilters>('workout_filters');
-    if (savedFilters) {
-      this.filters = { ...this.filters, ...savedFilters };
-    }
+    // const savedFilters =
+    //   StorageUtils.getItem<WorkoutFilters>('workout_filters');
+    // if (savedFilters) {
+    //   this.filters = { ...this.filters, ...savedFilters };
+    // }
   }
 
   private setupSearchDebounce(): void {
