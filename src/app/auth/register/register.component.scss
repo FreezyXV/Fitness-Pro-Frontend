@@ -19,6 +19,16 @@
   padding: map.get($spacers, 6);
   position: relative;
   overflow: hidden;
+  padding: 20px; /* Add some padding for smaller screens */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
+
+  /* Media queries for responsiveness */
+  @media (max-width: 600px) {
+    .register-card {
+      padding: 20px; /* Reduce padding on smaller screens */
+      margin: 0 15px; /* Add horizontal margin */
+    }
+  }
 
   // Effets décoratifs en arrière-plan
   &::before {
@@ -106,13 +116,16 @@
     .form-row {
       display: grid;
 
+        margin-bottom: 0rem;
+      
+
 
       @media (max-width: map.get($grid-breakpoints, sm)) {
         grid-template-columns: 1fr;
         gap: 0;
 
         .form-group:first-child {
-          margin-bottom: map.get($spacers, 5);
+          margin-bottom: 0rem;
         }
       }
     }
@@ -484,14 +497,14 @@
 // Responsive
 @media (max-width: map.get($grid-breakpoints, sm)) {
   .register-wrapper {
-    padding: map.get($spacers, 4);
+    padding: map.get($spacers, 2);
   }
 
   .register-card {
-    padding: map.get($spacers, 8) map.get($spacers, 6);
+    padding: map.get($spacers, 6) map.get($spacers, 4);
 
     .logo-section {
-      margin-bottom: map.get($spacers, 6);
+      margin-bottom: map.get($spacers, 4);
 
       .logo-icon {
         width: 56px;
@@ -506,21 +519,21 @@
 
     form {
       .form-group {
-        margin-bottom: map.get($spacers, 5);
+        margin-bottom: map.get($spacers, 3);
 
         .input-wrapper input {
-          padding: map.get($spacers, 3) map.get($spacers, 4);
+          padding: 1rem;
         }
       }
 
       button[type="submit"] {
-        padding: map.get($spacers, 3) map.get($spacers, 5);
+        padding: map.get($spacers, 2) map.get($spacers, 4);
       }
     }
 
     .terms-conditions {
-      margin-top: map.get($spacers, 5);
-      padding: map.get($spacers, 3);
+      margin-top: map.get($spacers, 3);
+      padding: map.get($spacers, 2);
     }
   }
 }
@@ -528,7 +541,7 @@
 @media (max-width: map.get($grid-breakpoints, xs)) {
   .register-card {
     .terms-conditions .checkbox-wrapper {
-      gap: map.get($spacers, 2);
+      gap: map.get($spacers, 1);
 
       label {
         font-size: $font-size-xs;

@@ -484,3 +484,11 @@
     }
   }
 }
+
+/* Media queries for responsiveness */
+@media (max-width: 600px) {
+  .login-card {
+    padding: 20px; /* Reduce padding on smaller screens */
+    margin: 0 15px; /* Add horizontal margin */
+  }
+}
