@@ -267,7 +267,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
 
     .back-button {
       display: flex;
@@ -348,7 +348,7 @@
     .meta-badges {
       display: flex;
       gap: 1.5rem;
-      flex-wrap: wrap;
+      // flex-wrap: wrap;
       justify-content: center;
 
       @media (min-width: 768px) {
@@ -360,7 +360,7 @@
         display: flex;
         align-items: center;
         gap: 0.875rem;
-        padding: 1.25rem 2.5rem;
+        padding: 1rem 0.5rem;
         border-radius: 20px;
         font-weight: 800;
         text-transform: uppercase;
@@ -634,6 +634,7 @@
 
   .video-player-container {
     .video-player {
+      align-items: center;
       position: relative;
       background: rgba(0, 0, 0, 0.95);
       border-radius: 20px;

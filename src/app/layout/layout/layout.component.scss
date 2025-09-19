@@ -30,7 +30,7 @@
   @media (max-width: $breakpoint-md) {
     width: 100vw;
     margin-left: 0;
-    padding-top: 80px; // Space for mobile toggle button
+    padding-top: 1rem; // Space for mobile toggle button
     min-height: calc(100vh - 80px);
     display: block; // Ensure content is visible
     opacity: 1; // Ensure content is not hidden

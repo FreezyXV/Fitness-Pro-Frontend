@@ -139,7 +139,7 @@ $forest-gradient: $gradient-forest;
   .profile-section {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 
     .profile-avatar {
       position: relative;
@@ -238,7 +238,7 @@ $forest-gradient: $gradient-forest;
       .welcome-subtitle {
         color: $gray-600;
         font-size: clamp(1rem, 2.5vw, 1.125rem);
-        margin: 0 0 1.5rem 0;
+       
         font-weight: 500;
         line-height: 1.5;
       }
@@ -341,7 +341,6 @@ $forest-gradient: $gradient-forest;
   .calendar-section {
     @include glass-effect-dark(0.08);
     border-radius: $border-radius-xl;
-    padding: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(16px);
     transition: all 0.3s ease;
@@ -1386,7 +1385,7 @@ $forest-gradient: $gradient-forest;
     background-size: 400% 400%;
     animation: gradientFlow 12s ease infinite;
     border-radius: $border-radius-2xl;
-    padding: 4rem 3rem;
+    padding: 2rem 2rem;
     text-align: center;
     color: white;
     position: relative;
@@ -1457,6 +1456,7 @@ $forest-gradient: $gradient-forest;
         flex-wrap: wrap;
 
         .btn-motivation {
+          width: 100%;
           padding: 1.25rem 2.5rem;
           border-radius: $border-radius-lg;
           font-weight: 700;
@@ -1688,10 +1688,11 @@ $forest-gradient: $gradient-forest;
 
     .profile-section {
       .welcome-text .greeting {
-        font-size: 2rem;
+        text-align: center;
+        font-size: 3rem;
 
         .greeting-time {
-          font-size: 1.125rem;
+          font-size: 2rem;
         }
       }
 
