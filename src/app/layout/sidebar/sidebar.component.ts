@@ -150,7 +150,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     // Initialize properties first
     this.initializeDefaults();
     
-    // Check screen size immediately
+    // Check screen size immediately (768px matches $breakpoint-md)
     this.isMobile = window.innerWidth <= 768;
     console.log('Sidebar initialized - isMobile:', this.isMobile, 'width:', window.innerWidth);
   }

@@ -1,10 +1,14 @@
 @use "../../../variables.scss" as *;
+
 .app-container {
   display: flex;
   min-height: 100vh;
-
   position: relative;
-  // overflow: hidden;
+  width: 100%;
+
+  @media (max-width: $breakpoint-md) {
+    flex-direction: column;
+  }
 }
 
 .main-content {
@@ -14,4 +18,22 @@
   overflow-x: hidden;
   position: relative;
   background: $primary-dark;
+  z-index: 1; // Ensure content appears above background but below sidebar
+
+  // Desktop: add margin for fixed sidebar (320px + 2rem + 1rem spacing)
+  @media (min-width: calc(#{$breakpoint-md} + 1px)) {
+    margin-left: 360px; // Accounts for sidebar width + positioning
+    width: calc(100% - 360px);
+  }
+
+  // Mobile: full width with top padding for burger menu button
+  @media (max-width: $breakpoint-md) {
+    width: 100vw;
+    margin-left: 0;
+    padding-top: 80px; // Space for mobile toggle button
+    min-height: calc(100vh - 80px);
+    display: block; // Ensure content is visible
+    opacity: 1; // Ensure content is not hidden
+    visibility: visible; // Force visibility
+  }
 }
