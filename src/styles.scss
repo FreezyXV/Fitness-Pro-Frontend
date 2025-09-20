@@ -475,17 +475,18 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 0 0.5rem 0;
 }
 
-h1 { font-size: 2.5rem; font-weight: 800; }
-h2 { font-size: 2rem; font-weight: 700; }
-h3 { font-size: 1.5rem; font-weight: 700; }
-h4 { font-size: 1.25rem; font-weight: 600; }
-h5 { font-size: 1.125rem; font-weight: 600; }
-h6 { font-size: 1rem; font-weight: 600; }
+h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); font-weight: 800; }
+h2 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; }
+h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); font-weight: 700; }
+h4 { font-size: clamp(1.125rem, 2.5vw, 1.25rem); font-weight: 600; }
+h5 { font-size: clamp(1rem, 2vw, 1.125rem); font-weight: 600; }
+h6 { font-size: clamp(0.875rem, 1.5vw, 1rem); font-weight: 600; }
 
 p {
   margin-bottom: 1rem;
   line-height: 1.6;
   color: var(--gray-600);
+  font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 // Links
@@ -512,8 +513,19 @@ a {
 // =============================================
 
 .btn {
-  font-size: 0.875rem;
+  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
   @include button-base;
+
+  // Enhanced mobile responsiveness
+  @media (max-width: $breakpoint-md) {
+    min-height: 44px; // Touch-friendly minimum
+    font-weight: 600;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    min-height: 48px; // Larger touch target on small screens
+    font-size: clamp(0.8rem, 3vw, 0.9rem);
+  }
 
   // Button Variants
   &.btn-primary {
@@ -591,20 +603,32 @@ a {
     }
   }
 
-  // Button Sizes
+  // Button Sizes with responsive scaling
   &.btn-sm {
     padding: $btn-padding-sm;
-    font-size: 0.8rem;
+    font-size: clamp(0.7rem, 2vw, 0.8rem);
+
+    @media (max-width: $breakpoint-sm) {
+      min-height: 40px;
+    }
   }
 
   &.btn-lg {
     padding: $btn-padding-lg;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 3vw, 1rem);
+
+    @media (max-width: $breakpoint-sm) {
+      min-height: 52px;
+    }
   }
 
   &.btn-xl {
     padding: $btn-padding-xl;
-    font-size: 1.125rem;
+    font-size: clamp(1rem, 3.5vw, 1.125rem);
+
+    @media (max-width: $breakpoint-sm) {
+      min-height: 56px;
+    }
   }
 }
 

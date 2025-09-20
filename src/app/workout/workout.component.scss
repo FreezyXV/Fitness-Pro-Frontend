@@ -97,8 +97,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
+  padding: 4rem 2rem;
   padding-bottom: 4rem;
+
+  @media (max-width: $breakpoint-lg) {
+    padding: 3rem 1.5rem;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: 2rem 1rem;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: 1.25rem 0.75rem;
+  }
 
   // Animated background pattern
   &::before {
@@ -152,6 +164,23 @@
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  max-width: 1200px;
+  width: 100%;
+
+  @media (max-width: $breakpoint-lg) {
+    padding: 2rem;
+    border-radius: $border-radius-2xl;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: 1.75rem;
+    border-radius: $border-radius-xl;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: 1.25rem;
+    border-radius: $border-radius-lg;
+  }
 
   .hero-background {
     position: absolute;
@@ -198,7 +227,7 @@
 
     .title-content {
       .page-title {
-        font-size: 2.5rem;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
         font-weight: 800;
         color: $gray-900;
         margin: 0 0 0.5rem 0;
@@ -208,13 +237,23 @@
         -webkit-text-fill-color: transparent;
         background-size: 200% 200%;
         animation: gradientShift 3s ease infinite;
+        text-align: center;
+
+        @media (max-width: $breakpoint-sm) {
+          text-align: center;
+        }
       }
 
       .page-subtitle {
         color: $gray-600;
-        font-size: 1.125rem;
+        font-size: clamp(0.875rem, 2.5vw, 1.125rem);
         margin: 0;
         font-weight: 500;
+        text-align: center;
+
+        @media (max-width: $breakpoint-sm) {
+          text-align: center;
+        }
       }
     }
   }
@@ -354,12 +393,23 @@
 // Debug Section
 .debug-section {
   margin-bottom: 2rem;
+  max-width: 1200px;
+  width: 100%;
 
   .debug-card {
     @include glass-card-dark(0.1);
     border-radius: $border-radius-xl;
     padding: 1.5rem;
     border: 2px dashed rgba(33, 191, 115, 0.3);
+
+    @media (max-width: $breakpoint-md) {
+      padding: 1.25rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: 1rem;
+      border-radius: $border-radius-lg;
+    }
 
     .debug-controls {
       display: flex;
@@ -396,6 +446,8 @@
 // Filters Section - Enhanced
 .filters-section {
   margin-bottom: 2rem;
+  max-width: 1200px;
+  width: 100%;
 
   .filters-card {
     @include glass-card(0.95);
@@ -404,6 +456,20 @@
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     animation-delay: 0.1s;
     animation-fill-mode: both;
+
+    @media (max-width: $breakpoint-lg) {
+      padding: 1.75rem;
+      border-radius: $border-radius-xl;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: 1.25rem;
+      border-radius: $border-radius-lg;
+    }
   }
 
   // Search Container
@@ -736,6 +802,8 @@
 .no-results-section,
 .empty-section {
   margin-bottom: 2rem;
+  max-width: 1200px;
+  width: 100%;
 
   .loading-card,
   .error-card,
@@ -746,6 +814,20 @@
     padding: 4rem 2rem;
     text-align: center;
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @media (max-width: $breakpoint-lg) {
+      padding: 3rem 1.5rem;
+      border-radius: $border-radius-xl;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: 2.5rem 1.25rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: 2rem 1rem;
+      border-radius: $border-radius-lg;
+    }
 
     .loading-spinner {
       width: 50px;
@@ -806,11 +888,21 @@
 // Workout Templates Content
 .workout-templates-content {
   margin-bottom: 2rem;
+  max-width: 1200px;
+  width: 100%;
 
   .workout-templates-grid {
     display: grid;
     gap: 2rem;
     animation: fadeIn 0.6s ease;
+
+    @media (max-width: $breakpoint-md) {
+      gap: 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      gap: 1.25rem;
+    }
   }
 
   &.grid-view .workout-templates-grid {
@@ -852,12 +944,28 @@
 // Recent Sessions Section
 .recent-sessions-section {
   margin-bottom: 2rem;
+  max-width: 1200px;
+  width: 100%;
 
   .section-card {
     @include glass-card(0.95);
     border-radius: $border-radius-2xl;
     padding: 2rem;
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    @media (max-width: $breakpoint-lg) {
+      padding: 1.75rem;
+      border-radius: $border-radius-xl;
+    }
+
+    @media (max-width: $breakpoint-md) {
+      padding: 1.5rem;
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      padding: 1.25rem;
+      border-radius: $border-radius-lg;
+    }
   }
 
   .section-header {

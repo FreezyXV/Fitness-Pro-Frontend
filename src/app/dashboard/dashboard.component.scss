@@ -24,7 +24,6 @@ $forest-gradient: $gradient-forest;
 .dashboard-container {
   min-height: 100vh;
   background: $primary-dark;
-  // background-size: 400% 400%;
   animation: gradient-flow 20s ease infinite;
   position: relative;
   overflow-x: hidden;
@@ -32,6 +31,23 @@ $forest-gradient: $gradient-forest;
   padding: 0rem 1rem 1rem 1rem;
   flex-direction: column;
   align-items: center;
+
+  // Enhanced responsive padding
+  @media (max-width: $breakpoint-xl) {
+    padding: 0rem 0.75rem 0.75rem 0.75rem;
+  }
+
+  @media (max-width: $breakpoint-lg) {
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    padding: 0rem 0.25rem 0.25rem 0.25rem;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    padding: 0rem 0.125rem 0.125rem 0.125rem;
+  }
 
   // Background pattern using mixin approach
   &::before {
@@ -76,12 +92,40 @@ $forest-gradient: $gradient-forest;
   margin: 1rem;
   margin-bottom: 1.5rem;
   width: 100%;
-  // max-width: 1600px;
   @include glass-effect(0.96);
   border-radius: $border-radius-2xl;
   padding: $card-padding-xl;
   animation: slide-up 0.8s $transition-smooth;
   overflow: hidden;
+
+  // Enhanced responsive design
+  @media (max-width: $breakpoint-xl) {
+    margin: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding: $card-padding-lg;
+    border-radius: $border-radius-xl;
+  }
+
+  @media (max-width: $breakpoint-lg) {
+    margin: 0.5rem;
+    margin-bottom: 1rem;
+    padding: $card-padding-md;
+    border-radius: $border-radius-lg;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    margin: 0.25rem;
+    margin-bottom: 0.75rem;
+    padding: $card-padding-sm;
+    border-radius: $border-radius-md;
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    margin: 0.125rem;
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    border-radius: $border-radius-sm;
+  }
 
   &:hover {
     transform: $transform-hover;
@@ -213,19 +257,47 @@ $forest-gradient: $gradient-forest;
 
     .welcome-text {
       .greeting {
-        font-size: clamp(2rem, 4vw, 2.5rem);
+        font-size: clamp(1.8rem, 3.5vw, 2.5rem);
         font-weight: 800;
         color: $gray-900;
         margin: 0 0 0.5rem 0;
         line-height: 1.1;
+        text-align: left;
+
+        @media (max-width: $breakpoint-lg) {
+          text-align: center;
+          font-size: clamp(1.6rem, 3vw, 2.25rem);
+        }
+
+        @media (max-width: $breakpoint-md) {
+          text-align: center;
+          font-size: clamp(1.4rem, 2.8vw, 2rem);
+        }
+
+        @media (max-width: $breakpoint-sm) {
+          text-align: center;
+          font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+        }
 
         .greeting-time {
           display: block;
-          font-size: clamp(1rem, 2.5vw, 1.25rem);
+          font-size: clamp(0.9rem, 2vw, 1.25rem);
           color: $gray-600;
           font-weight: 600;
           margin-bottom: 0.25rem;
           opacity: 0.9;
+
+          @media (max-width: $breakpoint-lg) {
+            font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+          }
+
+          @media (max-width: $breakpoint-md) {
+            font-size: clamp(0.8rem, 1.6vw, 1rem);
+          }
+
+          @media (max-width: $breakpoint-sm) {
+            font-size: clamp(0.75rem, 1.4vw, 0.9rem);
+          }
         }
 
         .user-name {
@@ -237,10 +309,25 @@ $forest-gradient: $gradient-forest;
 
       .welcome-subtitle {
         color: $gray-600;
-        font-size: clamp(1rem, 2.5vw, 1.125rem);
-       
+        font-size: clamp(0.95rem, 2.2vw, 1.125rem);
         font-weight: 500;
         line-height: 1.5;
+        text-align: left;
+
+        @media (max-width: $breakpoint-lg) {
+          text-align: center;
+          font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        @media (max-width: $breakpoint-md) {
+          text-align: center;
+          font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+        }
+
+        @media (max-width: $breakpoint-sm) {
+          text-align: center;
+          font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+        }
       }
     }
 
