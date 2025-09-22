@@ -158,7 +158,7 @@
     position: absolute;
     top: -40%;
     left: -40%;
-    width: 180%;
+   
     height: 180%;
     background: radial-gradient(
         circle at 25% 25%,
@@ -1750,9 +1750,9 @@
 }
 
 @media (max-width: 768px) {
-  .profile-container {
-    padding: $spacing-xl $spacing-md;
-  }
+  // .profile-container {
+  //   padding: 0.5rem;
+  // }
 
   .hero-section {
     padding: $spacing-3xl;
@@ -1859,7 +1859,7 @@
 
 @media (max-width: 480px) {
   .profile-container {
-    padding: $spacing-lg $spacing-sm;
+    padding: 0.5rem;
   }
 
   .hero-section {

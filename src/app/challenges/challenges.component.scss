@@ -125,7 +125,7 @@
     position: absolute;
     top: -30%;
     left: -30%;
-    width: 160%;
+
     height: 160%;
     background: radial-gradient(
       circle,
@@ -1251,7 +1251,7 @@
     }
 
     .modal-header {
-      padding: 2rem;
+      padding: 1rem;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
@@ -1568,7 +1568,7 @@
     }
 
     .modal-footer {
-      padding: 2rem;
+      padding: 1rem;
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
@@ -1703,7 +1703,7 @@
 
 @media (max-width: 768px) {
   .challenges-container {
-    padding: 0.5rem;
+    // padding: 0.5rem;
 
     &::before,
     &::after {
@@ -1814,7 +1814,11 @@
 
 @media (max-width: 480px) {
   .challenges-container {
-    padding: 0.25rem;
+    padding: 0.5rem;
+
+    .challenges-grid {
+gap: 1rem;
+    }
 
     .hero-section {
       padding: 1rem;

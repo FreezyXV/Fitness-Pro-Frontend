@@ -118,7 +118,7 @@
     position: absolute;
     top: -30%;
     left: -30%;
-    width: 160%;
+
     height: 160%;
     background: radial-gradient(
       circle,
@@ -275,7 +275,7 @@
 // Progress Steps
 .progress-steps {
   width: 100%;
-  max-width: 1200px;
+
   margin-bottom: 2rem;
   position: relative;
   z-index: 1;
@@ -418,7 +418,7 @@
 // Error & Loading
 .error-alert {
   width: 100%;
-  max-width: 1200px;
+
   background: rgba($danger-color, 0.1);
   border: 1px solid $danger-color;
   border-radius: $border-radius-lg;
@@ -476,7 +476,7 @@
 // Main Content
 .main-content {
   width: 100%;
-  max-width: 1200px;
+
   position: relative;
   z-index: 1;
 }

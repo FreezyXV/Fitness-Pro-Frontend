@@ -95,44 +95,6 @@
     </div>
   </div>
 
-  <!-- Debug Section (pour développement) -->
-  <div class="debug-section" *ngIf="error || isLoading">
-    <div class="debug-card">
-      <div class="debug-controls">
-        <button (click)="testConnection()" class="btn btn-outline btn-sm">
-          🧪 Test API
-        </button>
-        <button (click)="refreshData()" class="btn btn-outline btn-sm">
-          🔄 Actualiser
-        </button>
-        <button (click)="clearCache()" class="btn btn-outline btn-sm">
-          🗑️ Vider cache
-        </button>
-      </div>
-
-      <div class="debug-info">
-        <p>
-          <strong>Status:</strong>
-          <span
-            [class]="
-              isLoading
-                ? 'status-loading'
-                : error
-                ? 'status-error'
-                : 'status-success'
-            "
-          >
-            {{ isLoading ? "Chargement..." : error ? "Erreur" : "OK" }}
-          </span>
-        </p>
-        <p><strong>Programmes chargés:</strong> {{ getTotalCount() }}</p>
-        <p>
-          <strong>Utilisateur:</strong>
-          {{ currentUser?.email || "Non connecté" }}
-        </p>
-      </div>
-    </div>
-  </div>
 
   <!-- Enhanced Filters Section -->
   <div class="filters-section">
@@ -695,24 +657,5 @@
     </div>
   </div>
 
-  <!-- Floating Action Button -->
-  <div class="floating-actions">
-    <button
-      (click)="createCustomWorkout()"
-      class="fab primary"
-      title="Créer un programme"
-    >
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <line x1="12" y1="5" x2="12" y2="19" />
-        <line x1="5" y1="12" x2="19" y2="12" />
-      </svg>
-    </button>
-  </div>
+
 </div>

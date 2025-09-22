@@ -161,12 +161,6 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     if (savedViewMode) {
       this.viewMode = savedViewMode;
     }
-
-    // const savedFilters =
-    //   StorageUtils.getItem<WorkoutFilters>('workout_filters');
-    // if (savedFilters) {
-    //   this.filters = { ...this.filters, ...savedFilters };
-    // }
   }
 
   private setupSearchDebounce(): void {
@@ -195,7 +189,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
         `user_workout_preferences_${userId}`
       );
       if (preferences) {
-        this.filters = { ...this.filters, ...preferences.filters };
+        // Only load view mode, not filters to ensure workouts are visible on initial load
         this.viewMode = preferences.viewMode || this.viewMode;
       }
     }
@@ -299,6 +293,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     this.workoutTemplates = [];
     this.applyFilters();
   }
+
 
   // =============================================
   // FILTERING & SEARCH
@@ -692,11 +687,11 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   // PERFORMANCE OPTIMIZATIONS
   // =============================================
 
-  trackByWorkoutTemplate(index: number, template: Workout): number {
+  trackByWorkoutTemplate(_index: number, template: Workout): number {
     return template.id;
   }
 
-  trackByFilter(index: number, filter: any): string {
+  trackByFilter(_index: number, filter: any): string {
     return filter.value;
   }
 

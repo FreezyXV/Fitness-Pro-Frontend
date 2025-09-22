@@ -97,7 +97,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem 2rem;
+  padding: 1rem 1rem;
   padding-bottom: 4rem;
 
   @media (max-width: $breakpoint-lg) {
@@ -105,11 +105,11 @@
   }
 
   @media (max-width: $breakpoint-md) {
-    padding: 2rem 1rem;
+    padding: 0.25rem;
   }
 
   @media (max-width: $breakpoint-sm) {
-    padding: 1.25rem 0.75rem;
+    padding: 0.25rem;
   }
 
   // Animated background pattern
@@ -118,7 +118,7 @@
     position: absolute;
     top: -30%;
     left: -30%;
-    width: 160%;
+
     height: 160%;
     background: radial-gradient(
       circle,
@@ -153,18 +153,28 @@
     z-index: 1;
     width: 100%;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.25rem;
+
+  }
+
+  @media (max-width: 480px) {
+padding: 0.25rem;
+
+  }
 }
 
 // Hero Section - Enhanced Dashboard Style
 .hero-section {
   @include glass-card(0.95);
-  border-radius: $border-radius-3xl;
+  border-radius: 2.5rem;
   padding: 2.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
-  max-width: 1200px;
+
   width: 100%;
 
   @media (max-width: $breakpoint-lg) {
@@ -393,7 +403,7 @@
 // Debug Section
 .debug-section {
   margin-bottom: 2rem;
-  max-width: 1200px;
+
   width: 100%;
 
   .debug-card {
@@ -445,13 +455,13 @@
 
 // Filters Section - Enhanced
 .filters-section {
-  margin-bottom: 2rem;
-  max-width: 1200px;
+  margin-bottom: 1rem;
+
   width: 100%;
 
   .filters-card {
     @include glass-card(0.95);
-    border-radius: $border-radius-2xl;
+    border-radius: 2.5rem;
     padding: 2rem;
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     animation-delay: 0.1s;
@@ -802,7 +812,7 @@
 .no-results-section,
 .empty-section {
   margin-bottom: 2rem;
-  max-width: 1200px;
+
   width: 100%;
 
   .loading-card,
@@ -810,14 +820,14 @@
   .no-results-card,
   .empty-card {
     @include glass-card(0.95);
-    border-radius: $border-radius-2xl;
+    border-radius: 2.5rem;
     padding: 4rem 2rem;
     text-align: center;
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
     @media (max-width: $breakpoint-lg) {
       padding: 3rem 1.5rem;
-      border-radius: $border-radius-xl;
+      border-radius: 2.5rem;
     }
 
     @media (max-width: $breakpoint-md) {
@@ -826,7 +836,7 @@
 
     @media (max-width: $breakpoint-sm) {
       padding: 2rem 1rem;
-      border-radius: $border-radius-lg;
+      border-radius: 2.5rem;
     }
 
     .loading-spinner {
@@ -888,7 +898,7 @@
 // Workout Templates Content
 .workout-templates-content {
   margin-bottom: 2rem;
-  max-width: 1200px;
+
   width: 100%;
 
   .workout-templates-grid {
@@ -943,19 +953,19 @@
 
 // Recent Sessions Section
 .recent-sessions-section {
-  margin-bottom: 2rem;
-  max-width: 1200px;
+  margin-bottom: 1rem;
+
   width: 100%;
 
   .section-card {
     @include glass-card(0.95);
-    border-radius: $border-radius-2xl;
+    border-radius: 2.5rem;
     padding: 2rem;
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
     @media (max-width: $breakpoint-lg) {
       padding: 1.75rem;
-      border-radius: $border-radius-xl;
+      border-radius: 2.5rem;
     }
 
     @media (max-width: $breakpoint-md) {
@@ -964,7 +974,7 @@
 
     @media (max-width: $breakpoint-sm) {
       padding: 1.25rem;
-      border-radius: $border-radius-lg;
+      border-radius: 2.5rem;
     }
   }
 
@@ -1222,10 +1232,12 @@
 
   .hero-section {
     padding: $card-padding-md;
+    border-radius: 2.5rem;
   }
 
   .filters-card {
     padding: $card-padding-md;
+    border-radius: 2.5rem;
   }
 
   .workout-templates-content {
@@ -1242,7 +1254,7 @@
 
 @media (max-width: 768px) {
   .workout-container {
-    padding: 0.5rem;
+    padding: 0.25rem;
 
     &::before,
     &::after {
@@ -1257,6 +1269,7 @@
 
     .hero-section {
       padding: 1.5rem;
+      border-radius: 2.5rem;
 
       .title-section {
         flex-direction: column;
@@ -1301,6 +1314,7 @@
 
     .filters-card {
       padding: 1.5rem;
+      border-radius: 2.5rem;
 
       .filter-controls-grid {
         grid-template-columns: 1fr;
@@ -1349,6 +1363,7 @@
 
     .hero-section {
       padding: 1rem;
+      border-radius: 2.5rem;
 
       .quick-stats {
         grid-template-columns: 1fr;
@@ -1357,6 +1372,7 @@
 
     .filters-card {
       padding: 1rem;
+      border-radius: 2.5rem;
     }
   }
 }

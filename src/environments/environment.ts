@@ -1,7 +1,7 @@
 // Development environment
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000/api',
+  apiUrl: 'https://fitness-pro-backend.fly.dev/api', // Use production backend for local development
   appName: 'FitnessPro',
   enableDebug: true,
   version: '1.0.0-dev'

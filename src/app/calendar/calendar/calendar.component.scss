@@ -132,7 +132,13 @@
     z-index: 1;
   }
 
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
 
+  @media (max-width: 480px) {
+padding: 0.25rem;
+  }
 }
 
 @keyframes gradientShift {
@@ -173,7 +179,7 @@
 
   .hero-content {
     @include glass-morphism(0.95);
-    border-radius: $radius-3xl;
+    border-radius: 2.5rem;
     padding: $space-10 $space-12;
     box-shadow: $shadow-2xl;
     position: relative;
@@ -181,26 +187,26 @@
 
     @media (max-width: $breakpoint-xl) {
       padding: $space-8 $space-10;
-      border-radius: $radius-2xl;
+      border-radius: 2.5rem;
     }
 
     @media (max-width: $breakpoint-lg) {
       padding: $space-6 $space-8;
-      border-radius: $radius-xl;
+      border-radius: 2.5rem;
     }
 
     @media (max-width: $breakpoint-md) {
       padding: $space-5 $space-6;
-      border-radius: $radius-lg;
+      border-radius: 2.5rem;
     }
 
     @media (max-width: $breakpoint-sm) {
       padding: $space-4 $space-5;
-      border-radius: $radius-md;
+      border-radius: 2.5rem;
     }
 
     &::before {
-      content: "";
+
       position: absolute;
       top: 0;
       left: 0;
@@ -298,7 +304,7 @@
 
 .nav-card {
   @include glass-morphism(0.9);
-  border-radius: $radius-2xl;
+  border-radius: 2.5rem;
   padding: $space-8;
   margin-bottom: $space-8;
   box-shadow: $shadow-xl;
@@ -312,14 +318,14 @@
     padding: $space-6;
     margin-bottom: $space-6;
     gap: $space-6;
-    border-radius: $radius-xl;
+    border-radius: 2.5rem;
   }
 
   @media (max-width: $breakpoint-lg) {
     padding: $space-5;
     margin-bottom: $space-5;
     gap: $space-5;
-    border-radius: $radius-lg;
+    border-radius: 2.5rem;
   }
 
   @media (max-width: $breakpoint-md) {
@@ -333,7 +339,7 @@
     padding: $space-3;
     margin-bottom: $space-3;
     gap: $space-3;
-    border-radius: $radius-md;
+    border-radius: 2.5rem;
   }
 
   .nav-controls {
@@ -521,10 +527,15 @@
 
   .calendar-view {
     @include glass-morphism(0.9);
-    border-radius: $radius-2xl;
+    border-radius: 2.5;
     overflow: hidden;
     box-shadow: $shadow-xl;
     min-height: 600px;
+    border-radius: 2.5rem;
+
+    @media (max-width: 768px) {
+      border-radius: 2.5rem;
+    }
 
     &.month-view {
       .calendar-header {
@@ -536,6 +547,10 @@
           padding: $space-5;
           text-align: center;
           border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+          @media (max-width: 480px) {
+            padding: 1.5rem 0.5rem;
+          }
 
           &:last-child {
             border-right: none;
@@ -565,6 +580,11 @@
           transition: all 0.2s ease;
           position: relative;
           background: white;
+
+          @media (max-width: 480px) {
+            padding: 0.5rem;
+            border-radius: 2.5rem;
+          }
 
           &:hover {
             background: rgba($primary-500, 0.05);
@@ -710,6 +730,8 @@
               line-height: 1;
             }
           }
+
+
         }
       }
     }
@@ -1254,7 +1276,7 @@
   display: inline-flex;
   align-items: center;
   gap: $space-2;
-  padding: $space-3 $space-5;
+
   border: none;
   border-radius: $radius-xl;
   font-weight: 600;
@@ -1396,7 +1418,7 @@
 
 @media (max-width: 768px) {
   .hero-section {
-    padding: $space-6 $space-4;
+    padding: 0.25rem;
 
     .hero-content {
       padding: $space-6 $space-6;
@@ -1414,7 +1436,7 @@
   }
 
   .main-content {
-    padding: 0 $space-4 $space-8;
+    padding: 0.25rem;
   }
 
   .nav-card {
@@ -1449,10 +1471,11 @@
     }
   }
 
-  .content-grid {
-    grid-template-columns: 1fr;
-    gap: $space-4;
-  }
+  // .content-grid {
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: $space-4;
+  // }
 
   .sidebar {
     .stats-card {
@@ -1493,6 +1516,8 @@
     .calendar-grid .calendar-day {
       min-height: 70px;
       padding: $space-2;
+
+      
 
       .day-events .event-dot {
         width: 6px;
@@ -1569,7 +1594,7 @@
 
 @media (max-width: $breakpoint-sm) {
   .hero-section .hero-content {
-    padding: $space-3 $space-4;
+    // padding: 0.25rem;
 
     .title-section {
       .title-wrapper .page-title {
@@ -1629,29 +1654,266 @@
   }
 
   .calendar-view {
-    border-radius: $radius-md !important;
+    border-radius: 2.5rem;
+    min-height: auto;
 
+    // Mobile-optimized Month View
     &.month-view {
-      .calendar-grid .calendar-day {
-        min-height: 60px;
-        padding: $space-1;
+      .calendar-header {
+        .day-header {
+          padding: $space-2;
 
-        .day-number {
-          font-size: 0.8rem;
+          .day-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+          }
         }
+      }
 
-        .day-events {
-          .event-dot {
-            width: 5px;
-            height: 5px;
+      .calendar-grid {
+        gap: 2px;
+
+        .calendar-day {
+          min-height: 85px;
+          padding: 0.5rem 0rem;
+          border-radius: $radius-sm;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            transform: none;
+            box-shadow: 0 2px 8px rgba($primary-500, 0.15);
           }
 
-          .more-events {
-            font-size: 0.65rem;
-            padding: 1px $space-1;
+          &:active {
+            transform: scale(0.98);
+            background: rgba($primary-500, 0.08);
+          }
+
+          &.today .day-number {
+            width: 30px;
+            height: 30px;
+            font-size: 0.85rem;
+            font-weight: 800;
+          }
+
+          .day-content {
+            gap: $space-1;
+          }
+
+          .day-number {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: $space-1;
+          }
+
+          .day-events {
+            gap: 3px;
+            flex-wrap: wrap;
+
+            .event-dot {
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+
+              &:active {
+                transform: scale(1.4);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+              }
+            }
+
+            .more-events {
+              font-size: 0.65rem;
+              padding: 2px 6px;
+              border-radius: $radius-sm;
+              background: rgba($primary-500, 0.15);
+              color: $primary-700;
+              font-weight: 700;
+            }
           }
         }
       }
     }
+
+    // Mobile-optimized Week View
+    &.week-view {
+      .week-header {
+        padding: $space-3 $space-2;
+
+        .week-day {
+          padding: $space-1;
+
+          .week-day-info {
+            gap: 4px;
+
+            .week-day-name {
+              font-size: 0.75rem;
+              font-weight: 600;
+            }
+
+            .week-day-number {
+              font-size: 1.2rem;
+              font-weight: 800;
+              width: 36px;
+              height: 36px;
+            }
+          }
+        }
+      }
+
+      .week-content {
+        padding: $space-3;
+
+        .week-events-grid {
+          gap: $space-2;
+
+          .week-day-column {
+            padding: $space-2;
+            border-radius: $radius-md;
+            min-height: 250px;
+
+            .week-event {
+              padding: $space-2;
+              margin-bottom: $space-2;
+              border-radius: $radius-md;
+              cursor: pointer;
+              transition: all 0.2s ease;
+
+              &:active {
+                transform: scale(0.98);
+              }
+
+              .event-content {
+                gap: 4px;
+
+                .event-time {
+                  font-size: 0.7rem;
+                  font-weight: 600;
+                }
+
+                .event-title {
+                  font-size: 0.8rem;
+                  font-weight: 700;
+                  line-height: 1.2;
+                }
+
+                .event-type {
+                  font-size: 0.75rem;
+                }
+              }
+            }
+
+            .empty-day-message {
+              font-size: 0.75rem;
+              padding: $space-3;
+              margin-top: $space-2;
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+
+    // Mobile-optimized Day View
+    &.day-view {
+      .day-view-header {
+        padding: $space-4;
+
+        .day-title {
+          font-size: 1.5rem;
+          margin-bottom: $space-3;
+        }
+
+        .day-stats {
+          gap: $space-3;
+          flex-wrap: wrap;
+
+          .stat-chip {
+            padding: $space-2 $space-3;
+            font-size: 0.8rem;
+            border-radius: $radius-lg;
+          }
+        }
+      }
+
+      .day-view-content {
+        padding: $space-3;
+
+        .time-slots {
+          border-radius: $radius-lg;
+
+          .time-slot {
+            grid-template-columns: 70px 1fr;
+            min-height: 60px;
+
+            .time-label {
+              padding: $space-2;
+              font-size: 0.75rem;
+              font-weight: 700;
+            }
+
+            .time-content {
+              padding: $space-2;
+
+              .day-event {
+                padding: $space-3;
+                border-radius: $radius-lg;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:active {
+                  transform: scale(0.98);
+                }
+
+                .event-header {
+                  margin-bottom: $space-2;
+
+                  .event-title {
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                  }
+
+                  .event-actions {
+                    display: none;
+                  }
+                }
+
+                .event-details {
+                  font-size: 0.8rem;
+                  line-height: 1.4;
+                }
+              }
+            }
+          }
+        }
+
+        .empty-day-message {
+          padding: $space-8 $space-4;
+          border-radius: $radius-xl;
+
+          .empty-icon {
+            font-size: 2.5rem;
+            margin-bottom: $space-4;
+          }
+
+          h4 {
+            font-size: 1.1rem;
+          }
+
+          p {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+
+    // Enhanced touch interactions
+    -webkit-tap-highlight-color: rgba($primary-500, 0.2);
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-overflow-scrolling: touch;
   }
 }
