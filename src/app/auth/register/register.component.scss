@@ -1,6 +1,12 @@
-/* register.component.scss - Design modernisé */
+/* =============================================
+ * REGISTER COMPONENT - UNIFIED DESIGN SYSTEM
+ * Using centralized variables and utility mixins
+ * ============================================= */
+
+// Import unified design system
 @use 'sass:map';
-@use '../../../variables' as *;
+@use '../../../variables.scss' as *;
+@use '../../../styles.scss' as *;
 
 :host {
   display: block;
@@ -12,87 +18,124 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, 
-    $success-color 0%, 
-    $primary-color 50%, 
-    $info-color 100%);
+  background: $gradient-multi;
+  background-size: 400% 400%;
+  animation: gradient-flow 20s ease infinite;
   padding: map.get($spacers, 6);
   position: relative;
   overflow: hidden;
-  padding: 20px; /* Add some padding for smaller screens */
-  box-sizing: border-box; /* Include padding in the element's total width and height */
 
-  /* Media queries for responsiveness */
-  @media (max-width: 600px) {
-    .register-card {
-      padding: 20px; /* Reduce padding on smaller screens */
-      margin: 0 15px; /* Add horizontal margin */
-    }
-  }
-
-  // Effets décoratifs en arrière-plan
+  // Enhanced background effects
   &::before {
     content: '';
     position: absolute;
-    top: -30%;
-    left: -30%;
-    width: 160%;
-    height: 160%;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 2px, transparent 2px);
     background-size: 60px 60px;
-    animation: floatSlow 25s ease-in-out infinite;
-    opacity: 0.4;
+    animation: floatPattern 25s ease-in-out infinite;
+    opacity: 0.6;
   }
 
   &::after {
     content: '';
     position: absolute;
-    bottom: 10%;
-    left: 15%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+    top: 20%;
+    right: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
     border-radius: 50%;
-    animation: pulseSlow 6s ease-in-out infinite;
+    animation: pulseGlow 6s ease-in-out infinite;
+    filter: blur(2px);
+  }
+}
+
+// Floating orbs for enhanced visual appeal
+.floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
+  animation: floatOrb 8s ease-in-out infinite;
+  pointer-events: none;
+
+  &:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 10%;
+    left: 5%;
+    animation-delay: -2s;
+  }
+
+  &:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    bottom: 15%;
+    right: 20%;
+    animation-delay: -4s;
+  }
+
+  &:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    top: 60%;
+    left: 15%;
+    animation-delay: -6s;
   }
 }
 
 .register-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  @include glass-effect(0.98);
   border-radius: $border-radius-2xl;
   padding: 40px;
   width: 100%;
   max-width: 520px;
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
   position: relative;
-  z-index: 1;
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: $z-normal;
+  animation: slide-up 0.8s $transition-smooth;
+  overflow: hidden;
+  @include shimmer-effect;
 
-  // En-tête avec logo
+
+
+  // Enhanced logo section
   .logo-section {
     text-align: center;
-    margin-bottom: map.get($spacers, 8);
+    margin-bottom: 3rem;
+    position: relative;
 
     .logo-icon {
-      width: 72px;
-      height: 72px;
-      background: linear-gradient(135deg, $success-color 0%, $primary-color 100%);
+      width: 88px;
+      height: 88px;
+      background: $primary-dark;
       border-radius: $border-radius-2xl;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto map.get($spacers, 4);
-      font-size: $font-size-2xl;
+      font-size: $font-size-3xl;
       color: white;
       font-weight: $font-weight-bold;
-      box-shadow: 
-        0 10px 25px rgba($success-color, 0.3),
-        0 4px 12px rgba($success-color, 0.2);
-      animation: logoFloat 3s ease-in-out infinite;
+      box-shadow: $shadow-primary;
+      @include floating-animation(4s);
+      position: relative;
+      overflow: hidden;
+      @include shimmer-effect;
+
+      // Enhanced shine effect
+      &::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: logoShine 3s ease-in-out infinite;
+        transform: rotate(45deg);
+      }
     }
 
     h2 {
@@ -101,32 +144,27 @@
       color: $gray-900;
       margin-bottom: map.get($spacers, 2);
       letter-spacing: -0.025em;
+      @include text-gradient(linear-gradient(135deg, $gray-900, $gray-700));
     }
 
     .subtitle {
       font-size: $font-size-base;
       color: $gray-600;
       font-weight: $font-weight-medium;
+      opacity: 0.8;
     }
   }
 
-  // Formulaire modernisé
+  // Enhanced form styling
   form {
     // Grid pour les champs nom/prénom
     .form-row {
-      display: grid;
-
-        margin-bottom: 0rem;
-      
-
+      display: flex;
+      flex-direction: column;
+      gap: map.get($spacers, 6);
 
       @media (max-width: map.get($grid-breakpoints, sm)) {
-        grid-template-columns: 1fr;
-        gap: 0;
-
-        .form-group:first-child {
-          margin-bottom: 0rem;
-        }
+        gap: map.get($spacers, 4);
       }
     }
 
@@ -141,107 +179,99 @@
         font-weight: $font-weight-semibold;
         font-size: $font-size-sm;
         letter-spacing: 0.025em;
+        transition: $transition-fast;
       }
 
       .input-wrapper {
         position: relative;
+        perspective: 1000px;
 
         input {
+          @include form-input-base;
           width: 100%;
-          padding: map.get($spacers, 4) map.get($spacers, 5);
-          border: 2px solid $gray-200;
-          border-radius: $border-radius-lg;
+          padding: 1.5rem;
           font-size: $font-size-base;
           font-weight: $font-weight-medium;
-          background-color: rgba(255, 255, 255, 0.8);
-          transition: all $transition-base;
-          box-sizing: border-box;
-
-          &::placeholder {
-            color: $gray-500;
-            font-weight: $font-weight-normal;
-          }
+          position: relative;
+          z-index: 2;
 
           &:focus {
-            outline: none;
-            border-color: $success-color;
-            background-color: white;
-            box-shadow: 
-              0 0 0 4px rgba($success-color, 0.1),
-              0 4px 12px rgba($success-color, 0.15);
-            transform: translateY(-1px);
+            transform: translateY(-2px) rotateX(5deg);
           }
 
           &.error {
-            border-color: $danger-color;
-            background-color: rgba($danger-color, 0.03);
-
-            &:focus {
-              border-color: $danger-color;
-              box-shadow: 
-                0 0 0 4px rgba($danger-color, 0.1),
-                0 4px 12px rgba($danger-color, 0.15);
-            }
+            animation: shake 0.5s ease-in-out;
           }
 
-          // États de validation visuels
           &.valid {
-            border-color: $success-color;
-            background-color: rgba($success-color, 0.03);
+            border-color: $primary-color;
+            background: $primary-alpha-05;
           }
         }
 
-        // Indicateur de force du mot de passe
-        .password-strength {
+        // Input icons
+        .input-icon {
           position: absolute;
           right: map.get($spacers, 4);
           top: 50%;
           transform: translateY(-50%);
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: $font-size-xs;
-          font-weight: $font-weight-bold;
+          color: $gray-400;
+          font-size: $font-size-lg;
+          transition: $transition-fast;
+          cursor: pointer;
+          z-index: 3;
 
-          &.weak {
-            background-color: $danger-color;
-            color: white;
-          }
-
-          &.medium {
-            background-color: $warning-color;
-            color: white;
-          }
-
-          &.strong {
-            background-color: $success-color;
-            color: white;
+          &:hover {
+            color: $primary-color;
+            transform: translateY(-50%) scale(1.1);
           }
         }
 
-        // Icône de validation
+        // Validation icons
         .validation-icon {
           position: absolute;
-          right: map.get($spacers, 4);
+          right: map.get($spacers, 3);
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: $font-size-base;
+          z-index: 4;
+
+          &.valid {
+            color: $primary-color;
+            animation: checkBounce 0.6s ease-out;
+          }
+        }
+
+        // Password strength indicator
+        .password-strength-indicator {
+          position: absolute;
+          right: 3.5rem;
           top: 50%;
           transform: translateY(-50%);
           font-size: $font-size-lg;
-          transition: all $transition-fast;
+          z-index: 4;
 
-          &.valid {
-            color: $success-color;
-          }
-
-          &.invalid {
+          &.weak {
             color: $danger-color;
           }
+
+          &.medium {
+            color: $warning-color;
+          }
+
+          &.strong {
+            color: $primary-color;
+          }
+        }
+
+        &:focus-within .input-icon {
+          color: $primary-color;
+          transform: translateY(-50%) scale(1.1);
         }
       }
 
-      .error {
+      .text-error,
+      .error-message {
         color: $danger-color;
         font-size: $font-size-sm;
         font-weight: $font-weight-medium;
@@ -249,21 +279,30 @@
         display: flex;
         align-items: center;
         gap: map.get($spacers, 1);
-        animation: shake 0.4s ease-in-out;
+        animation: errorSlide 0.3s ease-out;
 
         &::before {
           content: '⚠';
           font-size: $font-size-xs;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: $danger-color;
+          color: white;
+          animation: errorIconBounce 0.6s ease-out;
         }
       }
 
-      // Messages d'aide pour les mots de passe
+      // Password requirements help text
       .password-requirements {
-        margin-top: map.get($spacers, 2);
+        margin-top: map.get($spacers, 3);
         padding: map.get($spacers, 3);
-        background-color: $gray-50;
+        background: $gray-50;
         border-radius: $border-radius-md;
-        border-left: 3px solid $info-color;
+        border-left: 3px solid $primary-color;
 
         .requirement {
           font-size: $font-size-xs;
@@ -285,10 +324,10 @@
             align-items: center;
             justify-content: center;
             font-size: 10px;
-            transition: all $transition-fast;
+            transition: $transition-fast;
 
             &.valid {
-              background-color: $success-color;
+              background-color: $primary-color;
               color: white;
             }
 
@@ -301,251 +340,453 @@
       }
     }
 
-    // Bouton de soumission modernisé
-    button[type="submit"] {
-      width: 100%;
-      padding: map.get($spacers, 4) map.get($spacers, 6);
-      background: linear-gradient(135deg, $success-color 0%, $primary-color 100%);
-      color: white;
-      border: none;
-      border-radius: $border-radius-lg;
-      font-size: $font-size-base;
-      font-weight: $font-weight-semibold;
-      cursor: pointer;
-      transition: all $transition-base;
-      position: relative;
-      overflow: hidden;
-      margin-top: map.get($spacers, 2);
-      box-shadow: 
-        0 4px 12px rgba($success-color, 0.3),
-        0 2px 4px rgba($success-color, 0.2);
+    // Terms and conditions
+    .terms-conditions {
+      margin-top: map.get($spacers, 4);
+      padding: map.get($spacers, 4);
+      background: rgba($primary-color, 0.05);
+      border-radius: $border-radius-md;
+      border: 1px solid rgba($primary-color, 0.1);
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
+      .checkbox-wrapper {
+        display: flex;
+        align-items: flex-start;
+        gap: map.get($spacers, 3);
+
+        input[type="checkbox"] {
+          margin-top: 2px;
+          width: 18px;
+          height: 18px;
+          accent-color: $primary-color;
+          flex-shrink: 0;
+          cursor: pointer;
+        }
+
+        label {
+          font-size: $font-size-sm;
+          color: $gray-700;
+          line-height: 1.5;
+          margin: 0;
+          cursor: pointer;
+
+          a {
+            color: $primary-color;
+            text-decoration: none;
+            font-weight: $font-weight-medium;
+            position: relative;
+
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -2px;
+              left: 0;
+              width: 0;
+              height: 2px;
+              background: $primary-color;
+              transition: width 0.3s ease;
+            }
+
+            &:hover::after {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    // Global error message
+    .global-error {
+      background: $danger-rgba-10;
+      color: $danger-color;
+      padding: map.get($spacers, 3) map.get($spacers, 4);
+      border-radius: $border-radius-md;
+      border-left: 4px solid $danger-color;
+      margin-bottom: map.get($spacers, 4);
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      animation: errorSlide 0.4s ease-out;
+    }
+
+    // Enhanced submit button
+    .submit-btn {
+      @include button-base($btn-padding-lg, $border-radius-lg);
+      & {
         width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: left 0.6s;
+        background: $primary-dark;
+        color: white;
+        font-size: $font-size-base;
+        margin-top: map.get($spacers, 2);
+        box-shadow: $shadow-primary;
+        transform-style: preserve-3d;
       }
 
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 
-          0 8px 25px rgba($success-color, 0.4),
-          0 4px 12px rgba($success-color, 0.3);
-
-        &::before {
-          left: 100%;
-        }
+        transform: translateY(-3px) rotateX(10deg);
+        box-shadow: $shadow-primary-hover;
       }
 
       &:active {
-        transform: translateY(0);
+        transform: translateY(-1px) rotateX(5deg);
       }
 
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-
-        &:hover {
-          transform: none;
-          box-shadow: 
-            0 4px 12px rgba($success-color, 0.3),
-            0 2px 4px rgba($success-color, 0.2);
-        }
-      }
-
-      // État de chargement
+      // Loading state
       &.loading {
         &::after {
           content: '';
           position: absolute;
-          width: 20px;
-          height: 20px;
-          border: 2px solid transparent;
-          border-top: 2px solid white;
+          width: 24px;
+          height: 24px;
+          border: 3px solid transparent;
+          border-top: 3px solid white;
           border-radius: 50%;
           right: map.get($spacers, 4);
           top: 50%;
           transform: translateY(-50%);
-          animation: spin 0.8s linear infinite;
+          animation: spinLoader 1s linear infinite;
         }
       }
     }
   }
 
-  // Liens d'authentification
+  // Enhanced navigation link
   .text-link {
     text-align: center;
-
     padding-top: map.get($spacers, 6);
     border-top: 1px solid $gray-200;
     color: $gray-600;
     font-size: $font-size-sm;
 
     a {
-      color: $success-color;
+      color: $primary-color;
       text-decoration: none;
       font-weight: $font-weight-semibold;
-      transition: all $transition-fast;
+      transition: $transition-fast;
       margin-left: map.get($spacers, 1);
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: $primary-color;
+        transition: width 0.3s ease;
+      }
 
       &:hover {
         color: $primary-dark;
-        text-decoration: underline;
-        text-underline-offset: 2px;
-      }
-    }
-  }
 
-  // Conditions d'utilisation
-  .terms-conditions {
-    margin-top: map.get($spacers, 6);
-    padding: map.get($spacers, 4);
-    background-color: rgba($info-color, 0.05);
-    border-radius: $border-radius-md;
-    border: 1px solid rgba($info-color, 0.1);
-
-    .checkbox-wrapper {
-      display: flex;
-      align-items: flex-start;
-      gap: map.get($spacers, 3);
-
-      input[type="checkbox"] {
-        margin-top: 2px;
-        width: 18px;
-        height: 18px;
-        accent-color: $success-color;
-        flex-shrink: 0;
-      }
-
-      label {
-        font-size: $font-size-sm;
-        color: $gray-700;
-        line-height: 1.5;
-        margin: 0;
-
-        a {
-          color: $info-color;
-          text-decoration: none;
-          font-weight: $font-weight-medium;
-
-          &:hover {
-            text-decoration: underline;
-          }
+        &::after {
+          width: 100%;
         }
       }
     }
   }
 }
 
-// Animations réutilisées et nouvelles
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes logoFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-@keyframes floatSlow {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(5deg);
-  }
-}
-
-@keyframes pulseSlow {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.08;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.15;
-  }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  75% { transform: translateX(3px); }
-}
-
-@keyframes spin {
-  to { transform: translateY(-50%) rotate(360deg); }
-}
-
-// Responsive
-@media (max-width: map.get($grid-breakpoints, sm)) {
+// Responsive design - No scroll on any screen
+@media (max-width: map.get($grid-breakpoints, md)) {
   .register-wrapper {
-    padding: map.get($spacers, 2);
+    padding: map.get($spacers, 4);
   }
 
   .register-card {
-    padding: map.get($spacers, 6) map.get($spacers, 4);
+    padding: map.get($spacers, 4) map.get($spacers, 4);
+  }
+}
+
+@media (max-width: map.get($grid-breakpoints, sm)) {
+  .register-wrapper {
+    padding: map.get($spacers, 3);
+  }
+
+  .register-card {
+    padding: map.get($spacers, 4) map.get($spacers, 4);
+    max-width: 100%;
 
     .logo-section {
       margin-bottom: map.get($spacers, 4);
 
       .logo-icon {
-        width: 56px;
-        height: 56px;
+        width: 60px;
+        height: 60px;
         font-size: $font-size-xl;
+        margin-bottom: map.get($spacers, 2);
       }
 
       h2 {
-        font-size: $font-size-2xl;
+        font-size: $font-size-xl;
+        margin-bottom: map.get($spacers, 1);
+      }
+
+      .subtitle {
+        font-size: $font-size-sm;
       }
     }
 
     form {
-      .form-group {
-        margin-bottom: map.get($spacers, 3);
+      .form-row {
+        gap: map.get($spacers, 3);
+        margin-bottom: map.get($spacers, 4);
 
-        .input-wrapper input {
-          padding: 1rem;
+        .form-group {
+          margin-bottom: 0;
         }
       }
 
-      button[type="submit"] {
-        padding: map.get($spacers, 2) map.get($spacers, 4);
+      .form-group {
+        margin-bottom: map.get($spacers, 4);
+
+        label {
+          margin-bottom: map.get($spacers, 1);
+          font-size: $font-size-xs;
+        }
+
+        .input-wrapper input {
+          padding: map.get($spacers, 3) map.get($spacers, 9) map.get($spacers, 3) map.get($spacers, 3);
+          font-size: $font-size-sm;
+        }
+      }
+
+      .submit-btn {
+        padding: map.get($spacers, 3) map.get($spacers, 4);
+        font-size: $font-size-sm;
       }
     }
 
     .terms-conditions {
       margin-top: map.get($spacers, 3);
-      padding: map.get($spacers, 2);
+      padding: map.get($spacers, 3);
+
+      .checkbox-wrapper {
+        gap: map.get($spacers, 2);
+
+        label {
+          font-size: $font-size-xs;
+        }
+      }
+    }
+
+    .text-link {
+      padding-top: map.get($spacers, 4);
+      font-size: $font-size-xs;
     }
   }
 }
 
 @media (max-width: map.get($grid-breakpoints, xs)) {
-  .register-card {
-    .terms-conditions .checkbox-wrapper {
-      gap: map.get($spacers, 1);
+  .register-wrapper {
+    padding: map.get($spacers, 2);
+    min-height: 100vh;
+    min-height: 100dvh; // Dynamic viewport height for mobile browsers
+  }
 
-      label {
+  .register-card {
+    padding: map.get($spacers, 4) map.get($spacers, 4);
+    max-height: 98vh;
+    max-height: 98dvh;
+    overflow-y: auto;
+
+    .logo-section {
+      margin-bottom: map.get($spacers, 3);
+
+      .logo-icon {
+        width: 52px;
+        height: 52px;
+        font-size: $font-size-lg;
+        margin-bottom: map.get($spacers, 2);
+      }
+
+      h2 {
+        font-size: $font-size-lg;
+        margin-bottom: map.get($spacers, 1);
+      }
+
+      .subtitle {
         font-size: $font-size-xs;
       }
+    }
+
+    form {
+      .form-row {
+        gap: map.get($spacers, 2);
+        margin-bottom: map.get($spacers, 3);
+
+        .form-group {
+          margin-bottom: 0;
+        }
+      }
+
+      .form-group {
+        margin-bottom: map.get($spacers, 3);
+
+        label {
+          margin-bottom: map.get($spacers, 1);
+          font-size: $font-size-xs;
+        }
+
+        .input-wrapper input {
+          padding: 0.7rem 2rem 0.7rem 0.75rem;
+          font-size: $font-size-sm;
+        }
+
+        .input-icon {
+          right: 0.7rem;
+          font-size: $font-size-base;
+        }
+
+        .validation-icon {
+          right: 0.6rem;
+          font-size: $font-size-sm;
+        }
+
+        .password-strength-indicator {
+          right: 2.5rem;
+          font-size: $font-size-base;
+        }
+
+        // Reduce password requirements spacing
+        .password-requirements {
+          margin-top: map.get($spacers, 2);
+          padding: map.get($spacers, 2);
+
+          .requirement {
+            font-size: 0.65rem;
+            margin-bottom: 0.3rem;
+
+            .check-icon {
+              width: 12px;
+              height: 12px;
+              font-size: 8px;
+            }
+          }
+        }
+      }
+
+      .submit-btn {
+        padding: 0.7rem map.get($spacers, 3);
+        font-size: $font-size-sm;
+        margin-top: map.get($spacers, 1);
+      }
+    }
+
+    .terms-conditions {
+      margin-top: map.get($spacers, 2);
+      padding: map.get($spacers, 2);
+
+      .checkbox-wrapper {
+        gap: map.get($spacers, 1);
+
+        input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+        }
+
+        label {
+          font-size: 0.7rem;
+          line-height: 1.3;
+        }
+      }
+    }
+
+    .text-link {
+      padding-top: map.get($spacers, 3);
+      font-size: 0.7rem;
+    }
+  }
+}
+
+// Extra small devices - prevent any scrolling
+@media (max-width: 360px) {
+  .register-card {
+    padding: map.get($spacers, 3) map.get($spacers, 3);
+
+    .logo-section {
+      margin-bottom: map.get($spacers, 2);
+
+      .logo-icon {
+        width: 48px;
+        height: 48px;
+        font-size: $font-size-base;
+        margin-bottom: map.get($spacers, 1);
+      }
+
+      h2 {
+        font-size: $font-size-base;
+        margin-bottom: 0.25rem;
+      }
+
+      .subtitle {
+        display: none;
+      }
+    }
+
+    form {
+      .form-row {
+        gap: map.get($spacers, 2);
+        margin-bottom: map.get($spacers, 2);
+      }
+
+      .form-group {
+        margin-bottom: map.get($spacers, 2);
+
+        label {
+          font-size: 0.7rem;
+        }
+
+        .input-wrapper input {
+          padding: 0.6rem 2rem 0.6rem 0.7rem;
+          font-size: 0.8rem;
+        }
+
+        .password-requirements {
+          margin-top: map.get($spacers, 1);
+          padding: map.get($spacers, 1);
+
+          .requirement {
+            font-size: 0.6rem;
+            margin-bottom: 0.2rem;
+            gap: 0.25rem;
+
+            .check-icon {
+              width: 10px;
+              height: 10px;
+              font-size: 7px;
+            }
+          }
+        }
+      }
+
+      .submit-btn {
+        padding: 0.6rem map.get($spacers, 2);
+        font-size: 0.8rem;
+      }
+    }
+
+    .terms-conditions {
+      margin-top: map.get($spacers, 2);
+      padding: map.get($spacers, 1);
+
+      .checkbox-wrapper {
+        gap: 0.4rem;
+
+        input[type="checkbox"] {
+          width: 14px;
+          height: 14px;
+        }
+
+        label {
+          font-size: 0.65rem;
+          line-height: 1.2;
+        }
+      }
+    }
+
+    .text-link {
+      padding-top: map.get($spacers, 2);
+      font-size: 0.65rem;
     }
   }
 }
