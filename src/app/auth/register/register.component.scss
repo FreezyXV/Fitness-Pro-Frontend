@@ -161,7 +161,7 @@
     .form-row {
       display: flex;
       flex-direction: column;
-      gap: map.get($spacers, 6);
+    
 
       @media (max-width: map.get($grid-breakpoints, sm)) {
         gap: map.get($spacers, 4);
@@ -169,7 +169,7 @@
     }
 
     .form-group {
-      margin-bottom: map.get($spacers, 6);
+
       position: relative;
 
       label {
@@ -451,7 +451,7 @@
   // Enhanced navigation link
   .text-link {
     text-align: center;
-    padding-top: map.get($spacers, 6);
+    padding-top: map.get($spacers, 4);
     border-top: 1px solid $gray-200;
     color: $gray-600;
     font-size: $font-size-sm;
