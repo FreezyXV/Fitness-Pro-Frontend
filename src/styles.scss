@@ -6,6 +6,8 @@
 // Import Variables
 @use './variables.scss' as *;
 
+
+
 // Import Google Fonts
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -340,8 +342,16 @@
 body {
   margin: 0 !important;
   padding: 0 !important;
+  background: var(--gradient-multi) !important;
+
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* facultatif : effet fluide lors du scroll */
+  background-size: cover;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   overflow-y: visible; /* Allow vertical scrolling */
+  transition: var(--transition-base);
   
   /* Supprimer les styles conflictuels existants */
   &.modern-layout {
@@ -380,6 +390,8 @@ html {
 // Modern Design System Variables
 :root {
   // Color Palette
+    --gradient-multi: linear-gradient(135deg, #059669 0%, #21bf73 50%, #2563eb 100%);
+  
   --primary-gradient: linear-gradient(135deg, #21BF73 0%, #00B5AD 50%, #21BF73 100%);
   --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --success-gradient: linear-gradient(135deg, #21BF73 0%, #1da460 100%);
@@ -449,7 +461,10 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
   color: var(--gray-700);
-  background: $gradient-multi;
+  background: var(--gradient-multi) !important;
+
+  background-attachment: fixed; /* facultatif : effet fluide lors du scroll */
+  background-size: cover;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -463,7 +478,7 @@ body {
   }
 
   &.fitnesspro-theme {
-    --primary-color: #21BF73;
+    background: var(--gradient-multi) !important;
   }
 }
 
@@ -1220,7 +1235,7 @@ a {
     font-size: 12pt;
     line-height: 1.4;
     color: black;
-    background: white;
+
   }
 }
 
@@ -1412,4 +1427,20 @@ a {
   .form-control {
     border: 2px solid $gray-700;
   }
+}
+
+html,
+body,
+app-root {
+  background: var(--gradient-multi) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+router-outlet + * {
+  background: transparent !important;
 }
