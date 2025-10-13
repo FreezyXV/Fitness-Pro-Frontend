@@ -723,7 +723,7 @@ padding: 0.25rem;
     animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 
     @media (max-width: 768px) {
-      padding: 2rem;
+      padding: 1rem;
       border-radius: 20px;
     }
 
@@ -998,7 +998,7 @@ padding: 0.25rem;
             }
 
             @media (max-width: 768px) {
-              padding: 2rem;
+              padding: 1rem;
               gap: 1.5rem;
 
               .exercise-number-indicator {

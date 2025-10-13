@@ -191,7 +191,7 @@ padding: 0.5rem;
 
   @media (max-width: 768px) {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+   
   }
 
 
@@ -367,7 +367,7 @@ padding: 1rem;
   .filters-card {
     @include glass-card(0.98, 24px);
     border-radius: $border-radius-2xl;
-    padding: 2.5rem;
+    padding: 1rem;
     animation: slide-up-fade 0.8s ease-out 0.2s both;
     border: 1px solid rgba(255, 255, 255, 0.25);
   }
@@ -1134,7 +1134,7 @@ padding: 1rem;
 
         span {
           font-weight: 700;
-          font-size: 0.95rem;
+          font-size: 0.8rem;
           white-space: nowrap;
         }
 
@@ -1378,7 +1378,7 @@ padding: 1rem;
   align-items: center !important;
   justify-content: center !important;
   z-index: 9999 !important;
-  padding: 1rem;
+  padding: 0rem;
   animation: modalOverlayIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   
   // Animated background pattern
@@ -1418,8 +1418,8 @@ padding: 1rem;
   .modal {
     @include glass-card(0.98, 30px);
     border-radius: $border-radius-3xl;
-    max-width: 600px;
-    width: 100%;
+   
+ 
     max-height: 90vh;
     overflow: hidden;
     box-shadow: 
@@ -1500,6 +1500,7 @@ padding: 1rem;
       margin: 0.5rem;
       max-height: 95vh;
       border-radius: $border-radius-2xl;
+
       
       .modal-header {
         padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -1520,7 +1521,7 @@ padding: 1rem;
       }
       
       .modal-body {
-        padding: 2rem;
+        padding: 1rem;
         max-height: 60vh;
         overflow-y: auto;
        .modal-close {
@@ -2609,7 +2610,7 @@ padding: 1rem;
   align-items: center !important;
   justify-content: center !important;
   z-index: 9999 !important;
-  padding: 1rem;
+  padding: 0rem;
   animation: modalOverlayIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   
   // Animated background pattern
@@ -3896,7 +3897,7 @@ padding: 1rem;
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            padding: 1.25rem 1.75rem;
+            padding: 0.5rem 1rem;
             border-radius: $border-radius-2xl;
             font-weight: 800;
             font-size: 1rem;
@@ -4008,9 +4009,11 @@ padding: 1rem;
 
             span {
               font-weight: 700;
-              font-size: 0.95rem;
-              white-space: nowrap;
+              font-size: 0.8rem;
+              white-space: normal; /* permet le retour à la ligne */
+              text-align: center;  /* optionnel, pour centrer le texte */
             }
+            
 
             // Loading spinner inside button
             .loading-spinner {

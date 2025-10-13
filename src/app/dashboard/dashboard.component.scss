@@ -456,6 +456,7 @@ $forest-gradient: $gradient-forest;
     // Staggered animation delays
     &:nth-child(1) {
       animation-delay: 0.1s;
+      padding: 1rem;
     }
     &:nth-child(2) {
       animation-delay: 0.2s;
@@ -848,6 +849,7 @@ $forest-gradient: $gradient-forest;
     // WORKOUT SUMMARY CARD - VERSION AMÉLIORÉE
     // =============================================
     &.workout-summary {
+      padding: 1rem;
       background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.95) 0%,
@@ -1018,6 +1020,7 @@ $forest-gradient: $gradient-forest;
     // PERFORMANCE CHART CARD - VERSION RÉVOLUTIONNÉE
     // =============================================
     &.performance-chart {
+      padding: 1rem;
       grid-column: 1 / -1;
 
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1694,7 +1697,7 @@ $forest-gradient: $gradient-forest;
   }
 
   .stat-card {
-    padding: 0rem;
+    padding: 1rem;
 
     &.physical-stats .stats-grid-inner {
       grid-template-columns: 1fr;
@@ -1736,7 +1739,7 @@ $forest-gradient: $gradient-forest;
   }
 
   .stat-card {
-    padding: 0rem;
+    padding: 1rem;
 
     &.workout-summary .summary-stats {
       grid-template-columns: 1fr;
@@ -1774,7 +1777,7 @@ $forest-gradient: $gradient-forest;
 @media (prefers-contrast: high) {
   .stat-card {
     border: 2px solid $gray-900;
-    padding: 0rem;
+    padding: 1rem;
   }
 
   .action-btn,
