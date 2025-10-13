@@ -417,7 +417,7 @@ export class AuthService {
   requestPasswordReset(email: string): Observable<any> {
     console.log('🔄 AuthService: Requesting password reset for:', email);
     return this.http.post<ApiResponse<any>>(
-      `${APP_CONFIG.API_URL}/auth/forgot-password`,
+      `${APP_CONFIG.API_URL}/auth/password/email`,
       { email },
       { headers: this.getHeaders() }
     ).pipe(
@@ -427,6 +427,51 @@ export class AuthService {
           return response;
         }
         throw new Error(response.message || 'Échec de la demande de réinitialisation');
+      }),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  resetPassword(token: string, email: string, password: string, passwordConfirmation: string): Observable<any> {
+    console.log('🔄 AuthService: Resetting password for:', email);
+    return this.http.post<ApiResponse<any>>(
+      `${APP_CONFIG.API_URL}/auth/password/reset`,
+      {
+        token,
+        email,
+        password,
+        password_confirmation: passwordConfirmation
+      },
+      { headers: this.getHeaders() }
+    ).pipe(
+      timeout(APP_CONFIG.REQUEST_TIMEOUT),
+      map(response => {
+        if (response.success) {
+          return response;
+        }
+        throw new Error(response.message || 'Échec de la réinitialisation du mot de passe');
+      }),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  adminResetPassword(email: string, password: string, passwordConfirmation: string): Observable<any> {
+    console.log('🔄 AuthService: Direct password reset for:', email);
+    return this.http.post<ApiResponse<any>>(
+      `${APP_CONFIG.API_URL}/auth/password/direct-reset`,
+      {
+        email,
+        password,
+        password_confirmation: passwordConfirmation
+      },
+      { headers: this.getHeaders() }
+    ).pipe(
+      timeout(APP_CONFIG.REQUEST_TIMEOUT),
+      map(response => {
+        if (response.success) {
+          return response;
+        }
+        throw new Error(response.message || 'Échec de la réinitialisation du mot de passe');
       }),
       catchError(this.handleError.bind(this))
     );

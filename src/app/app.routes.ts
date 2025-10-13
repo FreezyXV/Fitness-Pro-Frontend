@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 // Import components - FIXED PATHS
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { LayoutComponent } from './layout/layout/layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -25,14 +26,19 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   // Public routes (guest only)
-  { 
-    path: 'login', 
+  {
+    path: 'login',
     component: LoginComponent,
     canActivate: [GuestGuard]
   },
-  { 
-    path: 'register', 
+  {
+    path: 'register',
     component: RegisterComponent,
+    canActivate: [GuestGuard]
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
     canActivate: [GuestGuard]
   },
 
