@@ -11,7 +11,7 @@ export const APP_CONFIG = {
   TOKEN_KEY: 'fitness_token',
   USER_KEY: 'fitness_user',
   REFRESH_TOKEN_KEY: 'fitness_refresh_token',
-  VERSION: environment.version,
+  VERSION: environment.appVersion,
 
   // Timeouts et retry
   REQUEST_TIMEOUT: 30000,
