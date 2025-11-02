@@ -4,10 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { map, catchError, tap, delay } from 'rxjs/operators';
 import { APP_CONFIG, StorageUtils } from '../shared';
-// Environment configuration
-const environment = {
-  apiUrl: 'https://fitness-pro-backend.fly.dev/api'
-};
+import { environment } from '../../environments/environment';
 
 // Enhanced interfaces matching backend structure
 export interface Goal {
