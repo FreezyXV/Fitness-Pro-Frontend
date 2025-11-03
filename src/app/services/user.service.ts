@@ -21,6 +21,7 @@ import {
   UserStats, // Added import for UserStats
   BMIInfo, // Added import for BMIInfo
 } from '../shared';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,10 @@ export class UserService {
   private cache = new Map<string, { data: any; timestamp: number }>();
   private readonly CACHE_DURATION = 2 * 60 * 1000; // 2 minutes reduced cache
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {
     console.log('🔧 UserService: Initialized without mock data');
   }
 
@@ -245,21 +249,28 @@ export class UserService {
   // =============================================
 
   private getMockUser(): User {
-    const mockUser: User = {
-      id: 1,
-      name: 'Ivan Petrov',
-      email: 'i.84@mail.ru',
-      age: 29,
-      height: 164,
-      weight: 68,
-      gender: 'male',
-      bloodGroup: null,
+    const sessionUser =
+      this.authService.currentUser || this.authService.getStoredUser();
+
+    if (sessionUser) {
+      const normalizedUser = this.normalizeUserData(sessionUser);
+      normalizedUser.stats = normalizedUser.stats || this.getEmptyStats();
+      normalizedUser.emailVerifiedAt =
+        normalizedUser.emailVerifiedAt || new Date().toISOString();
+      normalizedUser.createdAt =
+        normalizedUser.createdAt || new Date().toISOString();
+      normalizedUser.updatedAt =
+        normalizedUser.updatedAt || new Date().toISOString();
+      return normalizedUser;
+    }
+
+    const fallbackUser: User = {
+      id: 0,
+      name: 'Invité FitnessPro',
+      email: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       profilePhotoUrl: null,
-      phone: null,
-      dateOfBirth: null,
-      location: null,
-      bio: null,
-      activityLevel: null,
       goals: [],
       preferences: {},
       bmiInfo: <BMIInfo>{
@@ -270,27 +281,11 @@ export class UserService {
         recommendation:
           'Renseignez votre taille et poids pour obtenir des recommandations.',
       },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      emailVerifiedAt: new Date().toISOString(),
-      stats: <UserStats>{
-        totalWorkouts: 0,
-        totalMinutes: 0,
-        totalCalories: 0,
-        currentStreak: 0,
-        weeklyWorkouts: 0,
-        monthlyWorkouts: 0,
-        totalGoals: 0,
-        activeGoals: 0,
-        completedGoals: 0,
-        hasCompletedToday: false,
-        profileCompletion: 0,
-        fitnessLevel: 'beginner',
-        caloriesToday: 0,
-      },
+      stats: this.getEmptyStats(),
       roles: [],
     };
-    return mockUser;
+
+    return fallbackUser;
   }
 
   private getMockDashboardData(): any {
@@ -307,7 +302,7 @@ export class UserService {
           completedAt: new Date().toISOString(),
           status: 'completed',
           isTemplate: false,
-          userId: 1,
+          userId: mockUser.id,
         },
         {
           id: 2,
@@ -317,7 +312,7 @@ export class UserService {
           completedAt: new Date(Date.now() - 86400000).toISOString(),
           status: 'completed',
           isTemplate: false,
-          userId: 1,
+          userId: mockUser.id,
         },
       ],
       activeGoals: [
@@ -328,7 +323,7 @@ export class UserService {
           currentValue: 2,
           unit: 'kg',
           status: 'active',
-          userId: 1,
+          userId: mockUser.id,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
@@ -340,7 +335,7 @@ export class UserService {
           taskDate: new Date().toISOString().split('T')[0],
           taskType: 'workout',
           isCompleted: true,
-          userId: 1,
+          userId: mockUser.id,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         },
@@ -385,6 +380,7 @@ export class UserService {
   }
 
   private getMockGoals(status?: string): Goal[] {
+    const mockUserId = this.getMockUser().id || 0;
     const baseGoals: Goal[] = [
       {
         id: 1,
@@ -400,7 +396,7 @@ export class UserService {
         category: 'weight',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        userId: 1,
+        userId: mockUserId,
       },
       {
         id: 2,
@@ -416,7 +412,7 @@ export class UserService {
         category: 'endurance',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        userId: 1,
+        userId: mockUserId,
       },
     ];
 
@@ -455,14 +451,18 @@ export class UserService {
             targetValue: goalData.targetValue || 0, // Changed from target_value
             currentValue: 0,
             unit: goalData.unit || '',
-            targetDate: goalData.targetDate || new Date().toISOString(), // Changed from target_date
-            status: 'active',
-            category: goalData.category || 'general',
-            createdAt: new Date().toISOString(), // Changed from created_at
-            updatedAt: new Date().toISOString(), // Changed from updated_at
-            userId: 1, // Changed from user_id
-            ...goalData,
-          };
+          targetDate: goalData.targetDate || new Date().toISOString(), // Changed from target_date
+          status: 'active',
+          category: goalData.category || 'general',
+          createdAt: new Date().toISOString(), // Changed from created_at
+          updatedAt: new Date().toISOString(), // Changed from updated_at
+          userId:
+            goalData.userId ||
+            this.authService.currentUser?.id ||
+            this.authService.getStoredUser()?.id ||
+            0,
+          ...goalData,
+        };
 
           this.clearRelatedCache();
           NotificationUtils.success('Objectif créé (mode hors ligne)');
@@ -657,6 +657,24 @@ export class UserService {
   // PRIVATE METHODS
   // =============================================
 
+  private getEmptyStats(): UserStats {
+    return {
+      totalWorkouts: 0,
+      totalMinutes: 0,
+      totalCalories: 0,
+      currentStreak: 0,
+      weeklyWorkouts: 0,
+      monthlyWorkouts: 0,
+      totalGoals: 0,
+      activeGoals: 0,
+      completedGoals: 0,
+      hasCompletedToday: false,
+      profileCompletion: 0,
+      fitnessLevel: 'beginner',
+      caloriesToday: 0,
+    };
+  }
+
   private normalizeUserData(userData: any): User {
     const user: User = {
       id: userData.id || 0,
@@ -694,6 +712,7 @@ export class UserService {
         currentStreak: 0, // Changed from current_streak
         weeklyWorkouts: 0, // Changed from weekly_workouts
         monthlyWorkouts: 0, // Changed from monthly_workouts
+        totalGoals: 0,
         activeGoals: 0, // Changed from active_goals
         completedGoals: 0, // Changed from completed_goals
         hasCompletedToday: false, // Changed from has_completed_today
