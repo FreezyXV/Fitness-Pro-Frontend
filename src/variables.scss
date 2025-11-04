@@ -10,16 +10,16 @@
 // Primary Brand Colors - Keep original values first, then modern updates
 $primary-color: #21bf73;  // Updated to modern green
 $primary-light: #48C9B0;
-$primary-dark: #1da460;   // Updated to match modern system
-$primary-darker: #168049;
+$primary-dark: #21bf73;   // Updated to match modern system
+$primary-darker: #21bf73;
 $primary-lighter: #7DCEA0;
 
 // Primary variants for consistency
 $primary-400: #34d399;
 $primary-500: #21bf73;
-$primary-600: #1da460;
+$primary-600: #21bf73;
 $primary-700: #168049;
-$primary-800: #0f5132;
+$primary-800: #21bf73;
 
 // Secondary Colors - Enhanced harmony
 $secondary-color: #00b5ad;  // Updated to modern teal
@@ -446,7 +446,7 @@ $spacers: (
 // =============================================
 
 // Primary Gradients - More sophisticated
-$primary-dark: #1da460;
+$primary-dark: #21bf73;
 $primary-gradient: linear-gradient(135deg, #21bf73 0%, #00b5ad 50%, #21bf73 100%);
 
 $primary-dark-simple: linear-gradient(135deg, #21bf73 0%, #1da460 100%);

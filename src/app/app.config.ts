@@ -7,8 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { routes } from './app.routes';
-import { authInterceptor } from './services/auth.interceptor';
-import { AuthService } from './services/auth.service';
+import { authInterceptor } from '@app/services/auth.interceptor';
+import { AuthService } from '@app/services/auth.service';
 
 // Custom Error Handler
 @Injectable()

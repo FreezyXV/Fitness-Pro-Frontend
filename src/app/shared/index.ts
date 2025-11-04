@@ -116,9 +116,9 @@ export const APP_CONFIG = {
 };
 
 // ==============================================
-// CORE INTERFACES - RE-EXPORTED FROM app.interfaces.ts
+// CORE INTERFACES - RE-EXPORTED FROM app.models.ts
 // ==============================================
-export * from '../Interfaces/app.interfaces';
+export * from './models/app.models';
 
 // ==============================================
 // UTILITY CLASSES

@@ -12,7 +12,7 @@ import {
   MonthlyCalendarData,
   WeeklyCalendarData,
   BulkUpdateRequest
-} from '../shared';
+} from '@shared';
 
 @Injectable({
   providedIn: 'root',

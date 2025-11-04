@@ -2,25 +2,24 @@
 import { Routes } from '@angular/router';
 
 // Import components - FIXED PATHS
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
-import { LayoutComponent } from './layout/layout/layout.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProfileComponent } from './profile/profile.component';
-import { ExercisesComponent } from './exercises-filtres/exercises/exercises.component';
-import { ExerciseCardComponent } from './exercises-filtres/exercises-card/exercise-card.component';
-import { ExercisesDetailComponent } from './exercises-filtres/exercises-detail/exercises-detail.component';
-import { CalendarComponent } from './calendar/calendar/calendar.component';
-import { GoalsComponent } from './goals/goals.component';
-import { WorkoutComponent } from './workout/workout.component';
-import { ChallengesComponent } from './challenges/challenges.component';
-import { CreateWorkoutComponent } from './workout/create-workout/create-workout.component';
-import { WorkoutPlanDetailComponent } from './workout/workout-plan-detail/workout-plan-detail.component';
-import { NutritionComponent } from './nutrition/nutrition.component';
+import { LoginComponent } from '@features/auth/login/login.component';
+import { RegisterComponent } from '@features/auth/register/register.component';
+import { ResetPasswordComponent } from '@features/auth/reset-password/reset-password.component';
+import { LayoutComponent } from '@core/layout/layout/layout.component';
+import { DashboardComponent } from '@features/dashboard/dashboard.component';
+import { ProfileComponent } from '@features/profile/profile.component';
+import { ExercisesComponent } from '@features/exercises/exercises/exercises.component';
+import { ExercisesDetailComponent } from '@features/exercises/exercises-detail/exercises-detail.component';
+import { CalendarComponent } from '@features/calendar/calendar/calendar.component';
+import { GoalsComponent } from '@features/goals/goals.component';
+import { WorkoutComponent } from '@features/workout/workout.component';
+import { ChallengesComponent } from '@features/challenges/challenges.component';
+import { CreateWorkoutComponent } from '@features/workout/create-workout/create-workout.component';
+import { WorkoutPlanDetailComponent } from '@features/workout/workout-plan-detail/workout-plan-detail.component';
+import { NutritionComponent } from '@features/nutrition/nutrition.component';
 
 // Import guards
-import { AuthGuard, GuestGuard } from './guards/auth.guard';
+import { AuthGuard, GuestGuard } from '@core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

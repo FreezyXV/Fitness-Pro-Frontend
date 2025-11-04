@@ -1,5 +1,5 @@
 // src/app/utils/exercise.utils.ts - Utilitaires pour les exercices
-import { Exercise, ExerciseFilters, ExerciseDifficulty, ExerciseBodyPart } from '../shared/index';
+import { Exercise, ExerciseFilters, ExerciseDifficulty, ExerciseBodyPart } from '@shared';
 
 export class ExerciseUtils {
   

@@ -1,13 +1,13 @@
 // shared/utils/challenge.utils.ts - Enhanced Utility Functions
-import { 
-    Challenge, 
-    ChallengeDifficulty, 
-    ChallengeCategory, 
-    UserChallengeData,
-    ChallengeStatus,
-    NotificationPayload 
-  } from '../Interfaces/app.interfaces';
-  import { DateUtils } from '../shared/index';
+import {
+  Challenge,
+  ChallengeDifficulty,
+  ChallengeCategory,
+  UserChallengeData,
+  ChallengeStatus,
+  NotificationPayload
+} from '@shared';
+import { DateUtils } from '@shared';
   
   // =============================================
   // CHALLENGE UTILITIES (Using shared DateUtils)

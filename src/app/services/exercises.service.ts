@@ -1,70 +1,47 @@
-// src/app/services/exercises.service.ts - VERSION CORRIGÉE ET SIMPLIFIÉE
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpParams,
-  HttpErrorResponse,
-} from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, catchError, tap, timeout, retry, finalize, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError, from } from 'rxjs';
+import { map, catchError, tap, finalize, switchMap } from 'rxjs/operators';
 import {
   Exercise,
   ExerciseFilters,
   ExerciseStats,
   ApiResponse,
   APP_CONFIG,
-} from '../shared';
+} from '@shared';
+import { ApiService } from '@core/services/api.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+@Injectable({ providedIn: 'root' })
 export class ExercisesService {
-  // Public observables
   private exercisesSubject = new BehaviorSubject<Exercise[]>([]);
   private favoritesSubject = new BehaviorSubject<Set<number>>(new Set());
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private errorSubject = new BehaviorSubject<string | null>(null);
+  public readonly API_URL = APP_CONFIG.API_URL;
 
   public exercises$ = this.exercisesSubject.asObservable();
   public favorites$ = this.favoritesSubject.asObservable();
   public loading$ = this.loadingSubject.asObservable();
   public error$ = this.errorSubject.asObservable();
 
-  // Simplified cache
-  private cache = new Map<string, { data: any; timestamp: number }>();
+  private cache = new Map<string, CacheEntry<any>>();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
-  // Make API_URL accessible
-  public readonly API_URL = APP_CONFIG.API_URL;
-
-  constructor(private http: HttpClient) {
+  constructor(private api: ApiService) {
     this.loadFavorites();
   }
 
   // ==============================================================================
-  // MAIN API METHODS
+  // PUBLIC API
   // ==============================================================================
 
-  /**
-   * Seed demo data for portfolio visitors
-   */
-  private seedPortfolioData(): Observable<any> {
-    console.log('🌱 ExercisesService: Seeding portfolio demo data...');
-    return this.http.post(`${this.API_URL}/portfolio-seed`, {}).pipe(
-      tap(response => console.log('✅ Portfolio seeding response:', response)),
-      catchError(error => {
-        console.error('❌ Portfolio seeding failed:', error);
-        return of({ success: false, message: 'Seeding failed' });
-      })
-    );
-  }
-
-  /**
-   * Get all exercises with optional filters
-   */
   getExercises(filters?: ExerciseFilters): Observable<Exercise[]> {
     const cacheKey = this.getCacheKey('exercises', filters);
-    const cached = this.getCachedData(cacheKey);
+    const cached = this.getCachedData<Exercise[]>(cacheKey);
 
     if (cached) {
       this.exercisesSubject.next(cached);
@@ -74,65 +51,43 @@ export class ExercisesService {
     this.setLoading(true);
     this.setError(null);
 
-    let params = new HttpParams();
+    const params = this.buildParams(filters);
 
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (
-          value !== null &&
-          value !== undefined &&
-          value !== '' &&
-          value !== 'all'
-        ) {
-          params = params.set(key, value.toString());
-        }
-      });
-    }
-
-    const url = `${this.API_URL}/exercises`;
-
-    return this.http.get<any>(url, { params }).pipe(
-      timeout(30000),
-      retry({ count: 2, delay: 1000 }),
-      map((response) => this.extractExercisesFromResponse(response)),
-      switchMap((exercises) => {
-        // If exercises are empty and no filters applied, try to seed demo data
-        if (exercises.length === 0 && !filters) {
-          console.log('🌱 No exercises found, attempting to seed demo data...');
-          return this.seedPortfolioData().pipe(
-            switchMap(() => {
-              // After seeding, try to fetch exercises again
-              return this.http.get<any>(url, { params }).pipe(
-                map((response) => this.extractExercisesFromResponse(response))
-              );
-            }),
-            catchError(() => of(exercises)) // Return original empty array if seeding fails
-          );
-        }
-        return of(exercises);
-      }),
-      tap((exercises) => {
-        this.exercisesSubject.next(exercises);
-        this.setCachedData(cacheKey, exercises);
-      }),
-      catchError((error) => this.handleError(error, 'loading exercises')),
-      finalize(() => this.setLoading(false))
-    );
+    return this.api
+      .get<ApiResponse<any>>('exercises', { params })
+      .pipe(
+        map((response) => this.extractExercisesFromResponse(response)),
+        switchMap((exercises) => {
+          if (exercises.length === 0 && !filters) {
+            return this.seedPortfolioData().pipe(
+              switchMap(() =>
+                this.api
+                  .get<ApiResponse<any>>('exercises', { params })
+                  .pipe(map((res) => this.extractExercisesFromResponse(res)))
+              ),
+              catchError(() => of(exercises))
+            );
+          }
+          return of(exercises);
+        }),
+        tap((exercises) => {
+          this.exercisesSubject.next(exercises);
+          this.setCachedData(cacheKey, exercises);
+        }),
+        catchError((error) => this.handleError(error, 'loading exercises')),
+        finalize(() => this.setLoading(false))
+      );
   }
 
-  /**
-   * Get a single exercise by ID
-   */
   getExercise(id: number): Observable<Exercise | null> {
     const cacheKey = this.getCacheKey('exercise', { id });
-    const cached = this.getCachedData(cacheKey);
+    const cached = this.getCachedData<Exercise>(cacheKey);
 
     if (cached) {
       return of(cached);
     }
 
-    return this.http.get<any>(`${this.API_URL}/exercises/${id}`).pipe(
-      timeout(15000),
+    return this.api.get<ApiResponse<any>>(`exercises/${id}`).pipe(
       map((response) => {
         if (response.success && response.data) {
           const exercise = this.enhanceExercise(response.data);
@@ -148,22 +103,19 @@ export class ExercisesService {
     );
   }
 
-  /**
-   * Search exercises
-   */
   searchExercises(query: string, limit = 10): Observable<Exercise[]> {
     if (!query.trim()) {
       return of([]);
     }
 
-    const params = new HttpParams()
-      .set('q', query.trim())
-      .set('limit', limit.toString());
+    const params = {
+      q: query.trim(),
+      limit: limit.toString(),
+    };
 
-    return this.http
-      .get<any>(`${this.API_URL}/exercises/search`, { params })
+    return this.api
+      .get<ApiResponse<any>>('exercises/search', { params })
       .pipe(
-        timeout(15000),
         map((response) => this.extractExercisesFromResponse(response)),
         catchError((error) => {
           this.handleError(error, 'searching exercises');
@@ -172,159 +124,33 @@ export class ExercisesService {
       );
   }
 
-  /**
-   * Get body parts
-   */
   getBodyParts(): Observable<any[]> {
-    const cacheKey = 'body-parts';
-    const cached = this.getCachedData(cacheKey);
-
-    if (cached) {
-      return of(cached);
-    }
-
-    return this.http.get<any>(`${this.API_URL}/exercises/body-parts`).pipe(
-      timeout(15000),
-      map((response) => {
-        console.log('Body parts response:', response);
-        const data = response.success && response.data ? response.data : [];
-        this.setCachedData(cacheKey, data);
-        return data;
-      }),
-      catchError((error) => {
-        console.error('Error loading body parts:', error);
-        return of([]);
-      })
+    return this.getCachedOrFetch<any[]>(
+      'body-parts',
+      () => this.api.get<ApiResponse<any>>('exercises/body-parts'),
+      []
     );
   }
 
-  /**
-   * Get categories
-   */
   getCategories(): Observable<any[]> {
-    const cacheKey = 'categories';
-    const cached = this.getCachedData(cacheKey);
-
-    if (cached) {
-      return of(cached);
-    }
-
-    return this.http.get<any>(`${this.API_URL}/exercises/categories`).pipe(
-      timeout(15000),
-      map((response) => {
-        console.log('Categories response:', response);
-        const data = response.success && response.data ? response.data : [];
-        this.setCachedData(cacheKey, data);
-        return data;
-      }),
-      catchError((error) => {
-        console.error('Error loading categories:', error);
-        return of([]);
-      })
+    return this.getCachedOrFetch<any[]>(
+      'categories',
+      () => this.api.get<ApiResponse<any>>('exercises/categories'),
+      []
     );
   }
 
-  /**
-   * Get exercise statistics
-   */
   getStats(): Observable<ExerciseStats | null> {
-    const cacheKey = 'stats';
-    const cached = this.getCachedData(cacheKey);
-
-    if (cached) {
-      return of(cached);
-    }
-
-    return this.http.get<any>(`${this.API_URL}/exercises/stats`).pipe(
-      timeout(15000),
-      map((response) => {
-        console.log('Stats response:', response);
-        if (response.success && response.data) {
-          this.setCachedData(cacheKey, response.data);
-          return response.data;
-        }
-        return null;
-      }),
-      catchError((error) => {
-        console.error('Error loading stats:', error);
-        return of(null);
-      })
+    return this.getCachedOrFetch<ExerciseStats | null>(
+      'stats',
+      () => this.api.get<ApiResponse<any>>('exercises/stats'),
+      null
     );
-  }
-
-  // ==============================================================================
-  // FAVORITES MANAGEMENT
-  // ==============================================================================
-
-  getFavorites(): Set<number> {
-    return this.favoritesSubject.value;
-  }
-
-  isFavorite(exerciseId: number): boolean {
-    return this.favoritesSubject.value.has(exerciseId);
-  }
-
-  toggleFavorite(exerciseId: number): Observable<boolean> {
-    return this.http
-      .post<ApiResponse<any>>(
-        `${this.API_URL}/exercises/${exerciseId}/favorite`,
-        {}
-      )
-      .pipe(
-        map((response) => {
-          if (response.success) {
-            const favorites = new Set(this.favoritesSubject.value);
-            if (response.message === 'Exercise favorited') {
-              // Assuming backend sends this message
-              favorites.add(exerciseId);
-            } else {
-              favorites.delete(exerciseId);
-            }
-            this.favoritesSubject.next(favorites);
-            return favorites.has(exerciseId);
-          }
-          throw new Error(response.message || 'Failed to toggle favorite');
-        }),
-        catchError((error) => {
-          console.error('Error toggling favorite:', error);
-          return throwError(() => new Error('Failed to toggle favorite'));
-        })
-      );
-  }
-
-  // ==============================================================================
-  // VIDEO UTILITIES
-  // ==============================================================================
-
-  validateVideoUrl(url: string): Observable<boolean> {
-    // For local assets, assume they exist if the URL is properly formatted
-    // The browser will handle loading errors gracefully in the video element
-    if (url.startsWith('/assets/ExercicesVideos/')) {
-      return of(true);
-    }
-    
-    // For external URLs, use a lightweight check
-    return this.http.get(url, { 
-      observe: 'response',
-      responseType: 'blob'
-    }).pipe(
-      map((response) => response.ok),
-      catchError((error) => {
-        console.log('Video validation failed for:', url, error.status);
-        return of(false);
-      })
-    );
-  }
-
-  getVideoMetadata(
-    url: string
-  ): Observable<{ duration: number; qualities: any[] }> {
-    return of({ duration: 0, qualities: [] });
   }
 
   getRelatedExercises(exerciseId: number): Observable<Exercise[]> {
-    return this.http
-      .get<any>(`${this.API_URL}/exercises/${exerciseId}/related`)
+    return this.api
+      .get<ApiResponse<any>>(`exercises/${exerciseId}/related`)
       .pipe(
         map((response) => this.extractExercisesFromResponse(response)),
         catchError((error) => {
@@ -334,42 +160,55 @@ export class ExercisesService {
       );
   }
 
-  /**
-   * Get alternative video URLs for fallback
-   */
-  getAlternativeVideoUrls(originalUrl: string): string[] {
-    if (!originalUrl) return [];
-    
-    const normalizedUrl = this.normalizeVideoUrl(originalUrl);
-    
-    return [normalizedUrl];
+  toggleFavorite(exerciseId: number): Observable<boolean> {
+    return this.api
+      .post<ApiResponse<any>>(`exercises/${exerciseId}/favorite`, {})
+      .pipe(
+        map((response) => {
+          if (response.success) {
+            const favorites = new Set(this.favoritesSubject.value);
+            if (response.message?.toLowerCase().includes('favorited')) {
+              favorites.add(exerciseId);
+            } else {
+              favorites.delete(exerciseId);
+            }
+            this.favoritesSubject.next(favorites);
+            return favorites.has(exerciseId);
+          }
+          throw new Error(response.message || 'Failed to toggle favorite');
+        }),
+        catchError((error) => this.handleError(error, 'toggling favorite'))
+      );
   }
 
-  private extractFilename(url: string): string {
-    if (!url) return '';
-    const parts = url.split('/');
-    const filename = parts[parts.length - 1].split('?')[0];
-    return filename.includes('.') ? filename : `${filename}.mp4`;
+  getFavorites(): Set<number> {
+    return this.favoritesSubject.value;
   }
 
-  private titleCase(str: string): string {
-    return str.replace(
-      /\w\S*/g,
-      (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+  isFavorite(exerciseId: number): boolean {
+    return this.favoritesSubject.value.has(exerciseId);
+  }
+
+  validateVideoUrl(url: string): Observable<boolean> {
+    if (!url) {
+      return of(false);
+    }
+
+    if (url.startsWith('/assets/ExercicesVideos/')) {
+      return of(true);
+    }
+
+    return from(fetch(url, { method: 'HEAD' })).pipe(
+      map((response) => response.ok),
+      catchError(() => of(false))
     );
   }
 
-  // ==============================================================================
-  // UTILITY METHODS
-  // ==============================================================================
-
   testConnection(): Observable<any> {
-    console.log('🔍 Testing API connection to:', `${this.API_URL}/test`);
-    return this.http.get(`${this.API_URL}/test`).pipe(
-      timeout(5000),
-      tap((response) =>
-        console.log('✅ Connection test successful:', response)
-      ),
+    const endpoint = `${APP_CONFIG.API_URL}/test`;
+    console.log('🔍 Testing API connection to:', endpoint);
+    return this.api.get(endpoint).pipe(
+      tap((response) => console.log('✅ Connection test successful:', response)),
       catchError((error) => {
         console.error('❌ Connection test failed:', error);
         return throwError(() => error);
@@ -379,16 +218,94 @@ export class ExercisesService {
 
   clearCache(): void {
     this.cache.clear();
-    console.log('🗑️ Cache cleared');
   }
 
   // ==============================================================================
-  // PRIVATE METHODS
+  // PRIVATE HELPERS
   // ==============================================================================
 
-  private extractExercisesFromResponse(response: any): Exercise[] {
-    console.log('🔄 Extracting exercises from response:', response);
+  private seedPortfolioData(): Observable<any> {
+    console.log('🌱 ExercisesService: Seeding portfolio demo data...');
+    return this.api.post('portfolio-seed', {}).pipe(
+      tap((response) => console.log('✅ Portfolio seeding response:', response)),
+      catchError((error) => {
+        console.error('❌ Portfolio seeding failed:', error);
+        return of({ success: false, message: 'Seeding failed' });
+      })
+    );
+  }
 
+  private loadFavorites(): void {
+    this.api
+      .get<ApiResponse<number[]>>('exercises/favorites', {
+        cacheKey: 'exercise-favorites',
+        cacheTTL: this.CACHE_DURATION,
+      })
+      .pipe(
+        map((response) => response.data || []),
+        catchError((error) => {
+          console.warn('Error loading favorites from API:', error);
+          return of([]);
+        })
+      )
+      .subscribe((favorites) => {
+        this.favoritesSubject.next(new Set(favorites));
+      });
+  }
+
+  private buildParams(filters?: ExerciseFilters): Record<string, string> {
+    if (!filters) {
+      return {};
+    }
+
+    const params: Record<string, string> = {};
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        value !== 'all'
+      ) {
+        params[key] = value.toString();
+      }
+    });
+
+    return params;
+  }
+
+  private setLoading(loading: boolean): void {
+    this.loadingSubject.next(loading);
+  }
+
+  private setError(error: string | null): void {
+    this.errorSubject.next(error);
+  }
+
+  private getCachedOrFetch<T>(
+    cacheKey: string,
+    fetcher: () => Observable<ApiResponse<any>>,
+    fallback: T
+  ): Observable<T> {
+    const cached = this.getCachedData<T>(cacheKey);
+    if (cached) {
+      return of(cached);
+    }
+
+    return fetcher().pipe(
+      map((response) => {
+        const data = response.success && response.data ? response.data : null;
+        this.setCachedData(cacheKey, data ?? fallback);
+        return (data ?? fallback) as T;
+      }),
+      catchError((error) => {
+        console.error(`Error loading ${cacheKey}:`, error);
+        return of(fallback);
+      })
+    );
+  }
+
+  private extractExercisesFromResponse(response: any): Exercise[] {
     let exercises: Exercise[] = [];
 
     if (response && response.success && response.data) {
@@ -405,7 +322,6 @@ export class ExercisesService {
       exercises = response.data;
     }
 
-    console.log('📊 Extracted exercises count:', exercises.length);
     return exercises.map((exercise) => this.enhanceExercise(exercise));
   }
 
@@ -416,73 +332,40 @@ export class ExercisesService {
       isFavorite: this.isFavorite(exercise.id),
       instructions: exercise.instructions || [],
       tips: exercise.tips || [],
-      muscleGroups: exercise.muscleGroups || [], // Changed from muscle_groups
-      equipmentNeeded: exercise.equipmentNeeded,
-      estimatedCaloriesPerMinute: exercise.estimatedCaloriesPerMinute,
-
-      // Add appended attributes from backend
-      bodyPartLabel: exercise.bodyPartLabel,
-      difficultyLabel: exercise.difficultyLabel,
-      difficultyColor: exercise.difficultyColor,
-      bodyPartInfo: exercise.bodyPartInfo,
-      difficultyInfo: exercise.difficultyInfo,
-
-      // Ensure camelCase properties are present if backend sends them
-      bodyPart: exercise.bodyPart,
-      // videoUrl: exercise.videoUrl, // Already handled above
-      // muscleGroups: exercise.muscleGroups, // Already handled above
-      // equipmentNeeded: exercise.equipmentNeeded, // Already handled above
-      // estimatedCaloriesPerMinute: exercise.estimatedCaloriesPerMinute, // Already handled above
+      muscleGroups: exercise.muscleGroups || [],
     };
   }
 
   private normalizeVideoUrl(url?: string): string {
     if (!url) return '';
-  
-    // If it's already a full URL, return as is
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
-  
     const baseUrl = 'https://fitness-pro-videos.s3.eu-west-3.amazonaws.com/';
     const filename = url.split('/').pop() || url;
-  
-    // Construct the full URL
-    const fullUrl = `${baseUrl}${filename}`;
-  
-    console.log(`Normalized URL: ${fullUrl}`);
-    return fullUrl;
+    return `${baseUrl}${filename}`;
   }
 
-  private handleError(
-    error: HttpErrorResponse,
-    context: string
-  ): Observable<never> {
-    console.error(`❌ Error ${context}:`, error);
-
-    let errorMessage = 'Une erreur est survenue';
-
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Erreur client: ${error.error.message}`;
-    } else {
-      switch (error.status) {
-        case 0:
-          errorMessage =
-            'Impossible de se connecter au serveur. Vérifiez votre connexion.';
-          break;
-        case 404:
-          errorMessage = 'Ressource non trouvée';
-          break;
-        case 500:
-          errorMessage = 'Erreur serveur interne';
-          break;
-        default:
-          errorMessage = `Erreur ${error.status}: ${error.message}`;
-      }
+  getAlternativeVideoUrls(originalUrl: string): string[] {
+    if (!originalUrl) {
+      return [];
     }
+    const normalizedUrl = this.normalizeVideoUrl(originalUrl);
+    return [normalizedUrl];
+  }
 
-    this.setError(errorMessage);
-    return throwError(() => new Error(errorMessage));
+  getVideoMetadata(
+    url: string
+  ): Observable<{ duration: number; qualities: any[] }> {
+    return of({ duration: 0, qualities: [] });
+  }
+
+  private handleError(error: any, context: string): Observable<never> {
+    console.error(`❌ Error ${context}:`, error);
+    const message =
+      error?.message || 'Une erreur est survenue, veuillez réessayer.';
+    this.setError(message);
+    return throwError(() => new Error(message));
   }
 
   private getCacheKey(prefix: string, params?: any): string {
@@ -490,53 +373,22 @@ export class ExercisesService {
     return `${prefix}_${btoa(encodeURIComponent(paramsString))}`;
   }
 
-  private getCachedData(key: string): any | null {
+  private getCachedData<T>(key: string): T | null {
     const cached = this.cache.get(key);
-
     if (cached) {
       const isExpired = Date.now() - cached.timestamp > this.CACHE_DURATION;
       if (!isExpired) {
-        return cached.data;
-      } else {
-        this.cache.delete(key);
+        return cached.data as T;
       }
+      this.cache.delete(key);
     }
-
     return null;
   }
 
-  private setCachedData(key: string, data: any): void {
+  private setCachedData<T>(key: string, data: T): void {
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
     });
-  }
-
-  private loadFavorites(): void {
-    this.http
-      .get<ApiResponse<number[]>>(`${this.API_URL}/exercises/favorites`)
-      .pipe(
-        map((response) => response.data || []),
-        catchError((error) => {
-          console.warn('Error loading favorites from API:', error);
-          return of([]);
-        })
-      )
-      .subscribe((favorites) => {
-        this.favoritesSubject.next(new Set(favorites));
-      });
-  }
-
-  private setLoading(loading: boolean): void {
-    this.loadingSubject.next(loading);
-  }
-
-  private setError(error: string | null): void {
-    this.errorSubject.next(error);
-  }
-
-  // Additional helper methods
-  searchExercisesByName(term: string): Observable<Exercise[]> {
-    return this.searchExercises(term);
   }
 }

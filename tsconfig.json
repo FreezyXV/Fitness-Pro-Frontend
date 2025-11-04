@@ -2,6 +2,14 @@
 /* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
+  "files": [
+    "src/main.ts",
+    "src/environments/environment.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/testing/**"
+  ],
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "strict": true,
@@ -16,7 +24,15 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022"
+    "module": "ES2022",
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@core/*": ["app/core/*"],
+      "@shared": ["app/shared/index.ts"],
+      "@shared/*": ["app/shared/*"],
+      "@features/*": ["app/features/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

@@ -1,2126 +1,2402 @@
-# 🎨 FitnessPro - Frontend Documentation
+# 🏋️ FitnessPro Frontend - Complete & Educational Documentation
 
-> **L'interface utilisateur moderne qui transforme votre expérience fitness** - Une application Angular 19 responsive, rapide et intuitive pour gérer vos entraînements, nutrition et objectifs.
-
----
-
-## 📚 Table des Matières
-
-- [Vue d'Ensemble](#-vue-densemble)
-- [Architecture Expliquée](#-architecture-expliquée)
-- [Installation & Configuration](#-installation--configuration)
-- [Structure du Projet](#-structure-du-projet)
-- [Composants Principaux](#-composants-principaux)
-- [Services & État](#-services--état)
-- [Cycle de Vie d'une Interaction](#-cycle-de-vie-dune-interaction)
-- [Routing & Navigation](#-routing--navigation)
-- [Authentification Frontend](#-authentification-frontend)
-- [Communication avec l'API](#-communication-avec-lapi)
-- [Styling & Design](#-styling--design)
-- [Développement](#-développement)
-- [Build & Déploiement](#-build--déploiement)
-- [Dépannage](#-dépannage)
+> **Complete guide to understand the architecture, operation, and development of the FitnessPro Angular frontend**
+>
+> This documentation is designed to be **accessible to everyone**, from beginners to experienced developers.
 
 ---
 
-## 🎯 Vue d'Ensemble
+## 📚 Table of Contents
 
-### Qu'est-ce que ce Frontend ?
-
-Ce frontend est **l'interface visuelle** de l'application FitnessPro. Imaginez-le comme la **vitrine d'un magasin** :
-
-- 🖼️ Il **affiche les données** de manière attrayante et organisée
-- 🖱️ Il **capture les interactions** utilisateur (clics, formulaires, navigation)
-- 📡 Il **communique avec le backend** pour récupérer et envoyer des données
-- 🎭 Il **gère l'état** de l'application (utilisateur connecté, données en cache, etc.)
-- 🚀 Il offre une **expérience fluide** avec navigation instantanée (SPA)
-
-### Technologies Principales
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    FRONTEND STACK                       │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│  🅰️ Angular 19       Framework SPA moderne            │
-│  📘 TypeScript 5.7    Langage typé (JavaScript++)     │
-│  🎨 SCSS              CSS avec superpuissances         │
-│  📡 RxJS              Programmation réactive           │
-│  🔀 Angular Router    Navigation SPA                   │
-│  🌐 HttpClient        Communication HTTP               │
-│  ▲ Vercel             Plateforme de déploiement       │
-│                                                         │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Capacités du Frontend
-
-- ✅ **SPA (Single Page Application)** - Navigation instantanée sans rechargement
-- ✅ **Responsive Design** - S'adapte à tous les écrans (mobile, tablette, desktop)
-- ✅ **Authentification JWT** - Connexion sécurisée avec gestion de session
-- ✅ **Gestion d'État Réactive** - RxJS Observables pour données temps réel
-- ✅ **Route Guards** - Protection des pages authentifiées
-- ✅ **HTTP Interceptors** - Gestion automatique des tokens et erreurs
-- ✅ **Lazy Loading** - Chargement optimisé des modules à la demande
-- ✅ **Offline Support** - Fonctionnalités de base en mode hors ligne
-- ✅ **Performance** - Build optimisé avec tree-shaking et compression
+1. [Introduction - What is a Frontend?](#1-introduction)
+2. [Global Application Architecture](#2-global-architecture)
+3. [Technologies Used and Why](#3-technologies)
+4. [Installation and Configuration](#4-installation)
+5. [Complete Project Structure](#5-structure)
+6. [Data Flow - From Click to Display](#6-data-flow)
+7. [Authentication System](#7-authentication)
+8. [Frontend-Backend Communication](#8-api-communication)
+9. [Main Components Detailed](#9-components)
+10. [Services and State Management](#10-services)
+11. [Routing and Navigation](#11-routing)
+12. [Guards and Interceptors](#12-guards-interceptors)
+13. [Styling and Design System](#13-styling)
+14. [Build and Deployment](#14-build-deployment)
+15. [Development and Best Practices](#15-development)
+16. [Troubleshooting and FAQ](#16-troubleshooting)
 
 ---
 
-## 🏗️ Architecture Expliquée
+<a name="1-introduction"></a>
+## 1. Introduction - What is a Frontend?
 
-### Architecture d'une SPA (Single Page Application)
+### 🎯 Simple Analogy: The Restaurant
 
-Une SPA charge une seule page HTML initiale, puis met à jour dynamiquement le contenu sans rechargement complet :
+Imagine a web application like **a restaurant**:
 
 ```
-┌────────────────────────────────────────────────────────────────┐
-│              ARCHITECTURE ANGULAR SPA                          │
-└────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│                    🍽️ RESTAURANT                              │
+├───────────────────────────────────────────────────────────────┤
+│                                                               │
+│  👨‍🍳 KITCHEN (Backend)          🧑‍💼 DINING ROOM (Frontend)    │
+│  ├─ Prepares dishes          ├─ Welcomes customers          │
+│  ├─ Stores ingredients       ├─ Presents menu               │
+│  ├─ Manages recipes          ├─ Takes orders                │
+│  └─ Checks quality           └─ Serves dishes               │
+│                                                               │
+│  📊 DATABASE                  🎨 INTERFACE                    │
+│  └─ Freezer/inventory        └─ Tables, decoration           │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+```
 
-🌐 NAVIGATEUR
+**The Frontend (our Angular application)** is:
+- ✅ **What the user sees and touches** (the graphical interface)
+- ✅ **Presentation logic** (displaying data nicely)
+- ✅ **Interaction management** (clicks, forms, navigation)
+- ✅ **Communication with backend** (send/receive data)
+
+### 🔄 User Action Lifecycle
+
+Here's what happens when a user clicks "View my workouts":
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│         COMPLETE USER ACTION CYCLE                            │
+└───────────────────────────────────────────────────────────────┘
+
+1️⃣ USER
    │
-   ├─ index.html                    ← Seule page HTML chargée
-   │   └─ <app-root></app-root>    ← Point d'entrée Angular
+   └─> 🖱️ Click on "My Workouts"
+       │
+       ↓
+2️⃣ FRONTEND (Angular Component)
    │
-   ├─ main.ts                       ← Bootstrap de l'application
-   │   └─ bootstrapApplication(AppComponent)
+   ├─> 📄 WorkoutComponent detects click
+   │   └─> Calls WorkoutService.getWorkouts()
+       │
+       ↓
+3️⃣ FRONTEND (Angular Service)
    │
-   └─ Angular Application Runtime
+   ├─> 🔌 WorkoutService prepares HTTP request
+   │   └─> HttpClient.get('/api/workouts')
        │
-       ├─ 📦 MODULES & COMPONENTS
-       │   ├─ AppComponent (racine)
-       │   ├─ HeaderComponent
-       │   ├─ SidebarComponent
-       │   ├─ DashboardComponent
-       │   ├─ WorkoutComponent
-       │   └─ ... autres composants
+       ↓
+4️⃣ INTERCEPTORS (Middleware)
+   │
+   ├─> 🔐 AuthInterceptor adds JWT token
+   │   └─> Headers: { Authorization: "Bearer xxx..." }
        │
-       ├─ 🚏 ROUTER
-       │   ├─ /login         → LoginComponent
-       │   ├─ /dashboard     → DashboardComponent (protégé)
-       │   ├─ /workouts      → WorkoutComponent (protégé)
-       │   └─ /exercises     → ExerciseComponent (protégé)
+       ↓
+5️⃣ NETWORK
+   │
+   └─> 🌐 HTTP request to backend
+       │   GET https://api.fitnesspro.com/api/workouts
+       │   Headers: { Authorization: "Bearer xxx..." }
        │
-       ├─ 🔧 SERVICES
-       │   ├─ AuthService    → Gestion authentification
-       │   ├─ WorkoutService → API workouts
-       │   ├─ ExerciseService→ API exercises
-       │   └─ UserService    → API utilisateur
+       ↓
+6️⃣ BACKEND (Laravel)
+   │
+   ├─> 🛡️ Verifies JWT token
+   ├─> 📊 Queries database
+   ├─> 🔧 Processes data
+   └─> 📤 Returns JSON
        │
-       ├─ 🛡️ GUARDS
-       │   ├─ AuthGuard      → Vérifie authentification
-       │   └─ GuestGuard     → Pages publiques uniquement
+       ↓
+7️⃣ FRONTEND (Service receives response)
+   │
+   ├─> 📦 WorkoutService receives data
+   │   └─> Stores in BehaviorSubject (reactive state)
        │
-       └─ 📡 INTERCEPTORS
-           ├─ AuthInterceptor    → Ajoute token JWT
-           └─ ErrorInterceptor   → Gère erreurs HTTP
-
-
-┌────────────────────────────────────────────────────────────────┐
-│            FLUX DE DONNÉES (Data Flow)                         │
-└────────────────────────────────────────────────────────────────┘
-
-    USER INTERACTION                    COMPONENT
-         │                                  │
-         │ 1. Click button                  │
-         ▼                                  │
-    ┌──────────────┐                       │
-    │   EVENT      │                       │
-    │  (click)     │                       │
-    └──────┬───────┘                       │
-           │                                │
-           │ 2. Call method                 │
-           ▼                                │
-    ┌─────────────────────────────────────────┐
-    │        COMPONENT.TS                     │
-    │  onSubmit() {                           │
-    │    this.workoutService.create(data)     │
-    │  }                                      │
-    └──────┬──────────────────────────────────┘
-           │
-           │ 3. Call service method
-           ▼
-    ┌─────────────────────────────────────────┐
-    │         SERVICE.TS                      │
-    │  create(data): Observable {             │
-    │    return this.http.post(url, data)     │
-    │  }                                      │
-    └──────┬──────────────────────────────────┘
-           │
-           │ 4. HTTP Request
-           ▼
-    ┌─────────────────────────────────────────┐
-    │       HTTP INTERCEPTOR                  │
-    │  - Ajoute Authorization header          │
-    │  - Ajoute Content-Type                  │
-    └──────┬──────────────────────────────────┘
-           │
-           │ 5. Send to backend
-           ▼
-    ╔═════════════════════════════════════════╗
-    ║         BACKEND API                     ║
-    ║  POST /api/workouts                     ║
-    ╚══════┬══════════════════════════════════╝
-           │
-           │ 6. Response
-           ▼
-    ┌─────────────────────────────────────────┐
-    │       HTTP INTERCEPTOR                  │
-    │  - Vérifie statut (200, 401, etc.)      │
-    │  - Gère erreurs                         │
-    └──────┬──────────────────────────────────┘
-           │
-           │ 7. Return Observable
-           ▼
-    ┌─────────────────────────────────────────┐
-    │        SERVICE.TS                       │
-    │  .pipe(                                 │
-    │    map(response => response.data),      │
-    │    tap(data => cache.update(data))      │
-    │  )                                      │
-    └──────┬──────────────────────────────────┘
-           │
-           │ 8. Subscribe in component
-           ▼
-    ┌─────────────────────────────────────────┐
-    │        COMPONENT.TS                     │
-    │  .subscribe(workout => {                │
-    │    this.workouts.push(workout);         │
-    │    this.showSuccess();                  │
-    │  })                                     │
-    └──────┬──────────────────────────────────┘
-           │
-           │ 9. Update view
-           ▼
-    ┌─────────────────────────────────────────┐
-    │        COMPONENT.HTML                   │
-    │  <div *ngFor="let w of workouts">       │
-    │    {{ w.name }}                         │
-    │  </div>                                 │
-    └─────────────────────────────────────────┘
-           │
-           │ 10. Re-render DOM
-           ▼
-    ┌─────────────────────────────────────────┐
-    │           BROWSER DOM                   │
-    │  Updated UI visible to user             │
-    └─────────────────────────────────────────┘
-```
-
-### Pattern de Composants Angular
-
-Chaque composant Angular est composé de 3-4 fichiers :
-
-```
-workout.component/
-├── workout.component.ts       # 🧠 Logique TypeScript
-├── workout.component.html     # 🖼️ Template HTML
-├── workout.component.scss     # 🎨 Styles SCSS
-└── workout.component.spec.ts  # 🧪 Tests unitaires (optionnel)
-```
-
-**Exemple de Composant Complet** :
-
-**workout.component.ts** (Logique) :
-```typescript
-import { Component, OnInit } from '@angular/core';
-import { WorkoutService } from '@services/workout.service';
-import { Workout } from '@models/workout.interface';
-
-@Component({
-  selector: 'app-workout',        // Balise HTML: <app-workout></app-workout>
-  templateUrl: './workout.component.html',
-  styleUrls: ['./workout.component.scss']
-})
-export class WorkoutComponent implements OnInit {
-  // 📊 État du composant
-  workouts: Workout[] = [];
-  loading: boolean = false;
-  error: string | null = null;
-
-  // 💉 Injection de dépendances
-  constructor(private workoutService: WorkoutService) {}
-
-  // 🔄 Lifecycle hook - appelé à l'initialisation
-  ngOnInit(): void {
-    this.loadWorkouts();
-  }
-
-  // 📡 Méthodes d'interaction avec l'API
-  loadWorkouts(): void {
-    this.loading = true;
-    this.workoutService.getWorkouts().subscribe({
-      next: (data) => {
-        this.workouts = data;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load workouts';
-        this.loading = false;
-        console.error('Error:', err);
-      }
-    });
-  }
-
-  // 🎯 Méthode appelée depuis le template
-  createWorkout(name: string): void {
-    const newWorkout = { name, is_template: true };
-    this.workoutService.createWorkout(newWorkout).subscribe({
-      next: (workout) => {
-        this.workouts.push(workout);
-        alert('Workout created!');
-      },
-      error: (err) => console.error('Error:', err)
-    });
-  }
-}
-```
-
-**workout.component.html** (Template) :
-```html
-<!-- 🔄 Affichage conditionnel avec *ngIf -->
-<div *ngIf="loading" class="loading-spinner">
-  Chargement...
-</div>
-
-<!-- ⚠️ Affichage d'erreur -->
-<div *ngIf="error" class="error-message">
-  {{ error }}
-</div>
-
-<!-- 📋 Liste avec *ngFor -->
-<div *ngIf="!loading && !error" class="workout-list">
-  <h2>Mes Entraînements</h2>
-
-  <div *ngFor="let workout of workouts" class="workout-card">
-    <h3>{{ workout.name }}</h3>
-    <p>{{ workout.description }}</p>
-    <span class="badge">{{ workout.exercises?.length }} exercices</span>
-  </div>
-
-  <!-- 📝 Formulaire avec binding bidirectionnel -->
-  <div class="create-form">
-    <input
-      type="text"
-      #workoutName
-      placeholder="Nom du workout"
-    />
-    <button (click)="createWorkout(workoutName.value)">
-      Créer
-    </button>
-  </div>
-</div>
-```
-
-**workout.component.scss** (Styles) :
-```scss
-:host {
-  display: block;
-  padding: 2rem;
-}
-
-.loading-spinner {
-  text-align: center;
-  padding: 3rem;
-  color: #666;
-}
-
-.error-message {
-  background: #fee;
-  color: #c33;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-
-.workout-list {
-  .workout-card {
-    background: white;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    h3 {
-      margin: 0 0 0.5rem;
-      color: #333;
-    }
-
-    .badge {
-      background: #4CAF50;
-      color: white;
-      padding: 0.25rem 0.75rem;
-      border-radius: 12px;
-      font-size: 0.875rem;
-    }
-  }
-}
-
-.create-form {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-
-  input {
-    flex: 1;
-    padding: 0.75rem;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-
-    &:focus {
-      outline: none;
-      border-color: #4CAF50;
-    }
-  }
-
-  button {
-    padding: 0.75rem 1.5rem;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-
-    &:hover {
-      background: #45a049;
-    }
-  }
-}
+       ↓
+8️⃣ FRONTEND (Component reacts)
+   │
+   ├─> 🔄 WorkoutComponent subscribes to data
+   │   └─> Automatically receives update
+       │
+       ↓
+9️⃣ FRONTEND (Template updates)
+   │
+   ├─> 🎨 Angular detects change
+   └─> 🖼️ Updates HTML display
+       │
+       ↓
+🔟 USER
+   │
+   └─> 👁️ Sees their workouts list on screen
 ```
 
 ---
 
-## 🚀 Installation & Configuration
+<a name="2-global-architecture"></a>
+## 2. Global Application Architecture
 
-### Prérequis
+### 🏛️ Layered Architecture
+
+FitnessPro Frontend follows a **layered architecture** to separate responsibilities:
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│                   FRONTEND ARCHITECTURE                        │
+│                     (Layered View)                             │
+└───────────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────────┐
+│  LAYER 1: PRESENTATION (UI Components)                        │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │  LoginComponent   DashboardComponent   WorkoutComponent │  │
+│  │  📱 User Interface                                      │  │
+│  │  ├─ Displays data                                       │  │
+│  │  ├─ Captures events (clicks, inputs)                   │  │
+│  │  └─ Delegates logic to services                        │  │
+│  └─────────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────────┘
+                              ↕️
+┌───────────────────────────────────────────────────────────────┐
+│  LAYER 2: BUSINESS LOGIC (Services)                          │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │  AuthService   WorkoutService   ExerciseService         │  │
+│  │  🧠 Application Logic and State                        │  │
+│  │  ├─ Manages data state (BehaviorSubject)               │  │
+│  │  ├─ Orchestrates API calls                             │  │
+│  │  ├─ Applies business logic                             │  │
+│  │  └─ Caches data                                         │  │
+│  └─────────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────────┘
+                              ↕️
+┌───────────────────────────────────────────────────────────────┐
+│  LAYER 3: MIDDLEWARE (Interceptors & Guards)                 │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │  AuthInterceptor   ErrorInterceptor   AuthGuard         │  │
+│  │  🔐 Security and Transformation                        │  │
+│  │  ├─ Adds authentication headers                        │  │
+│  │  ├─ Handles errors globally                            │  │
+│  │  └─ Protects routes                                    │  │
+│  └─────────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────────┘
+                              ↕️
+┌───────────────────────────────────────────────────────────────┐
+│  LAYER 4: COMMUNICATION (HTTP Client)                        │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │  HttpClient (Angular)                                   │  │
+│  │  🌐 Communication with Backend API                     │  │
+│  │  ├─ Makes HTTP requests (GET, POST, PUT, DELETE)       │  │
+│  │  ├─ Manages headers and parameters                     │  │
+│  │  └─ Transforms responses into Observables              │  │
+│  └─────────────────────────────────────────────────────────┘  │
+└───────────────────────────────────────────────────────────────┘
+                              ↕️
+                         🌐 INTERNET
+                              ↕️
+┌───────────────────────────────────────────────────────────────┐
+│  BACKEND API (Laravel)                                        │
+│  📊 Data processing and server logic                         │
+└───────────────────────────────────────────────────────────────┘
+```
+
+### 🧩 SPA Pattern (Single Page Application)
+
+FitnessPro is a **SPA** - a single HTML page that changes dynamically:
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│            COMPARISON: TRADITIONAL APPLICATION                 │
+│                    vs SPA (Angular)                           │
+└───────────────────────────────────────────────────────────────┘
+
+📄 TRADITIONAL APPLICATION (Multi-Page)
+────────────────────────────────────────────
+   User clicks "Dashboard"
+        ↓
+   🌐 Full request to server
+        ↓
+   📄 New HTML page loaded
+        ↓
+   🔄 Everything reloaded (CSS, JS, images...)
+        ↓
+   ⏱️ White screen during loading
+        ↓
+   ✅ Page displayed (slow, not smooth)
+
+
+🚀 SPA (Single Page Application - Angular)
+────────────────────────────────────────────
+   User clicks "Dashboard"
+        ↓
+   ⚡ Angular Router changes view
+        ↓
+   🎨 Only component changes (no reload)
+        ↓
+   📊 If needed, data loaded in background
+        ↓
+   ✨ Smooth, instant transition
+        ↓
+   ✅ Fast and modern experience
+```
+
+**SPA Advantages:**
+- ⚡ Instant navigation
+- 📱 Native mobile experience
+- 🔄 Real-time updates
+- 💾 Less bandwidth
+- 🎯 Better UX (User Experience)
+
+---
+
+<a name="3-technologies"></a>
+## 3. Technologies Used and Why
+
+### 🛠️ Complete Technical Stack
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│                     TECHNICAL STACK                            │
+└───────────────────────────────────────────────────────────────┘
+
+🅰️  ANGULAR 19
+    ├─ Why Angular?
+    │  ├─ Complete framework (all-in-one)
+    │  ├─ Native TypeScript (strong typing)
+    │  ├─ Scalable architecture for large apps
+    │  ├─ Excellent for enterprise applications
+    │  ├─ Mature and stable ecosystem
+    │  └─ Google support and active community
+    │
+    └─ Alternatives considered
+       ├─ React (simpler but less structured)
+       ├─ Vue (lighter but less rich ecosystem)
+       └─ Svelte (performant but less mature)
+
+📘 TYPESCRIPT 5.7
+    ├─ Why TypeScript?
+    │  ├─ Error detection before execution
+    │  ├─ Intelligent auto-completion (IDE)
+    │  ├─ Safe and easy refactoring
+    │  ├─ Self-documented code (types = doc)
+    │  └─ Better long-term maintainability
+    │
+    └─ Example benefit
+       // ❌ JavaScript - runtime error
+       function add(a, b) {
+         return a + b;
+       }
+       add("5", 3); // "53" - silent bug!
+
+       // ✅ TypeScript - error detected immediately
+       function add(a: number, b: number): number {
+         return a + b;
+       }
+       add("5", 3); // ❌ Compilation error!
+
+🎨 SCSS (Sass)
+    ├─ Why SCSS?
+    │  ├─ Variables for colors/sizes
+    │  ├─ Nesting for readability
+    │  ├─ Mixins for reusability
+    │  ├─ Functions and calculations
+    │  └─ Better CSS organization
+    │
+    └─ Example
+       // Variables
+       $primary-color: #6366f1;
+       $border-radius: 12px;
+
+       // Reusable mixin
+       @mixin card {
+         background: white;
+         border-radius: $border-radius;
+         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+       }
+
+       // Usage
+       .workout-card {
+         @include card;
+         padding: 1.5rem;
+       }
+
+📡 RxJS (Reactive Extensions)
+    ├─ Why RxJS?
+    │  ├─ Asynchronous event management
+    │  ├─ Reactive data streams
+    │  ├─ Powerful operators (map, filter, merge...)
+    │  ├─ Automatic cancellation (unsubscribe)
+    │  └─ Observable/Observer pattern
+    │
+    └─ Concrete example
+       // Search with debounce (wait 300ms)
+       searchInput.valueChanges.pipe(
+         debounceTime(300),      // Wait for user to stop typing
+         distinctUntilChanged(), // Ignore if same value
+         switchMap(term =>       // Cancel previous search
+           this.searchService.search(term)
+         )
+       ).subscribe(results => {
+         this.results = results;
+       });
+
+🌐 HTTP CLIENT (Angular)
+    ├─ Why HttpClient?
+    │  ├─ Based on Observables (RxJS)
+    │  ├─ Integrated interceptors
+    │  ├─ Typed requests/responses
+    │  ├─ Automatic error handling
+    │  └─ Facilitated testing
+    │
+    └─ Example
+       // Typed request with transformation
+       this.http.get<Workout[]>('/api/workouts').pipe(
+         map(workouts => workouts.filter(w => w.active)),
+         catchError(error => {
+           console.error('Error:', error);
+           return of([]); // Default value
+         })
+       ).subscribe(workouts => {
+         this.workouts = workouts;
+       });
+
+▲ VERCEL (Deployment)
+    ├─ Why Vercel?
+    │  ├─ Automatic deployment (push = deploy)
+    │  ├─ Ultra-fast global CDN
+    │  ├─ Automatic previews for PRs
+    │  ├─ Automatic HTTPS
+    │  ├─ Integrated build optimizations
+    │  └─ Free for personal projects
+    │
+    └─ Alternatives considered
+       ├─ Netlify (similar, also good)
+       ├─ AWS Amplify (more complex)
+       └─ GitHub Pages (limited, no backend)
+```
+
+### 🔄 Compilation Flow
+
+Here's how our TypeScript/Angular code becomes a web application:
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│             BUILD PROCESS (ng build)                          │
+└───────────────────────────────────────────────────────────────┘
+
+1️⃣ SOURCE CODE
+   ├─ app.component.ts (TypeScript)
+   ├─ app.component.html (Template)
+   ├─ app.component.scss (Styles)
+   └─ services/*.ts (Logic)
+          ↓
+          ↓ Angular Compiler (NGC)
+          ↓
+2️⃣ TYPESCRIPT COMPILATION
+   ├─ TypeScript → JavaScript (ES2022)
+   ├─ Type checking
+   └─ Optimized code generation
+          ↓
+          ↓ Angular AOT Compiler
+          ↓
+3️⃣ AOT (Ahead-of-Time) COMPILATION
+   ├─ HTML Templates → JavaScript
+   ├─ Component optimization
+   ├─ Tree shaking (unused code removal)
+   └─ Pre-compilation for performance
+          ↓
+          ↓ Webpack/esbuild
+          ↓
+4️⃣ BUNDLING (Grouping)
+   ├─ All JS files → optimized bundles
+   ├─ SCSS → compiled and minified CSS
+   ├─ Images → optimized and compressed
+   └─ Lazy loading chunks separated
+          ↓
+          ↓ Minification
+          ↓
+5️⃣ OPTIMIZATION
+   ├─ Minification (remove spaces/comments)
+   ├─ Uglification (shorten variable names)
+   ├─ Gzip/brotli compression
+   └─ Source maps (for debugging)
+          ↓
+          ↓
+6️⃣ FINAL OUTPUT (dist/frontend/)
+   ├─ index.html (entry point)
+   ├─ main.js (main bundle ~180KB gzipped)
+   ├─ polyfills.js (browser compatibility ~35KB)
+   ├─ runtime.js (Angular runtime ~12KB)
+   ├─ lazy-*.js (on-demand loaded modules)
+   ├─ styles.css (global styles)
+   └─ assets/ (images, fonts, icons)
+
+📊 RESULT
+   ├─ Initial bundle: ~180 KB (gzipped)
+   ├─ First Contentful Paint: < 1.5s
+   ├─ Time to Interactive: < 3s
+   └─ Lighthouse Score: 95+ / 100
+```
+
+---
+
+<a name="4-installation"></a>
+## 4. Installation and Configuration
+
+### 📋 Prerequisites
 
 ```bash
-# 1. Node.js 18+ (LTS recommandé)
-node --version
-# Doit afficher: v18.x.x ou plus
+# Required versions
+Node.js:     v20.x or higher
+npm:         v10.x or higher
+Angular CLI: v19.x
 
-# 2. npm 9+
-npm --version
-# Doit afficher: 9.x.x ou plus
-
-# 3. Angular CLI 19+
-npm install -g @angular/cli
-ng version
-# Doit afficher: Angular CLI: 19.x.x
+# Check installed versions
+node --version    # should display v20.x.x
+npm --version     # should display 10.x.x
+ng version        # should display Angular CLI: 19.x.x
 ```
 
-### Installation Étape par Étape
-
-#### 1️⃣ Installer les Dépendances
+### 🚀 Step-by-Step Installation
 
 ```bash
-# Se déplacer dans le dossier frontend
-cd frontend
+# 1️⃣ Clone the repository
+git clone https://github.com/your-username/fitness-pro.git
+cd fitness-pro/frontend
 
-# Installer toutes les dépendances NPM
+# 2️⃣ Install dependencies
 npm install
-# Cela télécharge tous les packages dans node_modules/
-# Durée: 2-5 minutes selon votre connexion
+# This will:
+# - Download all packages (~500MB node_modules)
+# - Install Angular, RxJS, TypeScript, etc.
+# - Configure build scripts
+# Duration: 2-5 minutes depending on your connection
+
+# 3️⃣ Environment configuration
+# Environment files are already configured in src/environments/
+
+# 4️⃣ Start the development server
+npm start
+# or
+ng serve
+
+# The application will be accessible at:
+# 🌐 http://localhost:4200
 ```
 
-#### 2️⃣ Configurer les Environnements
+### ⚙️ Environment Configuration
 
-**Environnement de Développement** ([src/environments/environment.ts](src/environments/environment.ts:1)) :
-
+**`src/environments/environment.ts`** (Local Development)
 ```typescript
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000/api',    // Backend local
+  apiUrl: 'http://localhost:8000/api',  // Local backend
   appName: 'FitnessPro',
-  appVersion: '1.0.0-dev',
-  enableDebug: true,                       // Logs détaillés
-  requestTimeout: 30000,                   // 30 secondes
-  tokenKey: 'fitness_token',               // Clé localStorage
-  userKey: 'fitness_user'
+  version: '2.1.0',
+
+  // Feature flags (enable/disable features)
+  features: {
+    offlineMode: true,
+    analytics: false,
+    debugging: true
+  },
+
+  // Cache configuration
+  cache: {
+    ttl: 300000,  // 5 minutes in milliseconds
+    maxSize: 100  // 100 entries max
+  }
 };
 ```
 
-**Environnement de Production** ([src/environments/environment.production.ts](src/environments/environment.production.ts:1)) :
-
+**`src/environments/environment.prod.ts`** (Production)
 ```typescript
 export const environment = {
   production: true,
-  apiUrl: 'https://fitness-pro-backend.fly.dev/api',  // Backend production
+  apiUrl: 'https://api.fitnesspro.com/api',  // Production API
   appName: 'FitnessPro',
-  appVersion: '1.0.0',
-  enableDebug: false,                      // Pas de logs en production
-  requestTimeout: 30000,
-  tokenKey: 'fitness_token',
-  userKey: 'fitness_user'
+  version: '2.1.0',
+
+  features: {
+    offlineMode: false,
+    analytics: true,
+    debugging: false
+  },
+
+  cache: {
+    ttl: 600000,  // 10 minutes
+    maxSize: 200
+  }
 };
 ```
 
-#### 3️⃣ Lancer le Serveur de Développement
+### 🏃 Running the Application
 
 ```bash
-# Option 1: Commande standard
+# Start development server
 npm start
-# ou
+# or
 ng serve
 
-# Option 2: Port personnalisé
-ng serve --port 4200
+# The application will be accessible at:
+# 🌐 http://localhost:4200
 
-# Option 3: Ouvrir automatiquement dans le navigateur
-ng serve --open
+# What happens in the background:
+# 1. TypeScript compilation → JavaScript
+# 2. SCSS compilation → CSS
+# 3. File bundling
+# 4. Development server startup
+# 5. Watch mode activated (automatic recompilation)
+# 6. Hot Module Replacement (no browser refresh)
 
-# Option 4: Avec proxy pour contourner CORS
-ng serve --proxy-config proxy.conf.json
+# Useful options
+ng serve --open              # Automatically opens browser
+ng serve --port 4300         # Change port
+ng serve --host 0.0.0.0      # Accessible from local network
+ng serve --ssl               # Enable HTTPS in dev
 ```
 
-**Configuration Proxy** (optionnel) - [proxy.conf.json](proxy.conf.json:1) :
+### 🔗 Verify Backend Connection
 
-```json
-{
-  "/api": {
-    "target": "http://localhost:8000",
-    "secure": false,
-    "changeOrigin": true,
-    "logLevel": "debug"
-  }
-}
-```
+```bash
+# Backend must be running on http://localhost:8000
+# Verify the API responds:
+curl http://localhost:8000/api/health
 
-Avec cette configuration, les requêtes vers `/api/*` sont automatiquement redirigées vers `http://localhost:8000/api/*`.
+# Expected response:
+# {"status":"ok","timestamp":"2025-11-04T10:30:00Z"}
 
-#### 4️⃣ Accéder à l'Application
+# If connection error:
+# 1. Verify Laravel backend is running
+cd ../backend
+php artisan serve
 
-Une fois le serveur démarré :
-
-```
-✅ Compilation réussie!
-
-** Angular Live Development Server is listening on localhost:4200 **
-
-  Local:   http://localhost:4200
-  Network: http://192.168.1.10:4200
-
-  Compiled successfully in 3.2s
-  ➜ Press h to show help
-```
-
-Ouvrez votre navigateur à : **http://localhost:4200**
-
----
-
-## 📁 Structure du Projet
-
-```
-frontend/src/
-│
-├── index.html                    # 📄 Page HTML unique
-├── main.ts                       # 🚀 Point d'entrée de l'app
-├── styles.scss                   # 🎨 Styles globaux
-│
-├── app/                          # 📦 Application principale
-│   ├── app.component.ts          # 🏠 Composant racine
-│   ├── app.component.html        # 🖼️ Template racine
-│   ├── app.component.scss        # 🎨 Styles racine
-│   ├── app.routes.ts             # 🚏 Configuration routing
-│   ├── app.config.ts             # ⚙️ Configuration app
-│   │
-│   ├── auth/                     # 🔐 Module authentification
-│   │   ├── login/
-│   │   │   ├── login.component.ts
-│   │   │   ├── login.component.html
-│   │   │   └── login.component.scss
-│   │   ├── register/
-│   │   └── reset-password/
-│   │
-│   ├── dashboard/                # 📊 Module tableau de bord
-│   │   ├── dashboard.component.ts
-│   │   ├── dashboard.component.html
-│   │   ├── dashboard.component.scss
-│   │   └── widgets/              # Composants enfants
-│   │       ├── stats-card/
-│   │       ├── workout-summary/
-│   │       └── nutrition-overview/
-│   │
-│   ├── exercises/                # 💪 Module exercices
-│   │   ├── exercise-list/
-│   │   │   ├── exercise-list.component.ts
-│   │   │   ├── exercise-list.component.html
-│   │   │   └── exercise-list.component.scss
-│   │   ├── exercise-detail/
-│   │   ├── exercise-search/
-│   │   └── exercise-filters/
-│   │
-│   ├── workout/                  # 🏋️ Module entraînements
-│   │   ├── workout-list/
-│   │   ├── workout-detail/
-│   │   ├── workout-session/      # Session active
-│   │   ├── workout-history/
-│   │   └── workout-builder/      # Création de templates
-│   │
-│   ├── nutrition/                # 🍎 Module nutrition
-│   │   ├── nutrition-diary/
-│   │   ├── meal-entry/
-│   │   ├── nutrition-goals/
-│   │   └── nutrition-stats/
-│   │
-│   ├── goals/                    # 🎯 Module objectifs
-│   │   ├── goal-list/
-│   │   ├── goal-create/
-│   │   ├── goal-progress/
-│   │   └── achievements/
-│   │
-│   ├── profile/                  # 👤 Module profil
-│   │   ├── profile-view/
-│   │   ├── profile-edit/
-│   │   ├── settings/
-│   │   └── progress-photos/
-│   │
-│   ├── shared/                   # 🔄 Composants partagés
-│   │   ├── components/
-│   │   │   ├── header/
-│   │   │   ├── sidebar/
-│   │   │   ├── footer/
-│   │   │   ├── loading-spinner/
-│   │   │   ├── error-message/
-│   │   │   ├── confirmation-dialog/
-│   │   │   └── notification/
-│   │   │
-│   │   ├── directives/           # Directives custom
-│   │   │   ├── auto-focus.directive.ts
-│   │   │   └── click-outside.directive.ts
-│   │   │
-│   │   ├── pipes/                # Pipes custom
-│   │   │   ├── time-ago.pipe.ts
-│   │   │   ├── duration.pipe.ts
-│   │   │   └── safe-html.pipe.ts
-│   │   │
-│   │   └── validators/           # Validateurs custom
-│   │       ├── password-strength.validator.ts
-│   │       └── email.validator.ts
-│   │
-│   ├── core/                     # 🎯 Fonctionnalités core
-│   │   ├── services/             # 🔧 Services principaux
-│   │   │   ├── auth.service.ts
-│   │   │   ├── workout.service.ts
-│   │   │   ├── exercise.service.ts
-│   │   │   ├── nutrition.service.ts
-│   │   │   ├── goal.service.ts
-│   │   │   ├── user.service.ts
-│   │   │   └── notification.service.ts
-│   │   │
-│   │   ├── guards/               # 🛡️ Route guards
-│   │   │   ├── auth.guard.ts
-│   │   │   └── guest.guard.ts
-│   │   │
-│   │   ├── interceptors/         # 📡 HTTP interceptors
-│   │   │   ├── auth.interceptor.ts
-│   │   │   ├── error.interceptor.ts
-│   │   │   └── loading.interceptor.ts
-│   │   │
-│   │   └── models/               # 📋 Interfaces TypeScript
-│   │       ├── user.interface.ts
-│   │       ├── workout.interface.ts
-│   │       ├── exercise.interface.ts
-│   │       ├── goal.interface.ts
-│   │       ├── meal-entry.interface.ts
-│   │       └── api-response.interface.ts
-│   │
-│   └── constants/                # 📌 Constantes
-│       ├── app-config.ts
-│       ├── api-endpoints.ts
-│       └── regex-patterns.ts
-│
-├── assets/                       # 📦 Ressources statiques
-│   ├── images/
-│   │   ├── logo.png
-│   │   ├── default-avatar.png
-│   │   └── exercise-placeholder.svg
-│   ├── icons/
-│   │   └── favicon.ico
-│   └── i18n/                     # Traductions (si multilingue)
-│       ├── en.json
-│       └── fr.json
-│
-└── environments/                 # 🌍 Configurations environnement
-    ├── environment.ts            # Développement
-    └── environment.production.ts # Production
+# 2. Check CORS configuration in backend/config/cors.php
+# 'allowed_origins' => ['http://localhost:4200']
 ```
 
 ---
 
-## 🧩 Composants Principaux
+<a name="5-structure"></a>
+## 5. Complete Project Structure
 
-### 1. AuthComponent - Authentification
+### 📁 Detailed Tree Structure
 
-**Rôle** : Gérer connexion, inscription, et réinitialisation de mot de passe.
-
-**LoginComponent** ([src/app/auth/login/login.component.ts](src/app/auth/login/login.component.ts:1)) :
-
-```typescript
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
-
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
-})
-export class LoginComponent implements OnInit {
-  // 📝 Formulaire réactif
-  loginForm!: FormGroup;
-
-  // 🔄 État du composant
-  loading = false;
-  error: string | null = null;
-  showPassword = false;
-
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    // Initialisation du formulaire avec validations
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      rememberMe: [false]
-    });
-  }
-
-  // 🎯 Getter pour accès facile aux champs
-  get email() { return this.loginForm.get('email'); }
-  get password() { return this.loginForm.get('password'); }
-
-  // 📤 Soumission du formulaire
-  onSubmit(): void {
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    this.loading = true;
-    this.error = null;
-
-    const { email, password, rememberMe } = this.loginForm.value;
-
-    this.authService.login(email, password, rememberMe).subscribe({
-      next: (response) => {
-        console.log('✅ Login successful:', response.user.name);
-
-        // Navigation vers dashboard
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err) => {
-        console.error('❌ Login failed:', err);
-        this.error = err.error?.message || 'Invalid credentials';
-        this.loading = false;
-      },
-      complete: () => {
-        this.loading = false;
-      }
-    });
-  }
-
-  // 👁️ Toggle visibilité mot de passe
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
-  }
-}
+```
+frontend/
+├── 📄 angular.json              # Angular project configuration
+├── 📄 package.json              # npm dependencies and scripts
+├── 📄 tsconfig.json             # Global TypeScript configuration
+├── 📄 tsconfig.app.json         # TypeScript config for app
+├── 📄 tsconfig.spec.json        # TypeScript config for tests
+│
+└── 📁 src/                      # Source code
+    ├── 📄 index.html            # Main HTML page (SPA entry point)
+    ├── 📄 main.ts               # Angular bootstrap (JS entry point)
+    ├── 📄 styles.scss           # Global styles
+    │
+    ├── 📁 app/                  # Angular application
+    │   ├── 📄 app.component.ts   # Root component
+    │   ├── 📄 app.config.ts      # Providers configuration
+    │   ├── 📄 app.routes.ts      # Application routes
+    │   │
+    │   ├── 📁 core/             # Core module (singleton)
+    │   │   ├── 📁 guards/
+    │   │   │   ├── auth.guard.ts       # Protected routes
+    │   │   │   └── guest.guard.ts      # Public routes
+    │   │   │
+    │   │   ├── 📁 interceptors/
+    │   │   │   ├── auth.interceptor.ts     # JWT token injection
+    │   │   │   └── error.interceptor.ts    # HTTP error handling
+    │   │   │
+    │   │   ├── 📁 services/
+    │   │   │   └── api.service.ts          # Base API service
+    │   │   │
+    │   │   └── 📁 layout/
+    │   │       ├── layout/
+    │   │       │   ├── layout.component.ts
+    │   │       │   ├── layout.component.html
+    │   │       │   └── layout.component.scss
+    │   │       │
+    │   │       └── sidebar/
+    │   │           ├── sidebar.component.ts
+    │   │           ├── sidebar.component.html
+    │   │           └── sidebar.component.scss
+    │   │
+    │   ├── 📁 features/         # Business modules
+    │   │   ├── 📁 auth/         # Authentication
+    │   │   │   ├── login/
+    │   │   │   ├── register/
+    │   │   │   └── reset-password/
+    │   │   │
+    │   │   ├── 📁 dashboard/    # Dashboard
+    │   │   ├── 📁 exercises/    # Exercise management
+    │   │   ├── 📁 workout/      # Workout programs
+    │   │   ├── 📁 nutrition/    # Nutrition
+    │   │   ├── 📁 calendar/     # Calendar
+    │   │   ├── 📁 goals/        # Goals
+    │   │   ├── 📁 challenges/   # Challenges
+    │   │   └── 📁 profile/      # User profile
+    │   │
+    │   └── 📁 shared/           # Shared code
+    │       ├── 📁 components/   # Reusable components
+    │       ├── 📁 models/       # TypeScript interfaces
+    │       └── 📁 constants/    # Constants
+    │
+    ├── 📁 assets/               # Static resources
+    │   ├── images/
+    │   ├── icons/
+    │   └── fonts/
+    │
+    ├── 📁 environments/         # Environment configuration
+    │   ├── environment.ts       # Development
+    │   └── environment.prod.ts  # Production
+    │
+    └── 📁 styles/               # Organized SCSS styles
+        ├── _variables.scss      # Variables (colors, sizes)
+        ├── _mixins.scss         # Reusable mixins
+        └── _reset.scss          # CSS reset
 ```
 
-**login.component.html** :
+### 📖 Key File Explanations
+
+#### 🎯 **index.html** - The Single HTML Page
 
 ```html
-<div class="login-container">
-  <div class="login-card">
-    <div class="login-header">
-      <img src="assets/images/logo.png" alt="FitnessPro Logo" class="logo" />
-      <h1>Bienvenue sur FitnessPro</h1>
-      <p>Connectez-vous pour accéder à votre espace</p>
-    </div>
-
-    <!-- ⚠️ Message d'erreur -->
-    <div *ngIf="error" class="alert alert-error">
-      {{ error }}
-    </div>
-
-    <!-- 📝 Formulaire -->
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          id="email"
-          type="email"
-          formControlName="email"
-          placeholder="votre@email.com"
-          [class.invalid]="email?.invalid && email?.touched"
-        />
-        <div *ngIf="email?.invalid && email?.touched" class="error-message">
-          <span *ngIf="email?.errors?.['required']">Email requis</span>
-          <span *ngIf="email?.errors?.['email']">Email invalide</span>
-        </div>
-      </div>
-
-      <!-- Mot de passe -->
-      <div class="form-group">
-        <label for="password">Mot de passe</label>
-        <div class="password-input-wrapper">
-          <input
-            id="password"
-            [type]="showPassword ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="••••••••"
-            [class.invalid]="password?.invalid && password?.touched"
-          />
-          <button
-            type="button"
-            class="toggle-password"
-            (click)="togglePasswordVisibility()"
-          >
-            <i [class]="showPassword ? 'icon-eye-off' : 'icon-eye'"></i>
-          </button>
-        </div>
-        <div *ngIf="password?.invalid && password?.touched" class="error-message">
-          <span *ngIf="password?.errors?.['required']">Mot de passe requis</span>
-          <span *ngIf="password?.errors?.['minlength']">
-            Minimum 8 caractères
-          </span>
-        </div>
-      </div>
-
-      <!-- Se souvenir de moi -->
-      <div class="form-group checkbox-group">
-        <label>
-          <input type="checkbox" formControlName="rememberMe" />
-          Se souvenir de moi
-        </label>
-        <a routerLink="/reset-password" class="forgot-password">
-          Mot de passe oublié ?
-        </a>
-      </div>
-
-      <!-- Bouton de soumission -->
-      <button
-        type="submit"
-        class="btn btn-primary"
-        [disabled]="loading || loginForm.invalid"
-      >
-        <span *ngIf="!loading">Se connecter</span>
-        <span *ngIf="loading" class="loading-spinner">
-          <i class="icon-spinner"></i> Connexion...
-        </span>
-      </button>
-    </form>
-
-    <!-- Lien inscription -->
-    <div class="login-footer">
-      <p>
-        Pas encore de compte ?
-        <a routerLink="/register">S'inscrire</a>
-      </p>
-    </div>
-  </div>
-</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>FitnessPro</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <!-- 🎯 Angular application entry point -->
+  <!-- Angular will replace this tag with the AppComponent -->
+  <app-root></app-root>
+</body>
+</html>
 ```
 
-### 2. DashboardComponent - Tableau de Bord
+**Why is this special?**
+- This is the **ONLY** HTML file in the entire application
+- The `<app-root>` tag is where Angular injects all the application
+- Once loaded, Angular takes full control and manages the page
 
-**Rôle** : Afficher un aperçu des statistiques utilisateur, workouts récents, objectifs actifs.
-
-**dashboard.component.ts** :
+#### 🚀 **main.ts** - Application Bootstrap
 
 ```typescript
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
-import { AuthService } from '@core/services/auth.service';
-import { WorkoutService } from '@core/services/workout.service';
-import { GoalService } from '@core/services/goal.service';
-import { NutritionService } from '@core/services/nutrition.service';
+// main.ts - JavaScript entry point
 
-interface DashboardStats {
-  totalWorkouts: number;
-  workoutsThisWeek: number;
-  activeGoals: number;
-  caloriesConsumedToday: number;
-  caloriesGoal: number;
-  currentStreak: number;
-}
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config';
 
-@Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
-})
-export class DashboardComponent implements OnInit, OnDestroy {
-  // 📊 Données du dashboard
-  stats: DashboardStats | null = null;
-  recentWorkouts: any[] = [];
-  activeGoals: any[] = [];
-  nutritionToday: any = null;
+// 🔥 APPLICATION STARTUP
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err));
 
-  // 🔄 État
-  loading = true;
-  error: string | null = null;
-  userName: string = '';
-
-  // 🧹 Cleanup subscriptions
-  private destroy$ = new Subject<void>();
-
-  constructor(
-    private authService: AuthService,
-    private workoutService: WorkoutService,
-    private goalService: GoalService,
-    private nutritionService: NutritionService
-  ) {}
-
-  ngOnInit(): void {
-    // Récupérer le nom de l'utilisateur
-    this.authService.currentUser$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        this.userName = user?.name || 'Utilisateur';
-      });
-
-    // Charger toutes les données en parallèle
-    this.loadDashboardData();
-  }
-
-  ngOnDestroy(): void {
-    // Nettoyer les subscriptions pour éviter memory leaks
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  loadDashboardData(): void {
-    this.loading = true;
-    this.error = null;
-
-    // 🚀 forkJoin = attendre que TOUTES les requêtes se terminent
-    forkJoin({
-      stats: this.workoutService.getStats(),
-      recentWorkouts: this.workoutService.getRecentWorkouts(5),
-      activeGoals: this.goalService.getActiveGoals(),
-      nutritionToday: this.nutritionService.getDailySummary(new Date())
-    })
-    .pipe(takeUntil(this.destroy$))
-    .subscribe({
-      next: (data) => {
-        this.stats = data.stats;
-        this.recentWorkouts = data.recentWorkouts;
-        this.activeGoals = data.activeGoals;
-        this.nutritionToday = data.nutritionToday;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error('❌ Error loading dashboard:', err);
-        this.error = 'Failed to load dashboard data';
-        this.loading = false;
-      }
-    });
-  }
-
-  // 🔄 Rafraîchir les données
-  refresh(): void {
-    this.loadDashboardData();
-  }
-
-  // 📅 Naviguer vers une section spécifique
-  navigateToWorkouts(): void {
-    // Navigation programmatique
-  }
-
-  navigateToGoals(): void {
-    // Navigation programmatique
-  }
-}
+// What happens:
+// 1. Angular loads AppComponent
+// 2. Applies configuration (appConfig)
+// 3. Replaces <app-root> in index.html
+// 4. Application is running!
 ```
 
-### 3. ExerciseListComponent - Liste d'Exercices
-
-**Rôle** : Afficher et filtrer la base de données d'exercices.
-
-**exercise-list.component.ts** :
+#### ⚙️ **app.config.ts** - Global Configuration
 
 ```typescript
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { ExerciseService } from '@core/services/exercise.service';
-import { Exercise } from '@core/models/exercise.interface';
+// app.config.ts
 
-@Component({
-  selector: 'app-exercise-list',
-  templateUrl: './exercise-list.component.html',
-  styleUrls: ['./exercise-list.component.scss']
-})
-export class ExerciseListComponent implements OnInit {
-  // 📋 Données
-  exercises: Exercise[] = [];
-  filteredExercises: Exercise[] = [];
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
-  // 🔍 Filtres
-  searchControl = new FormControl('');
-  selectedBodyPart: string = 'all';
-  selectedEquipment: string = 'all';
+import { routes } from './app.routes';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
-  // 📊 Options de filtre
-  bodyParts: string[] = ['all', 'chest', 'back', 'legs', 'shoulders', 'arms', 'core'];
-  equipment: string[] = ['all', 'barbell', 'dumbbell', 'cable', 'machine', 'bodyweight'];
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // 🚏 Router - Navigation between pages
+    provideRouter(routes),
 
-  // 🔄 État
-  loading = false;
-  error: string | null = null;
+    // 🌐 HTTP Client - API calls
+    provideHttpClient(
+      withInterceptors([authInterceptor])  // Adds token automatically
+    ),
 
-  // 📄 Pagination
-  currentPage = 1;
-  itemsPerPage = 20;
-  totalItems = 0;
+    // 🎨 Animations
+    provideAnimations(),
 
-  constructor(private exerciseService: ExerciseService) {}
+    // ... other providers
+  ]
+};
 
-  ngOnInit(): void {
-    // Charger tous les exercices
-    this.loadExercises();
-
-    // 🔍 Recherche avec debounce (attendre 300ms après dernière frappe)
-    this.searchControl.valueChanges
-      .pipe(
-        debounceTime(300),            // Attendre 300ms
-        distinctUntilChanged(),        // Ignorer si valeur identique
-        switchMap(searchTerm =>        // Annuler requête précédente
-          this.exerciseService.searchExercises(searchTerm || '')
-        )
-      )
-      .subscribe({
-        next: (exercises) => {
-          this.filteredExercises = exercises;
-        },
-        error: (err) => {
-          console.error('Search error:', err);
-        }
-      });
-  }
-
-  loadExercises(): void {
-    this.loading = true;
-    this.exerciseService.getExercises().subscribe({
-      next: (data) => {
-        this.exercises = data;
-        this.filteredExercises = data;
-        this.totalItems = data.length;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load exercises';
-        this.loading = false;
-      }
-    });
-  }
-
-  // 🔍 Appliquer filtres
-  applyFilters(): void {
-    this.filteredExercises = this.exercises.filter(exercise => {
-      const matchesBodyPart = this.selectedBodyPart === 'all' ||
-                              exercise.bodyPart === this.selectedBodyPart;
-      const matchesEquipment = this.selectedEquipment === 'all' ||
-                               exercise.equipment === this.selectedEquipment;
-
-      return matchesBodyPart && matchesEquipment;
-    });
-  }
-
-  // 📄 Pagination
-  get paginatedExercises(): Exercise[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    return this.filteredExercises.slice(startIndex, endIndex);
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.filteredExercises.length / this.itemsPerPage);
-  }
-
-  // ⭐ Ajouter aux favoris
-  toggleFavorite(exercise: Exercise): void {
-    this.exerciseService.toggleFavorite(exercise.id).subscribe({
-      next: () => {
-        exercise.isFavorite = !exercise.isFavorite;
-      },
-      error: (err) => {
-        console.error('Failed to toggle favorite:', err);
-      }
-    });
-  }
-}
+// 💡 Providers are services available throughout the app
 ```
 
----
-
-## 🔧 Services & État
-
-### Pattern de Services Angular
-
-Les services sont des **singletons** (une seule instance) qui gèrent :
-- 📡 Communication avec l'API
-- 💾 Gestion d'état (cache)
-- 🔄 Logique métier partagée
-
-### AuthService - Gestion d'Authentification
-
-**Responsabilités** :
-- Login/Logout
-- Stockage du token JWT
-- Gestion de l'état utilisateur
-- Auto-logout sur expiration
-
-**auth.service.ts** ([src/app/core/services/auth.service.ts](src/app/core/services/auth.service.ts:1)) :
+#### 🛣️ **app.routes.ts** - Route Definitions
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { map, tap, catchError } from 'rxjs/operators';
-import { environment } from '@environments/environment';
-import { User } from '@core/models/user.interface';
-import { ApiResponse } from '@core/models/api-response.interface';
+// app.routes.ts
 
-@Injectable({
-  providedIn: 'root'  // Singleton au niveau root
-})
-export class AuthService {
-  // 🔐 URL de l'API
-  private readonly API_URL = environment.apiUrl;
-
-  // 🔑 Clés localStorage
-  private readonly TOKEN_KEY = environment.tokenKey;
-  private readonly USER_KEY = environment.userKey;
-
-  // 📡 BehaviorSubject = Observable avec valeur actuelle
-  private currentUserSubject: BehaviorSubject<User | null>;
-  public currentUser$: Observable<User | null>;
-
-  private tokenSubject: BehaviorSubject<string | null>;
-  public token$: Observable<string | null>;
-
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
-    // Initialiser avec données stockées (si disponibles)
-    const storedUser = localStorage.getItem(this.USER_KEY);
-    const storedToken = localStorage.getItem(this.TOKEN_KEY);
-
-    this.currentUserSubject = new BehaviorSubject<User | null>(
-      storedUser ? JSON.parse(storedUser) : null
-    );
-    this.currentUser$ = this.currentUserSubject.asObservable();
-
-    this.tokenSubject = new BehaviorSubject<string | null>(storedToken);
-    this.token$ = this.tokenSubject.asObservable();
-  }
-
-  // 📊 Getters pour valeur actuelle
-  get currentUserValue(): User | null {
-    return this.currentUserSubject.value;
-  }
-
-  get tokenValue(): string | null {
-    return this.tokenSubject.value;
-  }
-
-  get isAuthenticated(): boolean {
-    return !!this.tokenValue;
-  }
-
-  // 🔐 LOGIN
-  login(email: string, password: string, rememberMe: boolean = false): Observable<any> {
-    console.log('🔄 AuthService: Attempting login for', email);
-
-    return this.http.post<ApiResponse<any>>(
-      `${this.API_URL}/auth/login`,
-      { email, password, rememberMe }
-    ).pipe(
-      map(response => {
-        if (response.success && response.data) {
-          return response.data;
-        }
-        throw new Error(response.message || 'Login failed');
-      }),
-      tap(data => {
-        // Stocker token et utilisateur
-        this.setSession(data.token, data.user);
-        console.log('✅ AuthService: Login successful for', data.user.name);
-      }),
-      catchError(err => {
-        console.error('❌ AuthService: Login failed', err);
-        return throwError(() => err);
-      })
-    );
-  }
-
-  // 📝 REGISTER
-  register(userData: any): Observable<any> {
-    console.log('🔄 AuthService: Registering new user', userData.email);
-
-    return this.http.post<ApiResponse<any>>(
-      `${this.API_URL}/auth/register`,
-      userData
-    ).pipe(
-      map(response => {
-        if (response.success && response.data) {
-          return response.data;
-        }
-        throw new Error(response.message || 'Registration failed');
-      }),
-      tap(data => {
-        // Stocker token et utilisateur
-        this.setSession(data.token, data.user);
-        console.log('✅ AuthService: Registration successful');
-      }),
-      catchError(err => {
-        console.error('❌ AuthService: Registration failed', err);
-        return throwError(() => err);
-      })
-    );
-  }
-
-  // 🚪 LOGOUT
-  logout(): void {
-    console.log('🔄 AuthService: Logging out');
-
-    // Optionnel: Appeler backend pour invalider le token
-    if (this.tokenValue) {
-      this.http.post(`${this.API_URL}/auth/logout`, {}).subscribe({
-        next: () => console.log('✅ Backend logout successful'),
-        error: (err) => console.error('⚠️ Backend logout failed', err)
-      });
-    }
-
-    // Nettoyer le frontend
-    this.clearSession();
-
-    // Rediriger vers login
-    this.router.navigate(['/login']);
-  }
-
-  // 💾 Stocker session
-  private setSession(token: string, user: User): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-
-    this.tokenSubject.next(token);
-    this.currentUserSubject.next(user);
-
-    // Planifier auto-logout après 24h
-    this.scheduleAutoLogout();
-  }
-
-  // 🧹 Nettoyer session
-  private clearSession(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
-
-    this.tokenSubject.next(null);
-    this.currentUserSubject.next(null);
-  }
-
-  // ⏰ Auto-logout après expiration
-  private scheduleAutoLogout(): void {
-    const expirationTime = 24 * 60 * 60 * 1000; // 24 heures
-    setTimeout(() => {
-      console.log('⏰ Token expired - auto logout');
-      this.logout();
-    }, expirationTime);
-  }
-
-  // 🔄 Refresh user data
-  refreshUserData(): Observable<User> {
-    return this.http.get<ApiResponse<User>>(`${this.API_URL}/auth/me`).pipe(
-      map(response => {
-        if (response.success && response.data) {
-          const user = response.data;
-          localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          return user;
-        }
-        throw new Error('Failed to refresh user data');
-      })
-    );
-  }
-
-  // 🔐 Reset password
-  resetPassword(email: string, password: string, passwordConfirmation: string): Observable<any> {
-    return this.http.post<ApiResponse<any>>(
-      `${this.API_URL}/auth/password/direct-reset`,
-      { email, password, password_confirmation: passwordConfirmation }
-    ).pipe(
-      map(response => {
-        if (response.success) {
-          return response;
-        }
-        throw new Error(response.message || 'Password reset failed');
-      })
-    );
-  }
-}
-```
-
-### WorkoutService - Gestion des Entraînements
-
-**workout.service.ts** :
-
-```typescript
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { environment } from '@environments/environment';
-import { Workout } from '@core/models/workout.interface';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class WorkoutService {
-  private readonly API_URL = `${environment.apiUrl}/workouts`;
-
-  // 💾 Cache local des workouts
-  private workoutsCache = new BehaviorSubject<Workout[]>([]);
-  public workouts$ = this.workoutsCache.asObservable();
-
-  constructor(private http: HttpClient) {}
-
-  // 📋 Récupérer tous les workouts
-  getWorkouts(): Observable<Workout[]> {
-    return this.http.get<any>(`${this.API_URL}`).pipe(
-      map(response => response.data || response),
-      tap(workouts => {
-        // Mettre à jour le cache
-        this.workoutsCache.next(workouts);
-      })
-    );
-  }
-
-  // 📋 Récupérer templates
-  getTemplates(): Observable<Workout[]> {
-    return this.http.get<any>(`${this.API_URL}/templates`).pipe(
-      map(response => response.data || response)
-    );
-  }
-
-  // 🆕 Créer nouveau workout
-  createWorkout(workout: Partial<Workout>): Observable<Workout> {
-    return this.http.post<any>(`${this.API_URL}/templates`, workout).pipe(
-      map(response => response.data),
-      tap(newWorkout => {
-        // Ajouter au cache
-        const current = this.workoutsCache.value;
-        this.workoutsCache.next([...current, newWorkout]);
-      })
-    );
-  }
-
-  // ✏️ Mettre à jour workout
-  updateWorkout(id: number, workout: Partial<Workout>): Observable<Workout> {
-    return this.http.put<any>(`${this.API_URL}/templates/${id}`, workout).pipe(
-      map(response => response.data),
-      tap(updatedWorkout => {
-        // Mettre à jour le cache
-        const current = this.workoutsCache.value;
-        const index = current.findIndex(w => w.id === id);
-        if (index !== -1) {
-          current[index] = updatedWorkout;
-          this.workoutsCache.next([...current]);
-        }
-      })
-    );
-  }
-
-  // 🗑️ Supprimer workout
-  deleteWorkout(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/templates/${id}`).pipe(
-      tap(() => {
-        // Retirer du cache
-        const current = this.workoutsCache.value;
-        this.workoutsCache.next(current.filter(w => w.id !== id));
-      })
-    );
-  }
-
-  // ▶️ Démarrer session
-  startSession(templateId?: number): Observable<Workout> {
-    const body = templateId ? { template_id: templateId, date: new Date().toISOString() } : {};
-    return this.http.post<any>(`${this.API_URL}/start`, body).pipe(
-      map(response => response.data)
-    );
-  }
-
-  // ✅ Compléter session
-  completeSession(id: number, data: any): Observable<Workout> {
-    return this.http.post<any>(`${this.API_URL}/logs/${id}/complete`, data).pipe(
-      map(response => response.data)
-    );
-  }
-
-  // 📊 Statistiques
-  getStats(): Observable<any> {
-    return this.http.get<any>(`${this.API_URL}/stats`).pipe(
-      map(response => response.data || response)
-    );
-  }
-
-  // 📅 Workouts récents
-  getRecentWorkouts(limit: number = 5): Observable<Workout[]> {
-    const params = new HttpParams().set('limit', limit.toString());
-    return this.http.get<any>(`${this.API_URL}/logs`, { params }).pipe(
-      map(response => response.data || response)
-    );
-  }
-}
-```
-
----
-
-## 🔄 Cycle de Vie d'une Interaction
-
-Comprenons le cycle complet d'une action utilisateur dans une SPA Angular.
-
-### Exemple Concret: Créer un Nouveau Workout
-
-```
-┌────────────────────────────────────────────────────────────────┐
-│      CYCLE COMPLET: CRÉER UN WORKOUT                           │
-└────────────────────────────────────────────────────────────────┘
-
-🔹 ÉTAPE 1: USER INPUT - Utilisateur remplit le formulaire
-───────────────────────────────────────────────────────────────
-Browser DOM:
-  <form [formGroup]="workoutForm" (ngSubmit)="onSubmit()">
-    <input formControlName="name" />  ← User types "Push Day"
-    <button type="submit">Créer</button>  ← User clicks
-  </form>
-
-
-🔹 ÉTAPE 2: EVENT BINDING - Angular détecte l'événement
-───────────────────────────────────────────────────────────────
-Angular Change Detection:
-  1. Détecte (ngSubmit) event
-  2. Appelle la méthode onSubmit() du composant
-  3. Passe au contexte TypeScript
-
-
-🔹 ÉTAPE 3: COMPONENT METHOD - Traitement dans le composant
-───────────────────────────────────────────────────────────────
-workout-create.component.ts:
-
-onSubmit(): void {
-  // 1. Vérifier validité du formulaire
-  if (this.workoutForm.invalid) {
-    this.workoutForm.markAllAsTouched();
-    return;  // Stop ici si invalide
-  }
-
-  // 2. Extraire les données
-  const workoutData = {
-    name: this.workoutForm.value.name,          // "Push Day"
-    description: this.workoutForm.value.description,
-    is_template: true,
-    exercises: this.selectedExercises
-  };
-
-  // 3. Activer état de chargement
-  this.loading = true;
-
-  // 4. Appeler le service
-  this.workoutService.createWorkout(workoutData)
-    .subscribe({
-      next: (workout) => this.handleSuccess(workout),
-      error: (err) => this.handleError(err)
-    });
-}
-
-
-🔹 ÉTAPE 4: SERVICE CALL - Service prépare la requête
-───────────────────────────────────────────────────────────────
-workout.service.ts:
-
-createWorkout(data: Partial<Workout>): Observable<Workout> {
-  console.log('🔄 WorkoutService: Creating workout', data.name);
-
-  return this.http.post<ApiResponse<Workout>>(
-    `${this.API_URL}/workouts/templates`,
-    data
-  ).pipe(
-    map(response => response.data),
-    tap(workout => {
-      // Mettre à jour le cache local
-      const current = this.workoutsCache.value;
-      this.workoutsCache.next([...current, workout]);
-    })
-  );
-}
-
-
-🔹 ÉTAPE 5: HTTP INTERCEPTOR - Ajoute token d'authentification
-───────────────────────────────────────────────────────────────
-auth.interceptor.ts:
-
-intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-  // 1. Récupérer le token
-  const token = this.authService.tokenValue;
-
-  // 2. Cloner la requête et ajouter le header
-  if (token) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    });
-  }
-
-  console.log('📤 HTTP Request:', req.method, req.url);
-
-  // 3. Passer au handler suivant
-  return next.handle(req);
-}
-
-
-🔹 ÉTAPE 6: HTTP REQUEST - Envoi vers le backend
-───────────────────────────────────────────────────────────────
-HttpClient envoie:
-
-POST https://fitness-pro-backend.fly.dev/api/workouts/templates
-Headers:
-  Authorization: Bearer 1|abcdefghijklmnopqrstuvwxyz1234567890
-  Content-Type: application/json
-  Accept: application/json
-Body:
-  {
-    "name": "Push Day",
-    "description": "Chest, shoulders, triceps",
-    "is_template": true,
-    "exercises": [...]
-  }
-
-
-🔹 ÉTAPE 7: BACKEND PROCESSING - Traitement serveur
-───────────────────────────────────────────────────────────────
-Laravel Backend:
-  1. Vérifie le token JWT (middleware auth:sanctum)
-  2. Route vers WorkoutController@createTemplate
-  3. Valide les données
-  4. WorkoutService crée le workout en base de données
-  5. Retourne la réponse JSON
-
-
-🔹 ÉTAPE 8: HTTP RESPONSE - Réception de la réponse
-───────────────────────────────────────────────────────────────
-Backend retourne:
-
-Status: 201 Created
-Headers:
-  Content-Type: application/json
-Body:
-  {
-    "success": true,
-    "data": {
-      "id": 42,
-      "name": "Push Day",
-      "description": "Chest, shoulders, triceps",
-      "is_template": true,
-      "exercises": [...],
-      "created_at": "2025-01-13T15:30:00Z"
-    },
-    "message": "Workout template created successfully"
-  }
-
-
-🔹 ÉTAPE 9: RXJS OPERATORS - Transformation des données
-───────────────────────────────────────────────────────────────
-RxJS Pipeline dans le service:
-
-return this.http.post(...).pipe(
-  // 1. map: Extraire data du wrapper API
-  map(response => {
-    console.log('📥 Raw response:', response);
-    return response.data;  // Extraire workout
-  }),
-
-  // 2. tap: Effet de bord (cache update)
-  tap(workout => {
-    console.log('✅ Workout created:', workout.name);
-    // Mettre à jour le cache
-    const current = this.workoutsCache.value;
-    this.workoutsCache.next([...current, workout]);
-  }),
-
-  // 3. catchError: Gérer erreurs
-  catchError(err => {
-    console.error('❌ Failed to create workout:', err);
-    return throwError(() => new Error('Failed to create workout'));
-  })
-);
-
-
-🔹 ÉTAPE 10: COMPONENT SUBSCRIPTION - Traitement du résultat
-───────────────────────────────────────────────────────────────
-workout-create.component.ts:
-
-this.workoutService.createWorkout(data).subscribe({
-  next: (workout) => {
-    // ✅ Succès!
-    console.log('✅ Component: Workout created', workout);
-
-    // 1. Arrêter le loading
-    this.loading = false;
-
-    // 2. Afficher notification de succès
-    this.notificationService.success(
-      'Workout créé avec succès!',
-      `${workout.name} a été ajouté à vos templates`
-    );
-
-    // 3. Reset formulaire
-    this.workoutForm.reset();
-    this.selectedExercises = [];
-
-    // 4. Naviguer vers la liste
-    this.router.navigate(['/workouts']);
-  },
-
-  error: (err) => {
-    // ❌ Erreur!
-    console.error('❌ Component: Error creating workout', err);
-
-    this.loading = false;
-    this.error = err.message || 'Failed to create workout';
-
-    this.notificationService.error(
-      'Erreur',
-      'Impossible de créer le workout. Veuillez réessayer.'
-    );
-  }
-});
-
-
-🔹 ÉTAPE 11: VIEW UPDATE - Angular met à jour le DOM
-───────────────────────────────────────────────────────────────
-Angular Change Detection:
-  1. Détecte que loading = false
-  2. Détecte que notification a été déclenchée
-  3. Détecte la navigation en cours
-  4. Met à jour le DOM:
-     - Cache le spinner de chargement
-     - Affiche la notification toast
-     - Commence la transition de route
-
-
-🔹 ÉTAPE 12: ROUTER NAVIGATION - Navigation vers /workouts
-───────────────────────────────────────────────────────────────
-Angular Router:
-  1. Parse l'URL /workouts
-  2. Trouve la route correspondante dans app.routes.ts
-  3. Vérifie les guards (AuthGuard)
-  4. Charge le composant WorkoutListComponent
-  5. Détruit le composant WorkoutCreateComponent
-  6. Affiche le nouveau composant
-
-
-🔹 ÉTAPE 13: CACHE SYNCHRONIZATION - Liste mise à jour
-───────────────────────────────────────────────────────────────
-workout-list.component.ts:
-
-ngOnInit(): void {
-  // S'abonner au cache du service
-  this.workoutService.workouts$.subscribe(workouts => {
-    this.workouts = workouts;
-    // Le nouveau workout est déjà dans le cache!
-    // Pas besoin de refaire une requête HTTP
-  });
-}
-
-
-🔹 RÉSULTAT FINAL
-───────────────────────────────────────────────────────────────
-✅ Workout créé en base de données
-✅ Cache local mis à jour
-✅ Notification affichée
-✅ Navigation vers liste des workouts
-✅ Nouveau workout visible immédiatement
-✅ Formulaire reset et prêt pour nouvelle création
-✅ Expérience utilisateur fluide et réactive
-
-Durée totale: ~200-500ms
-Nombre de renders: 3-4 (optimisé par Angular)
-```
-
----
-
-## 🚏 Routing & Navigation
-
-### Configuration des Routes
-
-**app.routes.ts** ([src/app/app.routes.ts](src/app/app.routes.ts:1)) :
-
-```typescript
 import { Routes } from '@angular/router';
-import { AuthGuard } from '@core/guards/auth.guard';
-import { GuestGuard } from '@core/guards/guest.guard';
-
-// Lazy-loaded components
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthGuard, GuestGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  // 🏠 Route par défaut
+  // 🏠 Root redirection
   {
     path: '',
-    redirectTo: '/dashboard',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
 
-  // 🔐 Routes publiques (visiteurs seulement)
+  // 🔓 Public routes (accessible without login)
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [GuestGuard],  // Rediriger si déjà connecté
-    title: 'Connexion - FitnessPro'
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    canActivate: [GuestGuard],
-    title: 'Inscription - FitnessPro'
-  },
-  {
-    path: 'reset-password',
-    component: ResetPasswordComponent,
-    canActivate: [GuestGuard],
-    title: 'Réinitialiser mot de passe - FitnessPro'
+    canActivate: [GuestGuard]  // Redirects if already logged in
   },
 
-  // 🔒 Routes protégées (authentification requise)
+  // 🔒 Protected routes (requires login)
   {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [AuthGuard],
-    title: 'Tableau de bord - FitnessPro'
-  },
-  {
-    path: 'exercises',
-    loadChildren: () => import('./exercises/exercises.routes')
-      .then(m => m.EXERCISES_ROUTES),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'workouts',
-    loadChildren: () => import('./workout/workout.routes')
-      .then(m => m.WORKOUT_ROUTES),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'nutrition',
-    loadChildren: () => import('./nutrition/nutrition.routes')
-      .then(m => m.NUTRITION_ROUTES),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'goals',
-    loadChildren: () => import('./goals/goals.routes')
-      .then(m => m.GOALS_ROUTES),
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'profile',
-    loadChildren: () => import('./profile/profile.routes')
-      .then(m => m.PROFILE_ROUTES),
-    canActivate: [AuthGuard]
+    path: '',
+    component: LayoutComponent,
+    canActivate: [AuthGuard],  // Blocks if not logged in
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'workouts', component: WorkoutComponent },
+      { path: 'exercises', component: ExercisesComponent },
+      // ... other routes
+    ]
   },
 
-  // ❌ 404 - Route non trouvée
+  // 🚫 Fallback (unknown route)
   {
     path: '**',
-    redirectTo: '/dashboard'
+    redirectTo: 'dashboard'
   }
 ];
 ```
 
-### Route Guards - Protection des Routes
+**Routing system explained:**
 
-**AuthGuard** - Protège les routes authentifiées :
+```
+┌────────────────────────────────────────────────────────────┐
+│                 ROUTING SYSTEM                             │
+└────────────────────────────────────────────────────────────┘
+
+URL: http://localhost:4200/
+   ↓
+   Router evaluates routes in order
+   ↓
+   Finds: { path: '', redirectTo: 'login' }
+   ↓
+   Redirects to: /login
+
+
+URL: http://localhost:4200/dashboard
+   ↓
+   Finds route with LayoutComponent parent
+   ↓
+   AuthGuard checks authentication
+   ↓
+   ✅ Logged in → Shows LayoutComponent + DashboardComponent
+   ❌ Not logged in → Redirect /login
+
+
+URL: http://localhost:4200/something
+   ↓
+   No route matches
+   ↓
+   Fallback: { path: '**', redirectTo: 'dashboard' }
+   ↓
+   Redirects to /dashboard
+```
+
+### 📂 The **core/** Folder Explained
+
+The `core/` folder contains **singleton services** (one instance throughout the app).
+
+**Rules:**
+- ✅ Globally used services (AuthService, ApiService)
+- ✅ Guards and Interceptors
+- ✅ Layout components (Sidebar, Header)
+- ❌ Never imported in features (only in AppComponent)
+
+```
+core/
+├── guards/           # 🛡️ Route protection
+│   └── auth.guard.ts
+│
+│       export const AuthGuard: CanActivateFn = (route, state) => {
+│         // Check if user is logged in
+│         if (authService.isAuthenticated) {
+│           return true;  // Allow
+│         }
+│
+│         // Redirect to login
+│         router.navigate(['/login']);
+│         return false;  // Block
+│       };
+│
+├── interceptors/     # 🔌 HTTP Middleware
+│   └── auth.interceptor.ts
+│
+│       export const authInterceptor: HttpInterceptorFn = (req, next) => {
+│         const token = authService.token;
+│
+│         if (token) {
+│           // Clone request and add token
+│           req = req.clone({
+│             setHeaders: { Authorization: `Bearer ${token}` }
+│           });
+│         }
+│
+│         return next(req);  // Continue
+│       };
+│
+└── layout/           # 🖼️ Visual structure
+    └── sidebar/
+        └── sidebar.component.ts
+
+            @Component({
+              selector: 'app-sidebar',
+              templateUrl: './sidebar.component.html',
+              styleUrls: ['./sidebar.component.scss']
+            })
+            export class SidebarComponent {
+              // Navigation menu
+              menuItems = [
+                { label: 'Dashboard', route: '/dashboard', icon: 'dashboard' },
+                { label: 'Workouts', route: '/workouts', icon: 'fitness' },
+                // ...
+              ];
+            }
+```
+
+### 📂 The **features/** Folder Explained
+
+Each **feature** = a **complete and autonomous business module**.
+
+**Separation principle:**
+- ✅ By functional domain (not technical!)
+- ✅ Autonomous (can be removed without breaking app)
+- ✅ Communicates via shared services
+
+**Example: Workout Module**
+
+```
+features/workout/
+├── workout.component.ts              # Program list
+│
+│   @Component({...})
+│   export class WorkoutComponent implements OnInit {
+│     workouts$ = this.workoutService.workouts$;
+│
+│     ngOnInit() {
+│       this.workoutService.loadWorkouts();
+│     }
+│   }
+│
+├── create-workout/                   # Sub-module: Creation
+│   ├── create-workout.component.ts
+│   │
+│   │   export class CreateWorkoutComponent {
+│   │     workoutForm = this.fb.group({
+│   │       name: ['', Validators.required],
+│   │       description: [''],
+│   │       exercises: this.fb.array([])
+│   │     });
+│   │
+│   │     onSubmit() {
+│   │       this.workoutService.create(this.workoutForm.value)
+│   │         .subscribe(() => {
+│   │           this.router.navigate(['/workouts']);
+│   │         });
+│   │     }
+│   │   }
+│   │
+│   ├── create-workout.component.html
+│   └── create-workout.component.scss
+│
+├── workout-plan-detail/              # Sub-module: Details
+│   └── workout-plan-detail.component.ts
+│
+└── workout.service.ts                # Module service
+
+    @Injectable({ providedIn: 'root' })
+    export class WorkoutService {
+      private workoutsSubject = new BehaviorSubject<Workout[]>([]);
+      workouts$ = this.workoutsSubject.asObservable();
+
+      loadWorkouts() {
+        this.http.get<Workout[]>('/api/workouts')
+          .subscribe(workouts => {
+            this.workoutsSubject.next(workouts);
+          });
+      }
+    }
+```
+
+**Data flow in the module:**
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           DATA FLOW IN WORKOUT MODULE                      │
+└────────────────────────────────────────────────────────────┘
+
+1️⃣ USER VISITS /workouts
+   ↓
+   Router loads WorkoutComponent
+   ↓
+   ngOnInit() calls workoutService.loadWorkouts()
+   ↓
+   Service makes GET /api/workouts
+   ↓
+   Receives data and updates BehaviorSubject
+   ↓
+   Component (subscribed via workouts$) receives data
+   ↓
+   Template updates automatically
+   ↓
+   User sees their workouts list
+
+
+2️⃣ USER CLICKS "CREATE"
+   ↓
+   Navigation to /workouts/create
+   ↓
+   Router loads CreateWorkoutComponent
+   ↓
+   Form displayed
+   ↓
+   User fills and submits
+   ↓
+   Service makes POST /api/workouts with form data
+   ↓
+   Backend creates workout and returns object
+   ↓
+   Redirect to /workouts/:id (detail)
+```
+
+---
+
+<a name="6-data-flow"></a>
+## 6. Data Flow - From Click to Display
+
+Here's an **ultra-detailed** example of what happens when a user creates a new workout.
+
+### 🎬 Scenario: Create a Workout Program
+
+```
+┌────────────────────────────────────────────────────────────┐
+│     COMPLETE FLOW: CREATE A WORKOUT                        │
+│     (Educational example with full detail)                 │
+└────────────────────────────────────────────────────────────┘
+
+
+STEP 1: 🖱️ USER CLICKS "CREATE A PROGRAM"
+──────────────────────────────────────────────────────────────
+File: features/workout/workout.component.html
+
+<button (click)="createWorkout()">
+  Create a Program
+</button>
+
+Component detects the click:
+
+createWorkout() {
+  this.router.navigate(['/workouts/create']);
+}
+
+
+STEP 2: 🚏 ROUTING NAVIGATION
+──────────────────────────────────────────────────────────────
+Angular Router:
+  URL changes: /workouts → /workouts/create
+  ↓
+  Finds the route:
+  { path: 'workouts/create', component: CreateWorkoutComponent }
+  ↓
+  AuthGuard checks (user logged in? yes)
+  ↓
+  Loads CreateWorkoutComponent
+
+
+STEP 3: 🎨 COMPONENT INITIALIZED
+──────────────────────────────────────────────────────────────
+File: features/workout/create-workout/create-workout.component.ts
+
+export class CreateWorkoutComponent implements OnInit {
+  workoutForm!: FormGroup;
+  exercises: Exercise[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private workoutService: WorkoutService,
+    private exerciseService: ExerciseService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    console.log('🔄 CreateWorkoutComponent initialized');
+
+    // Create reactive form
+    this.workoutForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: [''],
+      difficulty: ['intermediate'],
+      exercises: this.fb.array([])  // Array of exercises
+    });
+
+    // Load available exercises
+    this.exerciseService.loadExercises();
+    this.exerciseService.exercises$.subscribe(exercises => {
+      this.exercises = exercises;
+    });
+  }
+
+  // ... rest of component
+}
+
+What: Form is ready, available exercises loaded
+
+
+STEP 4: 👤 USER FILLS THE FORM
+──────────────────────────────────────────────────────────────
+Template displays:
+
+<form [formGroup]="workoutForm" (ngSubmit)="onSubmit()">
+  <input formControlName="name" placeholder="Program name">
+  <textarea formControlName="description"></textarea>
+
+  <select formControlName="difficulty">
+    <option value="beginner">Beginner</option>
+    <option value="intermediate">Intermediate</option>
+    <option value="advanced">Advanced</option>
+  </select>
+
+  <!-- List of exercises to add -->
+  <div *ngFor="let exercise of exercises">
+    <button (click)="addExercise(exercise)">
+      Add {{ exercise.name }}
+    </button>
+  </div>
+
+  <button type="submit" [disabled]="workoutForm.invalid">
+    Create Program
+  </button>
+</form>
+
+User enters:
+  - Name: "Morning Routine"
+  - Description: "Quick 30min workout"
+  - Difficulty: "intermediate"
+  - Adds 2 exercises: Push-ups (3x12), Squats (4x10)
+
+Form state:
+workoutForm.value = {
+  name: "Morning Routine",
+  description: "Quick 30min workout",
+  difficulty: "intermediate",
+  exercises: [
+    { exercise_id: 5, sets: 3, reps: 12 },
+    { exercise_id: 12, sets: 4, reps: 10 }
+  ]
+}
+
+
+STEP 5: ✅ USER CLICKS "CREATE"
+──────────────────────────────────────────────────────────────
+(ngSubmit) triggers:
+
+onSubmit() {
+  if (this.workoutForm.invalid) {
+    console.warn('⚠️ Invalid form');
+    return;
+  }
+
+  console.log('📤 Sending data:', this.workoutForm.value);
+
+  this.workoutService.createWorkout(this.workoutForm.value)
+    .subscribe({
+      next: (createdWorkout) => {
+        console.log('✅ Workout created:', createdWorkout);
+        this.router.navigate(['/workouts', createdWorkout.id]);
+      },
+      error: (error) => {
+        console.error('❌ Error:', error);
+        alert('Error creating workout');
+      }
+    });
+}
+
+
+STEP 6: 🧠 SERVICE PROCESSES THE REQUEST
+──────────────────────────────────────────────────────────────
+File: features/workout/workout.service.ts
+
+createWorkout(workout: CreateWorkoutDto): Observable<Workout> {
+  console.log('📡 Service: Creating workout');
+
+  return this.http.post<Workout>('/api/workouts', workout)
+    .pipe(
+      tap(created => {
+        console.log('✅ Workout created (ID:', created.id, ')');
+
+        // Update local cache
+        const current = this.workoutsSubject.value;
+        this.workoutsSubject.next([...current, created]);
+      }),
+      catchError(error => {
+        console.error('❌ API Error:', error);
+        throw error;
+      })
+    );
+}
+
+
+STEP 7: 🔌 INTERCEPTOR ADDS THE TOKEN
+──────────────────────────────────────────────────────────────
+File: core/interceptors/auth.interceptor.ts
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const token = authService.token;
+
+  if (token) {
+    console.log('🔐 Adding JWT token');
+
+    req = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  return next(req);
+};
+
+
+STEP 8: 🌐 HTTP REQUEST SENT
+──────────────────────────────────────────────────────────────
+Complete HTTP request:
+
+POST https://api.fitnesspro.com/api/workouts
+
+Headers:
+  Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+  Content-Type: application/json
+  Accept: application/json
+
+Body:
+{
+  "name": "Morning Routine",
+  "description": "Quick 30min workout",
+  "difficulty": "intermediate",
+  "exercises": [
+    { "exercise_id": 5, "sets": 3, "reps": 12 },
+    { "exercise_id": 12, "sets": 4, "reps": 10 }
+  ]
+}
+
+
+STEP 9: 📊 BACKEND PROCESSES (Laravel)
+──────────────────────────────────────────────────────────────
+Backend receives the request:
+
+1. Middleware auth:api verifies JWT
+   ✅ Valid token, user_id = 1
+
+2. Route to WorkoutController@store
+
+3. Data validation:
+   ✓ name: required, min 3 characters
+   ✓ description: optional
+   ✓ difficulty: in [beginner, intermediate, advanced]
+   ✓ exercises: array required
+
+4. Database creation:
+   INSERT INTO workouts (user_id, name, description, difficulty)
+   VALUES (1, 'Morning Routine', 'Quick 30min workout', 'intermediate')
+
+   INSERT INTO workout_exercise (workout_id, exercise_id, sets, reps)
+   VALUES (42, 5, 3, 12), (42, 12, 4, 10)
+
+5. JSON Response:
+
+
+STEP 10: 📥 FRONTEND RECEIVES RESPONSE
+──────────────────────────────────────────────────────────────
+Service receives:
+
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "id": 42,
+  "user_id": 1,
+  "name": "Morning Routine",
+  "description": "Quick 30min workout",
+  "difficulty": "intermediate",
+  "created_at": "2025-11-04T10:30:00Z",
+  "exercises": [
+    {
+      "id": 5,
+      "name": "Push-ups",
+      "pivot": { "sets": 3, "reps": 12 }
+    },
+    {
+      "id": 12,
+      "name": "Squats",
+      "pivot": { "sets": 4, "reps": 10 }
+    }
+  ]
+}
+
+
+STEP 11: 🔄 CACHE UPDATE
+──────────────────────────────────────────────────────────────
+Service updates the BehaviorSubject:
+
+const current = this.workoutsSubject.value;  // [workout1, workout2]
+const updated = [...current, createdWorkout];  // [workout1, workout2, workout42]
+this.workoutsSubject.next(updated);
+
+Result:
+  All components subscribed to workouts$ receive the updated list!
+
+
+STEP 12: 🚏 AUTOMATIC NAVIGATION
+──────────────────────────────────────────────────────────────
+In the subscribe next():
+
+this.router.navigate(['/workouts', createdWorkout.id]);
+// Redirects to: /workouts/42
+
+Router loads WorkoutPlanDetailComponent
+
+
+STEP 13: 📄 DETAIL PAGE DISPLAYS
+──────────────────────────────────────────────────────────────
+WorkoutPlanDetailComponent:
+
+ngOnInit() {
+  const id = this.route.snapshot.params['id'];  // 42
+
+  this.workoutService.getWorkout(id).subscribe(workout => {
+    this.workout = workout;
+  });
+}
+
+Template shows:
+  ✅ Workout name: "Morning Routine"
+  ✅ Description: "Quick 30min workout"
+  ✅ Difficulty: Intermediate
+  ✅ Exercises list:
+     - Push-ups: 3 sets × 12 reps
+     - Squats: 4 sets × 10 reps
+
+
+STEP 14: 🎉 USER SEES RESULT
+──────────────────────────────────────────────────────────────
+User is now on /workouts/42 page seeing their newly created
+program with all details!
+
+Total time: ~500ms from click to display
+```
+
+### 📊 Summary Diagram
+
+```
+USER CLICK
+   ↓
+Component (detect event)
+   ↓
+Router (change URL)
+   ↓
+New Component (initialize)
+   ↓
+User fills form
+   ↓
+Component calls Service
+   ↓
+Service makes HTTP call
+   ↓
+Interceptor adds JWT token
+   ↓
+Request sent to Backend
+   ↓
+Backend processes & responds
+   ↓
+Service receives response
+   ↓
+Service updates BehaviorSubject cache
+   ↓
+All subscribed components auto-update
+   ↓
+Router navigates to detail page
+   ↓
+Detail Component displays
+   ↓
+USER SEES RESULT
+```
+
+---
+
+<a name="7-authentication"></a>
+## 7. Authentication System
+
+The authentication system is at the **core** of the application. Here's how it works in detail.
+
+### 🔐 JWT (JSON Web Token) Architecture
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           JWT AUTHENTICATION SYSTEM                        │
+└────────────────────────────────────────────────────────────┘
+
+📱 FRONTEND (Angular)                  🖥️ BACKEND (Laravel)
+┌──────────────────────┐              ┌────────────────────────┐
+│                      │              │                        │
+│  LoginComponent      │──1.login────>│  AuthController        │
+│  ├─ email            │   (POST)     │  ├─ Verify email      │
+│  └─ password         │              │  ├─ Hash password     │
+│                      │              │  └─ Generate JWT      │
+│                      │              │                        │
+│                      │<─2.token─────│  JWT created:         │
+│  AuthService         │   (200 OK)   │  {                     │
+│  ├─ Store token      │              │   "sub": user_id,     │
+│  ├─ Store user       │              │   "exp": timestamp    │
+│  └─ Emit event       │              │  }                     │
+│                      │              │                        │
+│  localStorage        │              │  Database              │
+│  ├─ auth_token: JWT  │              │  └─ users table       │
+│  └─ current_user: {} │              │                        │
+│                      │              │                        │
+│  ALL REQUESTS        │──3.request──>│                        │
+│      ↓               │   + token    │  Middleware auth:api   │
+│  AuthInterceptor     │              │  ├─ Verify JWT        │
+│  └─ Adds:            │              │  ├─ Decode payload    │
+│    Authorization:    │              │  └─ Load user         │
+│    Bearer <token>    │              │                        │
+│                      │<─4.data──────│  Protected data        │
+└──────────────────────┘              └────────────────────────┘
+```
+
+### 🔄 Complete Lifecycle
+
+```
+┌────────────────────────────────────────────────────────────┐
+│        AUTHENTICATION LIFECYCLE                            │
+└────────────────────────────────────────────────────────────┘
+
+
+📱 FIRST VISIT (user never logged in)
+─────────────────────────────────────────────────────────────
+1. App starts
+   └─> AuthService.initializeAuth()
+       └─> localStorage empty
+           └─> isAuthenticated = false
+
+2. User visits /dashboard
+   └─> AuthGuard checks
+       └─> Not logged in → redirect /login
+
+3. User fills login form
+   └─> LoginComponent.submit()
+       └─> AuthService.login(email, password)
+           └─> POST /api/auth/login
+               └─> Backend verifies credentials
+                   └─> Generates JWT token
+                       └─> Returns { token, user }
+
+4. Frontend receives response
+   └─> AuthService.saveSession()
+       ├─> localStorage.setItem('token', jwt)
+       ├─> localStorage.setItem('user', JSON.stringify(user))
+       ├─> tokenSubject.next(jwt)
+       └─> currentUserSubject.next(user)
+
+5. Automatic redirection
+   └─> router.navigate(['/dashboard'])
+       └─> AuthGuard authorizes (token present)
+           └─> ✅ Dashboard access
+
+
+🔄 SUBSEQUENT VISIT (user already logged in)
+─────────────────────────────────────────────────────────────
+1. App starts
+   └─> AuthService.initializeAuth()
+       ├─> localStorage.getItem('token') → JWT found
+       ├─> localStorage.getItem('user') → User found
+       ├─> tokenSubject.next(jwt)
+       ├─> currentUserSubject.next(user)
+       └─> isAuthenticated = true
+
+2. Server verification (optional)
+   └─> AuthService.me()
+       └─> GET /api/auth/me (with Authorization header)
+           └─> Backend verifies JWT
+               ├─> Valid → returns updated user
+               └─> Invalid/expired → 401 error
+                   └─> AuthService.clearSession()
+                       └─> Redirect /login
+
+3. Free navigation
+   └─> All protected pages accessible
+
+
+👋 LOGOUT
+─────────────────────────────────────────────────────────────
+1. User clicks "Logout"
+   └─> AuthService.logout()
+       ├─> POST /api/auth/logout
+       ├─> localStorage.removeItem('token')
+       ├─> localStorage.removeItem('user')
+       ├─> tokenSubject.next(null)
+       ├─> currentUserSubject.next(null)
+       └─> router.navigate(['/login'])
+
+
+⏱️ TOKEN EXPIRATION
+─────────────────────────────────────────────────────────────
+1. User makes request after expiration
+   └─> AuthInterceptor adds expired token
+       └─> Backend returns 401 Unauthorized
+           └─> ErrorInterceptor detects 401
+               └─> AuthService.clearSession()
+                   └─> Redirect /login
+                   └─> Message: "Session expired"
+```
+
+### 💾 localStorage vs sessionStorage
 
 ```typescript
-import { inject } from '@angular/core';
-import { Router, CanActivateFn } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
+┌────────────────────────────────────────────────────────────┐
+│              AUTH DATA STORAGE                             │
+└────────────────────────────────────────────────────────────┘
+
+localStorage (used in FitnessPro)
+─────────────────────────────────────────
+✅ Persists after browser close
+✅ No expiration date
+✅ User stays logged in between sessions
+⚠️ Vulnerable to XSS (mitigated by JWT expiration)
+
+Storage:
+  localStorage.setItem('fitness_auth_token', token);
+  localStorage.setItem('fitness_current_user', JSON.stringify(user));
+
+Reading:
+  const token = localStorage.getItem('fitness_auth_token');
+  const user = JSON.parse(localStorage.getItem('fitness_current_user'));
+
+
+sessionStorage (alternative)
+─────────────────────────────────────────
+✅ More secure (cleared on close)
+❌ User logged out if tab closed
+❌ Not practical for UX
+
+Usage:
+  sessionStorage.setItem('token', token);
+```
+
+---
+
+<a name="8-api-communication"></a>
+## 8. Frontend-Backend Communication
+
+### 🌐 Communication Architecture
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           FRONTEND ↔️ BACKEND COMMUNICATION                 │
+└────────────────────────────────────────────────────────────┘
+
+FRONTEND (Angular)                    BACKEND (Laravel)
+http://localhost:4200                 http://localhost:8000
+
+┌────────────────────┐              ┌──────────────────────┐
+│  Component         │              │  Controller          │
+│  └─> Service       │              │  └─> process request │
+│         ↓          │              │          ↑           │
+│  Service           │              │  Middleware          │
+│  └─> HttpClient    │──request────>│  ├─> auth:api       │
+│         ↓          │   HTTP       │  ├─> cors           │
+│  Interceptor       │              │  └─> throttle        │
+│  ├─> add JWT       │              │          ↓           │
+│  └─> handle error  │              │  Route               │
+│         ↓          │              │  └─> api.php         │
+│  🌐 INTERNET       │──────────────│          ↓           │
+│         ↓          │              │  Controller Method   │
+│  Service receives  │<─response────│  ├─> validation     │
+│  └─> update state  │   JSON       │  ├─> logic          │
+│         ↓          │              │  └─> response        │
+│  Component         │              │          ↓           │
+│  └─> update UI     │              │  Database Query      │
+└────────────────────┘              └──────────────────────┘
+```
+
+### 📡 HTTP Request Types
+
+```typescript
+// ═══════════════════════════════════════════════════════════
+// COMPLETE CRUD (Create, Read, Update, Delete)
+// ═══════════════════════════════════════════════════════════
+
+@Injectable({ providedIn: 'root' })
+export class WorkoutService {
+  private apiUrl = `${environment.apiUrl}/workouts`;
+
+  constructor(private http: HttpClient) {}
+
+  // ──────────────────────────────────────────────────────
+  // 📖 READ - Fetch data
+  // ──────────────────────────────────────────────────────
+
+  // GET /api/workouts - Complete list
+  getAll(): Observable<Workout[]> {
+    return this.http.get<Workout[]>(this.apiUrl);
+  }
+
+  // GET /api/workouts/42 - Specific workout
+  getById(id: number): Observable<Workout> {
+    return this.http.get<Workout>(`${this.apiUrl}/${id}`);
+  }
+
+  // GET /api/workouts?difficulty=intermediate - With filters
+  getByDifficulty(difficulty: string): Observable<Workout[]> {
+    const params = new HttpParams().set('difficulty', difficulty);
+    return this.http.get<Workout[]>(this.apiUrl, { params });
+  }
+
+  // ──────────────────────────────────────────────────────
+  // ✏️ CREATE - Create new data
+  // ──────────────────────────────────────────────────────
+
+  // POST /api/workouts
+  create(workout: CreateWorkoutDto): Observable<Workout> {
+    return this.http.post<Workout>(this.apiUrl, workout);
+  }
+
+  // ──────────────────────────────────────────────────────
+  // 🔄 UPDATE - Modify existing data
+  // ──────────────────────────────────────────────────────
+
+  // PUT /api/workouts/42 - Complete replacement
+  update(id: number, workout: UpdateWorkoutDto): Observable<Workout> {
+    return this.http.put<Workout>(`${this.apiUrl}/${id}`, workout);
+  }
+
+  // PATCH /api/workouts/42 - Partial modification
+  partialUpdate(id: number, changes: Partial<Workout>): Observable<Workout> {
+    return this.http.patch<Workout>(`${this.apiUrl}/${id}`, changes);
+  }
+
+  // ──────────────────────────────────────────────────────
+  // 🗑️ DELETE - Remove data
+  // ──────────────────────────────────────────────────────
+
+  // DELETE /api/workouts/42
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+}
+```
+
+### ⚠️ Error Handling
+
+```typescript
+// ═══════════════════════════════════════════════════════════
+// ROBUST ERROR HANDLING
+// ═══════════════════════════════════════════════════════════
+
+getWorkout(id: number): Observable<Workout> {
+  return this.http.get<Workout>(`${this.apiUrl}/${id}`)
+    .pipe(
+      // 1️⃣ Automatic retry (temporary network error)
+      retry({
+        count: 2,             // Retry 2 times
+        delay: 1000,          // Wait 1s between attempts
+        resetOnSuccess: true
+      }),
+
+      // 2️⃣ Timeout (don't wait indefinitely)
+      timeout(10000),  // 10 seconds max
+
+      // 3️⃣ Logging for debug
+      tap(workout => console.log('✅ Workout loaded:', workout)),
+
+      // 4️⃣ Error handling
+      catchError((error: HttpErrorResponse) => {
+        console.error('❌ Error:', error);
+
+        // Handle based on error type
+        if (error.status === 404) {
+          throw new Error(`Workout ${id} not found`);
+        } else if (error.status === 401) {
+          throw new Error('Session expired');
+        } else if (error.status === 0) {
+          throw new Error('No internet connection');
+        } else if (error.status >= 500) {
+          throw new Error('Server error');
+        }
+
+        throw new Error('An error occurred');
+      })
+    );
+}
+```
+
+---
+
+<a name="9-components"></a>
+## 9. Main Components Detailed
+
+### 🧩 Anatomy of an Angular Component
+
+An Angular component consists of **3 files**:
+
+```
+workout.component/
+├── workout.component.ts       # Logic (TypeScript)
+├── workout.component.html     # Template (HTML)
+└── workout.component.scss     # Styles (SCSS)
+```
+
+**Complete example:**
+
+```typescript
+// workout.component.ts
+// ═══════════════════════════════════════════════════════════
+
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { WorkoutService } from './workout.service';
+import { Workout } from '@shared/models/workout.model';
+
+@Component({
+  selector: 'app-workout',           // HTML tag: <app-workout>
+  templateUrl: './workout.component.html',
+  styleUrls: ['./workout.component.scss']
+})
+export class WorkoutComponent implements OnInit, OnDestroy {
+
+  // ─────────────────────────────────────────────────────────
+  // PROPERTIES (Component state)
+  // ─────────────────────────────────────────────────────────
+
+  workouts$!: Observable<Workout[]>;    // Data stream
+  isLoading = false;                    // Loading state
+  errorMessage = '';                    // Error message
+
+  private subscription?: Subscription;  // For cleanup
+
+  // ─────────────────────────────────────────────────────────
+  // CONSTRUCTOR (Dependency injection)
+  // ─────────────────────────────────────────────────────────
+
+  constructor(
+    private workoutService: WorkoutService,
+    private router: Router
+  ) {
+    // Don't initialize ANYTHING here!
+    // Use ngOnInit() instead
+  }
+
+  // ─────────────────────────────────────────────────────────
+  // LIFECYCLE HOOKS
+  // ─────────────────────────────────────────────────────────
+
+  ngOnInit(): void {
+    // ✅ Called when component is initialized
+    console.log('🔄 WorkoutComponent initialized');
+
+    // Subscribe to data stream
+    this.workouts$ = this.workoutService.workouts$;
+
+    // Load data
+    this.loadWorkouts();
+  }
+
+  ngOnDestroy(): void {
+    // ✅ Called when component is destroyed
+    // Clean up subscriptions to avoid memory leaks
+    console.log('🗑️ WorkoutComponent destroyed');
+    this.subscription?.unsubscribe();
+  }
+
+  // ─────────────────────────────────────────────────────────
+  // METHODS (Component actions)
+  // ─────────────────────────────────────────────────────────
+
+  loadWorkouts(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.workoutService.loadWorkouts().subscribe({
+      next: () => {
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Loading error';
+        console.error(error);
+      }
+    });
+  }
+
+  createWorkout(): void {
+    this.router.navigate(['/workouts/create']);
+  }
+
+  deleteWorkout(id: number): void {
+    if (confirm('Delete this program?')) {
+      this.workoutService.delete(id).subscribe({
+        next: () => this.loadWorkouts(),
+        error: (error) => alert('Deletion error')
+      });
+    }
+  }
+}
+```
+
+```html
+<!-- workout.component.html -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+
+<div class="workout-container">
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading">
+    Loading workouts...
+  </div>
+
+  <!-- Error state -->
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Success state -->
+  <div *ngIf="workouts$ | async as workouts">
+    <div *ngFor="let workout of workouts" class="workout-card">
+      <h3>{{ workout.name }}</h3>
+      <p>{{ workout.description }}</p>
+      <button (click)="deleteWorkout(workout.id)">Delete</button>
+    </div>
+  </div>
+
+  <!-- Create button -->
+  <button (click)="createWorkout()" class="create-btn">
+    Create New Workout
+  </button>
+</div>
+```
+
+### 🔄 Component Lifecycle Hooks
+
+```typescript
+┌────────────────────────────────────────────────────────────┐
+│           COMPONENT LIFECYCLE                              │
+└────────────────────────────────────────────────────────────┘
+
+constructor()
+   ↓
+   🏗️ Component instance created
+   ⚠️ Don't initialize data here!
+   ↓
+ngOnInit()
+   ↓
+   ✅ Component initialized
+   ✅ Best place to load data
+   ✅ Set up subscriptions
+   ↓
+ngOnDestroy()
+   ↓
+   🗑️ Component about to be destroyed
+   ✅ Clean up subscriptions
+   ✅ Remove event listeners
+```
+
+---
+
+<a name="10-services"></a>
+## 10. Services and State Management
+
+### 🧠 Services with BehaviorSubject
+
+Services manage the application's **state** and **business logic**.
+
+```typescript
+// ═══════════════════════════════════════════════════════════
+// WORKOUT SERVICE - Complete example
+// ═══════════════════════════════════════════════════════════
+
+@Injectable({ providedIn: 'root' })
+export class WorkoutService {
+  private apiUrl = `${environment.apiUrl}/workouts`;
+
+  // ─────────────────────────────────────────────────────────
+  // STATE (private BehaviorSubjects)
+  // ─────────────────────────────────────────────────────────
+
+  private workoutsSubject = new BehaviorSubject<Workout[]>([]);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  private errorSubject = new BehaviorSubject<string | null>(null);
+
+  // ─────────────────────────────────────────────────────────
+  // PUBLIC OBSERVABLES (read-only streams)
+  // ─────────────────────────────────────────────────────────
+
+  workouts$ = this.workoutsSubject.asObservable();
+  loading$ = this.loadingSubject.asObservable();
+  error$ = this.errorSubject.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+  // ─────────────────────────────────────────────────────────
+  // PUBLIC METHODS (actions)
+  // ─────────────────────────────────────────────────────────
+
+  loadWorkouts(): Observable<void> {
+    this.loadingSubject.next(true);
+    this.errorSubject.next(null);
+
+    return this.http.get<Workout[]>(this.apiUrl).pipe(
+      tap(workouts => {
+        console.log('✅ Workouts loaded:', workouts.length);
+        this.workoutsSubject.next(workouts);
+        this.loadingSubject.next(false);
+      }),
+      catchError(error => {
+        console.error('❌ Error loading workouts:', error);
+        this.errorSubject.next('Failed to load workouts');
+        this.loadingSubject.next(false);
+        return throwError(() => error);
+      }),
+      map(() => void 0)
+    );
+  }
+
+  createWorkout(workout: CreateWorkoutDto): Observable<Workout> {
+    return this.http.post<Workout>(this.apiUrl, workout).pipe(
+      tap(created => {
+        // Update local cache
+        const current = this.workoutsSubject.value;
+        this.workoutsSubject.next([...current, created]);
+      })
+    );
+  }
+
+  deleteWorkout(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => {
+        // Remove from local cache
+        const current = this.workoutsSubject.value;
+        const updated = current.filter(w => w.id !== id);
+        this.workoutsSubject.next(updated);
+      })
+    );
+  }
+}
+```
+
+### 📊 BehaviorSubject Pattern
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           BEHAVIORSUBJECT PATTERN                          │
+└────────────────────────────────────────────────────────────┘
+
+SERVICE (Single source of truth)
+┌─────────────────────────┐
+│  private workoutsSubject│  ← Stores current state
+│  = new BehaviorSubject  │
+│  ([])                   │
+│                         │
+│  public workouts$       │  ← Read-only stream
+│  = subject.asObservable()│
+└─────────────────────────┘
+         │
+         │ Emits updates
+         ↓
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│  Component A    │  │  Component B    │  │  Component C    │
+│  subscribes     │  │  subscribes     │  │  subscribes     │
+│                 │  │                 │  │                 │
+│  workouts$      │  │  workouts$      │  │  workouts$      │
+│  | async        │  │  | async        │  │  | async        │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
+
+ALL components automatically receive the same data!
+```
+
+**Advantages:**
+- ✅ Single source of truth
+- ✅ Automatic synchronization
+- ✅ All components always in sync
+- ✅ Easy to test
+- ✅ Memory leak prevention (with async pipe)
+
+---
+
+<a name="11-routing"></a>
+## 11. Routing and Navigation
+
+### 🛣️ Route Parameters
+
+```typescript
+// ═══════════════════════════════════════════════════════════
+// READING ROUTE PARAMETERS
+// ═══════════════════════════════════════════════════════════
+
+export class WorkoutDetailComponent implements OnInit {
+  workout$!: Observable<Workout>;
+
+  constructor(
+    private route: ActivatedRoute,
+    private workoutService: WorkoutService
+  ) {}
+
+  ngOnInit() {
+    // ─────────────────────────────────────────────────────
+    // ROUTE PARAMS
+    // ─────────────────────────────────────────────────────
+
+    // URL: /workouts/42
+    this.workout$ = this.route.params.pipe(
+      switchMap(params => {
+        const id = +params['id'];
+        return this.workoutService.getWorkout(id);
+      })
+    );
+
+    // ✅ Automatically cancels previous request
+    // ✅ No need to unsubscribe (async pipe does it)
+
+    // ─────────────────────────────────────────────────────
+    // QUERY PARAMS
+    // ─────────────────────────────────────────────────────
+
+    // URL: /workouts?search=cardio&page=2
+    this.route.queryParams.subscribe(params => {
+      const search = params['search'];  // "cardio"
+      const page = +params['page'];     // 2
+    });
+  }
+}
+```
+
+### 🔗 Template Navigation
+
+```html
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- NAVIGATION WITH routerLink                             -->
+<!-- ══════════════════════════════════════════════════════ -->
+
+<!-- Simple -->
+<a routerLink="/dashboard">Dashboard</a>
+
+<!-- With parameters -->
+<a [routerLink]="['/workouts', workout.id]">View</a>
+<!-- Result: /workouts/42 -->
+
+<!-- With query params -->
+<a
+  [routerLink]="['/workouts']"
+  [queryParams]="{ search: 'cardio', page: 1 }">
+  Search
+</a>
+<!-- Result: /workouts?search=cardio&page=1 -->
+
+<!-- Relative -->
+<a routerLink="../list">Back</a>
+
+<!-- Active class -->
+<a
+  routerLink="/dashboard"
+  routerLinkActive="active"
+  [routerLinkActiveOptions]="{ exact: true }">
+  Dashboard
+</a>
+
+<!-- CSS style applied when route is active -->
+<style>
+  a.active {
+    color: blue;
+    font-weight: bold;
+  }
+</style>
+```
+
+---
+
+<a name="12-guards-interceptors"></a>
+## 12. Guards and Interceptors
+
+### 🛡️ Guards (Route Protection)
+
+**Guards** protect access to routes.
+
+```typescript
+// ═══════════════════════════════════════════════════════════
+// AUTH GUARD - Protected route protection
+// ═══════════════════════════════════════════════════════════
 
 export const AuthGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
+  console.log('🛡️ AuthGuard: Checking for', state.url);
+
+  // Check if user is logged in
   if (authService.isAuthenticated) {
-    console.log('✅ AuthGuard: User authenticated, access granted');
-    return true;
+    console.log('✅ AuthGuard: Access granted');
+    return true;  // ✅ Allow access
   }
 
-  console.log('❌ AuthGuard: User not authenticated, redirecting to login');
-  console.log('   Attempted URL:', state.url);
+  // ❌ Not logged in, redirect to login
+  console.warn('🚫 AuthGuard: Access denied, redirecting to login');
 
-  // Stocker l'URL demandée pour redirection après login
   router.navigate(['/login'], {
-    queryParams: { returnUrl: state.url }
+    queryParams: { returnUrl: state.url }  // Save destination
   });
 
-  return false;
+  return false;  // ❌ Block access
 };
+
+// ─────────────────────────────────────────────────────────
+// Usage in routes
+// ─────────────────────────────────────────────────────────
+
+{
+  path: 'dashboard',
+  component: DashboardComponent,
+  canActivate: [AuthGuard]  // ✅ Protected route
+}
 ```
 
-**GuestGuard** - Protège les routes publiques (login, register) :
-
 ```typescript
-import { inject } from '@angular/core';
-import { Router, CanActivateFn } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
+// ═══════════════════════════════════════════════════════════
+// GUEST GUARD - Redirect if already logged in
+// ═══════════════════════════════════════════════════════════
 
 export const GuestGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.isAuthenticated) {
-    console.log('✅ GuestGuard: User not authenticated, access granted');
-    return true;
+  // If already logged in, redirect to dashboard
+  if (authService.isAuthenticated) {
+    console.log('🔄 GuestGuard: Already logged in, redirecting to dashboard');
+    router.navigate(['/dashboard']);
+    return false;
   }
 
-  console.log('❌ GuestGuard: User already authenticated, redirecting to dashboard');
-  router.navigate(['/dashboard']);
-  return false;
+  // Not logged in, allow access to login/register
+  return true;
 };
-```
 
-### Navigation Programmatique
+// ─────────────────────────────────────────────────────────
+// Usage
+// ─────────────────────────────────────────────────────────
 
-```typescript
-import { Router } from '@angular/router';
-
-export class SomeComponent {
-  constructor(private router: Router) {}
-
-  // Navigation simple
-  goToDashboard(): void {
-    this.router.navigate(['/dashboard']);
-  }
-
-  // Navigation avec paramètres
-  viewWorkout(id: number): void {
-    this.router.navigate(['/workouts', id]);
-    // Résultat: /workouts/42
-  }
-
-  // Navigation avec query parameters
-  searchExercises(query: string): void {
-    this.router.navigate(['/exercises'], {
-      queryParams: { search: query, bodyPart: 'chest' }
-    });
-    // Résultat: /exercises?search=bench&bodyPart=chest
-  }
-
-  // Navigation relative
-  goToParent(): void {
-    this.router.navigate(['../'], { relativeTo: this.route });
-  }
-
-  // Remplacer l'historique (pas de bouton retour)
-  replaceUrl(): void {
-    this.router.navigate(['/dashboard'], {
-      replaceUrl: true
-    });
-  }
+{
+  path: 'login',
+  component: LoginComponent,
+  canActivate: [GuestGuard]  // ✅ Redirect if already logged in
 }
 ```
 
----
+### 🔌 Interceptors (HTTP Middleware)
 
-## 📡 Communication avec l'API
-
-### HTTP Interceptors
-
-Les interceptors interceptent TOUTES les requêtes HTTP pour ajouter des headers, gérer les erreurs, etc.
-
-**AuthInterceptor** - Ajoute le token JWT :
+**Interceptors** transform all HTTP requests.
 
 ```typescript
-import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
+// ═══════════════════════════════════════════════════════════
+// AUTH INTERCEPTOR - Automatic JWT token injection
+// ═══════════════════════════════════════════════════════════
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const token = authService.tokenValue;
 
-  // Ne pas ajouter le token aux requêtes externes
-  if (!req.url.includes(environment.apiUrl)) {
+  console.log('🔌 AuthInterceptor:', req.method, req.url);
+
+  // Get the token
+  const token = authService.token;
+
+  // If no token, continue without modification
+  if (!token) {
+    console.log('  ⚠️ No token');
     return next(req);
   }
 
-  // Cloner la requête et ajouter le token
-  if (token) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    });
+  // Clone request and add token
+  const authReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 
-    console.log('📤 AuthInterceptor: Added token to request', req.url);
-  }
+  console.log('  ✅ Token added');
 
-  return next(req);
+  // Continue with modified request
+  return next(authReq);
 };
+
+// ─────────────────────────────────────────────────────────
+// Configuration in app.config.ts
+// ─────────────────────────────────────────────────────────
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(
+      withInterceptors([authInterceptor])  // ✅ Globally enabled
+    )
+  ]
+};
+
+// Now ALL HTTP requests will have the token!
 ```
 
-**ErrorInterceptor** - Gère les erreurs HTTP :
-
 ```typescript
-import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
-import { NotificationService } from '@core/services/notification.service';
+// ═══════════════════════════════════════════════════════════
+// ERROR INTERCEPTOR - Global error handling
+// ═══════════════════════════════════════════════════════════
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(Router);
   const authService = inject(AuthService);
-  const notificationService = inject(NotificationService);
+  const router = inject(Router);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       console.error('❌ HTTP Error:', error);
 
-      let errorMessage = 'An unexpected error occurred';
+      // Handle based on error code
+      switch (error.status) {
+        case 401:
+          // Invalid/expired token
+          console.warn('🔒 401 Unauthorized - Logging out');
+          authService.logout();
+          router.navigate(['/login']);
+          break;
 
-      if (error.error instanceof ErrorEvent) {
-        // Erreur côté client
-        errorMessage = `Client Error: ${error.error.message}`;
-      } else {
-        // Erreur côté serveur
-        switch (error.status) {
-          case 401:
-            // Unauthorized - token invalide ou expiré
-            console.log('🔐 401 Unauthorized - logging out');
-            authService.logout();
-            router.navigate(['/login']);
-            errorMessage = 'Session expirée. Veuillez vous reconnecter.';
-            break;
+        case 403:
+          // Forbidden access
+          console.warn('🚫 403 Forbidden');
+          router.navigate(['/forbidden']);
+          break;
 
-          case 403:
-            // Forbidden
-            errorMessage = 'Accès refusé.';
-            break;
+        case 404:
+          // Resource not found
+          console.warn('🔍 404 Not Found');
+          break;
 
-          case 404:
-            // Not Found
-            errorMessage = 'Ressource non trouvée.';
-            break;
+        case 500:
+          // Server error
+          console.error('💥 500 Server Error');
+          // Display global message
+          break;
 
-          case 422:
-            // Validation Error
-            errorMessage = error.error?.message || 'Données invalides.';
-            break;
-
-          case 500:
-            // Server Error
-            errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
-            break;
-
-          default:
-            errorMessage = error.error?.message || 'Une erreur est survenue.';
-        }
+        case 0:
+          // Network error
+          console.error('🌐 Network Error');
+          // Display "No connection" message
+          break;
       }
 
-      // Afficher notification d'erreur
-      notificationService.error('Erreur', errorMessage);
-
+      // Re-throw error so components can handle it
       return throwError(() => error);
     })
   );
 };
 ```
 
-**LoadingInterceptor** - Affiche un spinner global :
-
-```typescript
-import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { finalize } from 'rxjs/operators';
-import { LoadingService } from '@core/services/loading.service';
-
-export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
-  const loadingService = inject(LoadingService);
-
-  // Ignorer certaines requêtes (polling, etc.)
-  if (req.headers.has('X-Skip-Loading')) {
-    return next(req);
-  }
-
-  // Incrémenter le compteur de requêtes actives
-  loadingService.show();
-
-  return next(req).pipe(
-    finalize(() => {
-      // Décrémenter quand la requête se termine
-      loadingService.hide();
-    })
-  );
-};
-```
-
-### Configuration des Interceptors
-
-**app.config.ts** :
-
-```typescript
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-
-import { routes } from './app.routes';
-import { authInterceptor } from '@core/interceptors/auth.interceptor';
-import { errorInterceptor } from '@core/interceptors/error.interceptor';
-import { loadingInterceptor } from '@core/interceptors/loading.interceptor';
-
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([
-        loadingInterceptor,  // 1. Afficher loading
-        authInterceptor,     // 2. Ajouter token
-        errorInterceptor     // 3. Gérer erreurs
-      ])
-    )
-  ]
-};
-```
-
 ---
 
-## 🎨 Styling & Design
+<a name="13-styling"></a>
+## 13. Styling and Design System
 
-### Architecture SCSS
+### 🎨 SCSS Organization
 
-Notre application utilise **SCSS** (Sassy CSS), un préprocesseur CSS qui ajoute des fonctionnalités puissantes comme les variables, mixins, et nesting.
-
-**Styles globaux** ([src/styles.scss](src/styles.scss:1)) :
+```
+styles/
+├── _variables.scss    # Variables (colors, sizes)
+├── _mixins.scss       # Reusable mixins
+├── _reset.scss        # CSS reset
+└── _utilities.scss    # Utility classes
+```
 
 ```scss
-// Import de Google Fonts
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+// ═══════════════════════════════════════════════════════════
+// _variables.scss - Single source of truth
+// ═══════════════════════════════════════════════════════════
 
-// Variables globales
-$primary-color: #4CAF50;
-$background: #f5f5f5;
-$text-primary: #212121;
-$border-radius: 8px;
+// Primary colors
+$primary-color: #21bf73;      // Main green
+$secondary-color: #8b5cf6;    // Purple
+$success-color: #10b981;      // Success green
+$danger-color: #ef4444;       // Red
+$warning-color: #f59e0b;      // Orange
 
-// Reset et styles de base
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+// Text colors
+$gray-900: #111827;
+$gray-800: #1f2937;
+$gray-700: #374151;
+$gray-600: #4b5563;
+$gray-500: #6b7280;
+$gray-400: #9ca3af;
+$gray-300: #d1d5db;
+$gray-200: #e5e7eb;
+$gray-100: #f3f4f6;
+
+// Spacing (base 4px)
+$spacing-xs: 0.25rem;   // 4px
+$spacing-sm: 0.5rem;    // 8px
+$spacing-md: 1rem;      // 16px
+$spacing-lg: 1.5rem;    // 24px
+$spacing-xl: 2rem;      // 32px
+$spacing-2xl: 3rem;     // 48px
+
+// Typography
+$font-family: 'Inter', -apple-system, sans-serif;
+$font-size-xs: 0.75rem;    // 12px
+$font-size-sm: 0.875rem;   // 14px
+$font-size-base: 1rem;     // 16px
+$font-size-lg: 1.125rem;   // 18px
+$font-size-xl: 1.25rem;    // 20px
+$font-size-2xl: 1.5rem;    // 24px
+
+// Border radius
+$border-radius-sm: 0.375rem;  // 6px
+$border-radius: 0.75rem;      // 12px
+$border-radius-lg: 1rem;      // 16px
+
+// Shadows
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+// Responsive breakpoints
+$breakpoint-sm: 640px;   // Mobile
+$breakpoint-md: 768px;   // Tablet
+$breakpoint-lg: 1024px;  // Desktop
+$breakpoint-xl: 1280px;  // Large desktop
+```
+
+```scss
+// ═══════════════════════════════════════════════════════════
+// _mixins.scss - Reusable styles
+// ═══════════════════════════════════════════════════════════
+
+// Responsive breakpoints
+@mixin respond-to($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: $background;
-  color: $text-primary;
-  line-height: 1.6;
+// Usage:
+.sidebar {
+  width: 100%;
+
+  @include respond-to($breakpoint-md) {
+    width: 250px;
+  }
 }
 
-// Classes utilitaires
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+// Card style
+@mixin card {
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  padding: $spacing-lg;
+  transition: all 0.2s;
+
+  &:hover {
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+  }
 }
 
-.btn {
-  padding: 0.75rem 1.5rem;
+// Flexbox center
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Truncate text
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Button base
+@mixin button-base {
+  padding: $spacing-sm $spacing-md;
   border-radius: $border-radius;
   font-weight: 600;
+  transition: all 0.2s;
   cursor: pointer;
-  transition: all 0.3s ease;
+  border: none;
 
-  &-primary {
-    background: $primary-color;
-    color: white;
-    border: none;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow;
+  }
 
-    &:hover {
-      background: darken($primary-color, 10%);
-    }
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
   }
 }
 ```
 
-### Design System Responsive
-
-L'application utilise un système de breakpoints pour s'adapter à tous les écrans :
+### 📱 Responsive Design
 
 ```scss
-// Breakpoints
-$mobile: 576px;
-$tablet: 768px;
-$desktop: 992px;
-$wide: 1200px;
+// ═══════════════════════════════════════════════════════════
+// RESPONSIVE PATTERNS
+// ═══════════════════════════════════════════════════════════
 
-// Exemple d'utilisation
-.workout-grid {
+// Mobile-first approach (recommended)
+.container {
+  // Mobile styles by default
+  padding: 1rem;
+
+  // Tablet and up
+  @include respond-to($breakpoint-md) {
+    padding: 2rem;
+  }
+
+  // Desktop and up
+  @include respond-to($breakpoint-lg) {
+    padding: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+// Responsive grid
+.grid {
   display: grid;
   gap: 1rem;
 
-  // Mobile first
+  // Mobile: 1 column
   grid-template-columns: 1fr;
 
-  // Tablet
-  @media (min-width: $tablet) {
+  // Tablet: 2 columns
+  @include respond-to($breakpoint-md) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  // Desktop
-  @media (min-width: $desktop) {
+  // Desktop: 3 columns
+  @include respond-to($breakpoint-lg) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
@@ -2128,115 +2404,57 @@ $wide: 1200px;
 
 ---
 
-## 💻 Développement
+<a name="14-build-deployment"></a>
+## 14. Build and Deployment
 
-### Commandes Essentielles
-
-```bash
-# DÉMARRAGE
-npm start                    # Serveur de dev (localhost:4200)
-ng serve --open              # Ouvre auto dans le navigateur
-ng serve --port 4300         # Port personnalisé
-
-# BUILD
-npm run build                # Build production
-ng build --watch             # Rebuild auto sur changements
-
-# TESTS
-npm test                     # Tests unitaires
-ng test --code-coverage      # Avec couverture
-
-# LINTING
-npm run lint                 # Vérifier code
-npm run lint:fix             # Corriger auto
-
-# GÉNÉRATION
-ng g c feature/component     # Nouveau composant
-ng g s core/services/name    # Nouveau service
-ng g m feature/module        # Nouveau module
-ng g guard core/guards/name  # Nouveau guard
-```
-
-### Hot Module Replacement
-
-Le serveur de développement Angular supporte le **Hot Reload** automatique :
+### 🏗️ Production Build
 
 ```bash
-ng serve
+# Optimized build for production
+ng build
 
-# À chaque modification:
-# ✅ Re-compilation incrémentale (rapide!)
-# ✅ Injection automatique des changements
-# ✅ Préservation de l'état (si possible)
-# ✅ Notification dans le navigateur
-```
-
-### Debugging
-
-**Angular DevTools** (Extension Chrome/Firefox) :
-
-```
-Fonctionnalités:
-- 🔍 Inspector les composants et leur état
-- 📊 Profiler les performances  
-- 🔄 Visualiser Change Detection
-- 🎯 Injecter dépendances dans console
-```
-
-**VS Code Launch Configuration** :
-
-```json
-// .vscode/launch.json
-{
-  "type": "chrome",
-  "request": "launch",
-  "name": "Debug Angular",
-  "url": "http://localhost:4200",
-  "webRoot": "${workspaceFolder}/src"
-}
-```
-
----
-
-## 🏗️ Build & Déploiement
-
-### Build de Production
-
-```bash
-# Build optimisé
+# Or with npm
 npm run build
-# ou
-ng build --configuration production
 
-# Résultat dans dist/fitness-pro/browser/
+# What happens:
+# 1. TypeScript compilation → JavaScript
+# 2. SCSS compilation → CSS
+# 3. AOT (Ahead-of-Time) compilation
+# 4. Tree shaking (unused code removal)
+# 5. Minification
+# 6. Gzip/brotli compression
+# 7. Source maps generation
+
+# Output in: dist/frontend/
 ```
 
-**Optimisations Automatiques** :
-- ✅ Minification et uglification
-- ✅ Tree-shaking (suppression code mort)
-- ✅ AOT compilation
-- ✅ Hashing des fichiers (cache-busting)
-- ✅ Lazy loading des modules
-- ✅ CSS optimization
+### ▲ Vercel Deployment
 
-### Déploiement sur Vercel
+```bash
+# 1️⃣ Install Vercel CLI
+npm install -g vercel
 
-**URL Production** : `https://fitness-pro-frontend.vercel.app`
+# 2️⃣ Login
+vercel login
 
-#### Configuration
+# 3️⃣ Deployment
+vercel
 
-**vercel.json** :
+# 4️⃣ Production
+vercel --prod
+```
+
+**Vercel Configuration** (`vercel.json`):
 
 ```json
 {
   "version": 2,
-  "name": "fitness-pro-frontend",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/fitness-pro/browser"
+        "distDir": "dist/frontend/browser"
       }
     }
   ],
@@ -2249,248 +2467,231 @@ ng build --configuration production
 }
 ```
 
-#### Déploiement
+### 🔧 Build Optimizations
 
-```bash
-# 1. Installer Vercel CLI
-npm install -g vercel
+```json
+// angular.json - Optimized build configuration
 
-# 2. Se connecter
-vercel login
-
-# 3. Déployer
-vercel --prod
-
-# 4. Variables d'environnement
-vercel env add PRODUCTION
-# NG_API_URL=https://fitness-pro-backend.fly.dev/api
-```
-
-### Déploiement via GitHub (Auto)
-
-```bash
-# 1. Push vers GitHub
-git push origin main
-
-# 2. Vercel détecte automatiquement:
-# - Framework: Angular
-# - Build Command: npm run build
-# - Output Directory: dist/fitness-pro/browser
-
-# 3. Déploiement automatique sur chaque push!
-```
-
----
-
-## 🛠️ Dépannage
-
-### Problèmes Courants
-
-#### 1. Erreur de Compilation TypeScript
-
-**Symptôme** :
-```
-Error: Type 'string' is not assignable to type 'number'
-```
-
-**Solutions** :
-```bash
-# 1. Nettoyer cache
-rm -rf .angular
-rm -rf node_modules/.cache
-
-# 2. Réinstaller dépendances
-rm -rf node_modules package-lock.json
-npm install
-
-# 3. Redémarrer serveur
-ng serve
-```
-
-#### 2. Module Not Found
-
-**Symptôme** :
-```
-Error: Can't resolve '@core/services/auth.service'
-```
-
-**Solutions** :
-```typescript
-// Vérifier tsconfig.json
 {
-  "compilerOptions": {
-    "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"]
+  "configurations": {
+    "production": {
+      "optimization": true,          // ✅ Optimizations enabled
+      "outputHashing": "all",        // ✅ Cache busting
+      "sourceMap": false,            // ❌ No source maps
+      "namedChunks": false,          // ❌ Anonymous chunks
+      "aot": true,                   // ✅ AOT compilation
+      "extractLicenses": true,
+      "buildOptimizer": true,        // ✅ Build optimizer
+      "budgets": [                   // ⚠️ Size limits
+        {
+          "type": "initial",
+          "maximumWarning": "500kb",
+          "maximumError": "1mb"
+        }
+      ]
     }
   }
 }
 ```
 
-#### 3. CORS Errors
+---
 
-**Symptôme** :
-```
-Access blocked by CORS policy
-```
+<a name="15-development"></a>
+## 15. Development and Best Practices
 
-**Solutions** :
-```bash
-# Créer proxy.conf.json
-{
-  "/api": {
-    "target": "http://localhost:8000",
-    "secure": false,
-    "changeOrigin": true
-  }
-}
+### 📝 Naming Conventions
 
-# Lancer avec proxy
-ng serve --proxy-config proxy.conf.json
-```
-
-#### 4. Memory Leaks
-
-**Solution** :
 ```typescript
-import { Subject, takeUntil } from 'rxjs';
+// ═══════════════════════════════════════════════════════════
+// TYPESCRIPT/ANGULAR CONVENTIONS
+// ═══════════════════════════════════════════════════════════
 
-export class MyComponent implements OnDestroy {
-  private destroy$ = new Subject<void>();
+// Files
+workout.component.ts          // ✅ kebab-case
+workoutService.ts             // ❌ Not good
+workout-service.ts            // ✅ Correct
 
-  ngOnInit(): void {
-    this.myService.getData()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => this.data = data);
-  }
+// Classes
+export class WorkoutComponent  // ✅ PascalCase
+export class workoutService    // ❌ Not good
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-}
+// Variables and functions
+const workoutCount = 10;       // ✅ camelCase
+const WorkoutCount = 10;       // ❌ Not good
+
+// Constants
+const API_URL = '...';         // ✅ UPPER_SNAKE_CASE
+const MAX_RETRIES = 3;         // ✅ Correct
+
+// Interfaces
+interface Workout { }          // ✅ PascalCase
+interface IWorkout { }         // ❌ Avoid I prefix
+
+// Observables
+workouts$                      // ✅ $ suffix
+workoutsObservable            // ❌ Not needed
+
+// Private
+private _count = 0;            // ✅ _ prefix
+private count = 0;             // ✅ Also acceptable
 ```
 
-#### 5. Performance Issues
+### ✅ Best Practices
 
-**Solutions** :
 ```typescript
-// 1. OnPush Change Detection
-@Component({
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
+// ═══════════════════════════════════════════════════════════
+// ANGULAR BEST PRACTICES
+// ═══════════════════════════════════════════════════════════
 
-// 2. TrackBy dans *ngFor
-trackByFn(index: number, item: any) {
-  return item.id;
+// ✅ Use async pipe (avoids memory leaks)
+<div *ngFor="let workout of workouts$ | async">
+
+// ❌ Avoid subscribe in template
+<div *ngFor="let workout of workouts">  // Need manual subscribe
+
+// ✅ Unsubscribe in ngOnDestroy
+ngOnDestroy() {
+  this.subscription.unsubscribe();
 }
 
-// 3. Lazy Loading
-const routes: Routes = [{
-  path: 'feature',
-  loadChildren: () => import('./feature/feature.routes')
-}];
+// ✅ Or use takeUntil
+private destroy$ = new Subject<void>();
+
+ngOnInit() {
+  this.data$.pipe(
+    takeUntil(this.destroy$)
+  ).subscribe(...);
+}
+
+ngOnDestroy() {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
+
+// ✅ Strong typing
+getWorkout(id: number): Observable<Workout> {  // ✅ Explicit types
+  return this.http.get<Workout>(`/api/workouts/${id}`);
+}
+
+// ❌ any is bad
+getWorkout(id: any): any {  // ❌ Avoid any
+  return this.http.get(`/api/workouts/${id}`);
+}
+
+// ✅ Readonly for non-modifiable properties
+readonly API_URL = 'https://api.com';
+
+// ✅ Services as singletons
+@Injectable({ providedIn: 'root' })  // ✅ Singleton
+export class WorkoutService { }
 ```
 
-### Commandes de Diagnostic
+---
+
+<a name="16-troubleshooting"></a>
+## 16. Troubleshooting and FAQ
+
+### 🐛 Common Issues
+
+#### ❌ Error: Cannot GET /api/...
+
+**Cause:** Backend API not started or incorrect URL
+
+**Solution:**
+```bash
+# Verify backend is running
+cd backend
+php artisan serve
+
+# Check environment.ts
+apiUrl: 'http://localhost:8000/api'
+```
+
+#### ❌ CORS Errors
+
+**Cause:** Backend CORS configuration
+
+**Solution:** Check `backend/config/cors.php`:
+```php
+'allowed_origins' => ['http://localhost:4200'],
+```
+
+#### ❌ JWT Token expired
+
+**Cause:** Session expired
+
+**Solution:** AuthInterceptor handles automatically, redirects to login
+
+#### ❌ Module not found
+
+**Cause:** Incorrect import
+
+**Solution:**
+```typescript
+// ❌ Wrong
+import { Workout } from '../models/workout';
+
+// ✅ Correct (with @ alias)
+import { Workout } from '@shared/models/workout.model';
+```
+
+### 💡 Useful Commands
 
 ```bash
-# Infos environnement
-ng version
+# Start dev server
+ng serve
 
-# Analyser bundle
-npm run build
-npm run analyze
+# Build production
+ng build
 
-# Nettoyer cache
-ng cache clean
-ng cache info
+# Run tests
+ng test
 
-# Vérifier configuration
-ng config
+# Generate component
+ng generate component features/my-component
+
+# Generate service
+ng generate service core/services/my-service
+
+# Analyze bundle
+ng build --stats-json
+npx webpack-bundle-analyzer dist/stats.json
+
+# Linter
+ng lint
 ```
 
----
+### 📚 Resources
 
-## 📚 Ressources Supplémentaires
-
-### Documentation Officielle
-
-- **Angular** : https://angular.io/docs
-- **Angular CLI** : https://angular.io/cli
-- **RxJS** : https://rxjs.dev/
-- **TypeScript** : https://www.typescriptlang.org/docs/
-- **SCSS** : https://sass-lang.com/documentation
-
-### Outils Utiles
-
-- **Angular DevTools** - Extension pour debugging
-- **Webpack Bundle Analyzer** - Analyser taille bundles
-- **Lighthouse** - Analyser performances
-
-### Commandes Résumées
-
-```bash
-# DÉVELOPPEMENT
-npm start                # Serveur dev
-npm test                 # Tests
-npm run lint             # Vérifier code
-ng g c component-name    # Nouveau composant
-
-# BUILD & DÉPLOIEMENT
-npm run build            # Build production
-vercel --prod            # Déployer
-
-# DIAGNOSTIC
-ng version               # Version Angular
-ng cache clean           # Nettoyer cache
-npm run analyze          # Analyser bundle
-```
+- [Angular Documentation](https://angular.io/docs)
+- [RxJS Documentation](https://rxjs.dev/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [Angular Style Guide](https://angular.io/guide/styleguide)
 
 ---
 
-## 🎓 Concepts Clés à Retenir
+## 🎉 Conclusion
 
-### 1. SPA (Single Page Application)
-- Une seule page HTML chargée
-- Navigation sans rechargement
-- Mise à jour dynamique du DOM
+You now have a complete understanding of the FitnessPro frontend!
 
-### 2. Components
-- Briques de base de l'application
-- Template + Logique + Styles
-- Réutilisables et composables
+**Key points:**
+- ✅ Layered architecture (Components → Services → API)
+- ✅ Reactive state management with RxJS
+- ✅ Secure JWT authentication
+- ✅ SPA routing and navigation
+- ✅ Robust API communication
+- ✅ Cohesive design system
+- ✅ Angular best practices
 
-### 3. Services
-- Singletons pour logique partagée
-- Communication avec l'API
-- Gestion d'état
-
-### 4. RxJS Observables
-- Programmation réactive
-- Gestion asynchrone
-- Opérateurs puissants (map, tap, switchMap)
-
-### 5. Routing
-- Navigation déclarative
-- Guards pour protection
-- Lazy loading des modules
-
-### 6. HTTP Interceptors
-- Middleware pour requêtes HTTP
-- Ajout automatique de headers
-- Gestion centralisée des erreurs
-
-### 7. Change Detection
-- Détection automatique des changements
-- OnPush pour optimisation
-- Zone.js sous le capot
-
-### 8. TypeScript
-- JavaScript typé
-- Interfaces et types
-- Détection d'erreurs à la compilation
+**Next steps:**
+1. Explore the source code
+2. Create your first components
+3. Experiment with services
+4. Contribute to the project!
 
 ---
 
-**Ce frontend Angular offre une expérience utilisateur moderne et réactive pour l'application FitnessPro. Pour le backend API, consultez le [README du backend](../backend/README.md). Pour une vue d'ensemble complète, consultez le [README principal](../README.md).**
+**Version:** 2.1.0
+**Last updated:** November 2025
+**Author:** Yoan Petrov
+

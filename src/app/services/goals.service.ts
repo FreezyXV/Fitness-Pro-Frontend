@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { map, catchError, tap, delay } from 'rxjs/operators';
-import { APP_CONFIG, StorageUtils } from '../shared';
+import { APP_CONFIG, StorageUtils } from '@shared';
 import { environment } from '../../environments/environment';
 
 // Enhanced interfaces matching backend structure

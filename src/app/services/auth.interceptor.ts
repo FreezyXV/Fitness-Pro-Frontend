@@ -4,8 +4,8 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError, timer } from 'rxjs';
 import { catchError, retryWhen, mergeMap, finalize } from 'rxjs/operators';
-import { APP_CONFIG, StorageUtils, NotificationUtils } from '../shared/index';
-import { AuthService } from '../services/auth.service';
+import { APP_CONFIG, StorageUtils, NotificationUtils } from '@shared';
+import { AuthService } from '@app/services/auth.service';
 
 // Request tracking pour éviter les doublons
 const pendingRequests = new Set<string>();

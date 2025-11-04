@@ -7,7 +7,7 @@ import {
   WorkoutIntensity,
   BodyFocus,
   Equipment,
-} from '../shared/index';
+} from '@shared';
 
 export class WorkoutUtils {
   static getWorkoutTypeLabel(type?: WorkoutType): string {

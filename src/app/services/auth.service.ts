@@ -13,7 +13,7 @@ import {
   APP_CONFIG, 
   StorageUtils,
   NotificationUtils
-} from '../shared';
+} from '@shared';
 
 @Injectable({
   providedIn: 'root'

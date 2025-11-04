@@ -7,7 +7,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from './services/auth.service';
 import { ExercisesService } from './services/exercises.service';
-import { NotificationUtils } from './shared/index';
+import { NotificationUtils } from '@shared';
 
 @Component({
   selector: 'app-root',

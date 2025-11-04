@@ -32,7 +32,7 @@ import {
   PROFESSIONAL_DIETS,
   MEAL_TEMPLATES,
   FoodDatabaseService,
-} from '../nutrition/food-database';
+} from '@features/nutrition/food-database';
 
 // ===== INTERFACES POUR LE SERVICE =====
 interface NutritionGoals {
@@ -985,7 +985,7 @@ export class NutritionService {
     limit: number,
     filters?: SearchFilters
   ): Observable<Food[]> {
-    let filtered = FOOD_DATABASE.filter((food) => {
+    let filtered = FOOD_DATABASE.filter((food: Food) => {
       const searchText =
         `${food.name} ${food.nameEn} ${food.description}`.toLowerCase();
       return searchText.includes(query.toLowerCase());
@@ -995,29 +995,29 @@ export class NutritionService {
     if (filters) {
       if (filters.category) {
         filtered = filtered.filter(
-          (food) => food.category === filters.category
+          (food: Food) => food.category === filters.category
         );
       }
       if (filters.verified) {
-        filtered = filtered.filter((food) => food.verified);
+        filtered = filtered.filter((food: Food) => food.verified);
       }
       if (filters.highProtein) {
-        filtered = filtered.filter((food) => food.protein > 15);
+        filtered = filtered.filter((food: Food) => food.protein > 15);
       }
       // CORRECTION: Vérification des undefined avant utilisation
       if (filters.maxCalories !== null && filters.maxCalories !== undefined) {
         filtered = filtered.filter(
-          (food) => food.calories <= filters.maxCalories!
+          (food: Food) => food.calories <= filters.maxCalories!
         );
       }
       if (filters.minProtein !== null && filters.minProtein !== undefined) {
         filtered = filtered.filter(
-          (food) => food.protein >= filters.minProtein!
+          (food: Food) => food.protein >= filters.minProtein!
         );
       }
       if (filters.restrictions && filters.restrictions.length > 0) {
-        filtered = filtered.filter((food) =>
-          filters.restrictions!.some((restriction) =>
+        filtered = filtered.filter((food: Food) =>
+          filters.restrictions!.some((restriction: DietaryRestriction) =>
             food.dietaryRestrictions.includes(restriction)
           )
         );

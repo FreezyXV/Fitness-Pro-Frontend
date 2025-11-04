@@ -20,7 +20,7 @@ import {
   NotificationUtils,
   UserStats, // Added import for UserStats
   BMIInfo, // Added import for BMIInfo
-} from '../shared';
+} from '@shared';
 import { AuthService } from './auth.service';
 
 @Injectable({

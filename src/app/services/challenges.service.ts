@@ -14,7 +14,7 @@ import {
   ActivityData,
   ChallengeFilter,
   ChallengeCategory
-} from '../Interfaces/app.interfaces';
+} from '@shared';
 
 @Injectable({
   providedIn: 'root'

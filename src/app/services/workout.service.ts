@@ -35,7 +35,7 @@ import {
   WorkoutStats,
   ApiResponse,
   WorkoutContext, // Added import for WorkoutContext from app.interfaces.ts
-} from '../shared';
+} from '@shared';
 
 @Injectable({ providedIn: 'root' })
 export class WorkoutService {

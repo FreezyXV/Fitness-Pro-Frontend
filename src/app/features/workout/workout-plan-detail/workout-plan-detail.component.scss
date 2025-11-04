@@ -1,0 +1,2097 @@
+/* Enhanced Workout Plan Detail Component Styles */
+
+// Import design system variables
+@use 'variables' as *;
+@use 'styles' as *;
+
+// Enhanced Mixins
+@mixin enhanced-glass-card($opacity: 0.98, $blur: 28px) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur($blur) saturate(1.8);
+  -webkit-backdrop-filter: blur($blur) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 32px 64px -12px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+@mixin enhanced-hover-lift {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  &:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 
+      0 40px 80px -12px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+}
+
+@mixin enhanced-button($background, $color: white, $size: medium) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: none;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  background: $background;
+  color: $color;
+  
+  @if $size == small {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.8rem;
+  } @else if $size == medium {
+    padding: 1rem 2rem;
+    font-size: 0.9rem;
+  } @else if $size == large {
+    padding: 1.25rem 2.5rem;
+    font-size: 1rem;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.8s ease;
+    transform: skewX(-15deg);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+}
+
+// Enhanced Animations
+@keyframes enhanced-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes enhanced-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.01);
+    opacity: 0.95;
+  }
+}
+
+@keyframes floating-motion {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+@keyframes gradient-animation {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes session-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba($success-color, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba($success-color, 0.5);
+  }
+}
+
+@keyframes button-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 15px 40px rgba($success-color, 0.4), 0 0 0 0 rgba($success-color, 0.7);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 18px 45px rgba($success-color, 0.5), 0 0 0 10px rgba($success-color, 0);
+  }
+}
+
+@keyframes exercise-progress-pulse {
+  0%, 100% {
+    border-color: $warning-color;
+    box-shadow: 0 0 20px rgba($warning-color, 0.2);
+  }
+  50% {
+    border-color: $warning-light;
+    box-shadow: 0 0 30px rgba($warning-color, 0.4);
+  }
+}
+
+@keyframes completed-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba($success-color, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba($success-color, 0.5);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Main Container
+.workout-detail-container {
+  min-height: 100vh;
+  background: $primary-dark;
+width: 100%;
+padding: 1rem;
+  animation: gradient-animation 25s ease infinite;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  // Enhanced background patterns
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    height: 200%;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.08) 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 80px 80px, 40px 40px;
+    animation: floating-motion 35s ease-in-out infinite;
+    opacity: 0.7;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 15%;
+    right: 10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+    border-radius: 50%;
+    animation: gentle-pulse 15s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+  }
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 480px) {
+padding: 0.25rem;
+  }
+}
+
+// Enhanced Content Wrapper
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+
+  @media (max-width: 1400px) {
+    width: 100%;
+    gap: 3.5rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 40px 0;
+    gap: 2.5rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 30px 0;
+    gap: 2rem;
+  }
+}
+
+// Enhanced Hero Section
+.hero-section {
+  @include enhanced-glass-card(0.98, 32px);
+  border-radius: 32px;
+  padding: 4rem;
+  animation: enhanced-slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 2.5rem;
+    border-radius: 24px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 50px 100px -12px rgba(0, 0, 0, 0.12),
+      0 0 0 1px rgba(255, 255, 255, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  // Enhanced Session Progress Banner
+  .session-progress-banner {
+    @include enhanced-glass-card(0.95, 20px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    border: 3px solid rgba($success-color, 0.3);
+    animation: session-pulse 3s ease-in-out infinite;
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      .session-status {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .status-indicator {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          
+          &.active {
+            background: $success-color;
+            box-shadow: 0 0 15px rgba($success-color, 0.5);
+            animation: gentle-pulse 2s ease-in-out infinite;
+          }
+        }
+
+        .status-text {
+          font-weight: 700;
+          color: $success-color;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          font-size: 1rem;
+        }
+      }
+
+      .progress-stats {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.25rem;
+
+        .progress-text {
+          font-weight: 800;
+          color: $success-color;
+          font-size: 1.125rem;
+        }
+
+        .exercise-count {
+          font-size: 0.9rem;
+          color: $gray-600;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .progress-track {
+      height: 8px;
+      background: rgba($success-color, 0.1);
+      border-radius: 6px;
+      overflow: hidden;
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, $success-color, $success-light);
+        border-radius: 6px;
+        transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+          animation: shimmer 2s infinite;
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 1.5rem;
+
+      .progress-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+
+        .progress-stats {
+          align-items: flex-start;
+        }
+      }
+    }
+  }
+
+  // Enhanced Navigation Header
+  .navigation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+
+    .back-button {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 2.5rem;
+      border-radius: 20px;
+      border: none;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(16px);
+      color: $gray-700;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 2px solid rgba($primary-color, 0.15);
+
+      &:hover {
+        color: $primary-color;
+        border-color: rgba($primary-color, 0.3);
+        transform: translateX(-6px);
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 12px 32px rgba($primary-color, 0.15);
+      }
+
+      @media (max-width: 480px) {
+        padding: 1rem 1.5rem;
+        span { display: none; }
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+
+      .action-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(16px);
+        color: $gray-600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        border: 2px solid rgba($gray-300, 0.2);
+
+        &:hover {
+          color: $primary-color;
+          border-color: rgba($primary-color, 0.3);
+          transform: scale(1.1);
+          box-shadow: 0 12px 32px rgba($primary-color, 0.2);
+        }
+
+        &.favorite-btn.active {
+          background: rgba($danger-color, 0.1);
+          border-color: rgba($danger-color, 0.3);
+          color: $danger-color;
+        }
+
+        @media (max-width: 480px) {
+          width: 52px;
+          height: 52px;
+        }
+      }
+    }
+  }
+
+  // Enhanced Plan Meta Section
+  .plan-meta-section {
+    margin-bottom: 2.5rem;
+
+    .meta-badges {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      @media (min-width: 768px) {
+        justify-content: flex-start;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .difficulty-badge,
+      .category-badge,
+      .status-badge {
+        justify-content: center;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        padding: 1.25rem 2.5rem;
+        border-radius: 20px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(16px);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        border: 2px solid transparent;
+
+        &:hover {
+          transform: translateY(-4px) scale(1.05);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .badge-icon {
+          font-size: 1.75rem;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        .badge-text {
+          font-size: 0.9rem;
+        }
+
+        &.session-active {
+          animation: session-pulse 2s ease-in-out infinite;
+        }
+
+        @media (max-width: 480px) {
+          padding: 1rem 2rem;
+          gap: 0.75rem;
+          
+          .badge-icon {
+            font-size: 1.5rem;
+          }
+          .badge-text {
+            font-size: 0.8rem;
+          }
+        }
+      }
+
+      .difficulty-badge {
+        &[data-level="beginner"] {
+          color: $success-color;
+          border-color: rgba($success-color, 0.2);
+          background: rgba($success-color, 0.05);
+        }
+        &[data-level="intermediate"] {
+          color: $warning-color;
+          border-color: rgba($warning-color, 0.2);
+          background: rgba($warning-color, 0.05);
+        }
+        &[data-level="advanced"] {
+          color: $danger-color;
+          border-color: rgba($danger-color, 0.2);
+          background: rgba($danger-color, 0.05);
+        }
+      }
+
+      .category-badge {
+        color: $primary-color;
+        border-color: rgba($primary-color, 0.2);
+        background: rgba($primary-color, 0.05);
+      }
+
+      .status-badge {
+        color: $secondary-color;
+        border-color: rgba($secondary-color, 0.2);
+        background: rgba($secondary-color, 0.05);
+      }
+    }
+  }
+
+  // Enhanced Title Section
+  .title-section {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    @media (min-width: 768px) {
+      text-align: left;
+    }
+
+    .plan-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: $gray-900;
+      margin: 0 0 1.5rem 0;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      background: $gradient-secondary;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: gradient-animation 4s ease infinite;
+    }
+
+    .plan-description {
+      font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+      color: $gray-600;
+      line-height: 1.6;
+      margin: 0;
+      font-weight: 500;
+      max-width: 600px;
+      
+      @media (min-width: 768px) {
+        max-width: none;
+      }
+    }
+  }
+
+  // Enhanced Quick Stats
+  .quick-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+      gap: 1rem;
+    }
+
+    .stat-card {
+      @include enhanced-glass-card(0.95, 20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 1rem;
+      border-radius: 24px;
+      @include enhanced-hover-lift;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid transparent;
+
+      &.session-progress {
+        border-color: rgba($success-color, 0.3);
+        animation: session-pulse 3s ease-in-out infinite;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba($primary-color, 0.1), transparent);
+        transition: left 0.8s ease;
+      }
+
+      &:hover::before {
+        left: 100%;
+      }
+
+      .stat-icon {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+        animation: gentle-pulse 3s ease-in-out infinite;
+      }
+
+      .stat-content {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+
+        .stat-value {
+          display: block;
+          font-size: clamp(1.75rem, 4vw, 2rem);
+          font-weight: 900;
+          color: $gray-900;
+          line-height: 1;
+          margin-bottom: 0.75rem;
+        }
+
+        .stat-label {
+          font-size: clamp(0.8rem, 2vw, 0.9rem);
+          color: $gray-600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          font-weight: 700;
+        }
+      }
+
+      @media (max-width: 768px) {
+        padding: 2rem 1.5rem;
+      }
+    }
+  }
+}
+
+// Enhanced Main Content Layout
+.main-content-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 0.4fr;
+  gap: 4rem;
+  align-items: start;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+// Enhanced Exercises Main Section
+.exercises-main-section {
+  .exercises-card {
+    @include enhanced-glass-card(0.97, 24px);
+    border-radius: 28px;
+    padding: 3rem;
+    animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+
+    @media (max-width: 768px) {
+      padding: 1rem;
+      border-radius: 20px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: clamp(1.5rem, 3vw, 1.75rem);
+        font-weight: 800;
+        color: $gray-900;
+        margin: 0;
+
+        .title-icon {
+          font-size: 2rem;
+          filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        .exercise-counter {
+          font-size: 1.125rem;
+          color: $gray-500;
+          font-weight: 600;
+        }
+      }
+
+      .section-controls {
+        display: flex;
+        gap: 0.75rem;
+
+        .control-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.875rem 1.5rem;
+          border-radius: 16px;
+          border: none;
+          background: rgba(255, 255, 255, 0.95);
+          color: $gray-700;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: 2px solid rgba($gray-300, 0.2);
+
+          &:hover {
+            color: $primary-color;
+            border-color: rgba($primary-color, 0.3);
+            transform: translateY(-2px);
+          }
+
+          &.active {
+            background: $primary-dark;
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 8px 25px rgba($primary-color, 0.3);
+          }
+
+          @media (max-width: 480px) {
+            span { display: none; }
+            padding: 0.875rem;
+          }
+        }
+      }
+    }
+
+    .exercises-content {
+      .exercises-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .exercise-item {
+          @include enhanced-glass-card(0.9, 16px);
+          border-radius: 20px;
+          border: 3px solid transparent;
+          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          overflow: hidden;
+          position: relative;
+
+          // Exercise Status States
+          &.exercise-not-started {
+            border-color: rgba($gray-300, 0.3);
+          }
+
+          &.exercise-in-progress {
+            border-color: $warning-color;
+            background: linear-gradient(135deg, rgba($warning-color, 0.08), rgba($warning-color, 0.03));
+            box-shadow: 0 0 30px rgba($warning-color, 0.2);
+            animation: exercise-progress-pulse 2s ease-in-out infinite;
+          }
+
+          &.exercise-completed {
+            border-color: $success-color;
+            background: linear-gradient(135deg, rgba($success-color, 0.08), rgba($success-color, 0.03));
+            box-shadow: 0 0 30px rgba($success-color, 0.2);
+            animation: completed-glow 3s ease-in-out infinite;
+          }
+
+          &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+          }
+
+          &.expanded {
+            .expand-toggle svg {
+              transform: rotate(180deg);
+            }
+          }
+
+          &.compact {
+            .exercise-header {
+              padding: 1.5rem;
+            }
+          }
+
+          // Enhanced Exercise Header
+          .exercise-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover {
+              background: rgba($primary-color, 0.03);
+            }
+
+            .exercise-number-indicator {
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-shrink: 0;
+
+              .exercise-number {
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 900;
+                font-size: 1.25rem;
+                color: white;
+                background: $secondary-gradient;
+                box-shadow: 0 8px 25px rgba($secondary-color, 0.3);
+                position: relative;
+                z-index: 2;
+              }
+
+              .status-ring {
+                position: absolute;
+                top: -4px;
+                left: -4px;
+                width: 64px;
+                height: 64px;
+                border-radius: 50%;
+                border: 3px solid transparent;
+
+                &.status-not_started {
+                  border-color: rgba($gray-400, 0.3);
+                }
+
+                &.status-in_progress {
+                  border-color: $warning-color;
+                  animation: gentle-pulse 2s ease-in-out infinite;
+                }
+
+                &.status-completed {
+                  border-color: $success-color;
+                  background: rgba($success-color, 0.1);
+                }
+              }
+            }
+
+            .exercise-main-info {
+              flex: 1;
+
+              .exercise-title-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+                gap: 1rem;
+
+                .exercise-name {
+                  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+                  font-weight: 700;
+                  color: $gray-800;
+                  margin: 0;
+                  line-height: 1.3;
+                }
+
+                .exercise-status-badge {
+                  padding: 0.5rem 1rem;
+                  border-radius: 12px;
+                  font-size: 0.8rem;
+                  font-weight: 700;
+                  text-transform: uppercase;
+                  letter-spacing: 0.05em;
+                  white-space: nowrap;
+
+                  &.status-not_started {
+                    background: rgba($gray-400, 0.1);
+                    color: $gray-600;
+                    border: 1px solid rgba($gray-400, 0.2);
+                  }
+
+                  &.status-in_progress {
+                    background: rgba($warning-color, 0.1);
+                    color: $warning-color;
+                    border: 1px solid rgba($warning-color, 0.2);
+                    animation: gentle-pulse 2s ease-in-out infinite;
+                  }
+
+                  &.status-completed {
+                    background: rgba($success-color, 0.1);
+                    color: $success-color;
+                    border: 1px solid rgba($success-color, 0.2);
+                  }
+                }
+              }
+
+              .exercise-quick-stats {
+                display: flex;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                align-items: center;
+
+                .quick-stat {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  font-size: 0.9rem;
+                  color: $gray-600;
+                  font-weight: 600;
+
+                  svg {
+                    color: $primary-color;
+                    flex-shrink: 0;
+                  }
+                }
+
+                .difficulty-indicator {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.5rem;
+                  font-size: 0.9rem;
+                  font-weight: 600;
+
+                  &[data-level="beginner"] { color: $success-color; }
+                  &[data-level="intermediate"] { color: $warning-color; }
+                  &[data-level="advanced"] { color: $danger-color; }
+                }
+              }
+            }
+
+            .expand-toggle {
+              color: $gray-400;
+              flex-shrink: 0;
+
+              svg {
+                transition: transform 0.3s ease;
+              }
+            }
+
+            @media (max-width: 768px) {
+              padding: 1rem;
+              gap: 1.5rem;
+
+              .exercise-number-indicator {
+                .exercise-number {
+                  width: 48px;
+                  height: 48px;
+                  font-size: 1rem;
+                }
+
+                .status-ring {
+                  width: 56px;
+                  height: 56px;
+                  top: -4px;
+                  left: -4px;
+                }
+              }
+
+              .exercise-main-info .exercise-title-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+              }
+            }
+          }
+
+          // Enhanced Exercise Details
+          .exercise-details {
+            padding: 0 2.5rem 2.5rem;
+            border-top: 2px solid rgba($gray-200, 0.3);
+
+            @media (max-width: 768px) {
+              padding: 0 2rem 2rem;
+            }
+
+            > * {
+              margin-bottom: 2rem;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+
+            .detail-section-title {
+              display: flex;
+              align-items: center;
+              gap: 0.75rem;
+              font-size: 1.125rem;
+              font-weight: 700;
+              color: $gray-800;
+              margin: 0 0 1rem 0;
+
+              .section-icon {
+                font-size: 1.25rem;
+              }
+            }
+
+            .exercise-description {
+              .description-text {
+                color: $gray-700;
+                line-height: 1.6;
+                margin: 0;
+                font-size: 1rem;
+              }
+            }
+
+            .exercise-configuration {
+              .config-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 1.5rem;
+
+                .config-item {
+                  display: flex;
+                  align-items: center;
+                  gap: 1rem;
+                  padding: 1.5rem;
+                  background: rgba(255, 255, 255, 0.9);
+                  border-radius: 16px;
+                  border: 2px solid rgba($primary-color, 0.1);
+                  transition: all 0.3s ease;
+
+                  &:hover {
+                    border-color: rgba($primary-color, 0.2);
+                    transform: scale(1.02);
+                  }
+
+                  .config-icon {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.125rem;
+                    background: $info-gradient;
+                    color: white;
+                    flex-shrink: 0;
+                  }
+
+                  .config-info {
+                    flex: 1;
+
+                    .config-label {
+                      display: block;
+                      color: $gray-600;
+                      font-size: 0.8rem;
+                      font-weight: 600;
+                      text-transform: uppercase;
+                      letter-spacing: 0.05em;
+                      margin-bottom: 0.25rem;
+                    }
+
+                    .config-value {
+                      display: block;
+                      color: $gray-800;
+                      font-weight: 800;
+                      font-size: 1.125rem;
+                    }
+                  }
+                }
+              }
+            }
+
+            .exercise-meta-details {
+              .meta-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+
+                .meta-item {
+                  display: flex;
+                  align-items: center;
+                  gap: 1rem;
+                  padding: 1.25rem;
+                  background: rgba(255, 255, 255, 0.8);
+                  border-radius: 12px;
+
+                  .meta-icon {
+                    font-size: 1.25rem;
+                    color: $secondary-color;
+                  }
+
+                  .meta-content {
+                    .meta-label {
+                      display: block;
+                      color: $gray-600;
+                      font-size: 0.8rem;
+                      font-weight: 600;
+                      margin-bottom: 0.25rem;
+                    }
+
+                    .meta-value {
+                      display: block;
+                      color: $gray-800;
+                      font-weight: 700;
+                      font-size: 1rem;
+                    }
+                  }
+                }
+              }
+
+              .muscle-groups {
+                .muscle-groups-header {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  margin-bottom: 1rem;
+
+                  .meta-icon {
+                    font-size: 1.25rem;
+                    color: $secondary-color;
+                  }
+
+                  .meta-label {
+                    color: $gray-600;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                  }
+                }
+
+                .muscle-tags {
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 0.75rem;
+
+                  .muscle-tag {
+                    padding: 0.5rem 1rem;
+                    background: rgba($primary-color, 0.1);
+                    color: $primary-color;
+                    border-radius: 12px;
+                    font-size: 0.8rem;
+                    font-weight: 600;
+                    border: 1px solid rgba($primary-color, 0.2);
+                  }
+                }
+              }
+            }
+
+            .exercise-notes {
+              .notes-text {
+                color: $gray-700;
+                line-height: 1.6;
+                margin: 0;
+                font-style: italic;
+                padding: 1rem;
+                background: rgba($info-color, 0.05);
+                border-left: 4px solid $info-color;
+                border-radius: 0 8px 8px 0;
+              }
+            }
+
+            // Enhanced Exercise Actions
+            .exercise-actions {
+              display: flex;
+              gap: 1rem;
+              flex-wrap: wrap;
+              align-items: center;
+
+              .action-btn {
+                @include enhanced-button(rgba(255, 255, 255, 0.95), $gray-700, small);
+                border: 2px solid rgba($gray-300, 0.3);
+
+                &.view-details {
+                  @include enhanced-button(rgba($info-color, 0.1), $info-color, small);
+                  border: 2px solid rgba($info-color, 0.2);
+                }
+
+                &.start-exercise {
+                  @include enhanced-button($primary-dark, white, small);
+                  border: none;
+                }
+
+                &.complete-exercise {
+                  @include enhanced-button($gradient-success, white, small);
+                  border: none;
+                }
+
+                &.pause-exercise {
+                  @include enhanced-button($gradient-warning, white, small);
+                  border: none;
+                }
+
+                &.reset-exercise {
+                  @include enhanced-button(rgba($gray-500, 0.1), $gray-700, small);
+                  border: 2px solid rgba($gray-500, 0.2);
+                }
+
+                &:disabled {
+                  opacity: 0.5;
+                  cursor: not-allowed;
+                  transform: none !important;
+                }
+              }
+
+              .completion-badge {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.5rem;
+                background: rgba($success-color, 0.1);
+                color: $success-color;
+                border-radius: 12px;
+                font-weight: 700;
+                border: 2px solid rgba($success-color, 0.2);
+                animation: completed-glow 3s ease-in-out infinite;
+              }
+            }
+          }
+        }
+      }
+
+      // No Exercises Placeholder
+      .no-exercises-placeholder {
+        text-align: center;
+        padding: 4rem 2rem;
+
+        .no-exercises-content {
+          .no-exercises-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            animation: floating-motion 4s ease-in-out infinite;
+          }
+
+          .no-exercises-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: $gray-700;
+            margin-bottom: 1rem;
+          }
+
+          .no-exercises-description {
+            color: $gray-600;
+            margin-bottom: 2rem;
+            font-size: 1.125rem;
+            line-height: 1.6;
+          }
+
+          .btn {
+            @include enhanced-button($primary-dark, white, medium);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Secondary Content
+.secondary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+// Enhanced Info Card
+.info-card {
+  @include enhanced-glass-card(0.95, 20px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+  @include enhanced-hover-lift;
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+  }
+
+  .card-header {
+    margin-bottom: 2rem;
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: $gray-900;
+      margin: 0;
+
+      .title-icon {
+        font-size: 1.5rem;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+      }
+    }
+  }
+
+  .info-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid transparent;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        border-color: rgba($primary-color, 0.2);
+        transform: scale(1.02);
+        box-shadow: 0 10px 30px rgba($primary-color, 0.15);
+      }
+
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.375rem;
+        background: $secondary-gradient;
+        color: white;
+        box-shadow: 0 6px 20px rgba($secondary-color, 0.3);
+        flex-shrink: 0;
+      }
+
+      .info-text {
+        flex: 1;
+
+        .info-label {
+          display: block;
+          color: $gray-600;
+          font-size: 0.8rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+          display: block;
+          color: $gray-800;
+          font-weight: 700;
+          font-size: 1.125rem;
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Workout Overview Card
+.workout-overview-card {
+  @include enhanced-glass-card(0.95, 20px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+  @include enhanced-hover-lift;
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+  }
+
+  .card-header {
+    margin-bottom: 2rem;
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: $gray-900;
+      margin: 0;
+
+      .title-icon {
+        font-size: 1.5rem;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+      }
+    }
+  }
+
+  .overview-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .overview-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid transparent;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+      &:hover {
+        border-color: rgba($primary-color, 0.2);
+        transform: scale(1.02);
+        box-shadow: 0 10px 30px rgba($primary-color, 0.15);
+      }
+
+      .overview-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        background: $primary-gradient;
+        color: white;
+        box-shadow: 0 6px 20px rgba($primary-color, 0.3);
+        flex-shrink: 0;
+      }
+
+      .overview-content {
+        flex: 1;
+
+        .overview-label {
+          display: block;
+          color: $gray-600;
+          font-size: 0.8rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 0.5rem;
+        }
+
+        .overview-value {
+          display: block;
+          color: $gray-800;
+          font-weight: 700;
+          font-size: 1.125rem;
+          text-transform: capitalize;
+        }
+      }
+
+      // Specific styling for different overview types
+      &:nth-child(1) .overview-icon {
+        background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+      }
+      
+      &:nth-child(2) .overview-icon {
+        background: linear-gradient(135deg, #4ECDC4, #44E6DC);
+      }
+      
+      &:nth-child(3) .overview-icon {
+        background: linear-gradient(135deg, #45B7D1, #66D9EF);
+      }
+      
+      &:nth-child(4) .overview-icon {
+        background: linear-gradient(135deg, #96CEB4, #85E6A3);
+      }
+      
+      &:nth-child(5) .overview-icon {
+        background: linear-gradient(135deg, #FFEAA7, #FDCB6E);
+      }
+      
+      &:nth-child(6) .overview-icon {
+        background: linear-gradient(135deg, #DDA0DD, #E6B8E6);
+      }
+    }
+  }
+}
+
+// Enhanced Progress Card
+.progress-card {
+  @include enhanced-glass-card(0.95, 20px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+  @include enhanced-hover-lift;
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+  }
+
+  .card-header {
+    margin-bottom: 2rem;
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: $gray-900;
+      margin: 0;
+
+      .title-icon {
+        font-size: 1.5rem;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+      }
+    }
+  }
+
+  .progress-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    .progress-stat {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem;
+      background: rgba($success-color, 0.05);
+      border-radius: 16px;
+      border: 2px solid rgba($success-color, 0.1);
+
+      .stat-icon {
+        font-size: 1.5rem;
+        color: $success-color;
+      }
+
+      .stat-info {
+        .stat-value {
+          display: block;
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: $success-color;
+          line-height: 1;
+        }
+
+        .stat-label {
+          font-size: 0.8rem;
+          color: $gray-600;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .recent-sessions {
+    .sessions-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: $gray-800;
+      margin-bottom: 1rem;
+    }
+
+    .session-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .session-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 12px;
+        border: 1px solid rgba($gray-200, 0.3);
+
+        .session-status {
+          font-size: 1.25rem;
+          flex-shrink: 0;
+
+          &.status-completed {
+            filter: drop-shadow(0 0 4px rgba($success-color, 0.5));
+          }
+
+          &.status-in_progress {
+            filter: drop-shadow(0 0 4px rgba($warning-color, 0.5));
+          }
+
+          &.status-cancelled {
+            filter: drop-shadow(0 0 4px rgba($danger-color, 0.5));
+          }
+        }
+
+        .session-info {
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .session-date {
+            font-size: 0.9rem;
+            color: $gray-600;
+            font-weight: 500;
+          }
+
+          .session-duration {
+            font-size: 0.8rem;
+            color: $gray-800;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Floating Action Bar
+.floating-action-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(32px);
+  border-top: 3px solid rgba(255, 255, 255, 0.2);
+  border-radius: 32px 32px 32px 32px;
+  padding: 2.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+    border-radius: 20px 20px 20px 20px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      gap: 1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 480px) {
+
+      display: grid;
+      grid-template-columns: 1fr ;
+    }
+
+    // Enhanced Primary Session Button
+    .primary-action-btn,
+    .action-btn.primary.large {
+      @include enhanced-button($secondary-gradient, white, large);
+      box-shadow: 0 15px 40px rgba($secondary-color, 0.4);
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+
+      &:not(.success.active) {
+        background-size: 200% 200%;
+        animation: gradient-animation 10s ease infinite;
+      }
+
+      &:hover {
+        box-shadow: 0 20px 50px rgba($secondary-color, 0.5);
+        transform: translateY(-3px) scale(1.02);
+      }
+
+      &.loading {
+        opacity: 0.8;
+
+        .spinning {
+          animation: spin 1s linear infinite;
+        }
+      }
+
+      // Enhanced Session Active State
+      &.success.active {
+        background: linear-gradient(135deg,
+          rgba($success-color, 0.95),
+          rgba($success-light, 0.95),
+          rgba($success-color, 0.95));
+        background-size: 300% 300%;
+        box-shadow:
+          0 15px 40px rgba($success-color, 0.4),
+          0 0 0 4px rgba($success-color, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        animation: session-active-pulse 3s ease-in-out infinite, gradient-animation 8s ease infinite;
+        border: 3px solid rgba($success-color, 0.3);
+
+        // Enhanced glow effect
+        &::before {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: linear-gradient(45deg,
+            transparent,
+            rgba($success-color, 0.4),
+            transparent,
+            rgba($success-light, 0.4),
+            transparent);
+          border-radius: inherit;
+          z-index: -1;
+          animation: session-border-glow 4s linear infinite;
+        }
+
+        // Success icon animation
+        .btn-icon svg {
+          animation: success-bounce 2s ease-in-out infinite;
+        }
+
+        &:hover {
+          transform: translateY(-4px) scale(1.03);
+          box-shadow:
+            0 25px 60px rgba($success-color, 0.6),
+            0 0 0 6px rgba($success-color, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+
+    .secondary-action-btn {
+      @include enhanced-button(rgba($info-color, 0.1), $info-color, medium);
+      border: 3px solid rgba($info-color, 0.2);
+
+      &:hover {
+        background: rgba($info-color, 0.15);
+        border-color: rgba($info-color, 0.4);
+      }
+    }
+
+    .completion-action-btn {
+      @include enhanced-button($success-gradient, white, medium);
+      box-shadow: 0 12px 30px rgba($success-color, 0.4);
+
+      &:hover {
+        box-shadow: 0 15px 40px rgba($success-color, 0.5);
+      }
+    }
+
+    .tertiary-action-btn {
+      @include enhanced-button(rgba($gray-500, 0.1), $gray-700, medium);
+      border: 3px solid rgba($gray-300, 0.3);
+
+      &:hover {
+        background: rgba($gray-100, 0.8);
+        border-color: rgba($gray-400, 0.5);
+      }
+    }
+
+    .edit-action-btn {
+      @include enhanced-button(rgba($warning-color, 0.1), $warning-color, medium);
+      border: 3px solid rgba($warning-color, 0.2);
+
+      &:hover {
+        background: rgba($warning-color, 0.15);
+        border-color: rgba($warning-color, 0.4);
+      }
+    }
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      gap: 1rem;
+
+      .primary-action-btn,
+      .secondary-action-btn,
+      .completion-action-btn,
+      .tertiary-action-btn,
+      .edit-action-btn {
+        width: 100%;
+        justify-content: center;
+
+        .btn-text {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Enhanced Loading States
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $primary-dark;
+  background-size: 400% 400%;
+  animation: gradient-animation 20s ease infinite;
+  padding: 3rem;
+
+  .loading-content {
+    @include enhanced-glass-card(0.98, 32px);
+    border-radius: 28px;
+    padding: 4rem;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+
+    .loading-animation {
+      margin-bottom: 2rem;
+
+      .loading-spinner {
+        width: 80px;
+        height: 80px;
+        border: 6px solid rgba($primary-color, 0.2);
+        border-top: 6px solid $primary-color;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 2rem;
+      }
+    }
+
+    .loading-text {
+      font-size: 1.375rem;
+      font-weight: 800;
+      color: $gray-900;
+      margin-bottom: 2rem;
+    }
+
+    .loading-progress {
+      position: relative;
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba($gray-200, 0.8);
+      overflow: hidden;
+      margin: 2rem 0;
+
+      .progress-track {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba($gray-200, 0.8);
+        border-radius: 4px;
+      }
+
+      .progress-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: $gradient-secondary;
+        border-radius: 4px;
+        transition: width 0.3s ease;
+      }
+
+      .progress-text {
+        position: absolute;
+        top: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: $gray-700;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+// Enhanced Error States
+.error-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $primary-dark;
+  background-size: 400% 400%;
+  animation: gradient-animation 20s ease infinite;
+  padding: 3rem;
+
+  .error-content {
+    @include enhanced-glass-card(0.98, 32px);
+    border-radius: 28px;
+    padding: 4rem;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+
+    .error-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin: 0 auto 2rem;
+      background: $danger-gradient;
+      color: white;
+      box-shadow: 0 15px 40px rgba($danger-color, 0.4);
+    }
+
+    .error-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: $gray-900;
+      margin-bottom: 1rem;
+    }
+
+    .error-message {
+      color: $gray-600;
+      margin-bottom: 3rem;
+      line-height: 1.6;
+      font-size: 1.125rem;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      .btn {
+        @include enhanced-button($primary-dark, white, medium);
+
+        &.btn-secondary {
+          @include enhanced-button(rgba(255, 255, 255, 0.95), $gray-700, medium);
+          border: 2px solid rgba($gray-300, 0.3);
+        }
+      }
+
+      @media (max-width: 480px) {
+        flex-direction: column;
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+// Shimmer effect for progress bars
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+// Enhanced Session Button Animations
+@keyframes session-active-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      0 15px 40px rgba($success-color, 0.4),
+      0 0 0 4px rgba($success-color, 0.1);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow:
+      0 20px 50px rgba($success-color, 0.6),
+      0 0 0 8px rgba($success-color, 0.2);
+  }
+}
+
+@keyframes session-border-glow {
+  0%, 100% {
+    background: linear-gradient(45deg,
+      transparent,
+      rgba($success-color, 0.4),
+      transparent,
+      rgba($success-light, 0.4),
+      transparent);
+  }
+  25% {
+    background: linear-gradient(45deg,
+      rgba($success-light, 0.3),
+      transparent,
+      rgba($success-color, 0.5),
+      transparent,
+      rgba($success-light, 0.3));
+  }
+  50% {
+    background: linear-gradient(45deg,
+      transparent,
+      rgba($success-light, 0.5),
+      transparent,
+      rgba($success-color, 0.3),
+      transparent);
+  }
+  75% {
+    background: linear-gradient(45deg,
+      rgba($success-color, 0.3),
+      transparent,
+      rgba($success-light, 0.4),
+      transparent,
+      rgba($success-color, 0.3));
+  }
+}
+
+@keyframes success-bounce {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotate(-5deg);
+  }
+  50% {
+    transform: scale(1.15) rotate(5deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(-2deg);
+  }
+}
+
+// Accessibility & Reduced Motion
+@media (prefers-reduced-motion: reduce) {
+  .workout-detail-container {
+    &::before,
+    &::after {
+      animation: none;
+    }
+
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+
+  }
+}
+
+// High Contrast Mode
+@media (prefers-contrast: high) {
+  .exercises-card,
+  .info-card,
+  .muscles-card,
+  .progress-card {
+    border: 3px solid $gray-700;
+  }
+}
+
+// Print Styles
+@media print {
+  .floating-action-bar,
+  .session-progress-banner {
+    display: none !important;
+  }
+}

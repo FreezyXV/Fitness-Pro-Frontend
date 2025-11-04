@@ -342,7 +342,7 @@
 body {
   margin: 0 !important;
   padding: 0 !important;
-  background: var(--gradient-multi) !important;
+  background: #21bf73 !important;
 
   background-repeat: no-repeat;
   background-attachment: fixed; /* facultatif : effet fluide lors du scroll */
@@ -390,7 +390,7 @@ html {
 // Modern Design System Variables
 :root {
   // Color Palette
-    --gradient-multi: linear-gradient(135deg, #059669 0%, #21bf73 50%, #2563eb 100%);
+    --gradient-multi: #21bf73;
   
   --primary-gradient: linear-gradient(135deg, #21BF73 0%, #00B5AD 50%, #21BF73 100%);
   --secondary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -401,7 +401,7 @@ html {
 
   // Core Colors
   --primary-color: #21BF73;
-  --primary-dark: #1da460;
+  --primary-dark: #21bf73;
   --secondary-color: #00B5AD;
   --accent-color: #667eea;
 
@@ -461,7 +461,7 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
   color: var(--gray-700);
-  background: var(--gradient-multi) !important;
+  background: #21bf73 !important;
 
   background-attachment: fixed; /* facultatif : effet fluide lors du scroll */
   background-size: cover;
@@ -478,8 +478,13 @@ body {
   }
 
   &.fitnesspro-theme {
-    background: var(--gradient-multi) !important;
+    background: linear-gradient(135deg, #059669 0%, #21bf73 50%, #2563eb 100%) !important;
   }
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 // Typography System
@@ -1306,7 +1311,7 @@ a {
 .bg-success { background: $success-color !important; }
 .bg-warning { background: $warning-color !important; }
 .bg-danger { background: $danger-color !important; }
-.bg-gradient-primary { background: $primary-dark #1da460 !important; }
+.bg-gradient-primary { background: $primary-dark #21bf73!important; }
 .bg-gradient-secondary { background: $gradient-secondary !important; }
 
 // Text Utilities
@@ -1432,7 +1437,7 @@ a {
 html,
 body,
 app-root {
-  background: var(--gradient-multi) !important;
+  background: #21bf73 !important;
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
   background-size: cover !important;
