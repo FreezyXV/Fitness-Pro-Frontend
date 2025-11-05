@@ -1,9 +1,5 @@
 # 🏋️ FitnessPro Frontend - Complete & Educational Documentation
 
-> **Complete guide to understand the architecture, operation, and development of the FitnessPro Angular frontend**
->
-> This documentation is designed to be **accessible to everyone**, from beginners to experienced developers.
-
 ---
 
 ## 📚 Table of Contents
