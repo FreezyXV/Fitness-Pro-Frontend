@@ -2683,15 +2683,9 @@ You now have a complete understanding of the FitnessPro frontend!
 - ✅ Cohesive design system
 - ✅ Angular best practices
 
-**Next steps:**
-1. Explore the source code
-2. Create your first components
-3. Experiment with services
-4. Contribute to the project!
-
 ---
 
 **Version:** 2.1.0
 **Last updated:** November 2025
-**Author:** Yoan Petrov
+**Author:** Ivan Petrov
 
