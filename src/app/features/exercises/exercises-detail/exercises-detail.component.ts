@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { Subject, takeUntil, timer, interval, fromEvent, of, BehaviorSubject } from 'rxjs';
 import { map, switchMap, catchError, retry, delay, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { Exercise, ExerciseFilters, APP_CONFIG, NotificationUtils, WorkoutUtils, StorageUtils } from '@shared';
+import { Exercise, ExerciseFilters, APP_CONFIG,  WorkoutUtils, StorageUtils } from '@shared';
 import { ExercisesService } from '@app/services/exercises.service';
 
 interface UIState {
@@ -730,7 +730,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
       }
     }
     
-    NotificationUtils.info('🔄 Rechargement de la vidéo...');
+    console.info('🔄 Rechargement de la vidéo...');
   }
 
   showVideoControls(): void {
@@ -883,13 +883,13 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
       catchError(error => {
         console.error('❌ Error toggling favorite:', error);
         this.isFavorite = wasFavorite;
-        NotificationUtils.error('❌ Erreur lors de la mise à jour des favoris');
+        console.error('❌ Erreur lors de la mise à jour des favoris');
         return of(wasFavorite);
       })
     ).subscribe({
       next: (isFavorite) => {
         this.isFavorite = isFavorite;
-        NotificationUtils.success(
+        console.log(
           isFavorite ? '❤️ Ajouté aux favoris' : '💔 Retiré des favoris'
         );
       }
@@ -907,13 +907,13 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
 
     if (navigator.share && navigator.canShare?.(shareData)) {
       navigator.share(shareData).then(() => {
-        NotificationUtils.success('📤 Exercice partagé avec succès');
+        console.log('📤 Exercice partagé avec succès');
       }).catch(console.error);
     } else {
       navigator.clipboard.writeText(shareData.url).then(() => {
-        NotificationUtils.success('📋 Lien copié dans le presse-papier');
+        console.log('📋 Lien copié dans le presse-papier');
       }).catch(() => {
-        NotificationUtils.error('❌ Erreur lors de la copie');
+        console.error('❌ Erreur lors de la copie');
       });
     }
   }
@@ -934,7 +934,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
     
     StorageUtils.setItem('current_workout_session', workoutSession);
     
-    NotificationUtils.success('🏃‍♂️ Session d\'entraînement démarrée !');
+    console.log('🏃‍♂️ Session d\'entraînement démarrée !');
     
     // Naviguer vers la page workouts existante avec l'exercice en cours
     this.router.navigate(['/workouts'], {
@@ -957,9 +957,9 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
     if (existingIndex === -1) {
       savedExercises.push(this.exercise);
       StorageUtils.setItem('workout_exercises', savedExercises);
-      NotificationUtils.success('✅ Exercice ajouté à votre séance en cours');
+      console.log('✅ Exercice ajouté à votre séance en cours');
     } else {
-      NotificationUtils.info('ℹ️ Cet exercice est déjà dans votre séance');
+      console.info('ℹ️ Cet exercice est déjà dans votre séance');
     }
   }
 
@@ -982,7 +982,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
     savedPlans.push(defaultPlan);
     StorageUtils.setItem('workout_plans', savedPlans);
     
-    NotificationUtils.success('✅ Plan d\'entraînement créé avec cet exercice');
+    console.log('✅ Plan d\'entraînement créé avec cet exercice');
     
     // Optionnel : naviguer vers create-workout pour éditer le plan
     setTimeout(() => {
@@ -1021,7 +1021,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
       
       StorageUtils.setItem('custom_timer_session', timerSession);
       
-      NotificationUtils.success(`⏱️ Timer de ${timerMinutes} minutes configuré !`);
+      console.log(`⏱️ Timer de ${timerMinutes} minutes configuré !`);
       
       // Naviguer vers workouts avec le timer personnalisé
       this.router.navigate(['/workouts'], {
@@ -1032,7 +1032,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
         }
       });
     } else if (duration !== null) {
-      NotificationUtils.error('❌ Durée invalide. Veuillez entrer un nombre en minutes.');
+      console.error('❌ Durée invalide. Veuillez entrer un nombre en minutes.');
     }
   }
 
@@ -1049,7 +1049,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
     link.click();
     
     URL.revokeObjectURL(url);
-    NotificationUtils.success('📄 Guide de l\'exercice téléchargé');
+    console.log('📄 Guide de l\'exercice téléchargé');
   }
 
   navigateToExercise(exerciseId: number): void {

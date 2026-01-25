@@ -109,23 +109,6 @@ const STATUS_CONFIG = {
 };
 
 // Utility classes (simplified for standalone component)
-class NotificationUtils {
-  static success(message: string): void {
-    console.log('✅ SUCCESS:', message);
-  }
-  
-  static error(message: string): void {
-    console.error('❌ ERROR:', message);
-  }
-  
-  static info(message: string): void {
-    console.info('ℹ️ INFO:', message);
-  }
-  
-  static warning(message: string): void {
-    console.warn('⚠️ WARNING:', message);
-  }
-}
 
 class DateUtils {
   static formatDate(date: Date | string): string {
@@ -773,7 +756,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
         if (challenge.currentProgress >= challenge.target) {
           challenge.status = 'completed';
           challenge.isCompleted = true;
-          NotificationUtils.success(`🎉 Félicitations ! Défi "${challenge.title}" terminé !`);
+          console.log(`🎉 Félicitations ! Défi "${challenge.title}" terminé !`);
         }
       }
 
@@ -908,7 +891,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     this.searchSubject.next('');
     this.applyFilters();
     this.saveFiltersToStorage();
-    NotificationUtils.info('Filtres réinitialisés');
+    console.info('Filtres réinitialisés');
   }
 
   private applyFilters(): void {
@@ -975,7 +958,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     
     // Check if max participants reached
     if (challenge.maxParticipants && challenge.participants >= challenge.maxParticipants) {
-      NotificationUtils.warning('⚠️ Ce défi a atteint sa capacité maximale');
+      console.warn('⚠️ Ce défi a atteint sa capacité maximale');
       return;
     }
     
@@ -995,7 +978,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     
     this.calculateStats();
     this.applyFilters();
-    NotificationUtils.success(`🚀 Vous avez rejoint le défi "${challenge.title}" !`);
+    console.log(`🚀 Vous avez rejoint le défi "${challenge.title}" !`);
   }
 
   leaveChallenge(challenge: EnhancedChallenge): void {
@@ -1016,7 +999,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     
     this.calculateStats();
     this.applyFilters();
-    NotificationUtils.info('💔 Vous avez quitté le défi');
+    console.info('💔 Vous avez quitté le défi');
   }
 
   updateChallengeProgress(challenge: EnhancedChallenge, increment: number = 1): void {
@@ -1042,7 +1025,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
       if (userData) {
         userData.status = 'completed';
       }
-      NotificationUtils.success(`🎉 Incroyable ! Vous avez terminé le défi "${challenge.title}" !`);
+      console.log(`🎉 Incroyable ! Vous avez terminé le défi "${challenge.title}" !`);
     }
     
     this.calculateStats();
@@ -1058,13 +1041,13 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     
     if (navigator.share && navigator.canShare?.(shareData)) {
       navigator.share(shareData)
-        .then(() => NotificationUtils.success('📤 Défi partagé avec succès !'))
+        .then(() => console.log('📤 Défi partagé avec succès !'))
         .catch(console.error);
     } else {
       // Fallback to clipboard
       navigator.clipboard.writeText(shareData.url)
-        .then(() => NotificationUtils.success('🔗 Lien copié dans le presse-papier !'))
-        .catch(() => NotificationUtils.error('❌ Erreur lors de la copie du lien'));
+        .then(() => console.log('🔗 Lien copié dans le presse-papier !'))
+        .catch(() => console.error('❌ Erreur lors de la copie du lien'));
     }
   }
 
@@ -1146,7 +1129,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
   saveChallenge(): void {
     if (this.challengeForm.invalid) {
       this.markFormGroupTouched();
-      NotificationUtils.error('❌ Veuillez corriger les erreurs dans le formulaire');
+      console.error('❌ Veuillez corriger les erreurs dans le formulaire');
       return;
     }
 
@@ -1158,7 +1141,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     const endDate = new Date(formValue.endDate);
     
     if (endDate <= startDate) {
-      NotificationUtils.error('❌ La date de fin doit être postérieure à la date de début');
+      console.error('❌ La date de fin doit être postérieure à la date de début');
       this.isCreating = false;
       return;
     }
@@ -1170,10 +1153,10 @@ export class ChallengesComponent implements OnInit, OnDestroy {
         this.applyFilters();
         this.isCreating = false;
         this.closeCreateModal();
-        NotificationUtils.success('✨ Défi créé avec succès ! Vous êtes automatiquement inscrit.');
+        console.log('✨ Défi créé avec succès ! Vous êtes automatiquement inscrit.');
       },
       error: (err) => {
-        NotificationUtils.error(`❌ Erreur lors de la création du défi: ${err.message}`);
+        console.error(`❌ Erreur lors de la création du défi: ${err.message}`);
         this.isCreating = false;
       }
     });

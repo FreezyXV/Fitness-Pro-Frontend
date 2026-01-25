@@ -11,7 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { NotificationUtils, APP_CONFIG, StorageUtils } from '@shared';
+import { APP_CONFIG, StorageUtils } from '@shared';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -104,9 +104,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
     }
 
-    // Show notification for non-silent endpoints
+    // Log error for non-silent endpoints
     if (!this.isSilentEndpoint(request.url)) {
-      NotificationUtils.error(errorMessage);
+      console.error(errorMessage);
     }
   }
 

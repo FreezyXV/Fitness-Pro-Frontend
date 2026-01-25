@@ -5,17 +5,16 @@
 
 // Enhanced glassmorphism effects (same as dashboard)
 @mixin glass-card($opacity: 0.95) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.05);
+  background: rgba($surface-secondary, $opacity);
+  border: $border-width solid $border-color;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 @mixin glass-card-dark($opacity: 0.1) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba($surface-tertiary, $opacity + 0.2);
+  border: $border-width solid $border-color;
+  backdrop-filter: none;
 }
 
 // Animations (same as dashboard)
@@ -150,7 +149,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.1),
+      rgba($surface-secondary, 0.1),
       transparent
     );
     transition: left 0.6s;
@@ -161,7 +160,7 @@
   &:hover {
     transform: translateY(-4px) scale(1.01);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-    border-color: rgba(33, 191, 115, 0.2);
+    border-color: $border-width solid $border-color;
 
     &::before {
       opacity: 0.6;
@@ -183,7 +182,7 @@
   }
 
   &.custom-template {
-    border-color: rgba(102, 126, 234, 0.4);
+    border-color: $border-width solid $border-color;
 
     &::before {
       background: radial-gradient(
@@ -195,7 +194,7 @@
   }
 
   &.public-template {
-    border-color: rgba(0, 181, 173, 0.4);
+    border-color: $border-width solid $border-color;
 
     &::before {
       background: radial-gradient(
@@ -207,7 +206,7 @@
   }
 
   &.active-template {
-    border-color: rgba(34, 197, 94, 0.4);
+    border-color: $border-width solid $border-color;
 
     &::before {
       background: radial-gradient(
@@ -289,7 +288,7 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem 1.25rem;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba($surface-secondary, 0.95);
       backdrop-filter: blur(20px);
       border-radius: 25px;
       font-size: 0.9rem;
@@ -311,7 +310,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.3),
+          rgba($surface-secondary, 0.3),
           transparent
         );
         transition: left 0.6s;
@@ -319,7 +318,7 @@
 
       &:hover {
         transform: scale(1.05);
-        background: white;
+        background: $surface-secondary;
 
         &::before {
           left: 100%;
@@ -334,47 +333,47 @@
       // Dynamic colors based on category
       &[data-category="strength"] {
         color: #dc2626;
-        border: 2px solid rgba(220, 38, 38, 0.2);
+        border: $border-width solid $border-color;
 
         &:hover {
           background: rgba(220, 38, 38, 0.1);
-          border-color: rgba(220, 38, 38, 0.4);
+          border-color: $border-width solid $border-color;
         }
       }
       &[data-category="cardio"] {
         color: #ea580c;
-        border: 2px solid rgba(234, 88, 12, 0.2);
+        border: $border-width solid $border-color;
 
         &:hover {
           background: rgba(234, 88, 12, 0.1);
-          border-color: rgba(234, 88, 12, 0.4);
+          border-color: $border-width solid $border-color;
         }
       }
       &[data-category="flexibility"] {
         color: #7c3aed;
-        border: 2px solid rgba(124, 58, 237, 0.2);
+        border: $border-width solid $border-color;
 
         &:hover {
           background: rgba(124, 58, 237, 0.1);
-          border-color: rgba(124, 58, 237, 0.4);
+          border-color: $border-width solid $border-color;
         }
       }
       &[data-category="yoga"] {
         color: #059669;
-        border: 2px solid rgba(5, 150, 105, 0.2);
+        border: $border-width solid $border-color;
 
         &:hover {
           background: rgba(5, 150, 105, 0.1);
-          border-color: rgba(5, 150, 105, 0.4);
+          border-color: $border-width solid $border-color;
         }
       }
       &[data-category="hiit"] {
         color: #c2410c;
-        border: 2px solid rgba(194, 65, 12, 0.2);
+        border: $border-width solid $border-color;
 
         &:hover {
           background: rgba(194, 65, 12, 0.1);
-          border-color: rgba(194, 65, 12, 0.4);
+          border-color: $border-width solid $border-color;
         }
       }
     }
@@ -466,8 +465,8 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.75rem 1.25rem;
-        background: rgba(255, 255, 255, 0.8);
-        border: 2px solid transparent;
+        background: rgba($surface-secondary, 0.8);
+        border: $border-width solid $border-color;
         border-radius: 25px;
         font-size: 0.9rem;
         font-weight: 800;
@@ -487,7 +486,7 @@
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.3),
+            rgba($surface-secondary, 0.3),
             transparent
           );
           transition: left 0.6s;
@@ -495,7 +494,7 @@
 
         &:hover {
           transform: scale(1.05);
-          background: white;
+          background: $surface-secondary;
 
           &::before {
             left: 100%;
@@ -509,31 +508,31 @@
 
         &[data-level="beginner"] {
           color: #16a34a;
-          border-color: rgba(22, 163, 74, 0.2);
+          border-color: $border-width solid $border-color;
 
           &:hover {
             background: rgba(22, 163, 74, 0.1);
-            border-color: rgba(22, 163, 74, 0.4);
+            border-color: $border-width solid $border-color;
           }
         }
 
         &[data-level="intermediate"] {
           color: #ea580c;
-          border-color: rgba(234, 88, 12, 0.2);
+          border-color: $border-width solid $border-color;
 
           &:hover {
             background: rgba(234, 88, 12, 0.1);
-            border-color: rgba(234, 88, 12, 0.4);
+            border-color: $border-width solid $border-color;
           }
         }
 
         &[data-level="advanced"] {
           color: #dc2626;
-          border-color: rgba(220, 38, 38, 0.2);
+          border-color: $border-width solid $border-color;
 
           &:hover {
             background: rgba(220, 38, 38, 0.1);
-            border-color: rgba(220, 38, 38, 0.4);
+            border-color: $border-width solid $border-color;
           }
         }
       }
@@ -569,7 +568,7 @@
         padding: 0.875rem 1.25rem;
         background: rgba(102, 126, 234, 0.08);
         border-radius: 25px;
-        border: 1px solid rgba(102, 126, 234, 0.15);
+        border: $border-width solid $border-color;
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
@@ -593,7 +592,7 @@
         &:hover {
           background: rgba(102, 126, 234, 0.12);
           transform: scale(1.05);
-          border-color: rgba(102, 126, 234, 0.25);
+          border-color: $border-width solid $border-color;
 
           &::before {
             left: 100%;
@@ -642,7 +641,7 @@
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.3),
+            rgba($surface-secondary, 0.3),
             transparent
           );
           transition: left 0.6s;
@@ -673,12 +672,12 @@
         &.btn-secondary {
           background: rgba(102, 126, 234, 0.1);
           color: #667eea;
-          border: 2px solid rgba(102, 126, 234, 0.3);
+          border: $border-width solid $border-color;
           backdrop-filter: blur(10px);
 
           &:hover {
             background: rgba(102, 126, 234, 0.15);
-            border-color: rgba(102, 126, 234, 0.5);
+            border-color: $border-width solid $border-color;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
           }
         }
@@ -694,7 +693,7 @@
       display: none;
       margin-top: 2rem;
       padding-top: 2rem;
-      border-top: 2px solid rgba(0, 0, 0, 0.1);
+      border-top: $border-width solid $border-color;
 
       h4 {
         font-size: 1rem;
@@ -724,7 +723,7 @@
         padding: 1.5rem;
         background: rgba(102, 126, 234, 0.05);
         border-radius: $border-radius-xl;
-        border: 1px solid rgba(102, 126, 234, 0.1);
+        border: $border-width solid $border-color;
 
         &:last-child {
           margin-bottom: 0;
@@ -755,7 +754,7 @@
           border-radius: 15px;
           font-size: 0.8rem;
           font-weight: 600;
-          border: 1px solid rgba(33, 191, 115, 0.2);
+          border: $border-width solid $border-color;
         }
 
         .more-muscles {
@@ -765,7 +764,7 @@
           border-radius: 15px;
           font-size: 0.8rem;
           font-weight: 600;
-          border: 1px solid rgba(102, 126, 234, 0.2);
+          border: $border-width solid $border-color;
         }
       }
     }
@@ -775,7 +774,7 @@
   .progress-indicator {
     padding: 1.5rem 2.5rem;
     background: rgba(34, 197, 94, 0.08);
-    border-top: 2px solid rgba(34, 197, 94, 0.2);
+    border-top: $border-width solid $border-color;
     position: relative;
 
     &::before {
@@ -819,7 +818,7 @@
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.4),
+            rgba($surface-secondary, 0.4),
             transparent
           );
           animation: shimmer 2s infinite;
@@ -861,9 +860,9 @@
     .quick-action {
       width: 60px;
       height: 60px;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba($surface-secondary, 0.95);
       backdrop-filter: blur(20px);
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: $border-width solid $border-color;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -885,14 +884,14 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.4),
+          rgba($surface-secondary, 0.4),
           transparent
         );
         transition: left 0.6s;
       }
 
       &:hover {
-        background: white;
+        background: $surface-secondary;
         color: $primary-color;
         transform: scale(1.15);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
@@ -1045,5 +1044,36 @@
         padding: 0.3rem 0.6rem;
       }
     }
+  }
+}
+/* =============================================
+ * DARK NEON WORKOUT PLAN CARD
+ * ============================================= */
+
+.workout-plan-card {
+  background: $surface-secondary;
+  border: $border-width solid $border-color;
+  color: $text-primary;
+  box-shadow: none;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+
+  .plan-intensity,
+  .plan-duration {
+    color: $primary-color;
+  }
+
+  .plan-actions .btn {
+    background: $primary-color;
+    color: $text-inverse;
+    border: $border-width solid $border-color;
+  }
+
+  .plan-actions .btn.secondary {
+    background: rgba($primary-color, 0.15);
+    color: $text-primary;
   }
 }

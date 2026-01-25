@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, tap, timeout, retry } from 'rxjs/operators';
-import { APP_CONFIG, NotificationUtils } from '@shared';
+import { APP_CONFIG } from '@shared';
 
 export interface ApiRequestOptions {
   params?: HttpParams | Record<string, any>;
@@ -149,9 +149,9 @@ export class ApiService {
         'Une erreur réseau est survenue. Veuillez réessayer.';
 
       if (error.status >= 500) {
-        NotificationUtils.error('Erreur serveur. Veuillez réessayer plus tard.');
+        console.error('Erreur serveur. Veuillez réessayer plus tard.');
       } else if (error.status === 0) {
-        NotificationUtils.warning('Problème de connexion réseau.');
+        console.warn('Problème de connexion réseau.');
       }
 
       return throwError(() => ({ ...error, message }));

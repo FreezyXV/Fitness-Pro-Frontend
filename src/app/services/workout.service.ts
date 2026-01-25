@@ -27,7 +27,6 @@ import {
 
 import {
   APP_CONFIG,
-  NotificationUtils,
   Workout,
   WorkoutExercise,
   CreateWorkoutRequest,
@@ -251,7 +250,7 @@ export class WorkoutService {
           if (template) {
             this.invalidateCache('templates');
             this.refreshTemplates();
-            NotificationUtils.success(
+            console.log(
               "Programme d'entraînement créé avec succès"
             );
             return template;
@@ -284,7 +283,7 @@ export class WorkoutService {
             this.invalidateCache('templates');
             this.invalidateCache(`template-${id}`);
             this.refreshTemplates();
-            NotificationUtils.success(
+            console.log(
               "Programme d'entraînement modifié avec succès"
             );
             return template;
@@ -310,7 +309,7 @@ export class WorkoutService {
             this.invalidateCache('templates');
             this.invalidateCache(`template-${id}`);
             this.refreshTemplates();
-            NotificationUtils.success("Programme d'entraînement supprimé");
+            console.log("Programme d'entraînement supprimé");
             return;
           }
           throw new Error('Failed to delete workout template');
@@ -337,7 +336,7 @@ export class WorkoutService {
           if (template) {
             this.invalidateCache('templates');
             this.refreshTemplates();
-            NotificationUtils.success("Programme d'entraînement dupliqué");
+            console.log("Programme d'entraînement dupliqué");
             return template;
           }
           throw new Error('Failed to duplicate workout template');
@@ -422,7 +421,7 @@ export class WorkoutService {
           const session = this.extractDataFromResponse<Workout>(response);
           if (session) {
             this.invalidateCache('sessions');
-            NotificationUtils.success("Session d'entraînement démarrée");
+            console.log("Session d'entraînement démarrée");
             return session;
           }
           throw new Error('Failed to start workout session');
@@ -453,7 +452,7 @@ export class WorkoutService {
           if (session) {
             this.invalidateCache('sessions');
             this.refreshSessions();
-            NotificationUtils.success("Session d'entraînement terminée");
+            console.log("Session d'entraînement terminée");
             return session;
           }
           throw new Error('Failed to complete workout session');
@@ -474,7 +473,7 @@ export class WorkoutService {
           if (session) {
             this.invalidateCache('sessions');
             this.refreshSessions();
-            NotificationUtils.success('Entraînement enregistré');
+            console.log('Entraînement enregistré');
             return session;
           }
           throw new Error('Failed to log workout');
@@ -492,7 +491,7 @@ export class WorkoutService {
           if (response.success) {
             this.invalidateCache('sessions');
             this.refreshSessions();
-            NotificationUtils.success('Session supprimée');
+            console.log('Session supprimée');
             return;
           }
           throw new Error('Failed to delete workout session');
@@ -814,7 +813,7 @@ export class WorkoutService {
     }
 
     this.setError(errorMessage);
-    NotificationUtils.error(errorMessage);
+    console.error(errorMessage);
 
     return throwError(() => new Error(errorMessage));
   }

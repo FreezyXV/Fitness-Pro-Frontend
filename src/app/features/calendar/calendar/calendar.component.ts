@@ -63,44 +63,6 @@ const EVENT_META: Record<CalendarTask['task_type'], {
   other: { color: '#64748b', icon: '📝' }
 };
 
-// Mock Notification Service
-class NotificationUtils {
-  static success(message: string): void {
-    console.log('✅ Success:', message);
-    // In a real app, you'd use a toast/snackbar service
-    if (typeof window !== 'undefined') {
-      // Simple browser notification as fallback
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #21BF73, #00B5AD);
-        color: white;
-        padding: 16px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        box-shadow: 0 10px 25px rgba(33, 191, 115, 0.3);
-        z-index: 10000;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-      `;
-      notification.textContent = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => notification.style.transform = 'translateX(0)', 100);
-      setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => document.body.removeChild(notification), 300);
-      }, 3000);
-    }
-  }
-
-  static error(message: string): void {
-    console.error('❌ Error:', message);
-    // Similar implementation for error notifications
-  }
-}
 
 @Component({
   selector: 'app-calendar',
@@ -534,23 +496,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.events = this.events.filter(e => e.id !== eventId);
     this.buildCalendarViews();
     this.calculateStats();
-    NotificationUtils.success('Événement supprimé avec succès');
   }
 
   toggleEventComplete(event: CalendarTask, e?: Event): void {
     if (e) {
       e.stopPropagation();
     }
-    
+
     event.is_completed = !event.is_completed;
     event.updated_at = new Date().toISOString();
-    
+
     this.buildCalendarViews();
     this.calculateStats();
-    
-    NotificationUtils.success(
-      event.is_completed ? 'Événement marqué comme terminé' : 'Événement marqué comme non terminé'
-    );
   }
 
   closeEventModal(): void {
@@ -563,7 +520,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   private handleSaveSuccess(message: string): void {
     this.isSaving = false;
     this.closeEventModal();
-    NotificationUtils.success(message);
   }
 
   // =============================================
@@ -597,9 +553,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   private moveEventToDate(event: CalendarTask, newDate: Date): void {
     event.task_date = newDate.toISOString().split('T')[0];
     event.updated_at = new Date().toISOString();
-    
+
     this.buildCalendarViews();
-    NotificationUtils.success('Événement déplacé avec succès');
   }
 
   createEventAtTime(day: { date: Date }, hour: number): void {

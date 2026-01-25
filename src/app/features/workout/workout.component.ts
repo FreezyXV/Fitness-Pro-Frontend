@@ -25,7 +25,6 @@ import { WorkoutService } from '@app/services/workout.service';
 import { UserService } from '@app/services/user.service';
 import {
   APP_CONFIG,
-  NotificationUtils,
   StorageUtils,
   Workout,
   WorkoutStats,
@@ -494,7 +493,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
             this.workoutTemplates[templateIndex].sessionId = session.id;
           }
 
-          NotificationUtils.success(`Session démarrée pour ${template.name}`);
+          console.log(`Session démarrée pour ${template.name}`);
           console.log('Session created:', session);
 
           // Navigate to the workout detail page with the active session
@@ -508,7 +507,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
             this.workoutTemplates[templateIndex].isStarting = false;
           }
 
-          NotificationUtils.error('Erreur lors du démarrage de la session');
+          console.error('Erreur lors du démarrage de la session');
           console.error('Start session error:', error);
         },
       });
@@ -527,13 +526,13 @@ export class WorkoutComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (duplicatedTemplate) => {
-          NotificationUtils.success(
+          console.log(
             `Programme "${duplicatedTemplate.name}" dupliqué avec succès`
           );
           this.refreshData();
         },
         error: (error) => {
-          NotificationUtils.error('Erreur lors de la duplication du programme');
+          console.error('Erreur lors de la duplication du programme');
           console.error('Duplicate error:', error);
         },
       });
@@ -550,11 +549,11 @@ export class WorkoutComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          NotificationUtils.success(`Programme "${template.name}" supprimé`);
+          console.log(`Programme "${template.name}" supprimé`);
           this.refreshData();
         },
         error: (error) => {
-          NotificationUtils.error('Erreur lors de la suppression du programme');
+          console.error('Erreur lors de la suppression du programme');
           console.error('Delete error:', error);
         },
       });
@@ -569,7 +568,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
         templateId: template.id,
       },
     });
-    NotificationUtils.info(
+    console.info(
       `Redirection vers le calendrier pour planifier "${template.name}"`
     );
   }
@@ -578,7 +577,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     console.log('Activating plan:', template.name);
     // Implement activation logic here
     // For example, navigate to a session start page or mark as active
-    NotificationUtils.info(`Plan "${template.name}" activé !`);
+    console.info(`Plan "${template.name}" activé !`);
   }
 
   // =============================================
@@ -735,20 +734,20 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     this.workoutService.getWorkoutTemplates().subscribe({
       next: (templates) => {
         console.log('✅ Connection successful, templates:', templates.length);
-        NotificationUtils.success(
+        console.log(
           `Connexion réussie - ${templates.length} programmes chargés`
         );
       },
       error: (error) => {
         console.error('❌ Connection failed:', error);
-        NotificationUtils.error('Échec de la connexion au service');
+        console.error('Échec de la connexion au service');
       },
     });
   }
 
   clearCache(): void {
     this.workoutService.clearCache();
-    NotificationUtils.info('Cache vidé');
+    console.info('Cache vidé');
   }
 
   getDebugInfo(): any {

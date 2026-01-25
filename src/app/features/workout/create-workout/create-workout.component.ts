@@ -18,7 +18,6 @@ import {
   WorkoutExercise,
   Exercise,
   CreateWorkoutRequest,
-  NotificationUtils,
   StorageUtils,
 } from '@shared';
 
@@ -560,7 +559,7 @@ export class CreateWorkoutComponent
           ? 'Programme modifié avec succès !'
           : 'Programme créé avec succès !';
 
-        NotificationUtils.success(message);
+        console.log(message);
         console.log('✅ Workout template saved:', template);
 
         // Clear draft on successful save
@@ -635,7 +634,7 @@ export class CreateWorkoutComponent
         this.selectedExercises = draft.selectedExercises || [];
         this.currentStep = draft.currentStep || 1;
         this.updateWorkoutSummary();
-        NotificationUtils.info('Brouillon chargé');
+        console.info('Brouillon chargé');
       }
     }
   }
@@ -779,13 +778,13 @@ export class CreateWorkoutComponent
     this.workoutService.getExercises().subscribe({
       next: (exercises: WorkoutExercise[]) => {
         console.log('✅ Exercise API working, count:', exercises.length);
-        NotificationUtils.success(
+        console.log(
           `API fonctionnelle - ${exercises.length} exercices`
         );
       },
       error: (error: any) => {
         console.error('❌ Exercise API failed:', error);
-        NotificationUtils.error("Échec de connexion à l'API des exercices");
+        console.error("Échec de connexion à l'API des exercices");
       },
     });
   }

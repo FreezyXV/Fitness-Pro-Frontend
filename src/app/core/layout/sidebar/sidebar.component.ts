@@ -310,14 +310,13 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   logout(): void {
     this.showMobileOverlay = false;
-    
+
     this.auth.logout().subscribe({
       next: () => {
         this.router.navigate(['/login']);
       },
       error: (error) => {
         console.error('Logout error:', error);
-        // Handle logout error - could show a toast notification
       }
     });
   }

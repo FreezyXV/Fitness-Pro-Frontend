@@ -4,14 +4,9 @@
  * ============================================= */
 
 // Import unified design system
+@use 'sass:color';
 @use 'variables' as *;
 @use 'styles' as *;
-
-// CSS Custom Properties for sidebar
-:root {
-  --sidebar-width: 320px;
-  --sidebar-mobile-width: 100vw;
-}
 
 // =============================================
 // SIDEBAR SPECIFIC STYLES
@@ -60,7 +55,7 @@
     transform: translateX(-100%);
     width: 100vw;
     z-index: 1001;
-    background: rgba(255, 255, 255, 0.98);
+    background: rgba($surface-secondary, 0.98);
     backdrop-filter: blur(20px);
     box-shadow: none;
 
@@ -78,14 +73,14 @@
 
 /* Header Section */
 .sidebar-header {
-  padding: 1rem 1rem 0rem 1rem;;
-  border-bottom: 1px solid $glass-white-15;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;;
+  border-bottom: $border-width solid $border-color;
   background: $gradient-glass;
 
   /* Mobile optimizations */
   @media (max-width: $breakpoint-md) {
     padding: 1rem 0.75rem;
-    border-bottom: 1px solid rgba(203, 213, 225, 0.2);
+    border-bottom: $border-width solid $border-color;
     background: linear-gradient(
       135deg,
       rgba(33, 191, 115, 0.05),
@@ -136,7 +131,7 @@
         justify-content: center;
         color: white;
         box-shadow: $shadow-primary;
-        border: 2px solid $glass-white-30;
+        border: $border-width solid $border-color;
         flex-shrink: 0;
 
         /* Mobile optimizations */
@@ -172,7 +167,7 @@
 
     .close-btn {
       background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.2);
+      border: $border-width solid $border-color;
       color: #ef4444;
       padding: 0.75rem;
       border-radius: var(--border-radius);
@@ -188,7 +183,7 @@
       /* Mobile optimizations */
       @media (max-width: $breakpoint-md) {
         background: rgba(239, 68, 68, 0.15);
-        border: 2px solid rgba(239, 68, 68, 0.3);
+        border: $border-width solid $border-color;
         padding: 0.875rem;
       }
 
@@ -317,14 +312,14 @@
           &:hover {
             color: $primary-color;
             transform: translateX(6px);
-            border-color: rgba(33, 191, 115, 0.2);
+            border-color: $border-width solid $border-color;
             box-shadow: 0 4px 12px rgba(33, 191, 115, 0.15);
 
             /* Mobile: different hover behavior */
             @media (max-width: $breakpoint-md) {
               transform: translateX(2px);
               background: rgba(33, 191, 115, 0.1);
-              border-color: rgba(33, 191, 115, 0.3);
+              border-color: $border-width solid $border-color;
             }
 
             &::before {
@@ -359,7 +354,7 @@
               rgba(0, 181, 173, 0.08)
             );
             color: $primary-color;
-            border-color: rgba(33, 191, 115, 0.3);
+            border-color: $border-width solid $border-color;
             box-shadow: 0 6px 20px rgba(33, 191, 115, 0.2);
             transform: translateX(4px);
 
@@ -371,7 +366,7 @@
                 rgba(0, 181, 173, 0.1)
               );
               transform: translateX(2px);
-              border-color: rgba(33, 191, 115, 0.4);
+              border-color: $border-width solid $border-color;
               box-shadow: 0 3px 12px rgba(33, 191, 115, 0.25);
             }
 
@@ -481,18 +476,18 @@
 /* Enhanced User Section - Compact */
 .user-section {
   padding: 0.5rem 0.75rem;
-  border-top: 1px solid rgba(203, 213, 225, 0.15);
+  border-top: $border-width solid $border-color;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.05) 0%,
-    rgba(255, 255, 255, 0.02) 100%
+    rgba($surface-secondary, 0.05) 0%,
+    rgba($surface-secondary, 0.02) 100%
   );
   flex-shrink: 0; /* Prevent shrinking on mobile */
 
   /* Mobile optimizations */
   @media (max-width: $breakpoint-md) {
     padding: 0.5rem;
-    border-top: 1px solid rgba(203, 213, 225, 0.2);
+    border-top: $border-width solid $border-color;
     background: linear-gradient(
       135deg,
       rgba(33, 191, 115, 0.03),
@@ -501,11 +496,11 @@
   }
 
   .user-card {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba($surface-secondary, 0.8);
     border-radius: calc(var(--border-radius) - 0.2rem);
-    padding: 0.65rem;
+    padding: 1rem;
     transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: $border-width solid $border-color;
     position: relative;
     @include shimmer-effect;
 
@@ -513,18 +508,18 @@
     @media (max-width: $breakpoint-md) {
       padding: 0.6rem;
       border-radius: calc(var(--border-radius) - 0.2rem);
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(203, 213, 225, 0.2);
+      background: rgba($surface-secondary, 0.95);
+      border: $border-width solid $border-color;
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba($surface-secondary, 0.9);
       transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
 
       /* Mobile hover adjustments */
       @media (max-width: $breakpoint-md) {
-        background: rgba(255, 255, 255, 0.98);
+        background: rgba($surface-secondary, 0.98);
         transform: translateY(-1px);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
@@ -549,7 +544,7 @@
         align-items: center;
         justify-content: center;
         background: linear-gradient(135deg, $primary-color 0%, #1da460 100%);
-        border: 2px solid rgba(255, 255, 255, 0.8);
+        border: $border-width solid $border-color;
         transition: var(--transition);
         box-shadow: 0 4px 12px rgba(33, 191, 115, 0.2);
         color: white;
@@ -558,7 +553,7 @@
         @media (max-width: $breakpoint-md) {
           width: 38px;
           height: 38px;
-          border: 2px solid rgba(255, 255, 255, 0.9);
+          border: $border-width solid $border-color;
           box-shadow: 0 3px 10px rgba(33, 191, 115, 0.2);
         }
 
@@ -579,7 +574,7 @@
         height: 40px;
         border-radius: 50%;
         object-fit: cover;
-        border: 2px solid rgba(255, 255, 255, 0.8);
+        border: $border-width solid $border-color;
         transition: var(--transition);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
@@ -587,7 +582,7 @@
         @media (max-width: $breakpoint-md) {
           width: 38px;
           height: 38px;
-          border: 2px solid rgba(255, 255, 255, 0.9);
+          border: $border-width solid $border-color;
           box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -646,10 +641,10 @@
           align-items: center;
           gap: 0.25rem;
           padding: 0.5rem 0.4rem;
-          background: rgba(248, 250, 252, 0.8);
-          border-radius: 0.5rem;
+          background: black;
+          border-radius: 3rem;
           transition: var(--transition);
-          border: 1px solid rgba(226, 232, 240, 0.5);
+          border: $border-width solid $border-color;
 
           /* Mobile optimizations */
           @media (max-width: $breakpoint-md) {
@@ -657,7 +652,7 @@
             gap: 0.3rem;
             border-radius: 0.6rem;
             background: rgba(248, 250, 252, 0.9);
-            border: 1px solid rgba(226, 232, 240, 0.7);
+            border: $border-width solid $border-color;
             min-height: 60px;
             justify-content: center;
           }
@@ -690,7 +685,7 @@
           .stat-value {
             font-size: 0.8rem;
             font-weight: 700;
-            color: $gray-800;
+            color: #d4ff3d;
             line-height: 1;
 
             @media (max-width: $breakpoint-md) {
@@ -702,7 +697,7 @@
           .stat-label {
             font-size: 0.6rem;
             font-weight: 600;
-            color: $gray-500;
+            color: #d4ff3d;
             text-transform: uppercase;
             letter-spacing: 0.03em;
 
@@ -715,14 +710,16 @@
       }
 
       .user-actions {
+
         .logout-btn {
+    
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 0.4rem;
-          padding: 0.6rem 0.8rem;
-          border-radius: 0.5rem;
+          padding: 0.5rem 3rem;
+          border-radius: 3rem;
           font-size: 0.75rem;
           font-weight: 600;
           transition: var(--transition);
@@ -794,22 +791,22 @@
 
 /* Enhanced Footer Section - Compact */
 .sidebar-footer {
-  padding: 0.5rem 0.75rem;
-  border-top: 1px solid rgba(203, 213, 225, 0.15);
+
+  border-top: $border-width solid $border-color;
   transition: var(--transition);
   flex-shrink: 0; /* Prevent shrinking on mobile */
 
   /* Mobile optimizations - very compact */
   @media (max-width: $breakpoint-md) {
     padding: 0.45rem;
-    border-top: 1px solid rgba(203, 213, 225, 0.2);
+    border-top: $border-width solid $border-color;
   }
 
   .footer-content {
-    background: rgba(255, 255, 255, 0.6);
+
     padding: 0.6rem 0.75rem;
     border-radius: 0.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+ 
     transition: var(--transition);
     @include shimmer-effect;
 
@@ -817,16 +814,15 @@
     @media (max-width: $breakpoint-md) {
       padding: 0.5rem;
       border-radius: 0.5rem;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid rgba(203, 213, 225, 0.3);
+
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba($surface-secondary, 0.8);
       transform: translateY(-1px);
 
       @media (max-width: $breakpoint-md) {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba($surface-secondary, 0.9);
         transform: none;
       }
     }
@@ -874,6 +870,182 @@
         }
       }
     }
+  }
+}
+
+/* =============================================
+ * DARK NEON THEME OVERRIDES
+ * ============================================= */
+
+:host {
+  background: transparent;
+}
+
+.sidebar {
+  background: $surface-secondary;
+  border: $border-width solid $border-color;
+  box-shadow: none;
+
+  @media (max-width: $breakpoint-md) {
+    background: $bg-primary;
+    border-radius: 0;
+  }
+}
+
+.sidebar-header {
+  background: transparent;
+  border-bottom: $border-width solid $border-color;
+
+  .logo {
+    border-radius: $border-radius;
+
+    &:hover {
+      background: rgba($primary-color, 0.1);
+    }
+  }
+
+  .logo-icon {
+    background: rgba($primary-color, 0.15);
+    border: $border-width solid $border-color;
+    color: $primary-color;
+    animation: none;
+    box-shadow: none;
+
+    svg {
+      filter: none;
+    }
+  }
+
+  .close-btn {
+    background: transparent;
+    border: $border-width solid $border-color;
+    color: $danger-color;
+
+    &:hover {
+      background: rgba($danger-color, 0.15);
+    }
+  }
+}
+
+.sidebar-nav {
+  background: transparent;
+
+  &::-webkit-scrollbar-track {
+    background: rgba($surface-primary, 0.9);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($primary-color, 0.5);
+  }
+
+  .nav-title {
+    color: $text-muted;
+
+    &::after {
+      background: $primary-color;
+    }
+  }
+
+  .nav-link {
+    border: $border-width solid transparent;
+    background: transparent;
+    box-shadow: none;
+    color: $text-secondary;
+
+    &:hover {
+      background: rgba($primary-color, 0.15);
+      color: $text-inverse;
+      border-color: $border-width solid $border-color;
+    }
+
+    &.active {
+      background: rgba($primary-color, 0.2);
+      color: $text-inverse;
+      border-color: $border-width solid $border-color;
+    }
+
+    .nav-indicator {
+      background: rgba($primary-color, 0.2);
+      color: $text-inverse;
+      border: $border-width solid $border-color;
+      box-shadow: none;
+
+      &.new {
+        background: rgba($accent-color, 0.25);
+        border-color: $border-width solid $border-color;
+      }
+
+      &.active {
+        background: rgba($secondary-color, 0.25);
+        border-color: $border-width solid $border-color;
+      }
+    }
+  }
+}
+
+.user-section {
+  background: $surface-primary;
+  border-top: $border-width solid $border-color;
+
+  .user-card {
+    background: $surface-secondary;
+    border: $border-width solid $border-color;
+    box-shadow: none;
+
+    &:hover {
+      background: color.adjust($surface-secondary, $lightness: 2%);
+    }
+  }
+
+  .user-avatar-placeholder,
+  .user-avatar {
+    background: rgba($primary-color, 0.2);
+    border: $border-width solid $border-color;
+    box-shadow: none;
+    color: $text-inverse;
+  }
+
+  .user-name {
+    color: $text-primary;
+  }
+}
+
+.user-actions .logout-btn {
+  border: $border-width solid $border-color;
+  background: transparent;
+  color: $danger-color;
+  box-shadow: none;
+
+  &:hover {
+    background: rgba($danger-color, 0.2);
+    color: $text-inverse;
+  }
+}
+
+.sidebar-footer {
+  border-top: $border-width solid $border-color;
+
+  .footer-content {
+
+    box-shadow: none;
+  }
+}
+
+.mobile-toggle {
+  background: $primary-color;
+  color: $text-inverse;
+  border: $border-width solid $border-color;
+  box-shadow: none;
+}
+
+.nav-link,
+.close-btn,
+.logout-btn,
+.mobile-toggle {
+  &:focus {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    box-shadow: none;
   }
 }
 
@@ -970,7 +1142,7 @@
     border-radius: 1rem;
     box-shadow: 0 6px 20px rgba(33, 191, 115, 0.4);
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: $border-width solid $border-color;
   }
 
   &:hover {
@@ -1024,7 +1196,7 @@
   .sidebar {
     .sidebar-header {
       padding: 1rem 0.75rem;
-      border-bottom: 2px solid rgba(33, 191, 115, 0.1);
+      border-bottom: $border-width solid $border-color;
     }
 
     .sidebar-nav {

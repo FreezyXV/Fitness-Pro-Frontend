@@ -7,7 +7,6 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from './services/auth.service';
 import { ExercisesService } from './services/exercises.service';
-import { NotificationUtils } from '@shared';
 
 @Component({
   selector: 'app-root',
@@ -145,7 +144,6 @@ export class AppComponent implements OnInit, OnDestroy {
     window.addEventListener('online', () => {
       setTimeout(() => {
         this.isOnline = true;
-        NotificationUtils.success('Connexion rétablie');
         this.performConnectivityCheck();
       });
     });
@@ -153,7 +151,6 @@ export class AppComponent implements OnInit, OnDestroy {
     window.addEventListener('offline', () => {
       setTimeout(() => {
         this.isOnline = false;
-        NotificationUtils.warning('Connexion interrompue');
       });
     });
   }
@@ -198,6 +195,6 @@ export class AppComponent implements OnInit, OnDestroy {
       return; // Don't show API error if already offline
     }
 
-    NotificationUtils.error('Impossible de se connecter au serveur');
+    console.error('Impossible de se connecter au serveur');
   }
 }

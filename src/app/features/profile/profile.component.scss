@@ -8,32 +8,26 @@
 
 // Glass Effects with Better Contrast
 @mixin glass-premium($opacity: 0.98, $blur: 32px) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur($blur) saturate(1.8) brightness(1.1);
-  -webkit-backdrop-filter: blur($blur) saturate(1.8) brightness(1.1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.15),
-    0 8px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: rgba($surface-secondary, $opacity);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: $border-width solid $border-color;
+  box-shadow: none;
 }
 
 @mixin glass-card($opacity: 0.95, $blur: 24px) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur($blur) saturate(1.6) brightness(1.05);
-  -webkit-backdrop-filter: blur($blur) saturate(1.6) brightness(1.05);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.18),
-    0 4px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  background: rgba($surface-secondary, $opacity);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: $border-width solid $border-color;
+  box-shadow: none;
 }
 
 @mixin glass-subtle($opacity: 0.92, $blur: 20px) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur($blur) saturate(1.4);
-  -webkit-backdrop-filter: blur($blur) saturate(1.4);
-
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.12),
-    0 4px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  background: rgba($surface-secondary, $opacity);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 // Enhanced Hover Effects
@@ -42,7 +36,7 @@
 
   &:hover {
     transform: translateY($translate) scale($scale);
-    box-shadow: $shadow;
+    box-shadow: none;
   }
 }
 
@@ -142,8 +136,10 @@
 // =============================================
 .profile-container {
   min-height: calc(100vh - 0px);
-  background: $primary-dark;
-  animation: gradientFlow 25s ease infinite;
+  background: $bg-primary;
+  animation: none;
+
+  border-radius: $border-radius;
   position: relative;
   overflow-x: hidden;
   display: flex;
@@ -153,46 +149,9 @@
   padding-bottom: 4rem;
 
   // Enhanced Background Patterns
-  &::before {
-    content: "";
-    position: absolute;
-    top: -40%;
-    left: -40%;
-   
-    height: 180%;
-    background: radial-gradient(
-        circle at 25% 25%,
-        rgba(255, 255, 255, 0.15) 2px,
-        transparent 2px
-      ),
-      radial-gradient(
-        circle at 75% 75%,
-        rgba(255, 255, 255, 0.1) 1px,
-        transparent 1px
-      );
-    background-size: 80px 80px, 40px 40px;
-    animation: float 30s ease-in-out infinite;
-    opacity: 0.7;
-    z-index: 0;
-    pointer-events: none;
-  }
-
+  &::before,
   &::after {
-    content: "";
-    position: absolute;
-    bottom: 5%;
-    right: 10%;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(
-      circle,
-      rgba(102, 126, 234, 0.12),
-      transparent 70%
-    );
-    border-radius: 50%;
-    animation: float 15s ease-in-out infinite;
-    z-index: 0;
-    pointer-events: none;
+    display: none;
   }
 
   > * {
@@ -223,8 +182,8 @@
     border-radius: 0 $radius-4xl $radius-4xl 0;
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.05) 0%,
-      rgba(255, 255, 255, 0.1) 100%
+      rgba($surface-secondary, 0.05) 0%,
+      rgba($surface-secondary, 0.1) 100%
     );
 
     &::before {
@@ -359,7 +318,7 @@
           height: 100px;
           border-radius: $radius-full;
           object-fit: cover;
-          border: 4px solid rgba(255, 255, 255, 0.9);
+          border: $border-width solid $border-color;
           box-shadow: $shadow-lg;
           transition: all 0.3s ease;
         }
@@ -378,7 +337,7 @@
           color: white;
           font-size: $text-sm;
           box-shadow: $shadow-md;
-          border: 3px solid white;
+          border: $border-width solid $border-color;
         }
 
         .avatar-overlay {
@@ -478,7 +437,7 @@
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
-        border: 2px solid transparent;
+        border: $border-width solid $border-color;
 
         &.clickable {
           cursor: pointer;
@@ -494,7 +453,7 @@
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, 0.4),
+            rgba($surface-secondary, 0.4),
             transparent
           );
           transition: left 0.8s ease;
@@ -504,14 +463,14 @@
         &:hover {
           transform: translateY(-4px);
           box-shadow: $shadow-xl;
-          background: rgba(255, 255, 255, 0.98);
+          background: rgba($surface-secondary, 0.98);
 
           &::before {
             left: 100%;
           }
 
           &.clickable {
-            border-color: rgba($primary-color, 0.3);
+            border-color: $border-width solid $border-color;
             transform: translateY(-6px) scale(1.01);
           }
         }
@@ -628,7 +587,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.3),
+          rgba($surface-secondary, 0.3),
           transparent
         );
         transition: left 0.8s ease;
@@ -656,11 +615,11 @@
       &.secondary {
         @include glass-subtle(0.92, 16px);
         color: $text-primary;
-        border: 2px solid rgba($primary-color, 0.3);
+        border: $border-width solid $border-color;
 
         &:hover:not(:disabled) {
           background: rgba($primary-color, 0.12);
-          border-color: rgba($primary-color, 0.6);
+          border-color: $border-width solid $border-color;
           color: $primary-darker;
         }
       }
@@ -734,7 +693,7 @@
 
         &.active {
           @include glass-card(0.98, 24px);
-          border: 2px solid rgba($primary-color, 0.4);
+          border: $border-width solid $border-color;
           color: $primary-color;
           transform: translateY(-2px);
 
@@ -805,8 +764,8 @@
     .loading-spinner {
       width: 50px;
       height: 50px;
-      border: 4px solid rgba(33, 191, 115, 0.3);
-      border-top: 4px solid $primary-color;
+      border: $border-width solid $border-color;
+      border-top: $border-width solid $border-color;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto $spacing-xl;
@@ -831,7 +790,7 @@
 
   .tab-pane {
     padding: 2rem;
-    background: white;
+    background: $surface-secondary;
     display: none;
     border-radius: $radius-2xl;
     animation: fadeIn 0.6s ease;
@@ -880,7 +839,7 @@
 // FORM CONTAINER - Enhanced
 // =============================================
 .form-container {
-  background: white;
+  background: $surface-secondary;
   border-radius: $radius-2xl;
   .profile-form {
     .form-section {
@@ -890,7 +849,7 @@
       position: relative;
 
       overflow: hidden;
-      border: 2px solid rgba(255, 255, 255, 0.4);
+      border: $border-width solid $border-color;
       margin-bottom: 2rem;
 
       &:last-child {
@@ -907,7 +866,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba(255, 255, 255, 0.3),
+          rgba($surface-secondary, 0.3),
           transparent
         );
         transition: left 0.8s ease;
@@ -923,8 +882,8 @@
         align-items: center;
         gap: $spacing-2xl;
         padding: 3rem;
-        background: rgba(255, 255, 255, 0.6);
-        border-bottom: 2px solid rgba($primary-color, 0.15);
+        background: rgba($surface-secondary, 0.6);
+        border-bottom: $border-width solid $border-color;
         position: relative;
         overflow: hidden;
 
@@ -1050,21 +1009,21 @@
             .form-control {
               width: 100%;
               padding: $spacing-lg $spacing-lg $spacing-lg $spacing-4xl;
-              border: 1px solid $primary-color;
+              border: $border-width solid $border-color;
               border-radius: $radius-xl;
               font-size: $text-lg;
               transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
               @include glass-subtle(0.92, 16px);
               font-weight: $font-medium;
               font-family: inherit;
-              background: rgba(255, 255, 255, 0.85);
+              background: rgba($surface-secondary, 0.85);
               color: $text-primary;
 
               &:focus {
                 outline: none;
                 border-color: $primary-color;
                 box-shadow: 0 0 0 4px rgba($primary-color, 0.15), $shadow-md;
-                background: rgba(255, 255, 255, 0.98);
+                background: rgba($surface-secondary, 0.98);
                 transform: translateY(-2px);
               }
 
@@ -1169,7 +1128,7 @@
     padding: $spacing-4xl;
     border-radius: $radius-2xl;
     text-align: center;
-    border: 2px solid rgba($primary-color, 0.15);
+    border: $border-width solid $border-color;
 
     .bmi-header {
       display: flex;
@@ -1218,8 +1177,8 @@
         top: -8px;
         width: 32px;
         height: 32px;
-        background: white;
-        border: 4px solid $text-primary;
+        background: $surface-secondary;
+        border: $border-width solid $border-color;
         border-radius: 50%;
         transform: translateX(-50%);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -1297,7 +1256,7 @@
     border-radius: $radius-2xl;
     margin-bottom: $spacing-xl;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: $border-width solid $border-color;
 
     &:last-child {
       margin-bottom: 0;
@@ -1307,10 +1266,10 @@
       gap: $spacing-xl;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.98);
+        background: rgba($surface-secondary, 0.98);
         transform: translateY(-4px);
         box-shadow: $shadow-xl;
-        border-color: rgba($primary-color, 0.2);
+        border-color: $border-width solid $border-color;
       }
     }
 
@@ -1393,7 +1352,7 @@
           width: 22px;
           left: 4px;
           bottom: 4px;
-          background: white;
+          background: $surface-secondary;
           transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           border-radius: 50%;
           box-shadow: $shadow-md;
@@ -1455,7 +1414,7 @@
     }
 
     .strength-requirements {
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba($surface-secondary, 0.6);
       padding: $spacing-lg;
       border-radius: $radius-lg;
       margin-top: $spacing-lg;
@@ -1539,7 +1498,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.3),
+      rgba($surface-secondary, 0.3),
       transparent
     );
     transition: left 0.8s ease;
@@ -1567,11 +1526,11 @@
   &.btn-outline {
     @include glass-subtle(0.92, 16px);
     color: $text-primary;
-    border: 2px solid rgba($primary-color, 0.3);
+    border: $border-width solid $border-color;
 
     &:hover:not(:disabled) {
       background: rgba($primary-color, 0.12);
-      border-color: rgba($primary-color, 0.6);
+      border-color: $border-width solid $border-color;
       color: $primary-darker;
     }
   }
@@ -1611,7 +1570,7 @@
     color: $success;
     font-weight: $font-semibold;
     box-shadow: $shadow-xl;
-    border: 2px solid rgba($success, 0.3);
+    border: $border-width solid $border-color;
 
     svg {
       flex-shrink: 0;
@@ -1695,7 +1654,7 @@
       background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.25),
+        rgba($surface-secondary, 0.25),
         transparent
       );
       transition: left 0.6s;
@@ -1904,4 +1863,41 @@
   .text-muted {
     color: $text-secondary !important;
   }
+}
+/* =============================================
+ * DARK NEON PROFILE OVERRIDES
+ * ============================================= */
+
+.profile-container {
+  color: $text-primary;
+}
+
+.profile-container * {
+  box-shadow: none !important;
+}
+
+.profile-container .hero-section,
+.profile-container [class*='card'],
+.profile-container [class*='panel'],
+.profile-container [class*='module'] {
+  background: $surface-secondary;
+  border: $border-width solid $border-color;
+}
+
+.profile-container .stat-value,
+.profile-container .metric-value {
+  color: $primary-color;
+}
+
+.profile-container .cta-button,
+.profile-container .action-button {
+  background: $primary-color;
+  color: $text-inverse;
+  border: $border-width solid $border-color;
+}
+
+.profile-container .cta-button.secondary,
+.profile-container .action-button.secondary {
+  background: rgba($primary-color, 0.15);
+  color: $text-primary;
 }

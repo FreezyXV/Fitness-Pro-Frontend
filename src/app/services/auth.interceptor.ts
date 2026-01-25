@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError, timer } from 'rxjs';
 import { catchError, retryWhen, mergeMap, finalize } from 'rxjs/operators';
-import { APP_CONFIG, StorageUtils, NotificationUtils } from '@shared';
+import { APP_CONFIG, StorageUtils } from '@shared';
 import { AuthService } from '@app/services/auth.service';
 
 // Request tracking pour éviter les doublons
@@ -160,34 +160,34 @@ function handle401Error(req: any, router: Router, authService: AuthService): voi
 
 function handle403Error(): void {
   console.log('🚫 403 Forbidden - Access denied');
-  NotificationUtils.error('Accès non autorisé à cette ressource');
+  console.error('Accès non autorisé à cette ressource');
 }
 
 function handle404Error(req: any): void {
   console.log('🔍 404 Not Found:', req.url);
   // Ne pas afficher de notification pour les 404 API de routine
   if (!req.url.includes('/api/exercises') && !req.url.includes('/api/test')) {
-    NotificationUtils.error('Ressource non trouvée');
+    console.error('Ressource non trouvée');
   }
 }
 
 function handle422Error(error: HttpErrorResponse): void {
   console.log('📝 422 Validation Error');
   let message = 'Données invalides';
-  
+
   if (error.error?.message) {
     message = error.error.message;
   } else if (error.error?.errors) {
     const validationErrors = Object.values(error.error.errors).flat();
     message = (validationErrors as string[]).join(', ');
   }
-  
-  NotificationUtils.error(message);
+
+  console.error(message);
 }
 
 function handle429Error(): void {
   console.log('⏳ 429 Too Many Requests');
-  NotificationUtils.warning('Trop de requêtes. Veuillez patienter...');
+  console.warn('Trop de requêtes. Veuillez patienter...');
 }
 
 function handle5xxError(error: HttpErrorResponse): void {
@@ -201,21 +201,21 @@ function handle5xxError(error: HttpErrorResponse): void {
   };
   
   const message = messages[error.status] || 'Erreur serveur';
-  NotificationUtils.error(`${message}. Veuillez réessayer plus tard.`);
+  console.error(`${message}. Veuillez réessayer plus tard.`);
 }
 
 function handleNetworkError(req: any): void {
   console.log('🌐 Network Error - No connection');
-  
+
   // Ne montrer l'erreur que pour les requêtes importantes
   if (isAuthRequest(req) || req.url.includes('/api/dashboard')) {
-    NotificationUtils.error('Impossible de contacter le serveur. Vérifiez votre connexion.');
+    console.error('Impossible de contacter le serveur. Vérifiez votre connexion.');
   }
 }
 
 function handleGenericError(error: HttpErrorResponse): void {
   console.log('❓ Generic Error:', error.status);
-  NotificationUtils.error('Une erreur inattendue s\'est produite');
+  console.error('Une erreur inattendue s\'est produite');
 }
 
 function clearAuthDataAndRedirect(router: Router, authService: AuthService): void {

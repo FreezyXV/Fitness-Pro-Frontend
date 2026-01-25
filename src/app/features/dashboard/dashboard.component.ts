@@ -8,7 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth.service';
 import { UserService } from '@app/services/user.service';
 import { WorkoutService } from '@app/services/workout.service';
-import { User, Workout, Goal, BMIUtils, DateUtils, WorkoutUtils, NotificationUtils, WorkoutIntensity } from '@shared';
+import { User, Workout, Goal, BMIUtils, DateUtils, WorkoutUtils, WorkoutIntensity } from '@shared';
 import { MiniCalendarComponent } from '@features/calendar/mini-calendar/mini-calendar.component';
 
 @Component({
@@ -703,7 +703,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   startWorkout(): void {
     console.log('🏃 Starting enhanced workout experience');
-    
+
     if (this.currentWorkoutPlan) {
       // Navigate to workout session with plan
       this.router.navigate(['/workouts'], {
@@ -713,9 +713,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       // Navigate to general workouts page
       this.router.navigate(['/workouts']);
     }
-    
+
     // Show enhanced feedback to user
-    NotificationUtils.success('🚀 Redirection vers votre entraînement...');
+    console.log('🚀 Redirection vers votre entraînement...');
   }
 
   viewProgress(): void {
@@ -744,9 +744,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   markGoalProgress(goal: Goal, increment: number = 1): void {
     console.log('📈 Marking enhanced goal progress:', goal.title);
-    
+
     const newValue = Math.min(goal.currentValue + increment, goal.targetValue);
-    
+
     if (this.userService) {
       this.userService.updateGoalProgress(goal.id!, newValue) // Changed to updateGoalProgress
         .pipe(takeUntil(this.destroy$))
@@ -756,34 +756,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
             if (index !== -1) {
               this.activeGoals[index] = updatedGoal;
             }
-            
+
             // Calculate progress percentage
             const progress = Math.round((newValue / goal.targetValue) * 100);
-            NotificationUtils.success(`🎯 Objectif mis à jour: ${progress}% complété`);
-            
+            console.log(`🎯 Objectif mis à jour: ${progress}% complété`);
+
             // Check if goal is completed with celebration
             if (newValue >= goal.targetValue) {
-              NotificationUtils.success(`🎉 Félicitations ! Objectif "${goal.title}" atteint !`);
+              console.log(`🎉 Félicitations ! Objectif "${goal.title}" atteint !`);
               this.celebrateGoalCompletion(goal);
             }
           },
           error: (error) => {
             console.error('Error updating goal:', error);
-            NotificationUtils.error('❌ Erreur lors de la mise à jour de l\'objectif');
+            console.error('❌ Erreur lors de la mise à jour de l\'objectif');
           }
         });
     } else {
       // Local update if no service
       goal.currentValue = newValue;
       const progress = Math.round((newValue / goal.targetValue) * 100);
-      NotificationUtils.success(`🎯 Objectif mis à jour: ${progress}% complété`);
-      
+      console.log(`🎯 Objectif mis à jour: ${progress}% complété`);
+
       if (newValue >= goal.targetValue) {
         goal.status = 'completed';
-        NotificationUtils.success(`🎉 Félicitations ! Objectif "${goal.title}" atteint !`);
+        console.log(`🎉 Félicitations ! Objectif "${goal.title}" atteint !`);
         this.celebrateGoalCompletion(goal);
       }
-      
+
       this.cdr.detectChanges();
     }
   }
@@ -816,11 +816,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
           next: (session) => {
             this.recentWorkouts.unshift(session);
             this.calculateEnhancedStats();
-            NotificationUtils.success('💪 Séance express enregistrée avec succès !');
+            console.log('💪 Séance express enregistrée avec succès !');
           },
           error: (error) => {
             console.error('Error logging workout:', error);
-            NotificationUtils.error('❌ Erreur lors de l\'enregistrement');
+            console.error('❌ Erreur lors de l\'enregistrement');
           }
         });
     } else {
@@ -828,7 +828,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const mockSession: Workout = { ...sessionData, id: Date.now(), userId: sessionData.userId || 1, name: sessionData.name || 'Séance Express', isTemplate: sessionData.isTemplate || false }; // Changed to Workout
       this.recentWorkouts.unshift(mockSession);
       this.calculateEnhancedStats();
-      NotificationUtils.success('💪 Séance express enregistrée avec succès !');
+      console.log('💪 Séance express enregistrée avec succès !');
       this.cdr.detectChanges();
     }
   }

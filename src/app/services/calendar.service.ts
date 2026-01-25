@@ -5,7 +5,6 @@ import { Observable, BehaviorSubject, map, tap, catchError, of } from 'rxjs';
 import {
   CalendarTask,
   ApiResponse,
-  NotificationUtils,
   APP_CONFIG,
   CalendarEventFilters,
   CalendarStats,
@@ -87,7 +86,7 @@ export class CalendarService {
         }),
         catchError((error) => {
           console.error('Error loading calendar tasks:', error);
-          NotificationUtils.error('Erreur lors du chargement des tâches');
+          console.error('Erreur lors du chargement des tâches');
           return of([]);
         })
       );
@@ -103,7 +102,7 @@ export class CalendarService {
         map((response) => response.data || null),
         catchError((error) => {
           console.error('Error loading calendar task:', error);
-          NotificationUtils.error('Erreur lors du chargement de la tâche');
+          console.error('Erreur lors du chargement de la tâche');
           return of(null);
         })
       );
@@ -126,12 +125,12 @@ export class CalendarService {
           if (task) {
             this.updateCurrentMonthTasks(task, 'create');
             this.invalidateCache();
-            NotificationUtils.success('Tâche créée avec succès');
+            console.log('Tâche créée avec succès');
           }
         }),
         catchError((error) => {
           console.error('Error creating calendar task:', error);
-          NotificationUtils.error('Erreur lors de la création de la tâche');
+          console.error('Erreur lors de la création de la tâche');
           return of(null);
         }),
         tap(() => this.isLoadingSubject.next(false))
@@ -158,12 +157,12 @@ export class CalendarService {
           if (task) {
             this.updateCurrentMonthTasks(task, 'update');
             this.invalidateCache();
-            NotificationUtils.success('Tâche mise à jour avec succès');
+            console.log('Tâche mise à jour avec succès');
           }
         }),
         catchError((error) => {
           console.error('Error updating calendar task:', error);
-          NotificationUtils.error('Erreur lors de la mise à jour de la tâche');
+          console.error('Erreur lors de la mise à jour de la tâche');
           return of(null);
         }),
         tap(() => this.isLoadingSubject.next(false))
@@ -184,12 +183,12 @@ export class CalendarService {
           if (success) {
             this.updateCurrentMonthTasks({ id } as CalendarTask, 'delete');
             this.invalidateCache();
-            NotificationUtils.success('Tâche supprimée avec succès');
+            console.log('Tâche supprimée avec succès');
           }
         }),
         catchError((error) => {
           console.error('Error deleting calendar task:', error);
-          NotificationUtils.error('Erreur lors de la suppression de la tâche');
+          console.error('Erreur lors de la suppression de la tâche');
           return of(false);
         }),
         tap(() => this.isLoadingSubject.next(false))
@@ -232,7 +231,7 @@ export class CalendarService {
         }),
         catchError((error) => {
           console.error('Error loading monthly tasks:', error);
-          NotificationUtils.error(
+          console.error(
             'Erreur lors du chargement des tâches du mois'
           );
           return of(this.getEmptyMonthData(year, month));
@@ -253,7 +252,7 @@ export class CalendarService {
         map((response) => response.data || { tasks: [], stats: {} }),
         catchError((error) => {
           console.error("Error loading today's tasks:", error);
-          NotificationUtils.error(
+          console.error(
             'Erreur lors du chargement des tâches du jour'
           );
           return of({ tasks: [], stats: {} });
@@ -271,7 +270,7 @@ export class CalendarService {
         map((response) => response.data || this.getEmptyWeekData()),
         catchError((error) => {
           console.error('Error loading week tasks:', error);
-          NotificationUtils.error(
+          console.error(
             'Erreur lors du chargement des tâches de la semaine'
           );
           return of(this.getEmptyWeekData());
@@ -298,12 +297,12 @@ export class CalendarService {
           if (task) {
             this.updateCurrentMonthTasks(task, 'update');
             this.invalidateStatsCache();
-            NotificationUtils.success('Tâche marquée comme terminée');
+            console.log('Tâche marquée comme terminée');
           }
         }),
         catchError((error) => {
           console.error('Error marking task as complete:', error);
-          NotificationUtils.error('Erreur lors du marquage de la tâche');
+          console.error('Erreur lors du marquage de la tâche');
           return of(null);
         })
       );
@@ -324,12 +323,12 @@ export class CalendarService {
           if (task) {
             this.updateCurrentMonthTasks(task, 'update');
             this.invalidateStatsCache();
-            NotificationUtils.success('Tâche marquée comme non terminée');
+            console.log('Tâche marquée comme non terminée');
           }
         }),
         catchError((error) => {
           console.error('Error marking task as incomplete:', error);
-          NotificationUtils.error('Erreur lors du marquage de la tâche');
+          console.error('Erreur lors du marquage de la tâche');
           return of(null);
         })
       );
@@ -364,13 +363,13 @@ export class CalendarService {
         ),
         tap((result) => {
           this.invalidateCache();
-          NotificationUtils.success(
+          console.log(
             `${result.updated_count} tâche(s) mise(s) à jour avec succès`
           );
         }),
         catchError((error) => {
           console.error('Error performing bulk update:', error);
-          NotificationUtils.error('Erreur lors de la mise à jour en masse');
+          console.error('Erreur lors de la mise à jour en masse');
           return of({ updated_count: 0, action: request.action });
         }),
         tap(() => this.isLoadingSubject.next(false))
@@ -410,7 +409,7 @@ export class CalendarService {
         }),
         catchError((error) => {
           console.error('Error loading calendar stats:', error);
-          NotificationUtils.error('Erreur lors du chargement des statistiques');
+          console.error('Erreur lors du chargement des statistiques');
           return of(this.getEmptyStats());
         })
       );

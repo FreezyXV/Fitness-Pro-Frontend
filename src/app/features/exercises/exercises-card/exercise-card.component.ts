@@ -5,7 +5,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Subject, takeUntil, timer, of } from 'rxjs';
 import { catchError, retry, delay } from 'rxjs/operators';
 
-import { Exercise, NotificationUtils, APP_CONFIG } from '@shared';
+import { Exercise, APP_CONFIG } from '@shared';
 import { ExercisesService } from '@app/services/exercises.service';
 
 @Component({
@@ -645,19 +645,19 @@ export class ExerciseCardComponent implements OnInit, OnDestroy {
   }
 
   private showNotification(message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info'): void {
-    // Use the enhanced notification system from shared utils
+    // Use console methods for notifications
     switch (type) {
       case 'success':
-        NotificationUtils.success(message);
+        console.log(message);
         break;
       case 'error':
-        NotificationUtils.error(message);
+        console.error(message);
         break;
       case 'warning':
-        NotificationUtils.warning(message);
+        console.warn(message);
         break;
       default:
-        NotificationUtils.info(message);
+        console.info(message);
     }
   }
 

@@ -1,38 +1,13 @@
 /* src/app/calendar/mini-calendar/mini-calendar.component.scss */
 @use 'sass:color';
-
-// Variables
-$primary-color: #667eea;
-$primary-light: #7c8ff4;
-$success-color: #48bb78;
-$warning-color: #ed8936;
-$danger-color: #f56565;
-$info-color: #4299e1;
-
-$gray-50: #f7fafc;
-$gray-100: #edf2f7;
-$gray-200: #e2e8f0;
-$gray-300: #cbd5e0;
-$gray-400: #a0aec0;
-$gray-500: #718096;
-$gray-600: #4a5568;
-$gray-700: #2d3748;
-$gray-800: #1a202c;
-$gray-900: #171923;
-
-$border-radius: 0.25rem;
-$border-radius-lg: 0.5rem;
-$border-radius-xl: 0.75rem;
-$border-radius-2xl: 1rem;
-$border-radius-full: 9999px;
-
-$shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+@use 'variables' as *;
+@use 'styles' as *;
 
 @mixin button-base($bg-color, $text-color) {
-  border: none;
+  border: $border-width solid $border-color;
   border-radius: $border-radius-lg;
   padding: 0.5rem;
+  background: $bg-color;
   color: $text-color;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -51,14 +26,14 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 }
 
 .mini-calendar-container {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
+  background: $surface-secondary;
   border-radius: $border-radius-2xl;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: $shadow-lg;
+  border: $border-width solid $border-color;
+  box-shadow: none;
   max-width: 320px;
   margin: 0 auto;
+  color: $text-primary;
 }
 
 .calendar-header {
@@ -117,11 +92,11 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
     border-radius: $border-radius-lg;
     cursor: pointer;
     transition: all 0.2s ease;
-    background: $gray-50;
-    border: 1px solid transparent;
+    background: $surface-primary;
+    border: $border-width solid $border-color;
 
     &:hover {
-      background: rgba($primary-color, 0.1);
+      background: rgba($primary-color, 0.15);
       transform: scale(1.05);
     }
 
@@ -134,37 +109,47 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
     }
 
     &.today {
-      background: linear-gradient(135deg, $primary-color, $primary-light);
-      color: white;
+      background: rgba($primary-color, 0.2);
+      color: $text-inverse;
       font-weight: 700;
-      box-shadow: $shadow;
+      border-color: $border-width solid $border-color;
 
       .day-number {
-        color: white;
+        color: $text-inverse;
       }
 
       .activity-indicators .indicator {
-        background: rgba(255, 255, 255, 0.8);
+        background: $text-inverse;
       }
     }
 
     &.selected {
       background: rgba($primary-color, 0.2);
-      border-color: $primary-color;
-      box-shadow: 0 0 0 2px rgba($primary-color, 0.3);
+      border-color: $border-width solid $border-color;
       transform: scale(1.05);
     }
 
     &.has-workout {
-      border-left: 3px solid $success-color;
+      border: $border-width solid $border-color;
+      border-radius: $border-radius-full;
+      padding: 0.15rem;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 2px;
+        border: $border-width solid $border-color;
+        border-radius: inherit;
+        pointer-events: none;
+      }
     }
 
     &.has-goal {
-      border-right: 3px solid $warning-color;
+      border-right: $border-width solid $border-color;
     }
 
     &.has-reminder {
-      border-bottom: 3px solid $info-color;
+      border-bottom: $border-width solid $border-color;
     }
 
     .day-number {
@@ -210,26 +195,29 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 
   .action-btn {
     flex: 1;
-    @include button-base(transparent, $gray-800); // Base styles, colors overridden below
+    @include button-base($surface-primary, $text-primary);
     font-size: 0.85rem;
     font-weight: 600;
+    background: $surface-primary;
 
     &.today-btn {
-      background: rgba($primary-color, 0.1);
-      color: $primary-color;
+      background: rgba($primary-color, 0.70);
+      color: $text-inverse;
+      border-color: $border-width solid $border-color;
 
       &:hover {
-        background: rgba($primary-color, 0.2);
+        background: rgba($primary-color, 0.25);
         transform: translateY(-1px);
       }
     }
 
     &.schedule-btn {
-      background: rgba($success-color, 0.1);
-      color: $success-color;
+      background: rgba($success-color, 0.60);
+      color: $text-inverse;
+      border-color: $border-width solid $border-color;
 
       &:hover {
-        background: rgba($success-color, 0.2);
+          background: rgba($success-color, 0.25);
         transform: translateY(-1px);
       }
     }
@@ -242,7 +230,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 }
 
 .selected-day-info {
-  border-top: 1px solid $gray-200;
+  border-top: $border-width solid $border-color;
   padding-top: 1rem;
 
   .info-header {
@@ -275,8 +263,9 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       align-items: center;
       gap: 0.75rem;
       padding: 0.75rem;
-      background: $gray-50;
+      background: $surface-primary;
       border-radius: $border-radius-lg;
+      border: $border-width solid $border-color;
       margin-bottom: 0.5rem;
       transition: all 0.2s ease;
 
@@ -285,7 +274,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       }
 
       &:hover {
-        background: $gray-100;
+        background: rgba($primary-color, 0.15);
         transform: translateX(2px);
       }
 
@@ -347,7 +336,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
           transition: all 0.2s ease;
 
           &:hover {
-            background: $gray-200;
+            background: rgba($primary-color, 0.15);
           }
         }
 
@@ -369,33 +358,33 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
   .no-activities {
     text-align: center;
     padding: 1.5rem;
-    background: $gray-50;
+    background: $surface-primary;
     border-radius: $border-radius-lg;
+    border: $border-width solid $border-color;
 
     .no-activities-icon {
       font-size: 2rem;
       margin-bottom: 0.5rem;
       display: block;
-      color: $gray-400;
+      color: $text-muted;
     }
 
     .no-activities-text {
       display: block;
-      color: $gray-600;
+      color: $text-secondary;
       margin-bottom: 1rem;
       font-size: 0.9rem;
     }
 
     .add-activity-btn {
-      @include button-base($primary-color, white);
+      @include button-base($primary-color, $text-inverse);
       padding: 0.5rem 1rem;
       font-size: 0.85rem;
       font-weight: 600;
 
       &:hover {
-        background: $primary-light;
+        background: color.adjust($primary-color, $lightness: 5%);
         transform: translateY(-1px);
-        box-shadow: $shadow;
       }
 
       svg {
@@ -413,7 +402,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -422,13 +411,14 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 }
 
 .modal-content {
-  background: white;
+  background: $surface-secondary;
   border-radius: $border-radius-2xl;
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: $shadow-lg;
+  border: $border-width solid $border-color;
+  box-shadow: none;
   animation: modalSlideIn 0.3s ease-out;
 }
 
@@ -448,7 +438,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 1.5rem 0 1.5rem;
-  border-bottom: 1px solid $gray-200;
+  border-bottom: $border-width solid $border-color;
   margin-bottom: 1.5rem;
 
   h3 {
@@ -469,7 +459,7 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
 
     &:hover {
       color: $gray-600;
-      background: $gray-100;
+      background: $surface-secondary;
     }
   }
 }
@@ -495,20 +485,22 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
     .form-control {
       width: 100%;
       padding: 0.75rem;
-      border: 1px solid $gray-300;
+      border: $border-width solid $border-color;
       border-radius: $border-radius-lg;
       font-size: 0.875rem;
       transition: all 0.2s ease;
-      background: white;
+      background: $surface-primary;
+      color: $text-primary;
 
       &:focus {
         outline: none;
         border-color: $primary-color;
-        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+        box-shadow: none;
+        background: $surface-secondary;
       }
 
       &::placeholder {
-        color: $gray-400;
+        color: $text-muted;
       }
     }
 
@@ -528,10 +520,10 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
     justify-content: flex-end;
     margin-top: 2rem;
     padding-top: 1rem;
-    border-top: 1px solid $gray-200;
+    border-top: $border-width solid $border-color;
 
     .btn {
-      @include button-base(transparent, $gray-800); // Base styles
+      @include button-base($surface-primary, $text-primary);
       padding: 0.75rem 1.5rem;
       min-width: 100px;
 
@@ -541,23 +533,14 @@ $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.
       }
 
       &.btn-secondary {
-        background: $gray-200;
-        color: $gray-700;
-
-        &:hover:not(:disabled) {
-          background: $gray-300;
-        }
+        background: rgba($primary-color, 0.15);
+        color: $text-primary;
       }
 
       &.btn-primary {
         background: $primary-color;
-        color: white;
-
-        &:hover:not(:disabled) {
-          background: $primary-light;
-          transform: translateY(-1px);
-          box-shadow: $shadow;
-        }
+        color: $text-inverse;
+        border-color: $border-width solid $border-color;
       }
     }
   }

@@ -17,7 +17,6 @@ import {
   User,
   Workout,
   Goal,
-  NotificationUtils,
   UserStats, // Added import for UserStats
   BMIInfo, // Added import for BMIInfo
 } from '@shared';
@@ -116,7 +115,7 @@ export class UserService {
             this.setCachedData('profile', user);
             this.clearRelatedCache();
 
-            NotificationUtils.success('Profil mis à jour avec succès');
+            console.log('Profil mis à jour avec succès');
             return user;
           }
           throw new Error(response.message || 'Failed to update profile');
@@ -130,7 +129,7 @@ export class UserService {
             const updatedUser = { ...currentUser, ...cleanedData };
             this.profileSubject.next(updatedUser);
             this.setCachedData('profile', updatedUser);
-            NotificationUtils.success(
+            console.log(
               'Profil mis à jour localement (mode hors ligne)'
             );
             return of(updatedUser);
@@ -168,7 +167,7 @@ export class UserService {
         ),
         map((response) => {
           if (response.success) {
-            NotificationUtils.success('Mot de passe modifié avec succès');
+            console.log('Mot de passe modifié avec succès');
             return {
               success: true,
               message: response.message || 'Password changed successfully',
@@ -181,7 +180,7 @@ export class UserService {
 
           // For demo purposes, simulate success
           if (error.status === 0 || error.status >= 500) {
-            NotificationUtils.success('Mot de passe modifié (simulation)');
+            console.log('Mot de passe modifié (simulation)');
             return of({
               success: true,
               message: 'Password changed (offline mode)',
@@ -433,7 +432,7 @@ export class UserService {
         map((response) => {
           if (response.success && response.data) {
             this.clearRelatedCache();
-            NotificationUtils.success('Objectif créé avec succès');
+            console.log('Objectif créé avec succès');
             return response.data;
           }
           throw new Error(response.message || 'Failed to create goal');
@@ -465,7 +464,7 @@ export class UserService {
         };
 
           this.clearRelatedCache();
-          NotificationUtils.success('Objectif créé (mode hors ligne)');
+          console.log('Objectif créé (mode hors ligne)');
           return of(mockGoal);
         })
       );
@@ -507,7 +506,7 @@ export class UserService {
         map((response) => {
           if (response.success && response.data) {
             this.clearRelatedCache();
-            NotificationUtils.success("Progrès de l'objectif mis à jour");
+            console.log("Progrès de l'objectif mis à jour");
             return response.data;
           }
           throw new Error(response.message || 'Failed to update goal progress');
@@ -529,7 +528,7 @@ export class UserService {
         map((response) => {
           if (response.success && response.data) {
             this.clearRelatedCache();
-            NotificationUtils.success('Objectif marqué comme terminé');
+            console.log('Objectif marqué comme terminé');
             return response.data;
           }
           throw new Error(response.message || 'Failed to mark goal complete');
@@ -551,7 +550,7 @@ export class UserService {
         map((response) => {
           if (response.success && response.data) {
             this.clearRelatedCache();
-            NotificationUtils.success('Objectif activé');
+            console.log('Objectif activé');
             return response.data;
           }
           throw new Error(response.message || 'Failed to activate goal');
@@ -573,7 +572,7 @@ export class UserService {
         map((response) => {
           if (response.success && response.data) {
             this.clearRelatedCache();
-            NotificationUtils.success('Objectif mis en pause');
+            console.log('Objectif mis en pause');
             return response.data;
           }
           throw new Error(response.message || 'Failed to pause goal');
@@ -592,7 +591,7 @@ export class UserService {
         map((response) => {
           if (response.success) {
             this.clearRelatedCache();
-            NotificationUtils.success('Objectif supprimé');
+            console.log('Objectif supprimé');
             return;
           }
           throw new Error(response.message || 'Failed to delete goal');
@@ -614,7 +613,7 @@ export class UserService {
         map((response) => {
           if (response.success) {
             this.clearRelatedCache();
-            NotificationUtils.success('Compte supprimé avec succès');
+            console.log('Compte supprimé avec succès');
             return;
           }
           throw new Error(response.message || 'Failed to delete user account');
@@ -623,7 +622,7 @@ export class UserService {
           console.error('❌ UserService: User account deletion failed:', error);
           // Simulate success for offline/demo purposes
           if (error.status === 0 || error.status >= 500) {
-            NotificationUtils.success(
+            console.log(
               'Compte supprimé localement (simulation)'
             );
             return of(undefined); // Return observable of undefined for void
@@ -854,7 +853,7 @@ export class UserService {
       errorMessage = error.error.message;
     }
 
-    NotificationUtils.error(errorMessage);
+    console.error(errorMessage);
 
     const enrichedError = new Error(errorMessage) as any;
     enrichedError.status = error.status;

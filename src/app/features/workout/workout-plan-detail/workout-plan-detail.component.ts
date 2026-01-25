@@ -6,7 +6,7 @@ import { Subject, of } from 'rxjs'; // Added 'of'
 import { takeUntil, switchMap, catchError } from 'rxjs/operators';
 
 import { WorkoutService } from '@app/services/workout.service';
-import { Workout, NotificationUtils, WorkoutType, WorkoutGoal, WorkoutFrequency, WorkoutIntensity, BodyFocus, Equipment } from '@shared';
+import { Workout,  WorkoutType, WorkoutGoal, WorkoutFrequency, WorkoutIntensity, BodyFocus, Equipment } from '@shared';
 import { WorkoutUtils } from '@shared';
 
 @Component({
@@ -155,7 +155,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
           this.workoutSessionStarted = true;
           this.currentSessionId = session.id;
 
-          NotificationUtils.success(`Session démarrée pour ${template.name}`);
+          console.log(`Session démarrée pour ${template.name}`);
 
           // Initialize exercise status tracking
           template.exercises?.forEach((_, index) => {
@@ -167,7 +167,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           this.isStartingWorkout = false;
-          NotificationUtils.error('Erreur lors du démarrage de la session');
+          console.error('Erreur lors du démarrage de la session');
           console.error('Start session error:', error);
         },
       });
@@ -176,7 +176,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
   private showWorkoutStartedFeedback(workoutName: string): void {
     // Visual feedback that workout has started
     const message = `🏋️ Session "${workoutName}" démarrée !`;
-    NotificationUtils.success(message);
+    console.log(message);
 
     // Could add more visual feedback here like changing button states
   }
@@ -191,13 +191,13 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (duplicatedTemplate) => {
-          NotificationUtils.success(
+          console.log(
             `Programme "${duplicatedTemplate.name}" dupliqué`
           );
           this.router.navigate(['/workouts']);
         },
         error: (error) => {
-          NotificationUtils.error('Erreur lors de la duplication');
+          console.error('Erreur lors de la duplication');
           console.error('Duplicate error:', error);
         },
       });
@@ -215,14 +215,14 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
   shareWorkoutPlan(): void {
     if (this.workoutPlan) {
       // Implement sharing logic
-      NotificationUtils.info('Fonctionnalité de partage à venir');
+      console.info('Fonctionnalité de partage à venir');
     }
   }
 
   toggleFavorite(): void {
     this.isFavorite = !this.isFavorite;
     // Implement favorite logic
-    NotificationUtils.info(
+    console.info(
       this.isFavorite ? 'Ajouté aux favoris' : 'Retiré des favoris'
     );
   }
@@ -436,7 +436,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
 
   startSingleExercise(exercise: any, exerciseIndex: number): void {
     if (!this.workoutSessionStarted) {
-      NotificationUtils.warning(
+      console.warn(
         "Veuillez d'abord démarrer une session d'entraînement"
       );
       return;
@@ -444,7 +444,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
 
     const currentStatus = this.exerciseStatus.get(exerciseIndex);
     if (currentStatus === 'completed') {
-      NotificationUtils.info('Cet exercice est déjà terminé');
+      console.info('Cet exercice est déjà terminé');
       return;
     }
 
@@ -459,7 +459,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
       }
     });
 
-    NotificationUtils.success(`🏋️ Exercice "${exercise.name}" en cours !`);
+    console.log(`🏋️ Exercice "${exercise.name}" en cours !`);
     this.showExerciseStartedFeedback(exercise, exerciseIndex);
   }
 
@@ -467,7 +467,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
     const currentStatus = this.exerciseStatus.get(exerciseIndex);
 
     if (currentStatus !== 'in_progress') {
-      NotificationUtils.warning("Vous devez d'abord commencer cet exercice");
+      console.warn("Vous devez d'abord commencer cet exercice");
       return;
     }
 
@@ -475,7 +475,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
     this.exerciseStatus.set(exerciseIndex, 'completed');
     this.currentExerciseIndex = null;
 
-    NotificationUtils.success(`✅ Exercice "${exercise.name}" terminé !`);
+    console.log(`✅ Exercice "${exercise.name}" terminé !`);
 
     // Check if all exercises are completed
     this.checkWorkoutCompletion();
@@ -492,7 +492,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
     this.exerciseStatus.set(exerciseIndex, 'not_started');
     this.currentExerciseIndex = null;
 
-    NotificationUtils.info(`⏸️ Exercice "${exercise.name}" mis en pause`);
+    console.info(`⏸️ Exercice "${exercise.name}" mis en pause`);
   }
 
   resetExercise(exercise: any, exerciseIndex: number): void {
@@ -502,7 +502,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
       this.currentExerciseIndex = null;
     }
 
-    NotificationUtils.info(`🔄 Exercice "${exercise.name}" réinitialisé`);
+    console.info(`🔄 Exercice "${exercise.name}" réinitialisé`);
   }
 
   private showExerciseStartedFeedback(
@@ -535,12 +535,12 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
       this.showWorkoutCompletionOption();
     } else {
       const remaining = totalExercises - completedExercises;
-      NotificationUtils.info(`Plus que ${remaining} exercice(s) à terminer !`);
+      console.info(`Plus que ${remaining} exercice(s) à terminer !`);
     }
   }
 
   private showWorkoutCompletionOption(): void {
-    NotificationUtils.success(
+    console.log(
       '🎉 Tous les exercices terminés ! Vous pouvez terminer votre session.'
     );
     // Could show a completion button or modal
@@ -548,7 +548,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
 
   completeWorkoutSession(): void {
     if (!this.currentSessionId) {
-      NotificationUtils.error('Aucune session active à terminer');
+      console.error('Aucune session active à terminer');
       return;
     }
 
@@ -567,7 +567,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
           this.currentExerciseIndex = null;
           this.exerciseStatus.clear();
 
-          NotificationUtils.success(
+          console.log(
             "🏆 Session d'entraînement terminée avec succès !"
           );
 
@@ -575,7 +575,7 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
           this.loadWorkoutPlan();
         },
         error: (error) => {
-          NotificationUtils.error(
+          console.error(
             'Erreur lors de la finalisation de la session'
           );
           console.error('Complete session error:', error);

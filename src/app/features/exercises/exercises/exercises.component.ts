@@ -24,7 +24,7 @@ import { WorkoutService } from '@app/services/workout.service';
 import { UserService } from '@app/services/user.service';
 import { ExerciseFilters, Exercise, Workout } from '@shared';
 import { ExerciseCardComponent } from '../exercises-card/exercise-card.component';
-import { APP_CONFIG, NotificationUtils, WorkoutUtils, StorageUtils } from '@shared';
+import { APP_CONFIG, WorkoutUtils, StorageUtils } from '@shared';
 
 interface UIState {
   isLoading: boolean;
@@ -567,13 +567,13 @@ export class ExercisesComponent implements OnInit, OnDestroy {
         next: (isFavorite: boolean) => {
           exercise.isFavorite = isFavorite;
           this.loadFavorites();
-          NotificationUtils.success(
+          console.log(
             isFavorite ? '❤️ Added to favorites' : '💔 Removed from favorites'
           );
         },
         error: (error: any) => {
           console.error('Error toggling favorite:', error);
-          NotificationUtils.error('❌ Error updating favorite status');
+          console.error('❌ Error updating favorite status');
         },
       });
   }
@@ -703,11 +703,11 @@ export class ExercisesComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           console.log('✅ API connection successful:', response);
-          NotificationUtils.success('✅ Connexion API réussie');
+          console.log('✅ Connexion API réussie');
         },
         error: (error) => {
           console.error('❌ API connection failed:', error);
-          NotificationUtils.error('❌ Connexion API échouée');
+          console.error('❌ Connexion API échouée');
         },
       });
   }

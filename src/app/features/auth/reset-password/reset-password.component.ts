@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
-import { NotificationUtils } from '@shared';
+
 
 @Component({
   selector: 'app-reset-password',
@@ -130,12 +130,12 @@ export class ResetPasswordComponent implements OnInit {
     request$.subscribe({
       next: () => {
         this.isLoading = false;
-        NotificationUtils.success('Mot de passe réinitialisé avec succès !');
+        console.log('Mot de passe réinitialisé avec succès !');
         this.router.navigate(['/login']);
       },
       error: (error) => {
         this.isLoading = false;
-        NotificationUtils.error(error.message || 'Erreur lors de la réinitialisation');
+        console.error(error.message || 'Erreur lors de la réinitialisation');
         console.error('❌ Reset error:', error);
       }
     });

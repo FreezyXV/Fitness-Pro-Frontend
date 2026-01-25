@@ -6,21 +6,18 @@
 
 // Enhanced Mixins
 @mixin enhanced-glass-card($opacity: 0.98, $blur: 28px) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur($blur) saturate(1.8);
-  -webkit-backdrop-filter: blur($blur) saturate(1.8);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: rgba($surface-secondary, $opacity);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: $border-width solid $border-color;
+  box-shadow: none;
 }
 
 @mixin enhanced-hover-lift {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   &:hover {
     transform: translateY(-6px) scale(1.01);
-    box-shadow: 0 40px 80px -12px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    box-shadow: none;
   }
 }
 
@@ -53,27 +50,8 @@
     font-size: 1rem;
   }
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transition: left 0.8s ease;
-    transform: skewX(-15deg);
-  }
-
   &:hover {
     transform: translateY(-2px);
-    &::before {
-      left: 100%;
-    }
   }
 
   &:active {
@@ -148,9 +126,11 @@
 // Main Container
 .exercise-detail-container {
   min-height: 100vh;
-  background: $primary-dark;
-  background-size: 400% 400%;
-  animation: gradient-animation 25s ease infinite;
+  background: $bg-primary;
+  background-size: initial;
+  animation: none;
+  border: $border-width solid $border-color;
+  border-radius: $border-radius;
   position: relative;
   width: 100%;
   overflow-x: hidden;
@@ -162,45 +142,9 @@
     sans-serif;
 
   // Enhanced background patterns
-  &::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    height: 200%;
-    background-image: radial-gradient(
-        circle at 25% 25%,
-        rgba(255, 255, 255, 0.08) 2px,
-        transparent 2px
-      ),
-      radial-gradient(
-        circle at 75% 75%,
-        rgba(255, 255, 255, 0.04) 1px,
-        transparent 1px
-      );
-    background-size: 80px 80px, 40px 40px;
-    animation: floating-motion 35s ease-in-out infinite;
-    opacity: 0.7;
-    z-index: 0;
-    pointer-events: none;
-  }
-
+  &::before,
   &::after {
-    content: "";
-    position: absolute;
-    bottom: 15%;
-    right: 10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.06),
-      transparent 70%
-    );
-    border-radius: 50%;
-    animation: gentle-pulse 15s ease-in-out infinite;
-    z-index: 0;
-    pointer-events: none;
+    display: none;
   }
   @media (max-width: 768px) {
     padding: 0.5rem;
@@ -285,8 +229,8 @@ padding: 0.25rem;
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 50px 100px -12px rgba(0, 0, 0, 0.12),
-      0 0 0 1px rgba(255, 255, 255, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      0 0 0 1px rgba($surface-secondary, 0.15),
+      inset 0 1px 0 rgba($surface-secondary, 0.25);
   }
 
 
@@ -314,20 +258,20 @@ padding: 0.25rem;
       padding: 1.25rem 2.5rem;
       border-radius: 20px;
       border: none;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba($surface-secondary, 0.95);
       backdrop-filter: blur(16px);
       color: $gray-700;
       font-weight: 700;
       text-decoration: none;
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      border: 2px solid rgba($primary-color, 0.15);
+      border: $border-width solid $border-color;
 
       &:hover {
         color: $primary-color;
-        border-color: rgba($primary-color, 0.3);
+        border-color: $border-width solid $border-color;
         transform: translateX(-6px);
-        background: rgba(255, 255, 255, 1);
+        background: rgba($surface-secondary, 1);
         box-shadow: 0 12px 32px rgba($primary-color, 0.15);
       }
 
@@ -354,7 +298,7 @@ padding: 0.25rem;
         height: 60px;
         border-radius: 50%;
         border: none;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba($surface-secondary, 0.95);
         backdrop-filter: blur(16px);
         color: $gray-600;
         display: flex;
@@ -362,18 +306,18 @@ padding: 0.25rem;
         justify-content: center;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        border: 2px solid rgba($gray-300, 0.2);
+        border: $border-width solid $border-color;
 
         &:hover {
           color: $primary-color;
-          border-color: rgba($primary-color, 0.3);
+          border-color: $border-width solid $border-color;
           transform: scale(1.1);
           box-shadow: 0 12px 32px rgba($primary-color, 0.2);
         }
 
         &.favorite-btn.active {
           background: rgba($danger-color, 0.1);
-          border-color: rgba($danger-color, 0.3);
+          border-color: $border-width solid $border-color;
           color: $danger-color;
         }
 
@@ -425,10 +369,10 @@ padding: 0.25rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba($surface-secondary, 0.95);
         backdrop-filter: blur(16px);
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        border: 2px solid transparent;
+        border: $border-width solid $border-color;
 
         &:hover {
           transform: translateY(-4px) scale(1.05);
@@ -472,24 +416,24 @@ padding: 0.25rem;
       .difficulty-badge {
         &[data-level="beginner"] {
           color: $success-color;
-          border-color: rgba($success-color, 0.2);
+          border-color: $border-width solid $border-color;
           background: rgba($success-color, 0.05);
         }
         &[data-level="intermediate"] {
           color: $warning-color;
-          border-color: rgba($warning-color, 0.2);
+          border-color: $border-width solid $border-color;
           background: rgba($warning-color, 0.05);
         }
         &[data-level="advanced"] {
           color: $danger-color;
-          border-color: rgba($danger-color, 0.2);
+          border-color: $border-width solid $border-color;
           background: rgba($danger-color, 0.05);
         }
       }
 
       .body-part-badge {
         color: $primary-color;
-        border-color: rgba($primary-color, 0.2);
+        border-color: $border-width solid $border-color;
         background: rgba($primary-color, 0.05);
       }
     }
@@ -740,19 +684,19 @@ padding: 0.25rem;
         &.success {
           background: rgba($success-color, 0.1);
           color: $success-color;
-          border: 2px solid rgba($success-color, 0.2);
+          border: $border-width solid $border-color;
         }
 
         &.error {
           background: rgba($danger-color, 0.1);
           color: $danger-color;
-          border: 2px solid rgba($danger-color, 0.2);
+          border: $border-width solid $border-color;
         }
 
         &.loading {
           background: rgba($info-color, 0.1);
           color: $info-color;
-          border: 2px solid rgba($info-color, 0.2);
+          border: $border-width solid $border-color;
         }
       }
     }
@@ -766,7 +710,7 @@ padding: 0.25rem;
       border-radius: 20px;
       overflow: hidden;
       aspect-ratio: 16/9;
-      border: 3px solid rgba(255, 255, 255, 0.1);
+      border: $border-width solid $border-color;
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
 
       .main-video {
@@ -808,7 +752,7 @@ padding: 0.25rem;
             height: 100px;
             border-radius: 50%;
             border: none;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba($surface-secondary, 0.95);
             backdrop-filter: blur(20px);
             color: $primary-color;
             display: flex;
@@ -852,7 +796,7 @@ padding: 0.25rem;
               position: relative;
               height: 8px;
               border-radius: 4px;
-              background: rgba(255, 255, 255, 0.2);
+              background: rgba($surface-secondary, 0.2);
               cursor: pointer;
               margin-bottom: 1rem;
               overflow: hidden;
@@ -863,7 +807,7 @@ padding: 0.25rem;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba(255, 255, 255, 0.3);
+                background: rgba($surface-secondary, 0.3);
                 border-radius: 4px;
               }
 
@@ -896,7 +840,7 @@ padding: 0.25rem;
               height: 48px;
               border-radius: 50%;
               border: none;
-              background: rgba(255, 255, 255, 0.2);
+              background: rgba($surface-secondary, 0.2);
               backdrop-filter: blur(10px);
               color: white;
               display: flex;
@@ -906,7 +850,7 @@ padding: 0.25rem;
               transition: all 0.3s ease;
 
               &:hover {
-                background: rgba(255, 255, 255, 0.3);
+                background: rgba($surface-secondary, 0.3);
                 transform: scale(1.05);
               }
             }
@@ -931,8 +875,8 @@ padding: 0.25rem;
         .loading-spinner {
           width: 60px;
           height: 60px;
-          border: 4px solid rgba($primary-color, 0.3);
-          border-top: 4px solid $primary-color;
+          border: $border-width solid $border-color;
+          border-top: $border-width solid $border-color;
           border-radius: 50%;
           animation: spin 1s linear infinite;
           margin-bottom: 2rem;
@@ -950,9 +894,9 @@ padding: 0.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba($surface-secondary, 0.9);
       border-radius: 20px;
-      border: 3px solid rgba($gray-300, 0.3);
+      border: $border-width solid $border-color;
 
       .no-video-content {
         text-align: center;
@@ -1048,16 +992,16 @@ padding: 0.25rem;
         padding: 0.875rem 1.5rem;
         border-radius: 16px;
         border: none;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba($surface-secondary, 0.95);
         color: $gray-700;
         font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
-        border: 2px solid rgba($gray-300, 0.2);
+        border: $border-width solid $border-color;
 
         &:hover {
           color: $primary-color;
-          border-color: rgba($primary-color, 0.3);
+          border-color: $border-width solid $border-color;
           transform: translateY(-2px);
         }
 
@@ -1083,19 +1027,19 @@ padding: 0.25rem;
         gap: 2rem;
         padding: 2rem;
         border-radius: 20px;
-        background: rgba(255, 255, 255, 0.9);
-        border: 3px solid transparent;
+        background: rgba($surface-secondary, 0.9);
+        border: $border-width solid $border-color;
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
         &:hover {
-          border-color: rgba($primary-color, 0.2);
+          border-color: $border-width solid $border-color;
           transform: translateX(8px);
           box-shadow: 0 15px 40px rgba($primary-color, 0.15);
         }
 
         &.active {
-          border-color: rgba($primary-color, 0.4);
+          border-color: $border-width solid $border-color;
           background: rgba($primary-color, 0.05);
           transform: translateX(12px);
           box-shadow: 0 20px 50px rgba($primary-color, 0.2);
@@ -1205,15 +1149,15 @@ padding: 0.25rem;
       align-items: center;
       padding-top: 2rem;
       gap: 1rem;
-      border-top: 2px solid rgba($gray-200, 0.5);
+      border-top: $border-width solid $border-color;
 
       .nav-btn {
-        @include enhanced-button(rgba(255, 255, 255, 0.95), $gray-700, small);
-        border: 2px solid rgba($gray-300, 0.3);
+        @include enhanced-button(rgba($surface-secondary, 0.95), $gray-700, small);
+        border: $border-width solid $border-color;
 
         &:hover:not(:disabled) {
           color: $primary-color;
-          border-color: rgba($primary-color, 0.4);
+          border-color: $border-width solid $border-color;
         }
 
         &:disabled {
@@ -1225,10 +1169,10 @@ padding: 0.25rem;
       .step-counter {
         padding: 1rem 2rem;
         border-radius: 16px;
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba($surface-secondary, 0.95);
         color: $gray-700;
         font-weight: 700;
-        border: 2px solid rgba($primary-color, 0.2);
+        border: $border-width solid $border-color;
 
         @media (max-width: 480px) {
 padding: 0.5rem 1rem;
@@ -1315,12 +1259,12 @@ width: 100%;
       gap: 1.5rem;
       padding: 1.5rem;
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 2px solid transparent;
+      background: rgba($surface-secondary, 0.9);
+      border: $border-width solid $border-color;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
-        border-color: rgba($primary-color, 0.2);
+        border-color: $border-width solid $border-color;
         transform: scale(1.02);
         box-shadow: 0 10px 30px rgba($primary-color, 0.15);
       }
@@ -1413,7 +1357,7 @@ width: 100%;
       display: flex;
       gap: 1.5rem;
       padding: 1.5rem 0;
-      border-bottom: 2px solid rgba($gray-200, 0.3);
+      border-bottom: $border-width solid $border-color;
       transition: all 0.3s ease;
 
       &:last-child {
@@ -1510,12 +1454,12 @@ width: 100%;
       background: rgba($primary-color, 0.1);
       color: $primary-color;
       font-weight: 700;
-      border: 2px solid rgba($primary-color, 0.2);
+      border: $border-width solid $border-color;
       transition: all 0.3s ease;
 
       &:hover {
         background: rgba($primary-color, 0.15);
-        border-color: rgba($primary-color, 0.4);
+        border-color: $border-width solid $border-color;
         transform: translateY(-2px);
       }
 
@@ -1587,13 +1531,13 @@ width: 100%;
       gap: 2rem;
       padding: 1rem;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 3px solid transparent;
+      background: rgba($surface-secondary, 0.9);
+      border: $border-width solid $border-color;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
-        border-color: rgba($primary-color, 0.2);
+        border-color: $border-width solid $border-color;
         transform: translateY(-6px);
         box-shadow: 0 25px 50px rgba($primary-color, 0.15);
 
@@ -1644,7 +1588,7 @@ width: 100%;
             letter-spacing: 0.05em;
             background: rgba($primary-color, 0.1);
             color: $primary-color;
-            border: 1px solid rgba($primary-color, 0.2);
+            border: $border-width solid $border-color;
             width: fit-content;
           }
 
@@ -1671,9 +1615,9 @@ width: 100%;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba($surface-secondary, 0.98);
   backdrop-filter: blur(32px);
-  border-top: 3px solid rgba(255, 255, 255, 0.2);
+  border-top: $border-width solid $border-color;
   border-radius: 24px 24px 24px 24px;
   padding: 2rem;
   margin-top: 3rem;
@@ -1724,21 +1668,21 @@ width: 100%;
         $primary-color,
         medium
       );
-      border: 3px solid rgba($primary-color, 0.2);
+      border: $border-width solid $border-color;
 
       &:hover {
         background: rgba($primary-color, 0.15);
-        border-color: rgba($primary-color, 0.4);
+        border-color: $border-width solid $border-color;
       }
     }
 
     .tertiary-action-btn {
-      @include enhanced-button(rgba(255, 255, 255, 0.95), $gray-700, medium);
-      border: 3px solid rgba($gray-300, 0.3);
+      @include enhanced-button(rgba($surface-secondary, 0.95), $gray-700, medium);
+      border: $border-width solid $border-color;
 
       &:hover {
         background: rgba($gray-100, 0.8);
-        border-color: rgba($gray-400, 0.5);
+        border-color: $border-width solid $border-color;
       }
     }
 
@@ -1792,8 +1736,8 @@ width: 100%;
       .loading-spinner {
         width: 80px;
         height: 80px;
-        border: 6px solid rgba($primary-color, 0.2);
-        border-top: 6px solid $primary-color;
+        border: $border-width solid $border-color;
+        border-top: $border-width solid $border-color;
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin: 0 auto 2rem;
@@ -1907,11 +1851,11 @@ width: 100%;
 
         &.btn-secondary {
           @include enhanced-button(
-            rgba(255, 255, 255, 0.95),
+            rgba($surface-secondary, 0.95),
             $gray-700,
             medium
           );
-          border: 2px solid rgba($gray-300, 0.3);
+          border: $border-width solid $border-color;
         }
       }
 
@@ -1958,7 +1902,7 @@ width: 100%;
   .info-card,
   .tips-card,
   .muscle-groups-card {
-    border: 3px solid $gray-700;
+    border: $border-width solid $border-color;
   }
 }
 
@@ -1968,4 +1912,36 @@ width: 100%;
   .video-section-card {
     display: none !important;
   }
+}
+/* =============================================
+ * DARK NEON DETAIL OVERRIDES
+ * ============================================= */
+
+.exercise-detail-container {
+  color: $text-primary;
+}
+
+.exercise-detail-container * {
+  box-shadow: none !important;
+}
+
+.exercise-detail-container .detail-card,
+.exercise-detail-container [class*='card'],
+.exercise-detail-container [class*='panel'],
+.exercise-detail-container [class*='module'],
+.exercise-detail-container [class*='section'] {
+  background: $surface-secondary;
+
+}
+
+.exercise-detail-container .detail-button,
+.exercise-detail-container .action-button {
+  background: $primary-color;
+  color: $text-inverse;
+ 
+}
+
+.exercise-detail-container .detail-button.secondary {
+  background: rgba($primary-color, 0.15);
+  color: $text-primary;
 }

@@ -2,18 +2,20 @@
 @use 'variables' as *;
 @use 'styles' as *;
 
-@mixin glass-morphism($opacity: 0.25) {
-  background: rgba(255, 255, 255, $opacity);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+@mixin glass-morphism($opacity: 0.95) {
+  background: rgba($surface-secondary, $opacity);
+  border: $border-width solid $border-color;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
-@mixin dark-glass-morphism($opacity: 0.15) {
-  background: rgba(30, 41, 59, $opacity);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@mixin dark-glass-morphism($opacity: 0.9) {
+  background: rgba($surface-tertiary, $opacity);
+  border: $border-width solid $border-color;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 @mixin card-hover {
@@ -21,14 +23,13 @@
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: $shadow-xl;
+    box-shadow: none;
+    background: color.adjust($surface-secondary, $lightness: 2%);
   }
 }
 
 @mixin text-gradient($gradient) {
-  background: $gradient;
-  background-clip: text;
-  -webkit-background-clip: text;
+  color: $primary-color;
 }
 
 // =============================================
@@ -89,9 +90,11 @@
 
 .calendar-container {
   min-height: calc(100vh - 0px);
-  background: $primary-dark;
+  background: $bg-primary;
   width: 100%;
-  animation: gradientShift 15s ease infinite;
+  animation: none;
+
+  border-radius: $border-radius;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   padding-bottom: 4rem;
   position: relative;
@@ -109,27 +112,8 @@
     padding-bottom: 1rem;
   }
 
-  // Enhanced background pattern
   &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-        circle at 25% 25%,
-        rgba(255, 255, 255, 0.1) 2px,
-        transparent 2px
-      ),
-      radial-gradient(
-        circle at 75% 75%,
-        rgba(255, 255, 255, 0.05) 1px,
-        transparent 1px
-      );
-    background-size: 60px 60px, 30px 30px;
-    pointer-events: none;
-    z-index: 1;
+    display: none;
   }
 
   @media (max-width: 768px) {
@@ -402,7 +386,7 @@ padding: 0.25rem;
               rgba($success, 0.2)
             );
             color: $success;
-            border: 1px solid rgba($success, 0.3);
+            border: $border-width solid $border-color;
           }
 
           &.info {
@@ -412,7 +396,7 @@ padding: 0.25rem;
               rgba($info, 0.2)
             );
             color: $info;
-            border: 1px solid rgba($info, 0.3);
+            border: $border-width solid $border-color;
           }
 
           .stat-value {
@@ -510,8 +494,8 @@ padding: 0.25rem;
     .loading-spinner {
       width: 48px;
       height: 48px;
-      border: 4px solid rgba($primary-500, 0.2);
-      border-top: 4px solid $primary-500;
+      border: $border-width solid $border-color;
+      border-top: $border-width solid $border-color;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin: 0 auto $space-6;
@@ -546,7 +530,7 @@ padding: 0.25rem;
         .day-header {
           padding: $space-5;
           text-align: center;
-          border-right: 1px solid rgba(255, 255, 255, 0.1);
+          border-right: $border-width solid $border-color;
 
           @media (max-width: 480px) {
             padding: 1.5rem 0.5rem;
@@ -569,17 +553,17 @@ padding: 0.25rem;
       .calendar-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        background: $gray-25;
+        background: $surface-secondary;
 
         .calendar-day {
           min-height: 120px;
-          border-right: 1px solid $gray-200;
-          border-bottom: 1px solid $gray-200;
+          border-right: $border-width solid $border-color;
+          border-bottom: $border-width solid $border-color;
           padding: $space-3;
           cursor: pointer;
           transition: all 0.2s ease;
           position: relative;
-          background: white;
+          background: $surface-secondary;
 
           @media (max-width: 480px) {
             padding: 0.5rem;
@@ -594,7 +578,7 @@ padding: 0.25rem;
           }
 
           &.other-month {
-            background: $gray-50;
+            background: $surface-secondary;
             opacity: 0.6;
 
             .day-number {
@@ -608,7 +592,7 @@ padding: 0.25rem;
               rgba($primary-500, 0.1),
               rgba($primary-500, 0.05)
             );
-            border: 2px solid $primary-500;
+            border: $border-width solid $border-color;
 
             .day-number {
               background: $primary-dark;
@@ -626,7 +610,7 @@ padding: 0.25rem;
 
           &.selected {
             background: rgba($accent-500, 0.1);
-            border: 2px solid $accent-500;
+            border: $border-width solid $border-color;
             transform: scale(1.02);
             z-index: 5;
             box-shadow: $shadow-lg;
@@ -634,7 +618,7 @@ padding: 0.25rem;
 
           &.has-events {
             .day-content {
-              border-left: 4px solid $primary-500;
+              border-left: $border-width solid $border-color;
               padding-left: $space-2;
             }
           }
@@ -680,7 +664,7 @@ padding: 0.25rem;
                 position: absolute;
                 inset: 2px;
                 border-radius: 50%;
-                background: white;
+                background: $surface-secondary;
               }
             }
           }
@@ -724,7 +708,7 @@ padding: 0.25rem;
               font-size: 0.75rem;
               color: $gray-500;
               font-weight: 600;
-              background: $gray-200;
+              background: $surface-tertiary;
               padding: $space-1 $space-2;
               border-radius: $radius-sm;
               line-height: 1;
@@ -743,7 +727,7 @@ padding: 0.25rem;
         background: $dark-gradient;
         padding: $space-4 $space-6;
         color: white;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: $border-width solid $border-color;
 
         .week-day {
           text-align: center;
@@ -774,7 +758,7 @@ padding: 0.25rem;
               transition: all 0.2s ease;
 
               &:hover {
-                background: rgba(255, 255, 255, 0.1);
+                background: rgba($surface-secondary, 0.1);
               }
 
               &.today {
@@ -796,7 +780,7 @@ padding: 0.25rem;
 
       .week-content {
         padding: $space-6;
-        background: $gray-25;
+        background: $surface-secondary;
         min-height: 500px; /* Ensure enough height for scrolling */
 
         .week-events-grid {
@@ -806,10 +790,10 @@ padding: 0.25rem;
           height: 100%;
 
           .week-day-column {
-            background: white;
+            background: $surface-secondary;
             border-radius: $radius-md;
             padding: $space-3;
-            border: 1px solid $gray-200;
+            border: $border-width solid $border-color;
             display: flex;
             flex-direction: column;
             gap: $space-2;
@@ -864,9 +848,9 @@ padding: 0.25rem;
               font-size: 0.875rem;
               padding: $space-4;
               margin-top: $space-4;
-              border: 1px dashed $gray-300;
+              border: $border-width solid $border-color;
               border-radius: $radius-md;
-              background: $gray-100;
+              background: $surface-secondary;
             }
           }
         }
@@ -878,7 +862,7 @@ padding: 0.25rem;
         background: $dark-gradient;
         padding: $space-6;
         color: white;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: $border-width solid $border-color;
 
         .day-title {
           color: white;
@@ -892,7 +876,7 @@ padding: 0.25rem;
           gap: $space-4;
 
           .stat-chip {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba($surface-secondary, 0.2);
             padding: $space-1 $space-3;
             border-radius: $radius-lg;
             font-size: 0.875rem;
@@ -903,20 +887,20 @@ padding: 0.25rem;
 
       .day-view-content {
         padding: $space-6;
-        background: $gray-25;
+        background: $surface-secondary;
         min-height: 500px;
         overflow-y: auto;
 
         .time-slots {
-          border: 1px solid $gray-200;
+          border: $border-width solid $border-color;
           border-radius: $radius-md;
           overflow: hidden;
-          background: white;
+          background: $surface-secondary;
 
           .time-slot {
             display: grid;
             grid-template-columns: 100px 1fr;
-            border-bottom: 1px solid $gray-200;
+            border-bottom: $border-width solid $border-color;
             min-height: 80px;
             transition: all 0.2s ease;
 
@@ -930,7 +914,7 @@ padding: 0.25rem;
 
             &.current-hour {
               background: rgba($primary-500, 0.1);
-              border-left: 4px solid $primary-500;
+              border-left: $border-width solid $border-color;
 
               .time-label {
                 color: $primary-600;
@@ -943,8 +927,8 @@ padding: 0.25rem;
               color: $gray-500;
               font-weight: 600;
               font-size: 0.875rem;
-              border-right: 1px solid $gray-200;
-              background: $gray-100;
+              border-right: $border-width solid $border-color;
+              background: $surface-secondary;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -1018,9 +1002,9 @@ padding: 0.25rem;
           font-size: 1rem;
           padding: $space-12 $space-6;
           margin-top: $space-6;
-          border: 2px dashed $gray-300;
+          border: $border-width solid $border-color;
           border-radius: $radius-xl;
-          background: $gray-100;
+          background: $surface-secondary;
 
           .empty-icon {
             font-size: 3rem;
@@ -1065,7 +1049,7 @@ padding: 0.25rem;
       h3 {
         font-size: 1.25rem;
         font-weight: 700;
-        color: black;
+        color: $text-primary;
         margin: 0;
       }
     }
@@ -1084,19 +1068,19 @@ padding: 0.25rem;
         align-items: center;
         gap: $space-3;
         @include card-hover;
-        border: 1px solid rgba($primary-500, 0.2);
+        border: $border-width solid $border-color;
 
         &.workout {
-          border-color: rgba($primary-500, 0.3);
+          border-color: $border-width solid $border-color;
         }
         &.time {
-          border-color: rgba($warning, 0.3);
+          border-color: $border-width solid $border-color;
         }
         &.completion {
-          border-color: rgba($success, 0.3);
+          border-color: $border-width solid $border-color;
         }
         &.events {
-          border-color: rgba($info, 0.3);
+          border-color: $border-width solid $border-color;
         }
 
         .stat-icon {
@@ -1158,11 +1142,11 @@ padding: 0.25rem;
           display: flex;
           gap: $space-3;
           @include card-hover;
-          border: 1px solid rgba($primary-500, 0.2);
+          border: $border-width solid $border-color;
 
           &.completed {
             opacity: 0.7;
-            border-color: rgba($success, 0.3);
+            border-color: $border-width solid $border-color;
 
             .event-title {
               text-decoration: line-through;
@@ -1243,7 +1227,7 @@ padding: 0.25rem;
         padding: $space-12 $space-6;
         @include glass-morphism(0.6);
         border-radius: $radius-xl;
-        border: 2px dashed rgba($primary-500, 0.3);
+        border: $border-width solid $border-color;
 
         .empty-icon {
           font-size: 3rem;
@@ -1298,7 +1282,7 @@ padding: 0.25rem;
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.4),
+      rgba($surface-secondary, 0.4),
       transparent
     );
     transition: left 0.6s ease;
@@ -1322,7 +1306,7 @@ padding: 0.25rem;
   &.btn-outline {
     @include glass-morphism(0.8);
     color: $gray-700;
-    border: 2px solid rgba($primary-500, 0.3);
+    border: $border-width solid $border-color;
 
     &:hover {
       background: rgba($primary-500, 0.1);
@@ -1916,5 +1900,93 @@ padding: 0.25rem;
     user-select: none;
     touch-action: manipulation;
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* =============================================
+ * DARK NEON OVERRIDES
+ * ============================================= */
+
+.calendar-container {
+  color: $text-primary;
+}
+
+.calendar-container * {
+  box-shadow: none !important;
+}
+
+.calendar-container [class*='card'],
+.calendar-container [class*='panel'],
+.calendar-container [class*='section'],
+.calendar-container [class*='column'],
+.calendar-container [class*='grid'],
+.calendar-container [class*='content'] {
+  background-image: none !important;
+}
+
+.calendar-container .hero-content,
+.calendar-container .calendar-grid,
+.calendar-container .calendar-grid .calendar-day,
+.calendar-container .week-content,
+.calendar-container .week-day-column,
+.calendar-container .day-view-content,
+.calendar-container .time-slots,
+.calendar-container .time-slot,
+.calendar-container .week-event,
+.calendar-container .day-event,
+.calendar-container .summary-card,
+.calendar-container .stats-card,
+.calendar-container .timeline-card,
+.calendar-container .task-card {
+  background: $surface-secondary;
+
+}
+
+.calendar-container .calendar-day {
+  border-color: $border-width solid $border-color;
+
+  &.today,
+  &.selected,
+  &:hover {
+    background: rgba($primary-color, 0.15);
+    border-color: $border-width solid $border-color;
+  }
+}
+
+.calendar-container .calendar-day .day-number {
+  color: $text-primary;
+}
+
+.calendar-container .calendar-day .day-progress .progress-ring {
+  background: rgba($primary-color, 0.15);
+}
+
+.calendar-container .calendar-day .progress-fill {
+  background: $bg-primary;
+}
+
+.calendar-container .week-day-column {
+  border: $border-width solid $border-color;
+}
+
+.calendar-container .week-content {
+  background: $surface-tertiary;
+}
+
+.calendar-container .day-view-content {
+  background: $surface-tertiary;
+}
+
+.calendar-container .day-view-content .time-slots {
+  background: $surface-secondary;
+  border: $border-width solid $border-color;
+}
+
+.calendar-container .day-view-content .time-slot {
+  border-color: $border-width solid $border-color;
+
+  &.current-hour {
+    background: rgba($primary-color, 0.15);
+    border-left-color: $primary-color;
   }
 }
