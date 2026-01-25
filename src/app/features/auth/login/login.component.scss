@@ -135,7 +135,7 @@
   // Enhanced form styling
   form {
     .form-group {
-      margin-bottom: map.get($spacers, 6);
+      margin-bottom: map.get($spacers, 3);
       position: relative;
 
       label {
@@ -356,7 +356,7 @@
     display: flex;
     align-items: center;
     text-align: center;
-    margin: map.get($spacers, 6) 0;
+    margin: map.get($spacers, 3) 0;
     position: relative;
 
     &::before,
@@ -509,7 +509,7 @@
 
     form {
       .form-group {
-        margin-bottom: map.get($spacers, 4);
+        margin-bottom: map.get($spacers, 3);
 
         label {
           margin-bottom: map.get($spacers, 1);

@@ -25,8 +25,7 @@
   padding: map.get($spacers, 6);
   position: relative;
   overflow: hidden;
-  border: $border-width solid $border-color;
-  border-radius: $border-radius;
+
 
   // Enhanced background effects
   &::before,
@@ -114,7 +113,7 @@
     // Grid pour les champs nom/prénom
     .form-row {
       display: flex;
-      flex-direction: column;
+gap: $spacing-3xl;
     
 
       @media (max-width: map.get($grid-breakpoints, sm)) {
@@ -526,7 +525,7 @@
     form {
       .form-row {
         gap: map.get($spacers, 3);
-        margin-bottom: map.get($spacers, 4);
+        margin-bottom: map.get($spacers, 3);
 
         .form-group {
           margin-bottom: 0;
@@ -534,7 +533,7 @@
       }
 
       .form-group {
-        margin-bottom: map.get($spacers, 4);
+        margin-bottom: map.get($spacers, 3);
 
         label {
           margin-bottom: map.get($spacers, 1);
