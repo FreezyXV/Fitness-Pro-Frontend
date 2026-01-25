@@ -4,15 +4,14 @@ import { Observable, BehaviorSubject, throwError, timer, EMPTY, of } from 'rxjs'
 import { map, catchError, tap, retry, timeout, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { 
-  User, 
-  AuthResponse, 
-  LoginRequest, 
-  RegisterRequest, 
-  ApiResponse, 
-  APP_CONFIG, 
-  StorageUtils,
-  NotificationUtils
+import {
+  User,
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+  ApiResponse,
+  APP_CONFIG,
+  StorageUtils
 } from '@shared';
 
 @Injectable({
@@ -286,8 +285,8 @@ export class AuthService {
     this.setToken(authResponse.token);
     this.updateUser(authResponse.user);
     this.setupAutoLogout();
-    
-    NotificationUtils.success(`Bienvenue ${authResponse.user.name}!`);
+
+    console.log(`Bienvenue ${authResponse.user.name}!`);
   }
 
   private handleLogout(): void {
@@ -295,13 +294,13 @@ export class AuthService {
     
     this.clearSession();
     this.clearAutoLogout();
-    
+
     // Only navigate if not already on login page
     if (!this.router.url.includes('/login')) {
       this.router.navigate(['/login']);
     }
-    
-    NotificationUtils.info('Vous avez été déconnecté');
+
+    console.info('Vous avez été déconnecté');
   }
 
   private clearSession(): void {
@@ -321,7 +320,7 @@ export class AuthService {
     
     this.autoLogoutTimer = window.setTimeout(() => {
       console.log('⏰ AuthService: Auto-logout triggered');
-      NotificationUtils.warning('Session expirée, déconnexion automatique');
+      console.warn('Session expirée, déconnexion automatique');
       this.handleLogout();
     }, APP_CONFIG.UI_CONFIG.AUTO_LOGOUT_TIME);
   }
@@ -472,6 +471,31 @@ export class AuthService {
           return response;
         }
         throw new Error(response.message || 'Échec de la réinitialisation du mot de passe');
+      }),
+      catchError(this.handleError.bind(this))
+    );
+  }
+
+  // =============================================
+  // GUEST MODE
+  // =============================================
+
+  guestLogin(): Observable<AuthResponse> {
+    console.log('🔄 AuthService: Attempting guest login');
+
+    return this.http.post<ApiResponse<AuthResponse>>(
+      `${APP_CONFIG.API_URL}/auth/guest-login`,
+      {},
+      { headers: this.getHeaders() }
+    ).pipe(
+      timeout(APP_CONFIG.REQUEST_TIMEOUT),
+      tap(response => console.log('✅ AuthService: Guest login response received')),
+      map(response => {
+        if (response.success && response.data) {
+          this.handleAuthSuccess(response.data);
+          return response.data;
+        }
+        throw new Error(response.message || 'Échec de la connexion invité');
       }),
       catchError(this.handleError.bind(this))
     );

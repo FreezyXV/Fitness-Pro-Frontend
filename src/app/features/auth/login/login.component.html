@@ -78,7 +78,7 @@
       </div>
 
       <!-- Enhanced submit button -->
-      <button 
+      <button
         type="submit"
         [disabled]="loginForm.invalid || isLoading"
         [class.loading]="isLoading"
@@ -86,6 +86,21 @@
         {{ isLoading ? 'Connexion en cours...' : 'Se connecter' }}
       </button>
     </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span>OU</span>
+    </div>
+
+    <!-- Guest login button -->
+    <button
+      type="button"
+      (click)="onGuestLogin()"
+      [disabled]="isLoading"
+      class="guest-btn">
+      <i class="fas fa-user-secret"></i>
+      Continuer en tant qu'invité
+    </button>
 
     <!-- Enhanced navigation link -->
     <div class="text-link">

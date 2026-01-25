@@ -28,32 +28,6 @@
   position: relative;
   overflow: hidden;
 
-  // Enhanced background effects
-  &::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 2px, transparent 2px);
-    background-size: 60px 60px;
-    animation: floatPattern 25s ease-in-out infinite;
-    opacity: 0.6;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 20%;
-    right: 10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
-    border-radius: 50%;
-    animation: pulseGlow 6s ease-in-out infinite;
-    filter: blur(2px);
-  }
 }
 
 // Floating orbs for enhanced visual appeal
@@ -373,6 +347,81 @@
           transform: translateY(-50%);
           animation: spinLoader 1s linear infinite;
         }
+      }
+    }
+  }
+
+  // Divider between login and guest button
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: map.get($spacers, 6) 0;
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid $gray-300;
+    }
+
+    span {
+      padding: 0 map.get($spacers, 3);
+      color: $gray-500;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  // Guest login button
+  .guest-btn {
+    @include button-base($btn-padding-lg, $border-radius-lg);
+    & {
+      width: 100%;
+      background: transparent;
+      color: $gray-700;
+      font-size: $font-size-base;
+      border: 2px solid $gray-300;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: map.get($spacers, 2);
+      transition: all $transition-fast;
+      font-weight: $font-weight-semibold;
+    }
+
+    i {
+      font-size: $font-size-lg;
+      transition: transform $transition-fast;
+    }
+
+    &:hover {
+      background: $gray-50;
+      border-color: $gray-400;
+      color: $gray-800;
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+
+      i {
+        transform: scale(1.1);
+      }
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+
+      &:hover {
+        background: transparent;
+        border-color: $gray-300;
+        transform: none;
+        box-shadow: none;
       }
     }
   }

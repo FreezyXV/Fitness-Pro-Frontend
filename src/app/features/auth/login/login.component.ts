@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '@app/services/auth.service';
-import { NotificationUtils } from '@shared';
+
 
 @Component({
   selector: 'app-login',
@@ -179,23 +179,23 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onForgotPassword(): void {
     const email = this.loginForm.get('email')?.value;
-    
+
     if (!email) {
-      NotificationUtils.warning('Veuillez entrer votre email d\'abord');
+      console.warn('Veuillez entrer votre email d\'abord');
       return;
     }
 
     if (this.loginForm.get('email')?.invalid) {
-      NotificationUtils.error('Veuillez entrer un email valide');
+      console.error('Veuillez entrer un email valide');
       return;
     }
 
     this.authService.requestPasswordReset(email).subscribe({
       next: () => {
-        NotificationUtils.success('Un email de réinitialisation a été envoyé');
+        console.log('Un email de réinitialisation a été envoyé');
       },
       error: (error) => {
-        NotificationUtils.error(error.message || 'Erreur lors de l\'envoi de l\'email');
+        console.error(error.message || 'Erreur lors de l\'envoi de l\'email');
       }
     });
   }
@@ -204,5 +204,29 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.router.navigate(['/register'], {
       queryParams: { returnUrl: this.returnUrl }
     });
+  }
+
+  onGuestLogin(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    console.log('🔐 LoginComponent: Attempting guest login');
+
+    this.subscriptions.add(
+      this.authService.guestLogin().subscribe({
+        next: (authResponse) => {
+          this.isLoading = false;
+          console.log('✅ LoginComponent: Guest login successful');
+
+          // Immediate navigation after successful guest login
+          this.router.navigateByUrl(this.returnUrl);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage = this.getErrorMessage(error);
+          console.error('❌ LoginComponent: Guest login error:', error);
+        }
+      })
+    );
   }
 }
