@@ -923,12 +923,12 @@ a {
 // Loading Spinner
 .loading-spinner {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: $border-width solid $border-color;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border-top-color: var(--primary-color);
-  animation: spin 1s ease-in-out infinite;
+  border: 2px solid rgba($primary-color, 0.15);
+  border-top-color: $primary-color;
+  animation: spin 0.65s linear infinite;
 }
 
 // Animations

@@ -431,10 +431,10 @@
   .loading-spinner {
     width: 48px;
     height: 48px;
-    border: $border-width solid $border-color;
-    border-top: $border-width solid $border-color;
-    border-radius: $border-radius-full;
-    animation: spin 1s linear infinite;
+    border: 2px solid rgba($primary-color, 0.15);
+    border-top-color: $primary-color;
+    border-radius: 50%;
+    animation: spin 0.65s linear infinite;
   }
 
   p {

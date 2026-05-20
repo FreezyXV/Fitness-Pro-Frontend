@@ -479,12 +479,12 @@
         z-index: 10;
 
         .loading-spinner {
-          border: $border-width solid $border-color;
-          border-top: $border-width solid $border-color;
-          border-radius: 50%;
           width: 40px;
           height: 40px;
-          animation: rotate 1s linear infinite;
+          border: 2px solid rgba($primary-color, 0.15);
+          border-top-color: $primary-color;
+          border-radius: 50%;
+          animation: spin 0.65s linear infinite;
         }
 
         svg {

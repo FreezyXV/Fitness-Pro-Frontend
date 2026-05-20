@@ -875,10 +875,10 @@ padding: 0.25rem;
         .loading-spinner {
           width: 60px;
           height: 60px;
-          border: $border-width solid $border-color;
-          border-top: $border-width solid $border-color;
+          border: 2px solid rgba($primary-color, 0.15);
+          border-top-color: $primary-color;
           border-radius: 50%;
-          animation: spin 1s linear infinite;
+          animation: spin 0.65s linear infinite;
           margin-bottom: 2rem;
         }
 
@@ -1736,10 +1736,10 @@ width: 100%;
       .loading-spinner {
         width: 80px;
         height: 80px;
-        border: $border-width solid $border-color;
-        border-top: $border-width solid $border-color;
+        border: 3px solid rgba($primary-color, 0.15);
+        border-top-color: $primary-color;
         border-radius: 50%;
-        animation: spin 1s linear infinite;
+        animation: spin 0.65s linear infinite;
         margin: 0 auto 2rem;
       }
     }

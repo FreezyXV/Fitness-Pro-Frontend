@@ -315,8 +315,8 @@
       @include button-base($btn-padding-lg, $border-radius-lg);
       & {
         width: 100%;
-        background: $primary-dark;
-        color: white;
+        background: #b3ff00;
+        color: black;
         font-size: $font-size-base;
         margin-top: map.get($spacers, 2);
         box-shadow: $shadow-primary;
