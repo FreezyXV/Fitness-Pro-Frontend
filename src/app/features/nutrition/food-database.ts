@@ -209,7 +209,7 @@ export const FOOD_DATABASE: Food[] = [
         glycemicIndex: 0, season: [Season.ALL_YEAR], storageMethod: 'Réfrigérateur 2-3 jours, congélateur 6 mois',
         preparationTips: ['Mariner pour plus de saveur', 'Cuire à 75°C à cœur', 'Ne pas surcuire pour éviter la sécheresse'],
         healthBenefits: ['Construction musculaire', 'Réparation tissulaire', 'Satiété longue durée'],
-        verified: true, popularityScore: 95, imageUrl: 'assets/Aliments/blanc-de-poulet.jpeg',
+        verified: true, popularityScore: 95, imageUrl: 'assets/Aliments/poulet.png',
         alternativeNames: ['Escalope de poulet', 'Filet de poulet'], origin: 'Élevage',
         sustainability: SustainabilityLevel.MEDIUM, priceRange: PriceRange.MODERATE
     },
@@ -480,7 +480,7 @@ export const FOOD_DATABASE: Food[] = [
         glycemicIndex: 0, season: [Season.ALL_YEAR], storageMethod: 'Réfrigérateur 2-3 jours, congélateur 6 mois',
         preparationTips: ['Éviter la surcuisson', 'Marinage recommandé', 'Température interne 74°C'],
         healthBenefits: ['Très faible en gras', 'Sélénium antioxydant', 'Niacine pour métabolisme'],
-        verified: true, popularityScore: 87, imageUrl: 'assets/Aliments/blanc-de-dinde.jpeg',
+        verified: true, popularityScore: 87, imageUrl: 'assets/Aliments/dinde.png',
         alternativeNames: ['Escalope de dinde'], origin: 'Élevage',
         sustainability: SustainabilityLevel.MEDIUM, priceRange: PriceRange.MODERATE
     },

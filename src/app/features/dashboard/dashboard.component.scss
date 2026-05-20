@@ -266,7 +266,7 @@ $forest-gradient: $gradient-forest;
 
         &.primary {
           background: $primary-dark;
-          color: white;
+          color: black;
           box-shadow: 0 8px 25px rgba($primary-color, 0.3);
 
           &:hover:not(:disabled) {
@@ -487,7 +487,7 @@ $forest-gradient: $gradient-forest;
     &.physical-stats {
       .stats-grid-inner {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
 
         .stat-item {
@@ -856,7 +856,7 @@ $forest-gradient: $gradient-forest;
         z-index: 1;
 
         @media (min-width: 768px) {
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(2, 1fr);
           gap: 1rem;
         }
 
@@ -1335,7 +1335,7 @@ $forest-gradient: $gradient-forest;
   z-index: 1;
 
   .motivation-card {
-    background: $primary-dark;
+    background: $surface-secondary;
     background-size: 400% 400%;
     animation: gradientFlow 12s ease infinite;
     border-radius: $border-radius-2xl;
@@ -1447,8 +1447,8 @@ $forest-gradient: $gradient-forest;
           }
 
           &.primary {
-            background: rgba($surface-secondary, 0.95);
-            color: $primary-color;
+            
+            
             border: none;
             backdrop-filter: blur(20px);
             box-shadow: $shadow-xl;
@@ -1456,7 +1456,7 @@ $forest-gradient: $gradient-forest;
             &:hover {
               transform: translateY(-3px) scale(1.02);
               box-shadow: $shadow-2xl;
-              background: $surface-secondary;
+             
 
               &::before {
                 left: 100%;
@@ -1748,7 +1748,7 @@ $forest-gradient: $gradient-forest;
 .dashboard-container [class*='card'],
 .dashboard-container [class*='panel'],
 .dashboard-container [class*='module'] {
-  background: $surface-secondary;
+  
 
 }
 

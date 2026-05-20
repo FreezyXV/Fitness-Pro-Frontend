@@ -1657,6 +1657,7 @@ padding: 0.25rem;
     .action-btn.primary.large {
       @include enhanced-button($secondary-gradient, black, large);
       box-shadow: 0 15px 40px rgba($secondary-color, 0.4);
+      color: black;
       position: relative;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow: hidden;

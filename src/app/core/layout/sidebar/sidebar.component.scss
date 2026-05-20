@@ -112,7 +112,6 @@
 
       &:hover {
         transform: scale(1.02);
-        background: rgba(33, 191, 115, 0.05);
       }
 
       &:active {
@@ -138,7 +137,7 @@
         @media (max-width: $breakpoint-md) {
           width: 42px;
           height: 42px;
-          box-shadow: 0 4px 15px rgba(33, 191, 115, 0.3);
+         
         }
 
         svg {
@@ -658,7 +657,7 @@
           }
 
           &:hover {
-            background: rgba(241, 245, 249, 0.9);
+         
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
