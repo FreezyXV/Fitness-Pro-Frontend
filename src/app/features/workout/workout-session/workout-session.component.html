@@ -1,0 +1,161 @@
+<div class="session">
+
+  <!-- ============ CHARGEMENT / ERREUR ============ -->
+  <div class="state-screen" *ngIf="phase() === 'loading'">
+    <div class="spinner"></div>
+    <p>Préparation de la séance…</p>
+  </div>
+
+  <div class="state-screen" *ngIf="phase() === 'error'">
+    <div class="state-icon">⚠️</div>
+    <h2>Séance indisponible</h2>
+    <p>{{ errorMessage() }}</p>
+    <button class="btn-ghost" (click)="backToWorkouts()">Retour aux programmes</button>
+  </div>
+
+  <!-- ============ ÉCRAN DE DÉPART ============ -->
+  <ng-container *ngIf="phase() === 'ready'">
+    <header class="session-top">
+      <button class="icon-btn" (click)="quit()" aria-label="Quitter">✕</button>
+      <span class="top-title">{{ workoutName() }}</span>
+    </header>
+
+    <div class="ready">
+      <p class="ready-eyebrow">Prêt à commencer</p>
+      <p class="ready-count">{{ totalSets() }}</p>
+      <p class="ready-label">séries au programme</p>
+
+      <ul class="ready-list">
+        <li *ngFor="let s of plan(); let i = index"
+            [class.is-repeat]="i > 0 && plan()[i - 1].exerciseIndex === s.exerciseIndex">
+          <ng-container *ngIf="i === 0 || plan()[i - 1].exerciseIndex !== s.exerciseIndex">
+            <span class="ready-name">{{ s.exercise.name }}</span>
+            <span class="ready-meta">
+              {{ s.setsInExercise }} × {{ s.exercise.reps ? s.exercise.reps + ' reps' : s.exercise.durationSeconds + 's' }}
+            </span>
+          </ng-container>
+        </li>
+      </ul>
+
+      <button class="btn-primary-xl" (click)="start()">Commencer la séance</button>
+    </div>
+  </ng-container>
+
+  <!-- ============ SÉRIE EN COURS ============ -->
+  <ng-container *ngIf="phase() === 'working'">
+    <header class="session-top">
+      <button class="icon-btn" (click)="quit()" aria-label="Quitter">✕</button>
+      <span class="top-clock">{{ formatClock(elapsedSeconds()) }}</span>
+      <span class="top-progress">{{ done().length }}/{{ totalSets() }}</span>
+    </header>
+
+    <div class="progress-rail"><div class="progress-fill" [style.width.%]="progressPercent()"></div></div>
+
+    <main class="stage">
+      <p class="stage-eyebrow">
+        Série {{ current()?.setNumber }} sur {{ current()?.setsInExercise }}
+      </p>
+      <h1 class="stage-exercise">{{ current()?.exercise?.name }}</h1>
+
+      <!-- Exercice tenu en durée -->
+      <ng-container *ngIf="isTimedExercise()">
+        <p class="stage-big">{{ formatClock(holdRemaining()) }}</p>
+        <p class="stage-unit">à tenir</p>
+      </ng-container>
+
+      <!-- Exercice en répétitions -->
+      <ng-container *ngIf="!isTimedExercise()">
+        <div class="stepper">
+          <button class="step-btn" (click)="adjustReps(-1)" aria-label="Une répétition de moins">−</button>
+          <div class="step-value">
+            <span class="stage-big">{{ reps() ?? 0 }}</span>
+            <span class="stage-unit">répétitions</span>
+          </div>
+          <button class="step-btn" (click)="adjustReps(1)" aria-label="Une répétition de plus">+</button>
+        </div>
+
+        <div class="weight-row">
+          <button class="step-btn small" (click)="adjustWeight(-2.5)" aria-label="Retirer 2,5 kg">−</button>
+          <div class="weight-value">
+            <input type="number" inputmode="decimal" step="0.5" min="0"
+                   [ngModel]="weight()" (ngModelChange)="weight.set($event)"
+                   aria-label="Charge en kilogrammes" />
+            <span class="weight-unit">kg</span>
+          </div>
+          <button class="step-btn small" (click)="adjustWeight(2.5)" aria-label="Ajouter 2,5 kg">+</button>
+        </div>
+        <p class="weight-hint" *ngIf="weight()">Charge de votre dernière séance</p>
+      </ng-container>
+    </main>
+
+    <footer class="stage-actions">
+      <button class="btn-validate" (click)="validateSet()">Série validée</button>
+      <button class="btn-ghost" (click)="skipExercise()">Passer l'exercice</button>
+    </footer>
+  </ng-container>
+
+  <!-- ============ REPOS ============ -->
+  <ng-container *ngIf="phase() === 'resting'">
+    <header class="session-top">
+      <button class="icon-btn" (click)="quit()" aria-label="Quitter">✕</button>
+      <span class="top-clock">{{ formatClock(elapsedSeconds()) }}</span>
+      <span class="top-progress">{{ done().length }}/{{ totalSets() }}</span>
+    </header>
+
+    <main class="stage rest">
+      <p class="stage-eyebrow">Repos</p>
+      <div class="rest-ring" [style.--fraction]="restFraction()">
+        <span class="rest-time">{{ formatClock(restRemaining()) }}</span>
+      </div>
+
+      <p class="rest-next-label">Ensuite</p>
+      <p class="rest-next">{{ current()?.exercise?.name }}</p>
+      <p class="rest-next-meta">
+        Série {{ current()?.setNumber }} sur {{ current()?.setsInExercise }}
+      </p>
+    </main>
+
+    <footer class="stage-actions">
+      <button class="btn-validate" (click)="skipRest()">Reprendre maintenant</button>
+      <button class="btn-ghost" (click)="addRest(15)">+ 15 secondes</button>
+    </footer>
+  </ng-container>
+
+  <!-- ============ RÉCAPITULATIF ============ -->
+  <ng-container *ngIf="phase() === 'finished'">
+    <main class="stage summary">
+      <div class="summary-badge">✓</div>
+      <h1 class="summary-title">Séance terminée</h1>
+      <p class="summary-name">{{ workoutName() }}</p>
+
+      <div class="summary-grid">
+        <div>
+          <span class="summary-value">{{ formatClock(elapsedSeconds()) }}</span>
+          <span class="summary-label">durée</span>
+        </div>
+        <div>
+          <span class="summary-value">{{ done().length }}</span>
+          <span class="summary-label">séries</span>
+        </div>
+        <div *ngIf="totalVolume() > 0">
+          <span class="summary-value">{{ totalVolume() | number:'1.0-0' }}</span>
+          <span class="summary-label">kg soulevés</span>
+        </div>
+      </div>
+
+      <ul class="summary-list">
+        <li *ngFor="let s of done()">
+          <span class="summary-ex">{{ s.exerciseName }}</span>
+          <span class="summary-detail">
+            <ng-container *ngIf="s.reps !== null">{{ s.reps }} reps</ng-container>
+            <ng-container *ngIf="s.seconds !== null">{{ s.seconds }}s</ng-container>
+            <ng-container *ngIf="s.weight"> · {{ s.weight }} kg</ng-container>
+          </span>
+        </li>
+      </ul>
+
+      <button class="btn-primary-xl" (click)="backToWorkouts()">Terminer</button>
+    </main>
+  </ng-container>
+
+</div>

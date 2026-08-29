@@ -141,36 +141,16 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
   }
 
   // Action methods
+
+  /**
+   * Ouvre le mode seance plein ecran.
+   *
+   * Cette page reste consacree a la consultation du programme ; l'execution
+   * se fait sur un ecran dedie, lisible a bout de bras, qui gere le decompte
+   * des series et le temps de repos.
+   */
   startSession(template: Workout): void {
-    if (this.isStartingWorkout) return;
-
-    this.isStartingWorkout = true;
-
-    this.workoutService
-      .startWorkoutSession(template.id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (session) => {
-          this.isStartingWorkout = false;
-          this.workoutSessionStarted = true;
-          this.currentSessionId = session.id;
-
-          console.log(`Session démarrée pour ${template.name}`);
-
-          // Initialize exercise status tracking
-          template.exercises?.forEach((_, index) => {
-            this.exerciseStatus.set(index, 'not_started');
-          });
-
-          // Show success feedback
-          this.showWorkoutStartedFeedback(template.name);
-        },
-        error: (error) => {
-          this.isStartingWorkout = false;
-          console.error('Erreur lors du démarrage de la session');
-          console.error('Start session error:', error);
-        },
-      });
+    this.router.navigate(['/workouts', template.id, 'session']);
   }
 
   private showWorkoutStartedFeedback(workoutName: string): void {

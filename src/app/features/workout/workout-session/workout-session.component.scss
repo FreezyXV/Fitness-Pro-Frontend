@@ -1,0 +1,406 @@
+// Mode « séance en cours ».
+//
+// Contrainte de conception : cet écran est lu debout, à bout de bras, les
+// mains moites, souvent avec une seule main libre. D'où les chiffres très
+// grands, les cibles tactiles larges et une seule action évidente par écran.
+//
+// Ce fichier n'importe que le design system : aucune valeur en dur, aucune
+// media query écrite à la main.
+
+@use 'variables' as *;
+@use 'design-system' as *;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: $bg-primary;
+  color: $text-primary;
+}
+
+.session {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 1rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+  gap: 1rem;
+}
+
+// ---------------------------------------------------------------- en-tête
+
+.session-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 44px;
+}
+
+.top-title {
+  font-weight: 700;
+  @include text-ellipsis(1);
+}
+
+.top-clock {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: $primary-color;
+}
+
+.top-progress {
+  font-variant-numeric: tabular-nums;
+  color: $text-secondary;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: $border-radius-full;
+  background: $surface-secondary;
+  color: $text-primary;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.progress-rail {
+  height: 4px;
+  border-radius: $border-radius-full;
+  background: $surface-secondary;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: $primary-color;
+  transition: width 0.3s ease;
+}
+
+// ------------------------------------------------------------------ scène
+
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+}
+
+.stage-eyebrow {
+  @include label-caps($text-secondary);
+}
+
+.stage-exercise {
+  font-size: clamp(1.5rem, 6vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0;
+}
+
+// Le chiffre principal : lisible à un mètre de distance.
+.stage-big {
+  font-size: clamp(4rem, 22vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: $primary-color;
+}
+
+.stage-unit {
+  @include label-caps($text-secondary);
+}
+
+// -------------------------------------------------------------- compteurs
+
+.stepper,
+.weight-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.step-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-btn {
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+  border: $border-width solid $border-color;
+  border-radius: $border-radius-full;
+  background: $surface-secondary;
+  color: $text-primary;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  &.small {
+    width: 56px;
+    height: 56px;
+    font-size: 1.5rem;
+  }
+
+  &:active {
+    background: $primary-color;
+    color: $bg-primary;
+  }
+}
+
+.weight-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+
+  input {
+    width: 5ch;
+    padding: 0.25rem;
+    border: none;
+    border-bottom: $border-width-thick solid $border-color;
+    background: transparent;
+    color: $text-primary;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+
+    &:focus {
+      @include focus-ring;
+      border-radius: $border-radius-sm;
+    }
+
+    // Masque les flèches natives, inutiles avec les boutons ± dédiés.
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+    appearance: textfield;
+  }
+}
+
+.weight-unit {
+  font-size: 1.25rem;
+  color: $text-secondary;
+}
+
+.weight-hint {
+  font-size: 0.8125rem;
+  color: $text-secondary;
+}
+
+// ------------------------------------------------------------------ repos
+
+.rest-ring {
+  --fraction: 1;
+  display: grid;
+  place-items: center;
+  width: min(62vw, 260px);
+  aspect-ratio: 1;
+  border-radius: $border-radius-full;
+  background: conic-gradient(
+    $primary-color calc(var(--fraction) * 360deg),
+    $surface-secondary 0
+  );
+  mask: radial-gradient(circle, transparent 58%, #000 59%);
+  -webkit-mask: radial-gradient(circle, transparent 58%, #000 59%);
+  position: relative;
+}
+
+.rest-time {
+  position: absolute;
+  font-size: clamp(2.5rem, 12vw, 4rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: $text-primary;
+  mask: none;
+  -webkit-mask: none;
+}
+
+.rest-next-label {
+  @include label-caps($text-secondary);
+  margin-top: 1rem;
+}
+
+.rest-next {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.rest-next-meta {
+  color: $text-secondary;
+}
+
+// ---------------------------------------------------------------- actions
+
+.stage-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+// L'action principale : pleine largeur, atteignable au pouce.
+.btn-validate,
+.btn-primary-xl {
+  width: 100%;
+  min-height: 68px;
+  border: none;
+  border-radius: $border-radius-xl;
+  background: $primary-color;
+  color: $bg-primary;
+  font-size: 1.25rem;
+  font-weight: 800;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.985);
+  }
+}
+
+.btn-ghost {
+  width: 100%;
+  min-height: 48px;
+  border: $border-width solid $border-color;
+  border-radius: $border-radius-lg;
+  background: transparent;
+  color: $text-secondary;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+// ------------------------------------------------------- départ et bilan
+
+.ready {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.ready-eyebrow { @include label-caps($text-secondary); }
+.ready-count { font-size: clamp(3.5rem, 18vw, 5.5rem); font-weight: 800; color: $primary-color; line-height: 1; }
+.ready-label { @include label-caps($text-secondary); margin-bottom: 1rem; }
+
+.ready-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  li:empty { display: none; }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: $border-radius-lg;
+    background: $surface-secondary;
+    text-align: left;
+  }
+}
+
+.ready-name { font-weight: 600; }
+.ready-meta { color: $text-secondary; white-space: nowrap; }
+
+.summary-badge {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: $border-radius-full;
+  background: $primary-color;
+  color: $bg-primary;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+.summary-title { font-size: 1.75rem; font-weight: 800; margin: 0; }
+.summary-name { color: $text-secondary; }
+
+.summary-grid {
+  display: flex;
+  gap: 2rem;
+  margin: 1rem 0;
+
+  div { display: flex; flex-direction: column; }
+}
+
+.summary-value { font-size: 1.75rem; font-weight: 800; color: $primary-color; font-variant-numeric: tabular-nums; }
+.summary-label { @include label-caps($text-secondary, 0.75rem); }
+
+.summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  max-height: 34vh;
+  overflow-y: auto;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: $border-width solid $border-color;
+    text-align: left;
+  }
+}
+
+.summary-ex { @include text-ellipsis(1); }
+.summary-detail { color: $text-secondary; white-space: nowrap; }
+
+// --------------------------------------------------------------- états
+
+.state-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.state-icon { font-size: 3rem; }
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid $border-color;
+  border-top-color: $primary-color;
+  border-radius: $border-radius-full;
+  animation: session-spin 0.9s linear infinite;
+}
+
+@keyframes session-spin {
+  to { transform: rotate(360deg); }
+}
+
+// Les chiffres restent lisibles sur très petits écrans sans règle ad hoc.
+@include respond-below(xs) {
+  .session { padding: 0.75rem 1rem calc(1rem + env(safe-area-inset-bottom)); }
+  .step-btn { width: 60px; height: 60px; }
+  .summary-grid { gap: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation: none; }
+  .btn-validate:active,
+  .btn-primary-xl:active { transform: none; }
+}

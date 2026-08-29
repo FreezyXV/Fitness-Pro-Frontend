@@ -1,0 +1,18 @@
+/* Configuration TypeScript des tests.
+ *
+ * Le tsconfig principal exclut `src/**|*.spec.ts`, ce qui empechait toute
+ * compilation des tests : Karma echouait au demarrage avec
+ * "is missing from the TypeScript compilation".
+ */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": ["jasmine", "node"]
+  },
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ],
+  "exclude": []
+}

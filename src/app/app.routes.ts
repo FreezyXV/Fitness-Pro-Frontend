@@ -30,6 +30,17 @@ export const routes: Routes = [
     canActivate: [GuestGuard]
   },
 
+  // Seance en cours : plein ecran, volontairement hors du LayoutComponent.
+  // Pendant l'effort l'ecran ne doit montrer que la serie a realiser, sans
+  // barre laterale ni navigation concurrente.
+  {
+    path: 'workouts/:id/session',
+    loadComponent: () =>
+      import('@features/workout/workout-session/workout-session.component').then(m => m.WorkoutSessionComponent),
+    canActivate: [AuthGuard],
+    title: 'Séance en cours'
+  },
+
   // Protected routes
   {
     path: '',

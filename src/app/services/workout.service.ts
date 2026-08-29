@@ -436,7 +436,10 @@ export class WorkoutService {
     sessionId: number,
     sessionData: {
       notes?: string;
-      duration_minutes?: number;
+      // Le backend valide 'actual_duration' ; l'ancien 'duration_minutes'
+      // n'etait reconnu par aucune regle et etait donc ignore en silence.
+      actual_duration?: number;
+      actual_calories?: number;
       exercises?: any[];
     }
   ): Observable<Workout> {
