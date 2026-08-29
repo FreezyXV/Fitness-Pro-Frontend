@@ -68,6 +68,8 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
   /** Saisie de la serie en cours. */
   readonly reps = signal<number | null>(null);
   readonly weight = signal<number | null>(null);
+  /** Vrai tant que la charge affichee vient de l'historique et non d'une saisie. */
+  readonly weightFromHistory = signal(false);
 
   readonly restRemaining = signal(0);
   readonly restTotal = signal(0);
@@ -221,8 +223,10 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
     const c = this.current();
     if (!c) return;
 
+    const remembered = this.lastWeightFor(c.exercise.id);
     this.reps.set(c.exercise.reps ?? null);
-    this.weight.set(this.lastWeightFor(c.exercise.id));
+    this.weight.set(remembered);
+    this.weightFromHistory.set(remembered !== null);
     this.holdRemaining.set(c.exercise.durationSeconds ?? 0);
   }
 
@@ -285,6 +289,12 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
 
   adjustWeight(delta: number): void {
     this.weight.update((w) => Math.max(0, Math.round(((w ?? 0) + delta) * 10) / 10));
+    this.weightFromHistory.set(false);
+  }
+
+  setWeight(value: number | null): void {
+    this.weight.set(value);
+    this.weightFromHistory.set(false);
   }
 
   /** Passe l'exercice courant, series restantes comprises. */

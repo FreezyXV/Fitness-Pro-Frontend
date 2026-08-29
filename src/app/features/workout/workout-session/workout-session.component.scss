@@ -57,7 +57,7 @@
   width: 44px;
   height: 44px;
   border: none;
-  border-radius: $border-radius-full;
+  border-radius: 50%;
   background: $surface-secondary;
   color: $text-primary;
   font-size: 1.25rem;
@@ -135,7 +135,7 @@
   width: 72px;
   height: 72px;
   border: $border-width solid $border-color;
-  border-radius: $border-radius-full;
+  border-radius: 50%;
   background: $surface-secondary;
   color: $text-primary;
   font-size: 2rem;
@@ -198,30 +198,37 @@
 
 // ------------------------------------------------------------------ repos
 
-.rest-ring {
-  --fraction: 1;
+// Le decompte est un frere de l'anneau, pas son enfant : un mask s'applique
+// aussi au contenu, ce qui rendait le chiffre invisible.
+.rest-dial {
+  position: relative;
   display: grid;
   place-items: center;
   width: min(62vw, 260px);
   aspect-ratio: 1;
-  border-radius: $border-radius-full;
+}
+
+.rest-ring {
+  --fraction: 1;
+  position: absolute;
+  inset: 0;
+  // 50 % et non $border-radius-full : ce jeton vaut 3rem, ce qui donne un
+  // carre aux angles arrondis sur un element de cette taille, pas un disque.
+  border-radius: 50%;
   background: conic-gradient(
     $primary-color calc(var(--fraction) * 360deg),
     $surface-secondary 0
   );
   mask: radial-gradient(circle, transparent 58%, #000 59%);
   -webkit-mask: radial-gradient(circle, transparent 58%, #000 59%);
-  position: relative;
 }
 
 .rest-time {
-  position: absolute;
+  position: relative;
   font-size: clamp(2.5rem, 12vw, 4rem);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: $text-primary;
-  mask: none;
-  -webkit-mask: none;
 }
 
 .rest-next-label {
@@ -322,7 +329,7 @@
   place-items: center;
   width: 88px;
   height: 88px;
-  border-radius: $border-radius-full;
+  border-radius: 50%;
   background: $primary-color;
   color: $bg-primary;
   font-size: 2.5rem;
@@ -384,7 +391,7 @@
   height: 44px;
   border: 3px solid $border-color;
   border-top-color: $primary-color;
-  border-radius: $border-radius-full;
+  border-radius: 50%;
   animation: session-spin 0.9s linear infinite;
 }
 
