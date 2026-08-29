@@ -13,11 +13,18 @@ import { AuthService } from '@app/services/auth.service';
   styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
+  /** Formulaire affiche sans token : demande d'un lien de reinitialisation. */
+  requestForm: FormGroup;
+  /** Formulaire affiche avec un token valide : choix du nouveau mot de passe. */
   resetForm: FormGroup;
+
   isLoading = false;
   showNewPassword = false;
   showConfirmPassword = false;
   resetToken: string | null = null;
+
+  linkRequested = false;
+  errorMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -25,7 +32,8 @@ export class ResetPasswordComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.resetForm = this.initializeForm();
+    this.requestForm = this.initializeRequestForm();
+    this.resetForm = this.initializeResetForm();
   }
 
   ngOnInit(): void {
@@ -39,12 +47,19 @@ export class ResetPasswordComponent implements OnInit {
       const email = params.get('email');
 
       if (email) {
+        this.requestForm.patchValue({ email });
         this.resetForm.patchValue({ email });
       }
     });
   }
 
-  private initializeForm(): FormGroup {
+  private initializeRequestForm(): FormGroup {
+    return this.fb.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+  }
+
+  private initializeResetForm(): FormGroup {
     return this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [
@@ -70,22 +85,30 @@ export class ResetPasswordComponent implements OnInit {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
+  /**
+   * Un mot de passe ne peut etre change que via un token recu par email.
+   * Sans token, la page se limite a demander l'envoi de ce lien.
+   */
   get isTokenMode(): boolean {
     return !!this.resetToken;
   }
 
+  private get activeForm(): FormGroup {
+    return this.isTokenMode ? this.resetForm : this.requestForm;
+  }
+
   isFieldInvalid(fieldName: string): boolean {
-    const field = this.resetForm.get(fieldName);
+    const field = this.activeForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
   isFieldValid(fieldName: string): boolean {
-    const field = this.resetForm.get(fieldName);
+    const field = this.activeForm.get(fieldName);
     return !!(field && field.valid && (field.dirty || field.touched));
   }
 
   getFieldError(fieldName: string): string | null {
-    const field = this.resetForm.get(fieldName);
+    const field = this.activeForm.get(fieldName);
     if (!field || !field.errors || !field.touched) return null;
 
     const errors = field.errors;
@@ -113,37 +136,60 @@ export class ResetPasswordComponent implements OnInit {
     return null;
   }
 
-  onSubmit(): void {
-    if (this.resetForm.invalid) {
-      this.markAllFieldsAsTouched();
+  /** Sans token : demande l'envoi d'un lien de reinitialisation. */
+  onRequestLink(): void {
+    if (this.requestForm.invalid) {
+      this.markAllFieldsAsTouched(this.requestForm);
       return;
     }
 
     this.isLoading = true;
+    this.errorMessage = null;
 
-    const { email, password, passwordConfirmation } = this.resetForm.value;
-
-    const request$ = this.resetToken
-      ? this.authService.resetPassword(this.resetToken, email, password, passwordConfirmation)
-      : this.authService.adminResetPassword(email, password, passwordConfirmation);
-
-    request$.subscribe({
+    this.authService.requestPasswordReset(this.requestForm.value.email).subscribe({
       next: () => {
         this.isLoading = false;
-        console.log('Mot de passe réinitialisé avec succès !');
-        this.router.navigate(['/login']);
+        this.linkRequested = true;
       },
       error: (error) => {
         this.isLoading = false;
-        console.error(error.message || 'Erreur lors de la réinitialisation');
-        console.error('❌ Reset error:', error);
+        this.errorMessage = error.message || 'Impossible d\'envoyer le lien de réinitialisation.';
       }
     });
   }
 
-  private markAllFieldsAsTouched(): void {
-    Object.keys(this.resetForm.controls).forEach(key => {
-      this.resetForm.get(key)?.markAsTouched();
+  /** Avec token : applique le nouveau mot de passe. */
+  onSubmit(): void {
+    if (!this.resetToken) {
+      this.errorMessage = 'Lien de réinitialisation manquant ou invalide.';
+      return;
+    }
+
+    if (this.resetForm.invalid) {
+      this.markAllFieldsAsTouched(this.resetForm);
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    const { email, password, passwordConfirmation } = this.resetForm.value;
+
+    this.authService.resetPassword(this.resetToken, email, password, passwordConfirmation).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.message || 'Le lien est invalide ou a expiré. Demandez-en un nouveau.';
+      }
+    });
+  }
+
+  private markAllFieldsAsTouched(form: FormGroup): void {
+    Object.keys(form.controls).forEach(key => {
+      form.get(key)?.markAsTouched();
     });
   }
 
