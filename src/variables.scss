@@ -594,3 +594,55 @@ $white-rgba-95: $glass-white-95;
 $white-rgba-98: $glass-white-98;
 $white-rgba-20: $glass-white-20;
 $white-rgba-30: $glass-white-30;
+
+// =============================================
+// PALETTE ETENDUE
+// =============================================
+//
+// Ces teintes etaient ecrites en dur dans les composants : 218 occurrences
+// reparties sur 85 nuances, dont 3 seulement correspondaient a une variable
+// existante. Il y avait donc une seconde palette, non documentee, melangeant
+// des valeurs Tailwind et Bootstrap.
+//
+// Les valeurs ci-dessous sont reprises telles quelles : nommer d'abord, sans
+// rien deplacer visuellement. Plusieurs sont des quasi-doublons (trois rouges,
+// deux verts, deux cyans) et gagneraient a etre fusionnes, mais c'est une
+// decision de design, pas un refactor : elle se fait maintenant en un seul
+// endroit.
+
+// Rouges / danger — trois rouges coexistent pour le meme role
+$c-red-500: #ef4444;
+$c-red-600: #dc2626;
+$c-red-bootstrap: #dc3545;
+$c-red-300: #fc8181;
+$c-red-100: #fed7d7;
+
+// Verts / succes
+$c-green-500: #22c55e;
+$c-green-600: #16a34a;
+$c-green-bootstrap: #28a745;
+$c-green-brand: #21bf73;
+$c-emerald-500: #10b981;
+$c-emerald-600: #059669;
+
+// Oranges / ambre — avertissements et intensite
+$c-orange-600: #ea580c;
+$c-orange-700: #c2410c;
+$c-orange-900: #7c2d12;
+$c-amber-500: #f59e0b;
+$c-amber-600: #d97706;
+$c-amber-bootstrap: #ffc107;
+$c-amber-soft: #fdcb6e;
+$c-terracotta: #e17055;
+
+// Bleus / violets — information et degrades
+$c-blue-500: #3b82f6;
+$c-cyan-600: #0891b2;
+$c-cyan-bootstrap: #17a2b8;
+$c-indigo-400: #667eea;
+$c-purple-500: #764ba2;
+$c-violet-600: #7c3aed;
+
+// Neutres froids
+$c-slate-500: #718096;
+$c-slate-800: #2d3748;

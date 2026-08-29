@@ -1,7 +1,7 @@
 /* src/app/calendar/mini-calendar/mini-calendar.component.scss */
 @use 'sass:color';
 @use 'variables' as *;
-@use 'styles' as *;
+@use 'design-system' as *;
 
 @mixin button-base($bg-color, $text-color) {
   border: $border-width solid $border-color;
@@ -410,18 +410,6 @@
   padding: 1rem;
 }
 
-.modal-content {
-  background: $surface-secondary;
-  border-radius: $border-radius-2xl;
-  max-width: 500px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  border: $border-width solid $border-color;
-  box-shadow: none;
-  animation: modalSlideIn 0.3s ease-out;
-}
-
 @keyframes modalSlideIn {
   from {
     opacity: 0;
@@ -433,121 +421,8 @@
   }
 }
 
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 1.5rem 0 1.5rem;
-  border-bottom: $border-width solid $border-color;
-  margin-bottom: 1.5rem;
-
-  h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: $gray-900;
-  }
-
-  .close-btn {
-    background: none;
-    border: none;
-    color: $gray-400;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: $border-radius;
-    transition: all 0.2s ease;
-
-    &:hover {
-      color: $gray-600;
-      background: $surface-secondary;
-    }
-  }
-}
-
-.modal-form {
-  padding: 0 1.5rem 1.5rem 1.5rem;
-
-  .form-group {
-    margin-bottom: 1.5rem;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: $gray-700;
-      margin-bottom: 0.5rem;
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.75rem;
-      border: $border-width solid $border-color;
-      border-radius: $border-radius-lg;
-      font-size: 0.875rem;
-      transition: all 0.2s ease;
-      background: $surface-primary;
-      color: $text-primary;
-
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: none;
-        background: $surface-secondary;
-      }
-
-      &::placeholder {
-        color: $text-muted;
-      }
-    }
-
-    textarea.form-control {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    select.form-control {
-      cursor: pointer;
-    }
-  }
-
-  .modal-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: $border-width solid $border-color;
-
-    .btn {
-      @include button-base($surface-primary, $text-primary);
-      padding: 0.75rem 1.5rem;
-      min-width: 100px;
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-
-      &.btn-secondary {
-        background: rgba($primary-color, 0.15);
-        color: $text-primary;
-      }
-
-      &.btn-primary {
-        background: $primary-color;
-        color: $text-inverse;
-        border-color: $border-width solid $border-color;
-      }
-    }
-  }
-}
-
 // Responsive Design
-@media (max-width: 768px) {
+@include respond-below(md) {
   .mini-calendar-container {
     max-width: 100%;
     padding: 1rem;

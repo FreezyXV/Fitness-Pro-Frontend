@@ -6,7 +6,7 @@
 // Import unified design system
 @use 'sass:map';
 @use 'variables' as *;
-@use 'styles' as *;
+@use 'design-system' as *;
 
 :host {
   display: block;

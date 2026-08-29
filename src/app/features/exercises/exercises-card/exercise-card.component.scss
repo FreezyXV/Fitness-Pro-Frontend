@@ -1,5 +1,5 @@
 @use 'variables' as *;
-@use 'styles' as *;
+@use 'design-system' as *;
 
 @mixin glass-card($opacity: 0.95) {
   background: rgba($surface-secondary, $opacity);
@@ -284,19 +284,7 @@
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.3),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -314,7 +302,7 @@
       }
 
       &[data-level="beginner"] {
-        color: #16a34a;
+        color: $c-green-600;
         border-color: $border-width solid $border-color;
 
         &:hover {
@@ -324,7 +312,7 @@
       }
 
       &[data-level="intermediate"] {
-        color: #ea580c;
+        color: $c-orange-600;
         border-color: $border-width solid $border-color;
 
         &:hover {
@@ -334,7 +322,7 @@
       }
 
       &[data-level="advanced"] {
-        color: #dc2626;
+        color: $c-red-600;
         border-color: $border-width solid $border-color;
 
         &:hover {
@@ -614,19 +602,7 @@
         overflow: hidden;
 
         &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba($surface-secondary, 0.3),
-            transparent
-          );
-          transition: left 0.6s;
+          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -644,7 +620,7 @@
         }
 
         &[data-body-part="chest"] {
-          color: #dc2626;
+          color: $c-red-600;
           border-color: $border-width solid $border-color;
 
           &:hover {
@@ -653,7 +629,7 @@
           }
         }
         &[data-body-part="back"] {
-          color: #ea580c;
+          color: $c-orange-600;
           border-color: $border-width solid $border-color;
 
           &:hover {
@@ -662,7 +638,7 @@
           }
         }
         &[data-body-part="legs"] {
-          color: #7c3aed;
+          color: $c-violet-600;
           border-color: $border-width solid $border-color;
 
           &:hover {
@@ -671,7 +647,7 @@
           }
         }
         &[data-body-part="shoulders"] {
-          color: #059669;
+          color: $c-emerald-600;
           border-color: $border-width solid $border-color;
 
           &:hover {
@@ -680,7 +656,7 @@
           }
         }
         &[data-body-part="arms"] {
-          color: #c2410c;
+          color: $c-orange-700;
           border-color: $border-width solid $border-color;
 
           &:hover {
@@ -726,19 +702,7 @@
         overflow: hidden;
 
         &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(102, 126, 234, 0.1),
-            transparent
-          );
-          transition: left 0.6s;
+          @include shimmer-overlay(rgba(102, 126, 234, 0.1), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -784,19 +748,7 @@
         letter-spacing: 0.05em;
 
         &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba($surface-secondary, 0.3),
-            transparent
-          );
-          transition: left 0.6s;
+          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -823,7 +775,7 @@
 
         &.btn-secondary {
           background: rgba(102, 126, 234, 0.1);
-          color: #667eea;
+          color: $c-indigo-400;
           border: $border-width solid $border-color;
           backdrop-filter: blur(10px);
 
@@ -942,7 +894,7 @@
 
     .progress-text {
       font-size: 0.9rem;
-      color: #16a34a;
+      color: $c-green-600;
       font-weight: 800;
       text-align: center;
       text-transform: uppercase;
@@ -988,19 +940,7 @@
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.4),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -1039,13 +979,13 @@
       svg {
         width: 12px;
         height: 12px;
-        color: #22c55e;
+        color: $c-green-500;
       }
     }
   }
 }
 
-@media (max-width: 768px) {
+@include respond-below(md) {
   .exercise-card-enhanced {
     &.list-view {
       flex-direction: column;
@@ -1125,7 +1065,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@include respond-below(xs) {
   .exercise-card-enhanced {
     .card-content {
       padding: 1.5rem;

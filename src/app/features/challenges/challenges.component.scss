@@ -1,6 +1,6 @@
 /* src/app/challenges/challenges.component.scss - Enhanced Dashboard Style */
 @use 'variables' as *;
-@use 'styles' as *;
+@use 'design-system' as *;
 
 // Enhanced glassmorphism effects (same as dashboard)
 @mixin glass-card($opacity: 0.95) {
@@ -254,11 +254,7 @@
         }
 
         .stat-label {
-          font-size: 0.875rem;
-          color: $gray-600;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          @include label-caps;
         }
       }
     }
@@ -285,19 +281,7 @@
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.2),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
       }
 
       &.primary {
@@ -390,10 +374,7 @@
         color: white;
 
         &:focus {
-          outline: none;
-          border-color: $primary-color;
-          box-shadow: 0 0 0 4px rgba(33, 191, 115, 0.1);
-          background: $surface-secondary;
+          @include focus-ring;
         }
 
         &:hover {
@@ -569,19 +550,7 @@
           overflow: hidden;
 
           &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-              90deg,
-              transparent,
-              rgba($surface-secondary, 0.3),
-              transparent
-            );
-            transition: left 0.6s;
+            @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -600,31 +569,31 @@
 
           // Dynamic colors based on category
           &[data-category="fitness"] {
-            color: #dc2626;
+            color: $c-red-600;
             border: $border-width solid $border-color;
           }
           &[data-category="wellness"] {
-            color: #059669;
+            color: $c-emerald-600;
             border: $border-width solid $border-color;
           }
           &[data-category="cardio"] {
-            color: #ea580c;
+            color: $c-orange-600;
             border: $border-width solid $border-color;
           }
           &[data-category="strength"] {
-            color: #7c3aed;
+            color: $c-violet-600;
             border: $border-width solid $border-color;
           }
           &[data-category="nutrition"] {
-            color: #0891b2;
+            color: $c-cyan-600;
             border: $border-width solid $border-color;
           }
           &[data-category="mindfulness"] {
-            color: #c2410c;
+            color: $c-orange-700;
             border: $border-width solid $border-color;
           }
           &[data-category="social"] {
-            color: #7c2d12;
+            color: $c-orange-900;
             border: $border-width solid $border-color;
           }
         }
@@ -763,19 +732,7 @@
             overflow: hidden;
 
             &::before {
-              content: "";
-              position: absolute;
-              top: 0;
-              left: -100%;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(102, 126, 234, 0.1),
-                transparent
-              );
-              transition: left 0.6s;
+              @include shimmer-overlay(rgba(102, 126, 234, 0.1), left 0.6s, $skew: null);
             }
 
             &:hover {
@@ -898,19 +855,7 @@
             letter-spacing: 0.05em;
 
             &::before {
-              content: "";
-              position: absolute;
-              top: 0;
-              left: -100%;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(
-                90deg,
-                transparent,
-                rgba($surface-secondary, 0.3),
-                transparent
-              );
-              transition: left 0.6s;
+              @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
             }
 
             &:hover {
@@ -937,7 +882,7 @@
 
             &.btn-secondary {
               background: rgba(102, 126, 234, 0.1);
-              color: #667eea;
+              color: $c-indigo-400;
               border: $border-width solid $border-color;
               backdrop-filter: blur(10px);
 
@@ -1014,19 +959,7 @@
           overflow: hidden;
 
           &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-              90deg,
-              transparent,
-              rgba($surface-secondary, 0.4),
-              transparent
-            );
-            transition: left 0.6s;
+            @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -1066,7 +999,7 @@
           svg {
             width: 12px;
             height: 12px;
-            color: #22c55e;
+            color: $c-green-500;
           }
         }
       }
@@ -1141,19 +1074,7 @@
     overflow: hidden;
 
     &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba($surface-secondary, 0.2),
-        transparent
-      );
-      transition: left 0.6s;
+      @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
     }
 
     &.primary {
@@ -1553,19 +1474,7 @@
   overflow: hidden;
 
   &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba($surface-secondary, 0.2),
-      transparent
-    );
-    transition: left 0.6s;
+    @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
   }
 
   &:hover {
@@ -1657,7 +1566,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@include respond-below(md) {
   .challenges-container {
     // padding: 0.5rem;
 
@@ -1768,7 +1677,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@include respond-below(xs) {
   .challenges-container {
     padding: 0.5rem;
 
@@ -1887,7 +1796,7 @@ gap: 1rem;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 
-    @media (min-width: 768px) {
+    @include respond-above(md) {
       grid-template-columns: 1fr 1fr; // Two columns on larger screens
     }
   }

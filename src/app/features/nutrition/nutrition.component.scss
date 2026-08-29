@@ -1,7 +1,7 @@
 // src/app/nutrition/nutrition.component.scss - VERSION COMPLÈTE CORRIGÉE
 @use "sass:color";
 @use 'variables' as *;
-@use 'styles' as *;
+@use 'design-system' as *;
 
 // ==========================================
 // ENHANCED MIXINS
@@ -184,16 +184,16 @@
   padding: 1rem 1rem;
   padding-bottom: 4rem;
 
-  @media (max-width: $breakpoint-lg) {
+  @include respond-below(lg) {
     padding: 3rem 1.5rem;
     border-radius: 2.5rem;
   }
 
-  @media (max-width: $breakpoint-md) {
+  @include respond-below(md) {
     padding: 2rem 1rem;
   }
 
-  @media (max-width: $breakpoint-sm) {
+  @include respond-below(sm) {
     padding: 1.25rem 0.75rem;
   }
 
@@ -202,11 +202,11 @@
   &::after {
     display: none;
   }
-  @media (max-width: 768px) {
+  @include respond-below(md) {
     padding: 0.5rem;
   }
 
-  @media (max-width: 480px) {
+  @include respond-below(xs) {
 padding: 0.25rem;
   }
 }
@@ -226,17 +226,17 @@ padding: 0.25rem;
   padding: 2.5rem;
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
-  @media (max-width: $breakpoint-lg) {
+  @include respond-below(lg) {
     padding: 2rem;
     border-radius: 2.5rem;
   }
 
-  @media (max-width: $breakpoint-md) {
+  @include respond-below(md) {
     padding: 1.75rem;
     border-radius: 2.5rem;
   }
 
-  @media (max-width: $breakpoint-sm) {
+  @include respond-below(sm) {
     padding: 1.25rem;
     border-radius: 2.5rem;
   }
@@ -298,7 +298,7 @@ padding: 0.25rem;
         -webkit-text-fill-color: transparent;
         text-align: center;
 
-        @media (max-width: $breakpoint-sm) {
+        @include respond-below(sm) {
           text-align: center;
         }
       }
@@ -310,7 +310,7 @@ padding: 0.25rem;
         font-weight: 500;
         text-align: center;
 
-        @media (max-width: $breakpoint-sm) {
+        @include respond-below(sm) {
           text-align: center;
         }
       }
@@ -363,11 +363,7 @@ padding: 0.25rem;
         }
 
         .stat-label {
-          font-size: 0.875rem;
-          color: $gray-600;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          @include label-caps;
         }
       }
     }
@@ -394,19 +390,7 @@ padding: 0.25rem;
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.2),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
       }
 
       &.primary {
@@ -498,7 +482,7 @@ padding: 0.25rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+        background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
         color: white;
         padding: 0.75rem 1rem;
         border-radius: $border-radius-xl;
@@ -530,7 +514,7 @@ padding: 0.25rem;
 
           .xp-fill {
             height: 100%;
-            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
             transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             border-radius: 5px;
             position: relative;
@@ -666,16 +650,16 @@ padding: 0.25rem;
     animation-delay: 0.2s;
     animation-fill-mode: both;
 
-    @media (max-width: $breakpoint-lg) {
+    @include respond-below(lg) {
       border-radius: 2.5rem;
       padding: 0.625rem;
     }
 
-    @media (max-width: $breakpoint-md) {
+    @include respond-below(md) {
       padding: 0.5rem;
     }
 
-    @media (max-width: $breakpoint-sm) {
+    @include respond-below(sm) {
       padding: 0.375rem;
       border-radius: 2.5rem;
     }
@@ -699,19 +683,7 @@ padding: 0.25rem;
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba(33, 191, 115, 0.1),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba(33, 191, 115, 0.1), left 0.6s, $skew: null);
       }
 
       .nav-icon {
@@ -760,11 +732,11 @@ padding: 0.25rem;
     flex-direction: column;
     gap: 1.5rem;
 
-    @media (max-width: 768px) {
+    @include respond-below(md) {
       gap: 1rem;
     }
 
-    @media (max-width: 480px) {
+    @include respond-below(xs) {
       gap: 0.5rem;
     }
   }
@@ -912,10 +884,7 @@ padding: 0.25rem;
         }
 
         &:focus {
-          outline: none;
-          border-color: $primary-color;
-          box-shadow: 0 0 0 4px rgba(33, 191, 115, 0.1);
-          background: $surface-secondary;
+          @include focus-ring;
         }
 
         &::placeholder {
@@ -1298,19 +1267,7 @@ gap: 2rem;
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.2),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
       }
 
       &.create-diet {
@@ -1439,17 +1396,17 @@ gap: 2rem;
 
             &.difficulty-facile {
               background: rgba(40, 167, 69, 0.2);
-              color: #28a745;
+              color: $c-green-bootstrap;
             }
 
             &.difficulty-modéré {
               background: rgba(255, 193, 7, 0.2);
-              color: #ffc107;
+              color: $c-amber-bootstrap;
             }
 
             &.difficulty-difficile {
               background: rgba(220, 53, 69, 0.2);
-              color: #dc3545;
+              color: $c-red-bootstrap;
             }
           }
 
@@ -1660,7 +1617,7 @@ gap: 2rem;
         border: $border-width solid $border-color;
 
         &::before {
-          background: #dc3545;
+          background: $c-red-bootstrap;
         }
       }
 
@@ -1669,7 +1626,7 @@ gap: 2rem;
         border: $border-width solid $border-color;
 
         &::before {
-          background: #ffc107;
+          background: $c-amber-bootstrap;
         }
       }
 
@@ -1678,7 +1635,7 @@ gap: 2rem;
         border: $border-width solid $border-color;
 
         &::before {
-          background: #17a2b8;
+          background: $c-cyan-bootstrap;
         }
       }
 
@@ -2038,19 +1995,7 @@ gap: 2rem;
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.2),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
       }
 
       &.primary {
@@ -2331,21 +2276,21 @@ gap: 2rem;
       &.priority-high {
         border: $border-width solid $border-color;
         &::before {
-          background: #dc3545;
+          background: $c-red-bootstrap;
         }
       }
 
       &.priority-medium {
         border: $border-width solid $border-color;
         &::before {
-          background: #ffc107;
+          background: $c-amber-bootstrap;
         }
       }
 
       &.priority-low {
         border: $border-width solid $border-color;
         &::before {
-          background: #17a2b8;
+          background: $c-cyan-bootstrap;
         }
       }
 
@@ -2381,17 +2326,17 @@ gap: 2rem;
 
           &.priority-high {
             background: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
+            color: $c-red-bootstrap;
           }
 
           &.priority-medium {
             background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
+            color: $c-amber-bootstrap;
           }
 
           &.priority-low {
             background: rgba(23, 162, 184, 0.2);
-            color: #17a2b8;
+            color: $c-cyan-bootstrap;
           }
         }
       }
@@ -2458,11 +2403,7 @@ gap: 2rem;
         }
 
         .stat-label {
-          color: $gray-600;
-          font-size: 0.875rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          @include label-caps;
         }
       }
     }
@@ -2591,7 +2532,7 @@ gap: 2rem;
         }
 
         .challenge-reward {
-          background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+          background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
           color: white;
           padding: 0.5rem 1rem;
           border-radius: $border-radius-xl;
@@ -2649,19 +2590,7 @@ gap: 2rem;
     overflow: hidden;
 
     &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba($surface-secondary, 0.2),
-        transparent
-      );
-      transition: left 0.6s;
+      @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
     }
 
     &.primary {
@@ -2769,7 +2698,7 @@ gap: 2rem;
         overflow-y: auto;
         z-index: 1;
 
-        @media (max-width: $breakpoint-lg) {
+        @include respond-below(lg) {
           padding: 1.5rem;
         }
 
@@ -2894,7 +2823,7 @@ gap: 2rem;
       .modal-actions {
         justify-content: space-between;
 
-        @media (max-width: $breakpoint-md) {
+        @include respond-below(md) {
           flex-direction: column;
           align-items: stretch;
         }
@@ -2963,10 +2892,7 @@ gap: 2rem;
             backdrop-filter: blur(10px);
 
             &:focus {
-              outline: none;
-              border-color: $primary-color;
-              box-shadow: 0 0 0 4px rgba(33, 191, 115, 0.1);
-              background: $surface-secondary;
+              @include focus-ring;
             }
 
             &::placeholder {
@@ -3502,11 +3428,11 @@ gap: 2rem;
     }
 
     &.notification-success {
-      border-left-color: #22c55e;
+      border-left-color: $c-green-500;
       background: rgba(34, 197, 94, 0.1);
 
       .notification-icon {
-        color: #22c55e;
+        color: $c-green-500;
       }
     }
 
@@ -3520,20 +3446,20 @@ gap: 2rem;
     }
 
     &.notification-error {
-      border-left-color: #ef4444;
+      border-left-color: $c-red-500;
       background: rgba(239, 68, 68, 0.1);
 
       .notification-icon {
-        color: #ef4444;
+        color: $c-red-500;
       }
     }
 
     &.notification-info {
-      border-left-color: #3b82f6;
+      border-left-color: $c-blue-500;
       background: rgba(59, 130, 246, 0.1);
 
       .notification-icon {
-        color: #3b82f6;
+        color: $c-blue-500;
       }
     }
 
@@ -3796,15 +3722,15 @@ gap: 2rem;
 
           &.facile {
             background: rgba(40, 167, 69, 0.2);
-            color: #28a745;
+            color: $c-green-bootstrap;
           }
           &.modéré {
             background: rgba(255, 193, 7, 0.2);
-            color: #ffc107;
+            color: $c-amber-bootstrap;
           }
           &.difficile {
             background: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
+            color: $c-red-bootstrap;
           }
         }
       }
@@ -3920,7 +3846,7 @@ gap: 2rem;
 
               &.allowed {
                 background: rgba(40, 167, 69, 0.2);
-                color: #28a745;
+                color: $c-green-bootstrap;
 
                 &:hover {
                   background: rgba(40, 167, 69, 0.3);
@@ -3930,7 +3856,7 @@ gap: 2rem;
 
               &.restricted {
                 background: rgba(220, 53, 69, 0.2);
-                color: #dc3545;
+                color: $c-red-bootstrap;
 
                 &:hover {
                   background: rgba(220, 53, 69, 0.3);
@@ -4001,7 +3927,7 @@ gap: 2rem;
 // ==========================================
 // RESPONSIVE DESIGN
 // ==========================================
-@media (max-width: $breakpoint-xl) {
+@include respond-below(xl) {
   .nutrition-container {
     .hero-section,
     .date-navigation-section,
@@ -4037,7 +3963,7 @@ gap: 2rem;
   }
 }
 
-@media (max-width: $breakpoint-md) {
+@include respond-below(md) {
   .nutrition-container {
     &::before,
     &::after {
@@ -4247,7 +4173,7 @@ align-items: end;
   }
 }
 
-@media (max-width: $breakpoint-sm) {
+@include respond-below(sm) {
   .nutrition-container {
     .hero-section,
     .date-navigation-section,
@@ -4350,12 +4276,6 @@ align-items: end;
 .text-center {
   text-align: center;
 }
-.d-flex {
-  display: flex;
-}
-.d-none {
-  display: none;
-}
 
 // Button utilities
 .btn {
@@ -4416,64 +4336,15 @@ align-items: end;
 .shadow-sm {
   box-shadow: $shadow;
 }
-.shadow-md {
-  box-shadow: $shadow-lg;
-}
-.shadow-lg {
-  box-shadow: $shadow-xl;
-}
-.shadow-xl {
-  box-shadow: $shadow-2xl;
-}
 
 // Border radius utilities
 .rounded-sm {
   border-radius: $border-radius;
 }
-.rounded-md {
-  border-radius: $border-radius-lg;
-}
-.rounded-lg {
-  border-radius: $border-radius-xl;
-}
-.rounded-xl {
-  border-radius: $border-radius-2xl;
-}
-.rounded-full {
-  border-radius: 50%;
-}
 
 // Spacing utilities
 .m-0 {
   margin: 0;
-}
-.m-1 {
-  margin: 0.25rem;
-}
-.m-2 {
-  margin: 0.5rem;
-}
-.m-3 {
-  margin: 0.75rem;
-}
-.m-4 {
-  margin: 1rem;
-}
-
-.p-0 {
-  padding: 0;
-}
-.p-1 {
-  padding: 0.25rem;
-}
-.p-2 {
-  padding: 0.5rem;
-}
-.p-3 {
-  padding: 0.75rem;
-}
-.p-4 {
-  padding: 1rem;
 }
 
 // ==========================================
@@ -4761,19 +4632,7 @@ textarea:focus {
     overflow: hidden;
 
     &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba($surface-secondary, 0.3),
-        transparent
-      );
-      transition: left 0.6s;
+      @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
     }
 
     &:hover::before {
@@ -4782,7 +4641,7 @@ textarea:focus {
 
     &.preview {
       background: rgba(59, 130, 246, 0.2);
-      color: #3b82f6;
+      color: $c-blue-500;
       border: $border-width solid $border-color;
 
       &:hover {
@@ -4806,7 +4665,7 @@ textarea:focus {
 
     &.adopt {
       background: rgba(34, 197, 94, 0.2);
-      color: #22c55e;
+      color: $c-green-500;
       border: $border-width solid $border-color;
 
       &:hover {
@@ -4818,7 +4677,7 @@ textarea:focus {
 
     &.stop {
       background: rgba(239, 68, 68, 0.2);
-      color: #ef4444;
+      color: $c-red-500;
       border: $border-width solid $border-color;
 
       &:hover {
@@ -4835,7 +4694,7 @@ textarea:focus {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  background: linear-gradient(135deg, $c-green-500 0%, $c-green-600 100%);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: $border-radius-xl;
@@ -5095,7 +4954,7 @@ textarea:focus {
 
       .restriction-tag {
         background: rgba(239, 68, 68, 0.2);
-        color: #ef4444;
+        color: $c-red-500;
         padding: 0.5rem 1rem;
         border-radius: $border-radius-lg;
         font-size: 0.875rem;
@@ -5177,24 +5036,24 @@ textarea:focus {
   .btn {
     &.tertiary {
       background: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
+      color: $c-blue-500;
       border: $border-width solid $border-color;
 
       &:hover {
         background: rgba(59, 130, 246, 0.2);
-        border-color: #3b82f6;
+        border-color: $c-blue-500;
         transform: translateY(-2px);
       }
     }
 
     &.warning {
       background: rgba(239, 68, 68, 0.1);
-      color: #ef4444;
+      color: $c-red-500;
       border: $border-width solid $border-color;
 
       &:hover {
         background: rgba(239, 68, 68, 0.2);
-        border-color: #ef4444;
+        border-color: $c-red-500;
         transform: translateY(-2px);
       }
     }
@@ -5304,9 +5163,9 @@ textarea:focus {
       }
 
       &.calories {
-        border-color: #fed7d7;
+        border-color: $c-red-100;
         .nutrient-icon {
-          background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+          background: linear-gradient(135deg, $c-red-300 0%, #f56565 100%);
         }
       }
 
@@ -5350,13 +5209,13 @@ textarea:focus {
         .nutrient-value {
           font-size: 1.5rem;
           font-weight: 700;
-          color: #2d3748;
+          color: $c-slate-800;
           line-height: 1.2;
         }
 
         .nutrient-unit {
           font-size: 0.8rem;
-          color: #718096;
+          color: $c-slate-500;
           font-weight: 500;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -5375,7 +5234,7 @@ textarea:focus {
       margin: 0 0 1rem 0;
       font-size: 1.1rem;
       font-weight: 600;
-      color: #2d3748;
+      color: $c-slate-800;
     }
 
     p {
@@ -5391,7 +5250,7 @@ textarea:focus {
     gap: 0.5rem;
 
     .benefit-tag {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, $c-indigo-400 0%, $c-purple-500 100%);
       color: white;
       padding: 0.4rem 0.8rem;
       border-radius: 20px;
@@ -5413,7 +5272,7 @@ textarea:focus {
     margin: 0 0 1.5rem 0;
     font-size: 1.2rem;
     font-weight: 600;
-    color: #2d3748;
+    color: $c-slate-800;
   }
 
   .nutrients-grid {
@@ -5474,7 +5333,7 @@ textarea:focus {
 
             .nutrient-unit {
               font-size: 0.75rem;
-              color: #718096;
+              color: $c-slate-500;
               font-weight: 500;
             }
           }
@@ -5495,7 +5354,7 @@ textarea:focus {
               transition: width 0.6s ease;
 
               &.calories {
-                background: linear-gradient(90deg, #fc8181 0%, #f56565 100%);
+                background: linear-gradient(90deg, $c-red-300 0%, #f56565 100%);
               }
 
               &.protéines {
@@ -5537,7 +5396,7 @@ textarea:focus {
     gap: 0.5rem;
 
     .allergen-tag {
-      background: #fed7d7;
+      background: $c-red-100;
       color: #c53030;
       padding: 0.4rem 0.8rem;
       border-radius: 20px;
@@ -5546,9 +5405,9 @@ textarea:focus {
       border: $border-width solid $border-color;
 
       &.warning {
-        background: #fed7d7;
+        background: $c-red-100;
         color: #c53030;
-        border-color: #fc8181;
+        border-color: $c-red-300;
       }
     }
   }
@@ -5579,7 +5438,7 @@ textarea:focus {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, $c-indigo-400 0%, $c-purple-500 100%);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -5592,7 +5451,7 @@ textarea:focus {
 
         .indicator-label {
           font-size: 0.8rem;
-          color: #718096;
+          color: $c-slate-500;
           font-weight: 500;
           margin-bottom: 0.25rem;
         }
@@ -5600,7 +5459,7 @@ textarea:focus {
         .indicator-value {
           font-size: 1.1rem;
           font-weight: 600;
-          color: #2d3748;
+          color: $c-slate-800;
         }
       }
     }

@@ -1,0 +1,380 @@
+// =============================================
+// DESIGN SYSTEM — variables, fonctions et mixins
+// =============================================
+//
+// Ce fichier ne produit AUCUN CSS : il n'expose que des outils.
+// C'est ce qui permet aux composants de l'importer sans embarquer une copie
+// de la feuille globale. Auparavant ils faisaient `@use 'styles'`, ce qui
+// injectait les 1 604 lignes de CSS global dans chacun d'eux : le meme
+// reset, les memes :root et les memes utilitaires etaient dupliques 19 fois
+// dans le bundle.
+//
+// Le CSS global vit desormais dans styles.scss, charge une seule fois via
+// angular.json.
+
+@use 'sass:map';
+@use './variables.scss' as *;
+
+
+
+// Import Google Fonts
+
+// =============================================
+// COMPREHENSIVE MIXINS LIBRARY - REUSABLE SCSS PATTERNS
+// =============================================
+
+// Glassmorphism Effect Mixin
+@mixin glass-effect($opacity: 0.95, $blur: 0px, $border-opacity: 0.45) {
+  background-color: rgba($surface-secondary, $opacity);
+  border: $border-width solid $border-color;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+// Layout Mixins - Most Common Patterns
+@mixin flex-center($gap: 0) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @if $gap > 0 {
+    gap: $gap;
+  }
+}
+
+@mixin flex-between($align: center) {
+  display: flex;
+  align-items: $align;
+  justify-content: space-between;
+}
+
+@mixin flex-column($gap: 0, $align: stretch) {
+  display: flex;
+  flex-direction: column;
+  align-items: $align;
+  @if $gap > 0 {
+    gap: $gap;
+  }
+}
+
+@mixin grid-auto-fit($min-width: 300px, $gap: 2rem) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+// Typography Mixins
+@mixin title-text($size: 1.5rem, $weight: 800, $color: $text-primary) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+  line-height: 1.25;
+  margin: 0 0 1rem 0;
+}
+
+@mixin body-text($size: 1rem, $weight: 400, $color: $text-secondary) {
+  font-size: $size;
+  font-weight: $weight;
+  color: $color;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+@mixin text-ellipsis($lines: 1) {
+  @if $lines == 1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// Enhanced Container Mixin
+@mixin container($max-width: 1400px, $padding: 2rem) {
+  max-width: $max-width;
+  margin: 0 auto;
+  padding: 0 $padding;
+  width: 100%;
+  
+  @media (max-width: $breakpoint-md) {
+    padding: 0 1rem;
+  }
+}
+
+// Enhanced Card Mixins
+@mixin glass-card($opacity: 0.95, $blur: 0px, $border-opacity: 0.45) {
+  @include glass-effect($opacity, $blur, $border-opacity);
+}
+
+@mixin card-interactive($hover-lift: true) {
+  @include glass-effect;
+  border-radius: $card-border-radius;
+  padding: $card-padding-md;
+  transition: $card-transition;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  @if $hover-lift {
+    &:hover {
+      transform: $transform-hover-lg;
+      background-color: rgba($surface-tertiary, 0.95);
+      border-color: $border-color;
+    }
+  }
+}
+
+@mixin card-static {
+  @include glass-effect;
+  border-radius: $card-border-radius;
+  padding: $card-padding-md;
+  position: relative;
+  overflow: hidden;
+}
+
+@mixin glass-effect-dark($opacity: 0.1, $blur: 20px) {
+  background: rgba($surface-primary, $opacity + 0.2);
+  border: $border-width solid $border-color;
+}
+
+// Text Gradient Mixin
+@mixin text-gradient($gradient) {
+  color: if($gradient == null, $primary-color, $primary-color);
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+// Shimmer Effect Mixin
+@mixin shimmer-effect {
+  // Intentionally empty to avoid glow/degradé effects
+}
+
+/// Bandeau lumineux qui traverse un element au survol.
+///
+/// Ce motif etait recopie a l'identique 59 fois dans 13 composants, a la
+/// couleur et a la duree pres. Le regrouper ici rend l'effet reglable en un
+/// seul endroit — ce qui compte d'autant plus que shimmer-effect ci-dessus a
+/// ete volontairement vide pour supprimer les effets de halo, sans que les
+/// copies manuelles suivent.
+@mixin shimmer-overlay($color, $transition: left 0.6s, $skew: -15deg) {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, $color, transparent);
+  transition: $transition;
+  @if $skew {
+    transform: skewX($skew);
+  }
+}
+
+// Button Base Mixin
+@mixin button-base($padding: $btn-padding-md, $border-radius: $btn-border-radius) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: $padding;
+  border: $border-width solid $border-color;
+  border-radius: $border-radius;
+  font-family: inherit;
+  font-weight: $btn-font-weight;
+  cursor: pointer;
+  transition: $btn-transition;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  min-height: $btn-min-height;
+  background: $surface-primary;
+  color: $text-primary;
+
+  &:hover {
+    transform: $transform-hover;
+    background: $primary-color;
+    color: $text-inverse;
+  }
+
+  &:active {
+    transform: $transform-active;
+    background: darken($primary-color, 5%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: $opacity-disabled;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+}
+
+// Card Base Mixin
+@mixin card-base($padding: $card-padding-md, $border-radius: $card-border-radius) {
+  @include glass-effect;
+  border-radius: $border-radius;
+  padding: $padding;
+  transition: $card-transition;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: $transform-hover-lg;
+    background: rgba($surface-tertiary, 0.95);
+  }
+}
+
+// Form Input Base Mixin
+@mixin form-input-base {
+  width: 100%;
+  padding: $form-input-padding;
+  border: $form-input-border;
+  border-radius: $form-input-border-radius;
+  font-size: 0.875rem;
+  font-family: inherit;
+  transition: $form-input-transition;
+  background: $form-input-bg;
+  color: $text-primary;
+  appearance: none;
+  box-shadow: none;
+
+
+  &:focus {
+    outline: none;
+    border-color: $form-input-focus-border;
+    box-shadow: none;
+    background: $surface-tertiary;
+  }
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:disabled {
+    background: $surface-primary;
+    opacity: $opacity-disabled;
+    cursor: not-allowed;
+  }
+
+  &.error {
+    border-color: $form-error-color;
+    background: $danger-alpha-05;
+
+    &:focus {
+      border-color: $form-error-color;
+      box-shadow: none;
+    }
+  }
+
+  &.success {
+    border-color: $form-success-color;
+    background: $success-alpha-05;
+  }
+}
+
+// Navigation Link Mixin
+@mixin nav-link-base {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: $nav-link-padding;
+  color: $nav-link-color;
+  text-decoration: none;
+  transition: $nav-link-transition;
+  position: relative;
+  border-radius: $nav-link-border-radius;
+  font-weight: 600;
+  min-height: 44px;
+  border: $border-width solid transparent;
+
+  &:hover {
+    color: $nav-link-active-color;
+    transform: translateX(6px);
+    border-color: $border-color;
+    background: rgba($primary-color, 0.1);
+  }
+
+  &.active {
+    background: $nav-link-active-bg;
+    color: $nav-link-active-color;
+    border-color: $border-color;
+    transform: translateX(4px);
+  }
+}
+
+// Floating Animation Mixin
+/// Anneau de focus des champs de formulaire.
+/// Le meme quadruplet etait recopie dans 10 endroits, avec la couleur du halo
+/// ecrite en dur alors qu'elle derive de la couleur primaire.
+@mixin focus-ring($color: $primary-color, $ring: rgba(33, 191, 115, 0.1)) {
+  background: $surface-secondary;
+  border-color: $color;
+  box-shadow: 0 0 0 4px $ring;
+  outline: none;
+}
+
+/// Intitule de section en petites capitales espacees (9 recopies).
+@mixin label-caps($color: $gray-600, $size: 0.875rem) {
+  color: $color;
+  font-size: $size;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@mixin floating-animation($duration: 8s, $delay: 0s) {
+  animation: gentle-float $duration ease-in-out infinite;
+  animation-delay: $delay;
+}
+
+// =============================================
+// BREAKPOINTS
+// =============================================
+//
+// Le projet melangeait trois echelles concurrentes : les variables
+// $breakpoint-* (sm 640px), la map $grid-breakpoints (sm 576px) et des
+// valeurs ecrites en dur (480px). Deux composants pouvaient donc basculer
+// en mode mobile a des largeurs differentes sans raison.
+//
+// L'echelle ci-dessous est la reference unique. Elle reprend exactement les
+// valeurs deja majoritaires dans le code, donc son adoption ne deplace aucun
+// point de rupture existant.
+
+$breakpoints: (
+  xs: 480px,   // petits telephones
+  sm: 640px,   // = $breakpoint-sm
+  md: 768px,   // = $breakpoint-md, de loin le plus utilise
+  lg: 1024px,  // = $breakpoint-lg
+  xl: 1280px,  // = $breakpoint-xl
+);
+
+@function breakpoint($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Breakpoint inconnu : #{$name}. Valeurs possibles : #{map.keys($breakpoints)}.";
+  }
+  @return map.get($breakpoints, $name);
+}
+
+/// Styles appliques en dessous du point de rupture (approche desktop-first,
+/// celle deja employee par 95 % des media queries du projet).
+@mixin respond-below($name) {
+  @media (max-width: breakpoint($name)) {
+    @content;
+  }
+}
+
+/// Styles appliques a partir du point de rupture (mobile-first).
+@mixin respond-above($name) {
+  @media (min-width: breakpoint($name)) {
+    @content;
+  }
+}

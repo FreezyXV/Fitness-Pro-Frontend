@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'design-system' as *;
 
 .app-container {
   display: flex;
@@ -6,7 +7,7 @@
   position: relative;
   width: 100%;
 
-  @media (max-width: $breakpoint-md) {
+  @include respond-below(md) {
     flex-direction: column;
   }
 }
@@ -29,7 +30,7 @@
   }
 
   // Mobile: full width with top padding for burger menu button
-  @media (max-width: $breakpoint-md) {
+  @include respond-below(md) {
     width: 100vw;
     margin-left: 0;
 

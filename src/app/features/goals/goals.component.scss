@@ -1,6 +1,6 @@
 @use "sass:color";
 @use 'variables' as *;
-@use 'styles' as *;
+@use 'design-system' as *;
 
 // Mixins
 @mixin flex-center($gap: 0) {
@@ -68,11 +68,11 @@
     width: 100%;
   }
 
-  // @media (max-width: 768px) {
+  // @include respond-below(md) {
   //   padding: 0.5rem;
   // }
 
-  @media (max-width: 480px) {
+  @include respond-below(xs) {
 padding: 0.5rem;
   }
 }
@@ -157,7 +157,7 @@ padding: 0.5rem;
     }
   }
 
-  @media (max-width: 768px) {
+  @include respond-below(md) {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
@@ -171,7 +171,7 @@ padding: 0.5rem;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 1.5rem;
 
-  @media (max-width: 768px) {
+  @include respond-below(md) {
     display: grid;
    
   }
@@ -219,11 +219,7 @@ padding: 0.5rem;
       }
 
       .stat-label {
-        font-size: 0.875rem;
-        color: $gray-600;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        @include label-caps;
       }
     }
   }
@@ -251,19 +247,7 @@ padding: 0.5rem;
     overflow: hidden;
 
     &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba($surface-secondary, 0.2),
-        transparent
-      );
-      transition: left 0.6s;
+      @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
     }
 
     &.primary {
@@ -326,7 +310,7 @@ padding: 0.5rem;
     }
   }
 
-  @media (max-width: 768px) {
+  @include respond-below(md) {
     justify-content: center;
     width: 100%;
     
@@ -392,10 +376,7 @@ padding: 0.5rem;
       color: white;
 
       &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 4px rgba(33, 191, 115, 0.1);
-        background: $surface-secondary;
+        @include focus-ring;
       }
 
       &:hover {
@@ -428,7 +409,7 @@ padding: 0.5rem;
     @include grid-auto-fit(380px, 2rem);
   }
   
-  @media (max-width: 768px) {
+  @include respond-below(md) {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
@@ -676,19 +657,7 @@ padding: 0.5rem;
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.3),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -707,31 +676,31 @@ padding: 0.5rem;
 
       // Dynamic colors based on category
       &[data-category="fitness"] {
-        color: #dc2626;
+        color: $c-red-600;
         border: $border-width solid $border-color;
       }
       &[data-category="wellness"] {
-        color: #059669;
+        color: $c-emerald-600;
         border: $border-width solid $border-color;
       }
       &[data-category="cardio"] {
-        color: #ea580c;
+        color: $c-orange-600;
         border: $border-width solid $border-color;
       }
       &[data-category="strength"] {
-        color: #7c3aed;
+        color: $c-violet-600;
         border: $border-width solid $border-color;
       }
       &[data-category="nutrition"] {
-        color: #0891b2;
+        color: $c-cyan-600;
         border: $border-width solid $border-color;
       }
       &[data-category="mindfulness"] {
-        color: #c2410c;
+        color: $c-orange-700;
         border: $border-width solid $border-color;
       }
       &[data-category="social"] {
-        color: #7c2d12;
+        color: $c-orange-900;
         border: $border-width solid $border-color;
       }
     }
@@ -870,19 +839,7 @@ padding: 0.5rem;
         overflow: hidden;
 
         &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(102, 126, 234, 0.1),
-            transparent
-          );
-          transition: left 0.6s;
+          @include shimmer-overlay(rgba(102, 126, 234, 0.1), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -1005,19 +962,7 @@ padding: 0.5rem;
         min-height: 56px;
 
         &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba($surface-secondary, 0.3),
-            transparent
-          );
-          transition: left 0.6s;
+          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover:not(:disabled) {
@@ -1044,7 +989,7 @@ padding: 0.5rem;
 
         &.btn-secondary {
           background: rgba(102, 126, 234, 0.1);
-          color: #667eea;
+          color: $c-indigo-400;
           border: $border-width solid $border-color;
           backdrop-filter: blur(10px);
 
@@ -1076,7 +1021,7 @@ padding: 0.5rem;
         }
 
         &.btn-warning {
-          background: linear-gradient(135deg, #f59e0b, #d97706);
+          background: linear-gradient(135deg, $c-amber-500, $c-amber-600);
           color: white;
           box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
 
@@ -1086,7 +1031,7 @@ padding: 0.5rem;
         }
 
         &.btn-completed {
-          background: linear-gradient(135deg, #10b981, #059669);
+          background: linear-gradient(135deg, $c-emerald-500, $c-emerald-600);
           color: white;
           box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
           opacity: 0.8;
@@ -1169,7 +1114,7 @@ padding: 0.5rem;
         }
 
         .auth-link {
-          background: linear-gradient(135deg, #3b82f6, #2563eb);
+          background: linear-gradient(135deg, $c-blue-500, #2563eb);
           color: white;
           border: none;
           padding: 0.5rem 1rem;
@@ -1220,19 +1165,7 @@ padding: 0.5rem;
       overflow: hidden;
 
       &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($surface-secondary, 0.4),
-          transparent
-        );
-        transition: left 0.6s;
+        @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -1446,10 +1379,10 @@ padding: 0.5rem;
         border-bottom: $border-width solid $border-color;
         
         .modal-title {
-          color: #dc2626;
+          color: $c-red-600;
           
           svg {
-            color: #dc2626;
+            color: $c-red-600;
           }
         }
         
@@ -1465,7 +1398,7 @@ padding: 0.5rem;
     }
     
     // Responsive enhancements
-    @media (max-width: 768px) {
+    @include respond-below(md) {
       margin: 0.5rem;
       max-height: 95vh;
       border-radius: $border-radius-2xl;
@@ -1701,11 +1634,7 @@ padding: 0.5rem;
                 gap: 0.75rem;
                 
                 .overview-label {
-                  font-size: 0.875rem;
-                  font-weight: 600;
-                  color: $gray-600;
-                  text-transform: uppercase;
-                  letter-spacing: 0.05em;
+                  @include label-caps;
                 }
                 
                 .category-display,
@@ -1814,11 +1743,7 @@ padding: 0.5rem;
                     }
                     
                     .stat-label {
-                      font-size: 0.875rem;
-                      color: $gray-600;
-                      font-weight: 600;
-                      text-transform: uppercase;
-                      letter-spacing: 0.05em;
+                      @include label-caps;
                     }
                   }
                 }
@@ -1877,11 +1802,11 @@ padding: 0.5rem;
                     color: $gray-900;
                     
                     &.overdue {
-                      color: #dc2626;
+                      color: $c-red-600;
                     }
                     
                     &.completed {
-                      color: #059669;
+                      color: $c-emerald-600;
                     }
                   }
                 }
@@ -1991,7 +1916,7 @@ padding: 0.5rem;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 
-    @media (min-width: 768px) {
+    @include respond-above(md) {
       grid-template-columns: 1fr 1fr;
     }
   }
@@ -2001,7 +1926,7 @@ padding: 0.5rem;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 
-    @media (min-width: 768px) {
+    @include respond-above(md) {
       grid-template-columns: 1fr 1fr;
     }
   }
@@ -2252,19 +2177,7 @@ padding: 0.5rem;
   min-height: 48px;
 
   &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba($surface-secondary, 0.2),
-      transparent
-    );
-    transition: left 0.6s;
+    @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
   }
 
   &:hover:not(:disabled) {
@@ -2320,7 +2233,7 @@ padding: 0.5rem;
   }
 
   &.btn-warning {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
+    background: linear-gradient(135deg, $c-amber-500, $c-amber-600);
     color: white;
     box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
 
@@ -2665,7 +2578,7 @@ padding: 0.5rem;
     }
     
     // Responsive enhancements
-    @media (max-width: 768px) {
+    @include respond-below(md) {
       margin: 0.5rem;
       max-height: 95vh;
       border-radius: $border-radius-2xl;
@@ -2943,7 +2856,7 @@ padding: 0.5rem;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 
-    @media (min-width: 768px) {
+    @include respond-above(md) {
       grid-template-columns: 1fr 1fr; // Two columns on larger screens
     }
   }
@@ -3005,19 +2918,7 @@ padding: 0.5rem;
   overflow: hidden;
 
   &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba($surface-secondary, 0.2),
-      transparent
-    );
-    transition: left 0.6s;
+    @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
   }
 
   &:hover {
@@ -3263,8 +3164,8 @@ padding: 0.5rem;
 }
 
 .modal-danger .btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
+  background-color: $c-red-bootstrap;
+  border-color: $c-red-bootstrap;
 }
 
 .milestone-form {
@@ -3277,7 +3178,7 @@ padding: 0.5rem;
     grid-template-columns: 1fr;
     gap: 1.5rem;
 
-    @media (min-width: 768px) {
+    @include respond-above(md) {
       grid-template-columns: 1fr 1fr;
     }
   }
@@ -3520,19 +3421,7 @@ padding: 0.5rem;
           overflow: hidden;
 
           &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-              90deg,
-              transparent,
-              rgba($surface-secondary, 0.3),
-              transparent
-            );
-            transition: left 0.6s;
+            @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -3551,31 +3440,31 @@ padding: 0.5rem;
 
           // Dynamic colors based on category
           &[data-category="fitness"] {
-            color: #dc2626;
+            color: $c-red-600;
             border: $border-width solid $border-color;
           }
           &[data-category="wellness"] {
-            color: #059669;
+            color: $c-emerald-600;
             border: $border-width solid $border-color;
           }
           &[data-category="cardio"] {
-            color: #ea580c;
+            color: $c-orange-600;
             border: $border-width solid $border-color;
           }
           &[data-category="strength"] {
-            color: #7c3aed;
+            color: $c-violet-600;
             border: $border-width solid $border-color;
           }
           &[data-category="nutrition"] {
-            color: #0891b2;
+            color: $c-cyan-600;
             border: $border-width solid $border-color;
           }
           &[data-category="mindfulness"] {
-            color: #c2410c;
+            color: $c-orange-700;
             border: $border-width solid $border-color;
           }
           &[data-category="social"] {
-            color: #7c2d12;
+            color: $c-orange-900;
             border: $border-width solid $border-color;
           }
         }
@@ -3714,19 +3603,7 @@ padding: 0.5rem;
             overflow: hidden;
 
             &::before {
-              content: "";
-              position: absolute;
-              top: 0;
-              left: -100%;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(102, 126, 234, 0.1),
-                transparent
-              );
-              transition: left 0.6s;
+              @include shimmer-overlay(rgba(102, 126, 234, 0.1), left 0.6s, $skew: null);
             }
 
             &:hover {
@@ -3849,19 +3726,7 @@ padding: 0.5rem;
             min-height: 56px;
 
             &::before {
-              content: "";
-              position: absolute;
-              top: 0;
-              left: -100%;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(
-                90deg,
-                transparent,
-                rgba($surface-secondary, 0.3),
-                transparent
-              );
-              transition: left 0.6s;
+              @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
             }
 
             &:hover:not(:disabled) {
@@ -3888,7 +3753,7 @@ padding: 0.5rem;
 
             &.btn-secondary {
               background: rgba(102, 126, 234, 0.1);
-              color: #667eea;
+              color: $c-indigo-400;
               border: $border-width solid $border-color;
               backdrop-filter: blur(10px);
 
@@ -3920,7 +3785,7 @@ padding: 0.5rem;
             }
 
             &.btn-warning {
-              background: linear-gradient(135deg, #f59e0b, #d97706);
+              background: linear-gradient(135deg, $c-amber-500, $c-amber-600);
               color: white;
               box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
 
@@ -3930,7 +3795,7 @@ padding: 0.5rem;
             }
 
             &.btn-completed {
-              background: linear-gradient(135deg, #10b981, #059669);
+              background: linear-gradient(135deg, $c-emerald-500, $c-emerald-600);
               color: white;
               box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
               opacity: 0.8;
@@ -4017,19 +3882,7 @@ padding: 0.5rem;
           overflow: hidden;
 
           &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-              90deg,
-              transparent,
-              rgba($surface-secondary, 0.4),
-              transparent
-            );
-            transition: left 0.6s;
+            @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -4069,7 +3922,7 @@ padding: 0.5rem;
           svg {
             width: 12px;
             height: 12px;
-            color: #22c55e;
+            color: $c-green-500;
           }
         }
       }
