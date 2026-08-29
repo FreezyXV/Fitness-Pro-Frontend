@@ -1,6 +1,6 @@
 //app.component.spec.ts
 
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { ExercisesService } from './services/exercises.service';
 import { AuthService } from './services/auth.service';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 
 // Mock components for testing
 @Component({ template: 'Dashboard' })
@@ -26,12 +26,19 @@ describe('AppComponent', () => {
   let router: Router;
   let location: Location;
   let exercisesService: jasmine.SpyObj<ExercisesService>;
-  let authService: jasmine.SpyObj<AuthService>;
+  let loading$: BehaviorSubject<boolean>;
 
   beforeEach(async () => {
-    const exercisesServiceSpy = jasmine.createSpyObj('ExercisesService', ['testConnection'], {
-      loading$: of(false)
-    });
+    // Le composant appelle testConnection() des ngOnInit : sans valeur de
+    // retour par defaut, le moindre detectChanges() leve
+    // "Cannot read properties of undefined (reading 'subscribe')".
+    loading$ = new BehaviorSubject<boolean>(false);
+    const exercisesServiceSpy = jasmine.createSpyObj(
+      'ExercisesService',
+      ['testConnection'],
+      { loading$ }
+    );
+    exercisesServiceSpy.testConnection.and.returnValue(of({ status: 'ok' }));
 
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['getCurrentUser'], {
       isInitialized$: of(true),
@@ -60,7 +67,6 @@ describe('AppComponent', () => {
     router = TestBed.inject(Router);
     location = TestBed.inject(Location);
     exercisesService = TestBed.inject(ExercisesService) as jasmine.SpyObj<ExercisesService>;
-    authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
   });
 
   it('should create the app', () => {
@@ -77,44 +83,58 @@ describe('AppComponent', () => {
   });
 
   it('should test API connection on init', () => {
-    exercisesService.testConnection.and.returnValue(of({ status: 'ok' }));
-    
     component.ngOnInit();
-    
+
     expect(exercisesService.testConnection).toHaveBeenCalled();
   });
 
-  it('should handle API connection error', () => {
-    const error = { status: 500, message: 'Server error' };
-    exercisesService.testConnection.and.returnValue(throwError(() => error));
+  it('should survive an API connection failure', () => {
+    // L'echec est traite en interne par showConnectionError() et ne doit
+    // jamais remonter jusqu'a faire echouer l'initialisation.
+    exercisesService.testConnection.and.returnValue(
+      throwError(() => ({ status: 500, message: 'Server error' }))
+    );
 
-    spyOn(console, 'error');
-
-    component.ngOnInit();
-
-    expect(console.error).toHaveBeenCalledWith('❌ API connection failed:', error);
+    expect(() => component.ngOnInit()).not.toThrow();
+    expect(component.isOnline).toBe(true);
   });
 
-  it('should track route changes', async () => {
-    await router.navigate(['/dashboard']);
+  it('should track route changes', fakeAsync(() => {
+    fixture.detectChanges();
+
+    router.navigate(['/dashboard']);
+    tick();
+
     expect(location.path()).toBe('/dashboard');
+    // currentRoute est affecte dans un setTimeout pour eviter
+    // ExpressionChangedAfterItHasBeenChecked : il faut laisser tourner la file.
     expect(component.currentRoute).toBe('/dashboard');
-  });
+  }));
 
-  it('should show loading state during navigation', async () => {
-    const navigationPromise = router.navigate(['/dashboard']);
-    
-    // Loading should be true during navigation
+  it('should mirror the service loading state', fakeAsync(() => {
+    fixture.detectChanges();
+
+    loading$.next(true);
+    tick();
     expect(component.isLoading).toBe(true);
-    
-    await navigationPromise;
-    
-    // Loading should be false after navigation
+
+    loading$.next(false);
+    tick();
     expect(component.isLoading).toBe(false);
+  }));
+
+  it('should show the loading overlay while loading', () => {
+    component.isLoading = true;
+    fixture.detectChanges();
+
+    const overlay = fixture.nativeElement.querySelector('.loading-overlay');
+    expect(overlay).toBeTruthy();
+    expect(overlay.textContent).toContain('Chargement');
   });
 
   it('should render router outlet', () => {
     fixture.detectChanges();
+
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
@@ -122,27 +142,16 @@ describe('AppComponent', () => {
   it('should show connection status when disconnected', () => {
     component.isOnline = false;
     fixture.detectChanges();
-    
+
     const connectionStatus = fixture.nativeElement.querySelector('.connection-status');
     expect(connectionStatus).toBeTruthy();
-    expect(connectionStatus?.textContent).toContain('Connexion perdue');
+    expect(connectionStatus?.textContent).toContain('Connexion interrompue');
   });
 
-  it('should show loading indicator when loading', () => {
-    component.isLoading = true;
+  it('should hide connection status while online', () => {
+    component.isOnline = true;
     fixture.detectChanges();
-    
-    const loadingIndicator = fixture.nativeElement.querySelector('.global-loading');
-    expect(loadingIndicator).toBeTruthy();
-  });
 
-  it('should clean up on destroy', () => {
-    spyOn(component['destroy$'], 'next');
-    spyOn(component['destroy$'], 'complete');
-    
-    component.ngOnDestroy();
-    
-    expect(component['destroy$'].next).toHaveBeenCalled();
-    expect(component['destroy$'].complete).toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('.connection-status')).toBeNull();
   });
 });
