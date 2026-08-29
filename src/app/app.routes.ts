@@ -1,22 +1,8 @@
-// app.routes.ts - CORRECTED IMPORT PATHS
+// app.routes.ts - Routes chargees a la demande (lazy loading).
+// Chaque `loadComponent` produit un chunk separe : le bundle initial ne contient
+// plus que la page demandee, le reste est preleve en arriere-plan par la
+// PreloadAllModules strategy configuree dans app.config.ts.
 import { Routes } from '@angular/router';
-
-// Import components - FIXED PATHS
-import { LoginComponent } from '@features/auth/login/login.component';
-import { RegisterComponent } from '@features/auth/register/register.component';
-import { ResetPasswordComponent } from '@features/auth/reset-password/reset-password.component';
-import { LayoutComponent } from '@core/layout/layout/layout.component';
-import { DashboardComponent } from '@features/dashboard/dashboard.component';
-import { ProfileComponent } from '@features/profile/profile.component';
-import { ExercisesComponent } from '@features/exercises/exercises/exercises.component';
-import { ExercisesDetailComponent } from '@features/exercises/exercises-detail/exercises-detail.component';
-import { CalendarComponent } from '@features/calendar/calendar/calendar.component';
-import { GoalsComponent } from '@features/goals/goals.component';
-import { WorkoutComponent } from '@features/workout/workout.component';
-import { ChallengesComponent } from '@features/challenges/challenges.component';
-import { CreateWorkoutComponent } from '@features/workout/create-workout/create-workout.component';
-import { WorkoutPlanDetailComponent } from '@features/workout/workout-plan-detail/workout-plan-detail.component';
-import { NutritionComponent } from '@features/nutrition/nutrition.component';
 
 // Import guards
 import { AuthGuard, GuestGuard } from '@core/guards/auth.guard';
@@ -27,65 +13,106 @@ export const routes: Routes = [
   // Public routes (guest only)
   {
     path: 'login',
-    component: LoginComponent,
+    loadComponent: () =>
+      import('@features/auth/login/login.component').then(m => m.LoginComponent),
     canActivate: [GuestGuard]
   },
   {
     path: 'register',
-    component: RegisterComponent,
+    loadComponent: () =>
+      import('@features/auth/register/register.component').then(m => m.RegisterComponent),
     canActivate: [GuestGuard]
   },
   {
     path: 'reset-password',
-    component: ResetPasswordComponent,
+    loadComponent: () =>
+      import('@features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent),
     canActivate: [GuestGuard]
   },
 
   // Protected routes
   {
     path: '',
-    component: LayoutComponent,
+    loadComponent: () =>
+      import('@core/layout/layout/layout.component').then(m => m.LayoutComponent),
     canActivate: [AuthGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'exercises', component: ExercisesComponent },
-      { path: 'exercises/:id', component: ExercisesDetailComponent },
-      { path: 'calendar', component: CalendarComponent },
-      
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('@features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('@features/profile/profile.component').then(m => m.ProfileComponent)
+      },
+      {
+        path: 'exercises',
+        loadComponent: () =>
+          import('@features/exercises/exercises/exercises.component').then(m => m.ExercisesComponent)
+      },
+      {
+        path: 'exercises/:id',
+        loadComponent: () =>
+          import('@features/exercises/exercises-detail/exercises-detail.component').then(m => m.ExercisesDetailComponent)
+      },
+      {
+        path: 'calendar',
+        loadComponent: () =>
+          import('@features/calendar/calendar/calendar.component').then(m => m.CalendarComponent)
+      },
+
       // WORKOUT ROUTES - CORRECTED STRUCTURE
-      { 
-        path: 'workouts', 
-        component: WorkoutComponent,
+      {
+        path: 'workouts',
+        loadComponent: () =>
+          import('@features/workout/workout.component').then(m => m.WorkoutComponent),
         title: 'Mes Programmes'
       },
-      { 
-        path: 'workouts/create', 
-        component: CreateWorkoutComponent,
+      {
+        path: 'workouts/create',
+        loadComponent: () =>
+          import('@features/workout/create-workout/create-workout.component').then(m => m.CreateWorkoutComponent),
         title: 'Créer un Programme'
       },
-      { 
-        path: 'workouts/edit/:id', 
-        component: CreateWorkoutComponent,
+      {
+        path: 'workouts/edit/:id',
+        loadComponent: () =>
+          import('@features/workout/create-workout/create-workout.component').then(m => m.CreateWorkoutComponent),
         title: 'Modifier un Programme'
       },
-      { 
-        path: 'workouts/:id', 
-        component: WorkoutPlanDetailComponent,
+      {
+        path: 'workouts/:id',
+        loadComponent: () =>
+          import('@features/workout/workout-plan-detail/workout-plan-detail.component').then(m => m.WorkoutPlanDetailComponent),
         title: 'Détails du Programme'
       },
-      
-      { path: 'nutrition', component: NutritionComponent },
-      { path: 'challenges', component: ChallengesComponent },
+
+      {
+        path: 'nutrition',
+        loadComponent: () =>
+          import('@features/nutrition/nutrition.component').then(m => m.NutritionComponent)
+      },
+      {
+        path: 'challenges',
+        loadComponent: () =>
+          import('@features/challenges/challenges.component').then(m => m.ChallengesComponent)
+      },
     ]
   },
 
   // Public portfolio routes (no authentication required)
   {
     path: '',
-    component: LayoutComponent,
+    loadComponent: () =>
+      import('@core/layout/layout/layout.component').then(m => m.LayoutComponent),
     children: [
-      { path: 'goals', component: GoalsComponent },
+      {
+        path: 'goals',
+        loadComponent: () =>
+          import('@features/goals/goals.component').then(m => m.GoalsComponent)
+      },
     ]
   },
 
