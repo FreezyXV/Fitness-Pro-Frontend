@@ -20,12 +20,19 @@
   background: $primary-dark;
 
   /* Ensure visibility on desktop */
-  @media (min-width: 769px) {
+  @include respond-above(md) {
     .sidebar {
       display: flex !important;
       visibility: visible !important;
       opacity: 1 !important;
     }
+  }
+
+  /* Mobile : la navigation passe entierement par <app-bottom-nav>. On masque
+     le composant entier (drawer + bouton burger, tous deux dans le host) pour
+     ne jamais avoir deux systemes de navigation concurrents. */
+  @include respond-below(md) {
+    display: none;
   }
 }
 
@@ -65,7 +72,7 @@
   }
 
   /* Ensure desktop visibility */
-  @media (min-width: calc(#{$breakpoint-md} + 1px)) {
+  @include respond-above(md) {
     transform: translateX(0) !important;
     display: flex !important;
   }
@@ -83,8 +90,8 @@
     border-bottom: $border-width solid $border-color;
     background: linear-gradient(
       135deg,
-      rgba(33, 191, 115, 0.05),
-      rgba(33, 191, 115, 0.02)
+      rgba($primary-color, 0.05),
+      rgba($primary-color, 0.02)
     );
   }
 
@@ -128,7 +135,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: $on-primary;
         box-shadow: $shadow-primary;
         border: $border-width solid $border-color;
         flex-shrink: 0;
@@ -220,7 +227,7 @@
       background: rgba(203, 213, 225, 0.1);
     }
     &::-webkit-scrollbar-thumb {
-      background: rgba(33, 191, 115, 0.3);
+      background: rgba($primary-color, 0.3);
       border-radius: 2px;
     }
   }
@@ -238,7 +245,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: $gray-500;
+      color: $text-muted;
       margin: 0 0 1rem 1.25rem;
       transition: var(--transition);
       position: relative;
@@ -247,7 +254,7 @@
       @include respond-below(md) {
         font-size: 0.68rem;
         margin: 0 0 1rem 0.9rem;
-        color: $gray-600;
+        color: $text-primary;
         font-weight: 800;
       }
 
@@ -311,14 +318,14 @@
           &:hover {
             color: $primary-color;
             transform: translateX(6px);
-            border-color: $border-width solid $border-color;
-            box-shadow: 0 4px 12px rgba(33, 191, 115, 0.15);
+            border: $border-width solid $border-color;
+            box-shadow: 0 4px 12px rgba($primary-color, 0.15);
 
             /* Mobile: different hover behavior */
             @include respond-below(md) {
               transform: translateX(2px);
-              background: rgba(33, 191, 115, 0.1);
-              border-color: $border-width solid $border-color;
+              background: rgba($primary-color, 0.1);
+              border: $border-width solid $border-color;
             }
 
             &::before {
@@ -342,31 +349,31 @@
           &:active {
             @include respond-below(md) {
               transform: scale(0.98);
-              background: rgba(33, 191, 115, 0.15);
+              background: rgba($primary-color, 0.15);
             }
           }
 
           &.active {
             background: linear-gradient(
               135deg,
-              rgba(33, 191, 115, 0.15),
-              rgba(0, 181, 173, 0.08)
+              rgba($primary-color, 0.15),
+              rgba($secondary-color, 0.08)
             );
             color: $primary-color;
-            border-color: $border-width solid $border-color;
-            box-shadow: 0 6px 20px rgba(33, 191, 115, 0.2);
+            border: $border-width solid $border-color;
+            box-shadow: 0 6px 20px rgba($primary-color, 0.2);
             transform: translateX(4px);
 
             /* Mobile active state */
             @include respond-below(md) {
               background: linear-gradient(
                 135deg,
-                rgba(33, 191, 115, 0.2),
-                rgba(0, 181, 173, 0.1)
+                rgba($primary-color, 0.2),
+                rgba($secondary-color, 0.1)
               );
               transform: translateX(2px);
-              border-color: $border-width solid $border-color;
-              box-shadow: 0 3px 12px rgba(33, 191, 115, 0.25);
+              border: $border-width solid $border-color;
+              box-shadow: 0 3px 12px rgba($primary-color, 0.25);
             }
 
             &::before {
@@ -428,7 +435,7 @@
 
           .nav-indicator {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
+            color: $on-primary;
             font-size: 0.7rem;
             font-weight: 700;
             padding: 0.25rem 0.6rem;
@@ -454,7 +461,7 @@
                 $primary-color 0%,
                 #1da460 100%
               );
-              box-shadow: 0 4px 12px rgba(33, 191, 115, 0.4);
+              box-shadow: 0 4px 12px rgba($primary-color, 0.4);
             }
 
             &.active {
@@ -463,7 +470,7 @@
                 $accent-color 0%,
                 $c-purple-500 100%
               );
-              box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+              box-shadow: 0 4px 12px rgba($secondary-color, 0.4);
             }
           }
         }
@@ -489,8 +496,8 @@
     border-top: $border-width solid $border-color;
     background: linear-gradient(
       135deg,
-      rgba(33, 191, 115, 0.03),
-      rgba(33, 191, 115, 0.01)
+      rgba($primary-color, 0.03),
+      rgba($primary-color, 0.01)
     );
   }
 
@@ -545,25 +552,25 @@
         background: linear-gradient(135deg, $primary-color 0%, #1da460 100%);
         border: $border-width solid $border-color;
         transition: var(--transition);
-        box-shadow: 0 4px 12px rgba(33, 191, 115, 0.2);
-        color: white;
+        box-shadow: 0 4px 12px rgba($primary-color, 0.2);
+        color: $on-primary;
 
         /* Mobile optimizations */
         @include respond-below(md) {
           width: 38px;
           height: 38px;
           border: $border-width solid $border-color;
-          box-shadow: 0 3px 10px rgba(33, 191, 115, 0.2);
+          box-shadow: 0 3px 10px rgba($primary-color, 0.2);
         }
 
         &:hover {
           border-color: $primary-color;
           transform: scale(1.05);
-          box-shadow: 0 8px 20px rgba(33, 191, 115, 0.3);
+          box-shadow: 0 8px 20px rgba($primary-color, 0.3);
 
           @include respond-below(md) {
             transform: scale(1.03);
-            box-shadow: 0 6px 15px rgba(33, 191, 115, 0.25);
+            box-shadow: 0 6px 15px rgba($primary-color, 0.25);
           }
         }
       }
@@ -588,11 +595,11 @@
         &:hover {
           border-color: $primary-color;
           transform: scale(1.05);
-          box-shadow: 0 12px 35px rgba(33, 191, 115, 0.3);
+          box-shadow: 0 12px 35px rgba($primary-color, 0.3);
 
           @include respond-below(md) {
             transform: scale(1.03);
-            box-shadow: 0 6px 20px rgba(33, 191, 115, 0.25);
+            box-shadow: 0 6px 20px rgba($primary-color, 0.25);
           }
         }
       }
@@ -684,7 +691,7 @@
           .stat-value {
             font-size: 0.8rem;
             font-weight: 700;
-            color: #d4ff3d;
+            color: $primary-color;
             line-height: 1;
 
             @include respond-below(md) {
@@ -696,7 +703,7 @@
           .stat-label {
             font-size: 0.6rem;
             font-weight: 600;
-            color: #d4ff3d;
+            color: $primary-color;
             text-transform: uppercase;
             letter-spacing: 0.03em;
 
@@ -725,7 +732,7 @@
           cursor: pointer;
           border: none;
           background: linear-gradient(135deg, $c-red-500 0%, $c-red-600 100%);
-          color: white;
+          color: $on-primary;
           box-shadow: 0 3px 10px rgba(239, 68, 68, 0.3);
           min-height: 36px;
 
@@ -835,7 +842,7 @@
         justify-content: center;
         gap: 0.3rem;
         font-size: 0.68rem;
-        color: $gray-600;
+        color: $text-primary;
         margin-bottom: 0.3rem;
         font-weight: 600;
 
@@ -860,7 +867,7 @@
 
       .last-sync {
         font-size: 0.62rem;
-        color: $gray-500;
+        color: $text-muted;
         font-weight: 500;
 
         @include respond-below(md) {
@@ -954,13 +961,13 @@
     &:hover {
       background: rgba($primary-color, 0.15);
       color: $text-inverse;
-      border-color: $border-width solid $border-color;
+      border: $border-width solid $border-color;
     }
 
     &.active {
       background: rgba($primary-color, 0.2);
       color: $text-inverse;
-      border-color: $border-width solid $border-color;
+      border: $border-width solid $border-color;
     }
 
     .nav-indicator {
@@ -971,12 +978,12 @@
 
       &.new {
         background: rgba($accent-color, 0.25);
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
       }
 
       &.active {
         background: rgba($secondary-color, 0.25);
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
       }
     }
   }
@@ -1125,7 +1132,7 @@
   cursor: pointer;
   transition: var(--transition);
   z-index: 1002;
-  box-shadow: 0 8px 25px rgba(33, 191, 115, 0.4);
+  box-shadow: 0 8px 25px rgba($primary-color, 0.4);
   display: none;
   min-width: 56px;
   min-height: 56px;
@@ -1139,18 +1146,18 @@
     left: 1rem;
     padding: 1.125rem;
     border-radius: 1rem;
-    box-shadow: 0 6px 20px rgba(33, 191, 115, 0.4);
+    box-shadow: 0 6px 20px rgba($primary-color, 0.4);
     backdrop-filter: blur(10px);
     border: $border-width solid $border-color;
   }
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0 12px 35px rgba(33, 191, 115, 0.5);
+    box-shadow: 0 12px 35px rgba($primary-color, 0.5);
 
     @include respond-below(md) {
       transform: scale(1.03);
-      box-shadow: 0 8px 25px rgba(33, 191, 115, 0.5);
+      box-shadow: 0 8px 25px rgba($primary-color, 0.5);
     }
   }
 
@@ -1186,7 +1193,7 @@
   &:focus {
     outline: 2px solid $primary-color;
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(33, 191, 115, 0.1);
+    box-shadow: 0 0 0 4px rgba($primary-color, 0.1);
   }
 }
 

@@ -176,17 +176,13 @@ export class UserService {
           throw new Error(response.message || 'Failed to change password');
         }),
         catchError((error) => {
-          console.error('❌ UserService: Password change failed:', error);
-
-          // For demo purposes, simulate success
-          if (error.status === 0 || error.status >= 500) {
-            console.log('Mot de passe modifié (simulation)');
-            return of({
-              success: true,
-              message: 'Password changed (offline mode)',
-            });
-          }
-
+          // Cette branche annoncait « Mot de passe modifie avec succes » quand
+          // le serveur etait injoignable ou en erreur. Le mot de passe n'avait
+          // evidemment pas change : l'utilisateur repartait convaincu du
+          // contraire, et se retrouvait bloque a la connexion suivante ou
+          // persuade a tort que son ancien mot de passe n'etait plus valable.
+          // Un changement d'identifiant ne peut pas etre simule.
+          console.error('UserService: changement de mot de passe échoué', error);
           return this.handleError(error);
         })
       );
@@ -619,14 +615,11 @@ export class UserService {
           throw new Error(response.message || 'Failed to delete user account');
         }),
         catchError((error) => {
-          console.error('❌ UserService: User account deletion failed:', error);
-          // Simulate success for offline/demo purposes
-          if (error.status === 0 || error.status >= 500) {
-            console.log(
-              'Compte supprimé localement (simulation)'
-            );
-            return of(undefined); // Return observable of undefined for void
-          }
+          // Meme probleme : l'app confirmait la suppression du compte alors
+          // que rien n'avait ete supprime cote serveur. Outre la tromperie,
+          // une demande de suppression qui echoue en silence tout en etant
+          // annoncee comme reussie est intenable au regard du RGPD.
+          console.error('UserService: suppression du compte échouée', error);
           return this.handleError(error);
         })
       );

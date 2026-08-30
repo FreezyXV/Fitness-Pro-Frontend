@@ -411,3 +411,46 @@
   .btn-validate:active,
   .btn-primary-xl:active { transform: none; }
 }
+
+// =============================================
+// SUGGESTION DE CHARGE
+// =============================================
+
+.suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: $radius-pill;
+  background: rgba($primary-color, 0.1);
+
+  &.is-deload {
+    background: rgba($warning-color, 0.12);
+  }
+}
+
+.suggestion-tag {
+  flex-shrink: 0;
+  padding: 0.125rem 0.5rem;
+  border-radius: $radius-pill;
+  background: $primary-color;
+  color: $on-primary;
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+
+  .is-deload & {
+    background: $warning-color;
+  }
+}
+
+.suggestion-text {
+  color: $text-secondary;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  text-align: center;
+}

@@ -1,6 +1,7 @@
 // challenges.service.ts - Enhanced Data Management Service
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { AuthService } from '@app/services/auth.service';
 import { delay, map, catchError } from 'rxjs/operators';
 
 import {
@@ -36,6 +37,8 @@ export class ChallengesService {
     favorites: 'challenge_favorites',
     preferences: 'challenge_preferences'
   };
+
+  private readonly auth = inject(AuthService);
 
   constructor() {
     this.loadInitialData();
@@ -88,7 +91,7 @@ export class ChallengesService {
           createdAt: new Date().toISOString(),
           tasks: this.generateDefaultTasks(data),
           isPublic: data.isPublic ?? true,
-          author: this.getCurrentUser(),
+          author: this.getCurrentUser() ?? undefined,
           tags: this.generateTags(data),
           requirements: []
         };
@@ -179,7 +182,7 @@ export class ChallengesService {
         // Create user challenge data
         const userChallengeData: UserChallengeData = {
           id: Date.now().toString(), // Unique ID for the user challenge entry
-          userId: this.getCurrentUser().id,
+          userId: this.getCurrentUser()?.id ?? 0,
           challengeId: id,
           progress: 0,
           points: 0,
@@ -246,7 +249,7 @@ export class ChallengesService {
         // Update user challenge data
         const userChallenges = this.userChallengesSubject.value;
         const userChallengeIndex = userChallenges.findIndex(
-          uc => uc.challengeId === challengeId && uc.userId === this.getCurrentUser().id
+          uc => uc.challengeId === challengeId && uc.userId === (this.getCurrentUser()?.id ?? 0)
         );
 
         if (userChallengeIndex === -1) {
@@ -333,7 +336,7 @@ export class ChallengesService {
     return this.userChallenges$.pipe(
       map(userChallenges => 
         userChallenges.find(uc => 
-          uc.challengeId === challengeId && uc.userId === this.getCurrentUser().id
+          uc.challengeId === challengeId && uc.userId === (this.getCurrentUser()?.id ?? 0)
         ) || null
       )
     );
@@ -344,14 +347,17 @@ export class ChallengesService {
   // =============================================
 
   private loadInitialData(): void {
-    // Load from localStorage or generate mock data
     const savedChallenges = this.getFromStorage<Challenge[]>(this.STORAGE_KEYS.challenges);
     const savedUserChallenges = this.getFromStorage<UserChallengeData[]>(this.STORAGE_KEYS.userChallenges);
 
-    this.challengesSubject.next(Array.isArray(savedChallenges) ? savedChallenges : this.generateMockChallenges());
+    this.challengesSubject.next(
+      Array.isArray(savedChallenges) ? savedChallenges : this.builtInChallenges()
+    );
     this.userChallengesSubject.next(Array.isArray(savedUserChallenges) ? savedUserChallenges : []);
 
-    this.leaderboardSubject.next(this.generateMockLeaderboard());
+    // Le classement reste VIDE tant qu'il n'existe pas de vrais autres
+    // utilisateurs. Voir la note sur generateMockLeaderboard ci-dessous.
+    this.leaderboardSubject.next([]);
     this.updateStatistics();
   }
 
@@ -535,23 +541,31 @@ export class ChallengesService {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   }
 
-  private getCurrentUser(): User {
-    return {
-      id: 2,
-      name: 'Alex Warrior',
-      email: 'alex@example.com',
-      avatar: '/assets/avatars/user2.jpg',
-      level: 15,
-      totalPoints: 2100,
-      rank: 2,
-      joinDate: '2024-01-15',
-      createdAt: '2024-01-15T10:00:00Z',
-      updatedAt: '2024-01-15T10:00:00Z'
-    };
+  /**
+   * Utilisateur connecte. Cette methode renvoyait une fiche entierement
+   * inventee ('Alex Warrior', niveau 15, 2 100 points, rang 2) : l'app
+   * attribuait donc a chaque utilisateur reel un palmares qui ne lui
+   * appartenait pas, et rattachait ses defis a cette fausse identite.
+   *
+   * Renvoie null quand personne n'est connecte : les appelants doivent le
+   * gerer plutot que de recevoir un utilisateur fictif.
+   */
+  private getCurrentUser(): User | null {
+    return this.auth.currentUser ?? null;
   }
 
-  private generateMockChallenges(): Challenge[] {
-    // Return the same mock data structure as before
+  /**
+   * Defis proposes par l'application. Ce sont du CONTENU (une activite qu'on
+   * propose), pas des donnees utilisateur : c'est legitime, au meme titre
+   * qu'un programme d'entrainement predefini.
+   *
+   * En revanche l'ancienne version annoncait `participantsCount: 2847`,
+   * `isJoined: true` et `currentProgress: 18` a un utilisateur qui venait
+   * d'ouvrir l'app pour la premiere fois. Ces trois champs decrivent l'etat
+   * de l'utilisateur et d'une communaute : ils partent desormais a zero et
+   * n'evoluent que par ses actions reelles.
+   */
+  private builtInChallenges(): Challenge[] {
     const now = new Date();
     const getDate = (days: number) => new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
     
@@ -568,61 +582,42 @@ export class ChallengesService {
         unit: 'jours',
         reward: '150 points + Badge Zen Master',
         rewardPoints: 150,
-        participantsCount: 2847,
-        participants: 2847,
+        // Aucune communaute reelle : le compteur reste a zero plutot que
+        // d'inventer une popularite.
+        participantsCount: 0,
+        participants: 0,
         maxParticipants: undefined,
-        isJoined: true,
+        isJoined: false,
         isCompleted: false,
-        currentProgress: 18,
-        progress: 18,
+        currentProgress: 0,
+        progress: 0,
         maxProgress: 30,
         image: '/assets/images/meditation-challenge.jpg',
-        status: 'active',
-        startDate: getDate(-18).toISOString(),
-        endDate: getDate(12).toISOString(),
-        createdAt: getDate(-20).toISOString(),
+        status: 'available',
+        startDate: now.toISOString(),
+        endDate: getDate(30).toISOString(),
+        createdAt: now.toISOString(),
         tasks: [],
         isPublic: true,
-        author: this.getCurrentUser(),
+        author: this.getCurrentUser() ?? undefined,
         tags: ['mindfulness', 'easy', 'well-being']
       }
       // Add more mock challenges as needed...
     ];
   }
 
-  private generateMockLeaderboard(): LeaderboardEntry[] {
-    return [
-      {
-        id: 1,
-        name: 'Sarah Champion',
-        avatar: '/assets/avatars/user1.jpg',
-        points: 2450,
-        progress: 95,
-        rank: 1,
-        score: 2450,
-        challengesWon: 18,
-        streak: 67,
-        badges: ['🏆', '🔥', '💪', '🧠'],
-        totalChallenges: 22,
-        level: 20
-      },
-      {
-        id: 2,
-        name: 'Alex Warrior',
-        avatar: '/assets/avatars/user2.jpg',
-        points: 2100,
-        progress: 87,
-        rank: 2,
-        score: 2100,
-        isCurrentUser: true,
-        challengesWon: 14,
-        streak: 45,
-        badges: ['🔥', '💪', '🧠'],
-        totalChallenges: 18,
-        level: 15
-      }
-      // Add more leaderboard entries...
-    ];
+  /**
+   * SUPPRIME. Cette methode renvoyait deux profils inventes, dont l'un
+   * ('Alex Warrior', rang 2, 2 100 points, 45 jours de serie) portait
+   * `isCurrentUser: true` : l'application attribuait donc a l'utilisateur
+   * reel une identite et un palmares qui n'etaient pas les siens.
+   *
+   * Un classement suppose de vrais autres utilisateurs. Tant que le backend
+   * n'expose pas de point d'entree communautaire, il n'y a rien a classer, et
+   * l'ecran affiche un etat vide honnete.
+   */
+  private emptyLeaderboard(): LeaderboardEntry[] {
+    return [];
   }
 
   private saveToStorage(): void {

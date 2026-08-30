@@ -576,6 +576,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // BMI CALCULATIONS - ENHANCED VERSION
   // =============================================
 
+  /**
+   * Fourchette de poids correspondant a un IMC de 20 a 25 pour la taille de
+   * l'utilisateur. Remplace le verdict IMC sur l'accueil : une fourchette
+   * informe sans classer, et reste juste pour la plupart des morphologies.
+   */
+  idealWeightRange(): string {
+    const height = this.user?.height;
+    if (!height || height < 100) return '-';
+
+    const m = height / 100;
+    const low = Math.round(20 * m * m);
+    const high = Math.round(25 * m * m);
+    return `${low}-${high}`;
+  }
+
   calculateBMI(): string {
     if (!this.user?.height || !this.user?.weight) {
       console.log('⚠️ BMI - Missing data:', { height: this.user?.height, weight: this.user?.weight });

@@ -111,23 +111,10 @@ export class WorkoutService {
           const templates =
             this.extractDataFromResponse<Workout[]>(response) || [];
 
-          // Auto-seed demo workouts if no templates exist and no filters applied
-          if (templates.length === 0 && !filters) {
-            return this.seedPortfolioWorkouts().pipe(
-              switchMap(() => this.http.get<ApiResponse<Workout[]>>(`${this.API_BASE}/templates`, { params })),
-              map((retryResponse) => {
-                const retryTemplates = this.extractDataFromResponse<Workout[]>(retryResponse) || [];
-                this.workoutTemplatesSubject.next(retryTemplates);
-                this.setCachedData(cacheKey, retryTemplates);
-                return retryTemplates;
-              }),
-              catchError(() => {
-                this.workoutTemplatesSubject.next(templates);
-                this.setCachedData(cacheKey, templates);
-                return of(templates);
-              })
-            );
-          }
+          // Un auto-seed appelait ici `POST /api/workouts-portfolio-seed`,
+          // route inexistante (405 verifie sur l'instance deployee) : chaque
+          // catalogue vide payait un aller-retour reseau inutile avant
+          // d'afficher... la meme liste vide.
 
           this.workoutTemplatesSubject.next(templates);
           this.setCachedData(cacheKey, templates);
@@ -589,9 +576,6 @@ export class WorkoutService {
   // PORTFOLIO SEEDING
   // =============================================
 
-  private seedPortfolioWorkouts(): Observable<any> {
-    return this.http.post(`${APP_CONFIG.API_URL}/workouts-portfolio-seed`, {});
-  }
 
   // =============================================
   // EXERCISES (pour création de workouts)

@@ -42,11 +42,6 @@
   }
 }
 
-@mixin flex-between($align: center) {
-  display: flex;
-  align-items: $align;
-  justify-content: space-between;
-}
 
 @mixin flex-column($gap: 0, $align: stretch) {
   display: flex;
@@ -63,22 +58,7 @@
   gap: $gap;
 }
 
-// Typography Mixins
-@mixin title-text($size: 1.5rem, $weight: 800, $color: $text-primary) {
-  font-size: $size;
-  font-weight: $weight;
-  color: $color;
-  line-height: 1.25;
-  margin: 0 0 1rem 0;
-}
 
-@mixin body-text($size: 1rem, $weight: 400, $color: $text-secondary) {
-  font-size: $size;
-  font-weight: $weight;
-  color: $color;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-}
 
 @mixin text-ellipsis($lines: 1) {
   @if $lines == 1 {
@@ -93,48 +73,13 @@
   }
 }
 
-// Enhanced Container Mixin
-@mixin container($max-width: 1400px, $padding: 2rem) {
-  max-width: $max-width;
-  margin: 0 auto;
-  padding: 0 $padding;
-  width: 100%;
-  
-  @media (max-width: $breakpoint-md) {
-    padding: 0 1rem;
-  }
-}
 
 // Enhanced Card Mixins
 @mixin glass-card($opacity: 0.95, $blur: 0px, $border-opacity: 0.45) {
   @include glass-effect($opacity, $blur, $border-opacity);
 }
 
-@mixin card-interactive($hover-lift: true) {
-  @include glass-effect;
-  border-radius: $card-border-radius;
-  padding: $card-padding-md;
-  transition: $card-transition;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
 
-  @if $hover-lift {
-    &:hover {
-      transform: $transform-hover-lg;
-      background-color: rgba($surface-tertiary, 0.95);
-      border-color: $border-color;
-    }
-  }
-}
-
-@mixin card-static {
-  @include glass-effect;
-  border-radius: $card-border-radius;
-  padding: $card-padding-md;
-  position: relative;
-  overflow: hidden;
-}
 
 @mixin glass-effect-dark($opacity: 0.1, $blur: 20px) {
   background: rgba($surface-primary, $opacity + 0.2);
@@ -315,7 +260,7 @@
 /// Anneau de focus des champs de formulaire.
 /// Le meme quadruplet etait recopie dans 10 endroits, avec la couleur du halo
 /// ecrite en dur alors qu'elle derive de la couleur primaire.
-@mixin focus-ring($color: $primary-color, $ring: rgba(33, 191, 115, 0.1)) {
+@mixin focus-ring($color: $primary-color, $ring: rgba($primary-color, 0.1)) {
   background: $surface-secondary;
   border-color: $color;
   box-shadow: 0 0 0 4px $ring;
@@ -323,7 +268,11 @@
 }
 
 /// Intitule de section en petites capitales espacees (9 recopies).
-@mixin label-caps($color: $gray-600, $size: 0.875rem) {
+/// Libelle en capitales. La valeur par defaut etait $gray-600, qui valait
+/// alors #f6f6f2 : le rendre monotone a fait chuter le contraste de ses 15
+/// appelants. Le defaut est desormais un token SEMANTIQUE de texte, qui ne
+/// bougera pas si l'echelle de gris evolue.
+@mixin label-caps($color: $text-secondary, $size: 0.875rem) {
   color: $color;
   font-size: $size;
   font-weight: 600;
@@ -340,21 +289,24 @@
 // BREAKPOINTS
 // =============================================
 //
-// Le projet melangeait trois echelles concurrentes : les variables
-// $breakpoint-* (sm 640px), la map $grid-breakpoints (sm 576px) et des
-// valeurs ecrites en dur (480px). Deux composants pouvaient donc basculer
-// en mode mobile a des largeurs differentes sans raison.
+// Le projet melangeait QUATRE echelles concurrentes : les variables
+// $breakpoint-* (sm 640px), la map $grid-breakpoints (sm 576px, xs 0px), une
+// seconde map $breakpoints dans variables.scss (xs 320px) que celle-ci
+// masquait silencieusement, et des valeurs ecrites en dur. Deux composants
+// pouvaient donc basculer en mode mobile a des largeurs differentes sans
+// raison, et `map.get($grid-breakpoints, xs)` valant 0px, les regles
+// "extra small devices" de login/register n'ont jamais rien applique.
 //
-// L'echelle ci-dessous est la reference unique. Elle reprend exactement les
-// valeurs deja majoritaires dans le code, donc son adoption ne deplace aucun
-// point de rupture existant.
+// L'echelle ci-dessous est desormais la SEULE. Les trois autres ont ete
+// supprimees et leurs appels reecrits vers respond-below/respond-above.
 
 $breakpoints: (
-  xs: 480px,   // petits telephones
-  sm: 640px,   // = $breakpoint-sm
-  md: 768px,   // = $breakpoint-md, de loin le plus utilise
-  lg: 1024px,  // = $breakpoint-lg
-  xl: 1280px,  // = $breakpoint-xl
+  xxs: 360px,   // tres petits telephones (Android compacts)
+  xs:  480px,   // petits telephones
+  sm:  640px,   // telephones
+  md:  768px,   // PIVOT : sidebar (desktop) <-> bottom nav (mobile)
+  lg:  1024px,  // tablettes
+  xl:  1280px,  // grands ecrans
 );
 
 @function breakpoint($name) {
@@ -372,9 +324,246 @@ $breakpoints: (
   }
 }
 
-/// Styles appliques a partir du point de rupture (mobile-first).
+/// Styles appliques au-dessus du point de rupture (mobile-first).
+/// Le +1px rend respond-above strictement complementaire de respond-below :
+/// sans lui, a exactement 768px les deux mixins s'appliquaient en meme temps
+/// et le vainqueur dependait de l'ordre d'ecriture des regles.
 @mixin respond-above($name) {
-  @media (min-width: breakpoint($name)) {
+  @media (min-width: breakpoint($name) + 1px) {
     @content;
+  }
+}
+
+// =============================================
+// PRIMITIVES PARTAGEES
+// =============================================
+//
+// Ces patrons etaient reecrits a la main dans chaque ecran : 27 en-tetes de
+// carte dans 9 fichiers, 31 variantes de bouton dans 12, 10 modales dans 5.
+// D'ou la derive visuelle d'un ecran a l'autre, et les 5 539 lignes de SCSS
+// du seul composant nutrition.
+//
+// Ce sont des MIXINS et non des placeholders : Sass n'autorise pas `@extend`
+// a travers les frontieres de modules (`@use`). La duplication CSS que cela
+// produit est sans consequence ici, les styles etant deja encapsules par
+// composant Angular.
+
+/// En-tete de carte : pastille d'icone + titre + sous-titre.
+@mixin card-header($icon-size: 48px) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+
+  .header-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: $icon-size;
+    height: $icon-size;
+    border-radius: $radius-md;
+    background: rgba($primary-color, 0.12);
+    color: $primary-color;
+    font-size: $icon-size * 0.42;
+  }
+
+  .header-content {
+    flex: 1;
+    min-width: 0;
+
+    h2, h3 {
+      margin: 0;
+      color: $text-primary;
+      font-weight: 700;
+      // clamp : le meme en-tete sert sur telephone et sur grand ecran.
+      font-size: clamp(1rem, 3vw, 1.25rem);
+    }
+
+    p {
+      margin: 0.125rem 0 0;
+      color: $text-secondary;
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+  }
+}
+
+/// Variante colorée de bouton. Complete `button-base`.
+/// $tone : primary | secondary | danger | ghost
+@mixin button-variant($tone: primary) {
+  @if $tone == primary {
+    border-color: transparent;
+    background: $primary-color;
+    color: $on-primary;
+
+    &:hover:not(:disabled) {
+      background: $primary-light;
+      box-shadow: $glow-primary-md;
+    }
+  } @else if $tone == secondary {
+    border: $border-width solid $border-color;
+    background: transparent;
+    color: $text-primary;
+
+    &:hover:not(:disabled) {
+      background: rgba($primary-color, 0.08);
+      border-color: $primary-color;
+    }
+  } @else if $tone == danger {
+    border-color: transparent;
+    background: $danger-color;
+    color: $text-inverse;
+
+    &:hover:not(:disabled) { box-shadow: $glow-danger-md; }
+  } @else if $tone == ghost {
+    border-color: transparent;
+    background: none;
+    color: $text-secondary;
+
+    &:hover:not(:disabled) { color: $text-primary; }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: $opacity-disabled;
+    cursor: not-allowed;
+  }
+}
+
+/// Onglet d'une barre de navigation secondaire.
+@mixin tab-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  // 44px : minimum recommande pour une cible tactile.
+  min-height: 44px;
+  padding: 0 1rem;
+
+  appearance: none;
+  border: 0;
+  border-radius: $radius-pill;
+  background: none;
+  color: $text-secondary;
+
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+
+  transition: background 0.18s ease, color 0.18s ease;
+
+  &.active,
+  &[aria-selected='true'] {
+    background: $primary-color;
+    color: $on-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+/// Tuile de statistique : une valeur, un libelle.
+@mixin stat-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+
+  padding: 1rem;
+  border: $border-width solid $border-color;
+  border-radius: $radius-xl;
+  background: $surface-secondary;
+
+  .stat-value {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: $text-primary;
+    // tabular-nums : evite que les chiffres sautent quand la valeur change.
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $text-secondary;
+  }
+}
+
+/// Etat vide. Voir aussi le composant <app-empty-state> pour le balisage.
+@mixin empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  padding: 3rem 1.5rem;
+  text-align: center;
+
+  .empty-icon {
+    width: 44px;
+    height: 44px;
+    color: $primary-color;
+    opacity: 0.55;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 800;
+    color: $text-primary;
+  }
+
+  p {
+    margin: 0;
+    max-width: 46ch;
+    color: $text-secondary;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+}
+
+/// Voile d'une modale.
+@mixin modal-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/// Panneau d'une modale. Passe en feuille basse sur telephone : le pouce
+/// atteint les actions sans changer de prise.
+@mixin modal-panel($width: 480px) {
+  position: fixed;
+  z-index: $z-modal;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: min($width, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+
+  border: $border-width solid $border-color;
+  border-radius: $radius-2xl;
+  background: $surface-secondary;
+  box-shadow: $shadow-xl;
+
+  @include respond-below(sm) {
+    top: auto;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-height: 88vh;
+    border-radius: $radius-2xl $radius-2xl 0 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }

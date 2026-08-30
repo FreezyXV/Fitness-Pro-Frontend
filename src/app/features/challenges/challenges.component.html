@@ -80,7 +80,8 @@
             </svg>
             <span>Statut</span>
           </label>
-          <select [(ngModel)]="activeFilter" (change)="setFilter(activeFilter)" class="filter-select">
+          <select [(ngModel)]="activeFilter" (change)="setFilter(activeFilter)" class="filter-select"
+            aria-label="Filtre : Tous les statuts">
             <option value="all">Tous les statuts</option>
             <option value="available">Disponibles</option>
             <option value="active">En cours</option>
@@ -97,7 +98,8 @@
             </svg>
             <span>Catégorie</span>
           </label>
-          <select [(ngModel)]="activeCategoryFilter" (change)="setCategoryFilter(activeCategoryFilter)" class="filter-select">
+          <select [(ngModel)]="activeCategoryFilter" (change)="setCategoryFilter(activeCategoryFilter)" class="filter-select"
+            aria-label="Filtre : Toutes les catégories">
             <option value="all">Toutes les catégories</option>
             <option *ngFor="let category of challengeCategories" [value]="category.value">
               {{ category.icon }} {{ category.label }}
@@ -113,7 +115,8 @@
             </svg>
             <span>Difficulté</span>
           </label>
-          <select [(ngModel)]="activeDifficultyFilter" (change)="setDifficultyFilter(activeDifficultyFilter)" class="filter-select">
+          <select [(ngModel)]="activeDifficultyFilter" (change)="setDifficultyFilter(activeDifficultyFilter)" class="filter-select"
+            aria-label="Filtre : Tous les niveaux">
             <option value="all">Tous les niveaux</option>
             <option *ngFor="let difficulty of difficultyLevels" [value]="difficulty.value">
               {{ difficulty.label }}
@@ -129,7 +132,8 @@
             </svg>
             <span>Trier par</span>
           </label>
-          <select [(ngModel)]="sortBy" (change)="setSortBy(sortBy)" class="filter-select">
+          <select [(ngModel)]="sortBy" (change)="setSortBy(sortBy)" class="filter-select"
+            aria-label="Filtre : Popularité">
             <option value="popularity">Popularité</option>
             <option value="difficulty">Difficulté</option>
             <option value="endDate">Date de fin</option>
@@ -655,7 +659,20 @@
       </div>
 
       <div class="modal-body">
-        <div class="leaderboard">
+        <!-- Etat vide honnete. Le classement se peuplait auparavant de profils
+             inventes, dont un marque comme etant l'utilisateur courant. Tant
+             qu'il n'y a pas de vrais autres pratiquants a classer, on le dit. -->
+        <div class="leaderboard-empty" *ngIf="!leaderboardData.length">
+          <div class="leaderboard-empty-icon" aria-hidden="true">🏅</div>
+          <h3>Pas encore de classement</h3>
+          <p>
+            Le classement s'ouvrira quand la communauté existera. Nous
+            préférons ne rien afficher plutôt que de te comparer à des profils
+            fictifs.
+          </p>
+        </div>
+
+        <div class="leaderboard" *ngIf="leaderboardData.length">
           <div class="leaderboard-item" 
                *ngFor="let user of leaderboardData"
                [class.current-user]="user.isCurrentUser">

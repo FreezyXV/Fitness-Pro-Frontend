@@ -1,0 +1,187 @@
+<div class="onboarding">
+
+  <!-- Progression : indique combien il reste, ce qui reduit l'abandon. -->
+  <header class="ob-head" *ngIf="step() < totalSteps">
+    <button
+      type="button"
+      class="ob-back"
+      *ngIf="step() > 0"
+      (click)="back()"
+      aria-label="Étape précédente"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+    </button>
+
+    <div
+      class="ob-progress"
+      role="progressbar"
+      [attr.aria-valuenow]="step() + 1"
+      aria-valuemin="1"
+      [attr.aria-valuemax]="totalSteps"
+      [attr.aria-label]="'Étape ' + (step() + 1) + ' sur ' + totalSteps"
+    >
+      <div class="ob-progress-fill" [style.width.%]="progress()"></div>
+    </div>
+
+    <span class="ob-count">{{ step() + 1 }}/{{ totalSteps }}</span>
+  </header>
+
+  <main class="ob-body">
+    <h1 class="ob-title" *ngIf="step() < totalSteps">{{ stepTitle() }}</h1>
+
+    <!-- ============ 1. OBJECTIF ============ -->
+    <div class="ob-choices" *ngIf="step() === 0">
+      <button
+        *ngFor="let choice of goals"
+        type="button"
+        class="ob-choice"
+        [class.is-selected]="goal() === choice.value"
+        (click)="chooseGoal(choice.value)"
+      >
+        <span class="ob-choice-label">{{ choice.label }}</span>
+        <span class="ob-choice-hint">{{ choice.hint }}</span>
+      </button>
+    </div>
+
+    <!-- ============ 2. NIVEAU ============ -->
+    <div class="ob-choices" *ngIf="step() === 1">
+      <button
+        *ngFor="let choice of levels"
+        type="button"
+        class="ob-choice"
+        [class.is-selected]="level() === choice.value"
+        (click)="chooseLevel(choice.value)"
+      >
+        <span class="ob-choice-label">{{ choice.label }}</span>
+        <span class="ob-choice-hint">{{ choice.hint }}</span>
+      </button>
+    </div>
+
+    <!-- ============ 3. FREQUENCE ============ -->
+    <div class="ob-choices" *ngIf="step() === 2">
+      <button
+        *ngFor="let choice of frequencies"
+        type="button"
+        class="ob-choice"
+        [class.is-selected]="frequency() === choice.value"
+        (click)="chooseFrequency(choice.value)"
+      >
+        <span class="ob-choice-label">{{ choice.label }}</span>
+        <span class="ob-choice-hint">{{ choice.hint }}</span>
+      </button>
+    </div>
+
+    <!-- ============ 4. MATERIEL ============ -->
+    <div class="ob-choices" *ngIf="step() === 3">
+      <button
+        *ngFor="let choice of equipments"
+        type="button"
+        class="ob-choice"
+        [class.is-selected]="equipment() === choice.value"
+        (click)="chooseEquipment(choice.value)"
+      >
+        <span class="ob-choice-label">{{ choice.label }}</span>
+        <span class="ob-choice-hint">{{ choice.hint }}</span>
+      </button>
+    </div>
+
+    <!-- ============ 5. MESURES (facultatif) ============ -->
+    <div class="ob-form" *ngIf="step() === 4">
+      <p class="ob-lead">
+        Facultatif. Ces mesures servent uniquement à situer ta progression —
+        tu peux les renseigner plus tard depuis ton profil.
+      </p>
+
+      <div class="ob-fields">
+        <div class="ob-field">
+          <label for="ob-age">Âge</label>
+          <div class="ob-input-row">
+            <input id="ob-age" type="number" inputmode="numeric" min="14" max="100"
+                   [value]="age() ?? ''" (input)="onAge($event)" />
+            <span class="ob-unit">ans</span>
+          </div>
+        </div>
+
+        <div class="ob-field">
+          <label for="ob-height">Taille</label>
+          <div class="ob-input-row">
+            <input id="ob-height" type="number" inputmode="numeric" min="120" max="230"
+                   [value]="height() ?? ''" (input)="onHeight($event)" />
+            <span class="ob-unit">cm</span>
+          </div>
+        </div>
+
+        <div class="ob-field">
+          <label for="ob-weight">Poids</label>
+          <div class="ob-input-row">
+            <input id="ob-weight" type="number" inputmode="decimal" min="30" max="300" step="0.5"
+                   [value]="weight() ?? ''" (input)="onWeight($event)" />
+            <span class="ob-unit">kg</span>
+          </div>
+        </div>
+      </div>
+
+      <fieldset class="ob-gender">
+        <legend>Sexe</legend>
+        <button
+          *ngFor="let choice of genders"
+          type="button"
+          class="ob-pill"
+          [class.is-selected]="gender() === choice.value"
+          (click)="chooseGender(choice.value)"
+        >{{ choice.label }}</button>
+      </fieldset>
+
+      <div class="ob-actions">
+        <button type="button" class="ob-primary" [disabled]="saving()" (click)="finish()">
+          {{ saving() ? 'Préparation…' : 'Terminer' }}
+        </button>
+        <button type="button" class="ob-ghost" [disabled]="saving()" (click)="skipMeasurements()">
+          Passer cette étape
+        </button>
+      </div>
+    </div>
+
+    <!-- ============ RESULTAT ============ -->
+    <div class="ob-result" *ngIf="step() === totalSteps">
+      <div class="ob-check" aria-hidden="true">✓</div>
+      <h1 class="ob-title">Ton profil est prêt</h1>
+
+      <ng-container *ngIf="suggestion() as program; else noProgram">
+        <p class="ob-lead">Voici le programme qui correspond le mieux à tes réponses.</p>
+
+        <div class="ob-program">
+          <h2>{{ program.name }}</h2>
+          <p *ngIf="program.description">{{ program.description }}</p>
+          <div class="ob-program-meta">
+            <span *ngIf="program.difficultyLabel">{{ program.difficultyLabel }}</span>
+            <span *ngIf="program.exerciseCount">{{ program.exerciseCount }} exercices</span>
+            <span *ngIf="program.estimatedDuration">{{ program.estimatedDuration }} min</span>
+          </div>
+        </div>
+
+        <button type="button" class="ob-primary" (click)="startSuggested()">
+          Voir ce programme
+        </button>
+        <button type="button" class="ob-ghost" (click)="goToDashboard()">
+          Explorer l'app d'abord
+        </button>
+      </ng-container>
+
+      <!-- Honnetete : si aucun programme n'a pu etre charge, on le dit plutot
+           que d'inventer une recommandation. -->
+      <ng-template #noProgram>
+        <p class="ob-lead">
+          Aucun programme n'a pu être chargé pour l'instant — le serveur est
+          peut-être encore en train de démarrer. Tes réponses sont enregistrées.
+        </p>
+        <button type="button" class="ob-primary" (click)="goToDashboard()">
+          Continuer
+        </button>
+      </ng-template>
+    </div>
+  </main>
+</div>

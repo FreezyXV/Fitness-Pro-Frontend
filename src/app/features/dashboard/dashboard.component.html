@@ -160,30 +160,22 @@
               </svg>
             </div>
             <div class="stat-content">
-              <span class="stat-label">IMC</span>
-              <span class="stat-value">{{ calculateBMI() }}</span>
+              <span class="stat-label">Poids idéal</span>
+              <span class="stat-value">{{ idealWeightRange() }}<small>kg</small></span>
             </div>
           </div>
         </div>
-  
-        <!-- BMI Section -->
-        <div class="bmi-section" *ngIf="user?.height && user?.weight">
-          <div class="bmi-card">
-            <div class="bmi-header">
-              <span class="bmi-title">Indice de Masse Corporelle</span>
-              <span class="bmi-value">{{ calculateBMI() }}</span>
-            </div>
-            <div class="bmi-bar">
-              <div class="bmi-indicator" [style.left.%]="getBMIPosition()"></div>
-            </div>
-            <div class="bmi-labels">
-              <span>Sous-poids</span>
-              <span>Normal</span>
-              <span>Surpoids</span>
-            </div>
-            <p class="bmi-status">{{ getBMIStatus() }}</p>
-          </div>
-        </div>
+
+        <!-- La jauge IMC « Sous-poids / Normal / Surpoids » a ete retiree de
+             l'ecran d'accueil. Trois raisons :
+             1. L'IMC ne distingue pas masse grasse et masse musculaire : chez
+                un pratiquant de musculation il classe regulierement en
+                « surpoids » quelqu'un de parfaitement sain.
+             2. Un verdict corporel quotidien, non sollicite, des l'ouverture
+                de l'app est un mauvais choix sur un public bien-etre.
+             3. Ce n'est pas actionnable : l'accueil doit repondre a « que
+                fais-je aujourd'hui », pas emettre un jugement.
+             L'indicateur reste consultable, cadre, depuis le profil. -->
       </div>
   
       <!-- Today's Workout Card -->

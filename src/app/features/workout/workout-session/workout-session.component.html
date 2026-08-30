@@ -84,7 +84,17 @@
           </div>
           <button class="step-btn small" (click)="adjustWeight(2.5)" aria-label="Ajouter 2,5 kg">+</button>
         </div>
-        <p class="weight-hint" *ngIf="weightFromHistory()">Charge de votre dernière séance</p>
+        <!-- Proposition de progression. Elle explique TOUJOURS pourquoi :
+             une suggestion sans justification n'est pas suivie. -->
+        <div class="suggestion" *ngIf="suggestion() as s" [class]="'is-' + s.action">
+          <span class="suggestion-tag" *ngIf="s.action === 'increase'">+{{ s.delta }} kg</span>
+          <span class="suggestion-tag" *ngIf="s.action === 'deload'">{{ s.delta }} kg</span>
+          <span class="suggestion-text">{{ s.reason }}</span>
+        </div>
+
+        <p class="weight-hint" *ngIf="!suggestion() && weightFromHistory()">
+          Charge de votre dernière séance
+        </p>
       </ng-container>
     </main>
 
@@ -139,7 +149,7 @@
           <span class="summary-label">séries</span>
         </div>
         <div *ngIf="totalVolume() > 0">
-          <span class="summary-value">{{ totalVolume() | number:'1.0-0' }}</span>
+          <span class="summary-value">{{ formatVolume(totalVolume()) }}</span>
           <span class="summary-label">kg soulevés</span>
         </div>
       </div>

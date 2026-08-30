@@ -1,0 +1,218 @@
+@use 'variables' as *;
+@use 'design-system' as *;
+
+// La barre n'existe que sous le point de rupture md : au-dessus, la sidebar
+// reprend la main. Un seul systeme de navigation visible a la fois.
+:host {
+  display: none;
+
+  @include respond-below(md) {
+    display: block;
+  }
+}
+
+// =============================================
+// BARRE D'ONGLETS
+// =============================================
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: $z-sidebar;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: stretch;
+
+  // env(safe-area-inset-bottom) : sans ca la barre passe sous la barre
+  // gestuelle des iPhone recents et les onglets deviennent intouchables.
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+
+  background: rgba($surface-secondary, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: $border-width solid $border-color;
+}
+
+.tab {
+  // Reset du <button> pour qu'il soit indistinguable des <a> voisins.
+  appearance: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: $text-secondary;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+
+  // 56px : au-dessus du minimum de 48px recommande pour une cible tactile,
+  // marge utile quand on manipule le telephone les mains moites.
+  min-height: 56px;
+  padding: 0.5rem 0.25rem;
+
+  text-decoration: none;
+  transition: color 0.18s ease;
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: -3px;
+    border-radius: 0.75rem;
+  }
+
+  &.is-active {
+    color: $primary-color;
+
+    .tab-icon {
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.tab-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.tab-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+
+  // Sur les tres petits ecrans "Progression" deborde : on laisse le libelle
+  // se tronquer plutot que de casser la grille.
+  max-width: 100%;
+  @include text-ellipsis(1);
+}
+
+// =============================================
+// FEUILLE "PLUS"
+// =============================================
+
+.sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: $z-sidebar;
+  background: rgba(0, 0, 0, 0.55);
+  animation: scrim-in 0.18s ease;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  // Se pose juste au-dessus de la barre d'onglets, qui reste visible.
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  z-index: $z-sidebar;
+
+  padding: 0.75rem 1rem 1.25rem;
+  background: $surface-secondary;
+  border-top: $border-width solid $border-color;
+  border-radius: 1.5rem 1.5rem 0 0;
+
+  animation: sheet-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sheet-grip {
+  width: 36px;
+  height: 4px;
+  margin: 0 auto 0.75rem;
+  border-radius: 2px;
+  background: $border-color;
+}
+
+.sheet-list {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.sheet-link {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+
+  min-height: 52px;
+  padding: 0 0.75rem;
+  border-radius: 1rem;
+
+  color: $text-primary;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition: background 0.18s ease, color 0.18s ease;
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: -2px;
+  }
+
+  &.is-active {
+    color: $primary-color;
+    background: rgba($primary-color, 0.1);
+  }
+}
+
+.sheet-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.sheet-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  width: 100%;
+  min-height: 48px;
+  margin-top: 0.75rem;
+  padding: 0 1rem;
+
+  appearance: none;
+  border: $border-width solid $border-color;
+  border-radius: 1rem;
+  background: none;
+
+  color: $danger-color;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $danger-color;
+    outline-offset: 2px;
+  }
+}
+
+@keyframes scrim-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(12%); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  .sheet-scrim {
+    animation: none;
+  }
+}

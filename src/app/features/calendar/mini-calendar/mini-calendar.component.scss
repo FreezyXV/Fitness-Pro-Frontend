@@ -59,7 +59,7 @@
 
     .year {
       font-size: 0.9rem;
-      color: $gray-600;
+      color: $text-primary;
       font-weight: 500;
     }
   }
@@ -75,7 +75,7 @@
     text-align: center;
     font-size: 0.75rem;
     font-weight: 600;
-    color: $gray-600;
+    color: $text-primary;
     padding: 0.5rem 0;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -101,21 +101,26 @@
     }
 
     &.other-month {
-      opacity: 0.3;
-      
+      // Etait 0.3 + $gray-400 : rapport de contraste 1,45, donc illisible.
+      // Un jour hors-mois doit etre attenue, pas efface.
+      opacity: 0.8;
+
       .day-number {
-        color: $gray-400;
+        color: $text-muted;
       }
     }
 
     &.today {
+      // Le fond n'est qu'une TEINTE a 20 % : composee sur le noir de la page
+      // elle reste sombre, donc du texte quasi noir y est invisible (1,8:1).
+      // On marque le jour par la couleur du texte plutot que par un aplat.
       background: rgba($primary-color, 0.2);
-      color: $text-inverse;
+      color: $primary-color;
       font-weight: 700;
-      border-color: $border-width solid $border-color;
+      border: $border-width solid $primary-color;
 
       .day-number {
-        color: $text-inverse;
+        color: $primary-color;
       }
 
       .activity-indicators .indicator {
@@ -125,7 +130,7 @@
 
     &.selected {
       background: rgba($primary-color, 0.2);
-      border-color: $border-width solid $border-color;
+      border: $border-width solid $border-color;
       transform: scale(1.05);
     }
 
@@ -203,7 +208,7 @@
     &.today-btn {
       background: rgba($primary-color, 0.70);
       color: $text-inverse;
-      border-color: $border-width solid $border-color;
+      border: $border-width solid $border-color;
 
       &:hover {
         background: rgba($primary-color, 0.25);
@@ -214,7 +219,7 @@
     &.schedule-btn {
       background: rgba($success-color, 0.60);
       color: $text-inverse;
-      border-color: $border-width solid $border-color;
+      border: $border-width solid $border-color;
 
       &:hover {
           background: rgba($success-color, 0.25);
@@ -317,7 +322,7 @@
 
         .activity-description {
           font-size: 0.8rem;
-          color: $gray-600;
+          color: $text-primary;
           line-height: 1.4;
         }
       }

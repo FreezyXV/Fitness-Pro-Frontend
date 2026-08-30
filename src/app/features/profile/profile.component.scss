@@ -195,7 +195,7 @@
       height: 100px;
       background: radial-gradient(
         circle,
-        rgba(33, 191, 115, 0.25),
+        rgba($primary-color, 0.25),
         transparent 70%
       );
       border-radius: 50%;
@@ -248,7 +248,7 @@
 
       .breadcrumb-separator {
         margin: 0 $spacing-md;
-        color: $text-light;
+        color: $on-primary;
         font-weight: $font-normal;
       }
     }
@@ -334,7 +334,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
+          color: $on-primary;
           font-size: $text-sm;
           box-shadow: $shadow-md;
           border: $border-width solid $border-color;
@@ -360,7 +360,7 @@
             border-radius: $radius-full;
             border: none;
             background: transparent;
-            color: white;
+            color: $on-primary;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -457,7 +457,7 @@
           }
 
           &.clickable {
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
             transform: translateY(-6px) scale(1.01);
           }
         }
@@ -486,7 +486,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
+          color: $on-primary;
           font-size: $text-lg;
           box-shadow: $shadow-lg;
           flex-shrink: 0;
@@ -528,7 +528,10 @@
               border-radius: $radius-sm;
               font-size: $text-xs;
               font-weight: $font-bold;
-              color: white;
+              // Sans fond declare la pastille heritait d'une surface claire et
+              // tombait a 4,46:1, juste sous le seuil AA de 4,5:1.
+              background: rgba($surface-tertiary, 0.9);
+              color: $text-primary;
             }
           }
 
@@ -578,7 +581,7 @@
 
       &.primary {
         background: $success-gradient;
-        color: white;
+        color: $on-primary;
         box-shadow: 0 10px 25px rgba($primary-color, 0.4);
 
         &:hover:not(:disabled) {
@@ -593,7 +596,7 @@
 
         &:hover:not(:disabled) {
           background: rgba($primary-color, 0.12);
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
           color: $primary-darker;
         }
       }
@@ -997,7 +1000,7 @@
               }
 
               &::placeholder {
-                color: $text-light;
+                color: $on-primary;
                 font-weight: $font-normal;
               }
 
@@ -1230,7 +1233,7 @@
         background: rgba($surface-secondary, 0.98);
         transform: translateY(-4px);
         box-shadow: $shadow-xl;
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
       }
     }
 
@@ -1463,7 +1466,7 @@
 
   &.btn-primary {
     background: $success-gradient;
-    color: white;
+    color: $on-primary;
     box-shadow: 0 10px 25px rgba($primary-color, 0.4);
 
     &:hover:not(:disabled) {
@@ -1478,7 +1481,7 @@
 
     &:hover:not(:disabled) {
       background: rgba($primary-color, 0.12);
-      border-color: $border-width solid $border-color;
+      border: $border-width solid $border-color;
       color: $primary-darker;
     }
   }
@@ -1598,11 +1601,11 @@
 
     &.primary {
       background: $primary-dark;
-      color: white;
+      color: $on-primary;
 
       &:hover {
         transform: scale(1.1) translateY(-3px);
-        box-shadow: 0 15px 40px rgba(33, 191, 115, 0.5);
+        box-shadow: 0 15px 40px rgba($primary-color, 0.5);
 
         &::before {
           left: 100%;
@@ -1615,7 +1618,7 @@
 // =============================================
 // RESPONSIVE DESIGN - Enhanced Breakpoints
 // =============================================
-@media (max-width: 1200px) {
+@include respond-below(xl) {
   .profile-container {
     padding: $spacing-2xl $spacing-lg;
   }
@@ -1836,4 +1839,170 @@
 .profile-container .action-button.secondary {
   background: rgba($primary-color, 0.15);
   color: $text-primary;
+}
+
+// =============================================
+// RAPPELS DE SEANCE
+// =============================================
+
+.reminders-card {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border: $border-width solid $border-color;
+  border-radius: 1.5rem;
+  background: $surface-secondary;
+}
+
+.reminders-head h2 {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.reminders-sub {
+  margin: 0.25rem 0 1rem;
+  color: $text-secondary;
+  font-size: 0.8125rem;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  // 48px : la ligne entiere est cliquable, pas seulement la case.
+  min-height: 48px;
+  cursor: pointer;
+
+  input {
+    width: 20px;
+    height: 20px;
+    accent-color: $primary-color;
+    cursor: pointer;
+  }
+}
+
+.toggle-text {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.reminders-config {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.days {
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  legend {
+    padding: 0 0 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $text-secondary;
+  }
+}
+
+.day-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: 0.25rem;
+
+  border: $border-width solid $border-color;
+  border-radius: 0.75rem;
+  cursor: pointer;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $text-secondary;
+
+  // La case reste dans le DOM pour l'accessibilite, mais l'etiquette entiere
+  // sert de cible tactile.
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  &:has(input:checked) {
+    background: $primary-color;
+    border-color: $primary-color;
+    color: $on-primary;
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+.time-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+
+  label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $text-secondary;
+  }
+
+  input {
+    min-height: 44px;
+    padding: 0 0.75rem;
+    border: $border-width solid $border-color;
+    border-radius: 0.75rem;
+    background: $bg-primary;
+    color: $text-primary;
+    font: inherit;
+    font-size: 1rem;
+
+    &:focus-visible {
+      outline: 2px solid $primary-color;
+      outline-offset: 1px;
+    }
+  }
+}
+
+.reminders-note {
+  margin: 0.75rem 0 0;
+  color: $text-secondary;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+
+  &.is-warning {
+    color: $warning-color;
+  }
+}
+
+// Cadrage de l'IMC : le texte doit etre lu, pas survole.
+.bmi-caveat {
+  margin: 0.75rem 0 0;
+  padding-top: 0.75rem;
+  border-top: $border-width solid $border-color;
+  color: $text-secondary;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  max-width: 60ch;
+}
+
+// La pastille recoit sa couleur en style inline : on lui garantit un fond
+// sombre pour que la teinte reste lisible quelle que soit la valeur d'IMC.
+.bmi-stat .status-badge {
+  background: rgba(0, 0, 0, 0.35);
 }

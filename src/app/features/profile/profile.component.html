@@ -109,7 +109,7 @@
                 <div class="stat-value" [style.color]="getBMIColor()">{{ calculateBMI() }}</div>
                 <div class="stat-label">IMC</div>
                 <div class="stat-status">
-                  <span class="status-badge" [style.background-color]="getBMIColor()">{{ getBMIStatus() }}</span>
+                  <span class="status-badge" [style.color]="getBMIColor()">{{ getBMIStatus() }}</span>
                 </div>
               </div>
             </div>
@@ -612,6 +612,17 @@
       </div>
       <p class="bmi-status">{{ getBMIStatus() }}</p>
       <p class="bmi-recommendation">{{ getBMIRecommendation() }}</p>
+
+      <!-- Cadrage explicite. L'IMC ne mesure qu'un rapport poids/taille : il
+           ne distingue ni la masse musculaire, ni la repartition des graisses,
+           ni l'ossature. Sur un public qui souleve de la fonte, il classe
+           regulierement en surpoids des personnes en pleine sante. L'afficher
+           sans le dire serait trompeur. -->
+      <p class="bmi-caveat">
+        L'IMC ne distingue pas le muscle de la graisse. Si tu pratiques la
+        musculation, il te classera souvent trop haut : c'est un repère de
+        population, pas un diagnostic individuel.
+      </p>
     </div>
   </div>
   
@@ -845,6 +856,76 @@
       </section>
     </div>
   
+    <!-- ============ RAPPELS DE SEANCE ============ -->
+    <section class="reminders-card" aria-labelledby="reminders-title">
+      <div class="reminders-head">
+        <h2 id="reminders-title">Rappels de séance</h2>
+        <p class="reminders-sub">
+          Une notification les jours où tu prévois de t'entraîner.
+        </p>
+      </div>
+
+      <!-- Navigateur sans notifications -->
+      <p class="reminders-note" *ngIf="!reminders.supported">
+        Ce navigateur ne gère pas les notifications.
+      </p>
+
+      <ng-container *ngIf="reminders.supported">
+        <label class="toggle-row">
+          <input
+            type="checkbox"
+            [checked]="reminderSettings.enabled"
+            (change)="toggleReminders($event)"
+          />
+          <span class="toggle-text">Activer les rappels</span>
+        </label>
+
+        <div class="reminders-config" *ngIf="reminderSettings.enabled">
+          <fieldset class="days">
+            <legend>Jours</legend>
+            <label *ngFor="let day of weekDays" class="day-chip">
+              <input
+                type="checkbox"
+                [checked]="reminderSettings.days.includes(day.iso)"
+                (change)="toggleReminderDay(day.iso)"
+              />
+              <span>{{ day.short }}</span>
+            </label>
+          </fieldset>
+
+          <div class="time-field">
+            <label for="reminder-time">Heure</label>
+            <input
+              id="reminder-time"
+              type="time"
+              [value]="reminderSettings.time"
+              (change)="setReminderTime($event)"
+            />
+          </div>
+        </div>
+
+        <!-- Attente honnete : sur iOS et sur navigateur non installe, le
+             rappel n'arrive qu'a l'ouverture de l'app. On le dit plutot que
+             de laisser croire a une notification systeme fiable. -->
+        <p class="reminders-note" *ngIf="reminderSettings.enabled">
+          <ng-container *ngIf="reminders.backgroundCapable">
+            Installe l'app sur ton écran d'accueil pour recevoir les rappels
+            même quand elle est fermée.
+          </ng-container>
+          <ng-container *ngIf="!reminders.backgroundCapable">
+            Sur ce navigateur, le rappel s'affiche à la prochaine ouverture de
+            l'app après l'heure choisie — les navigateurs web ne permettent pas
+            de notification programmée fiable.
+          </ng-container>
+        </p>
+
+        <p class="reminders-note is-warning" *ngIf="reminders.permission() === 'denied'">
+          Les notifications sont bloquées pour ce site. Autorise-les dans les
+          réglages du navigateur.
+        </p>
+      </ng-container>
+    </section>
+
     <!-- Success Message -->
     <div *ngIf="showSuccessMessage" class="success-message">
       <div class="success-content">

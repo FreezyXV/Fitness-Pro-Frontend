@@ -110,6 +110,7 @@
             (blur)="showSearchSuggestions = false"
             placeholder="Rechercher un exercice, un muscle, un équipement..."
             class="search-input"
+            aria-label="Rechercher un exercice, un muscle, un équipement"
           />
           <button 
             *ngIf="searchTerm" 
@@ -149,7 +150,8 @@
             </svg>
             <span>Partie du corps</span>
           </label>
-          <select [(ngModel)]="filters.bodyPart" (change)="onFilterChange()" class="filter-select">
+          <select [(ngModel)]="filters.bodyPart" (change)="onFilterChange()" class="filter-select"
+            aria-label="Filtre : Toutes les parties">
             <option value="">Toutes les parties</option>
             <option *ngFor="let bodyPart of bodyParts" [value]="bodyPart.value">
               {{ bodyPart.icon }} {{ bodyPart.label }}
@@ -165,7 +167,8 @@
             </svg>
             <span>Difficulté</span>
           </label>
-          <select [(ngModel)]="filters.difficulty" (change)="onFilterChange()" class="filter-select">
+          <select [(ngModel)]="filters.difficulty" (change)="onFilterChange()" class="filter-select"
+            aria-label="Filtre : Tous les niveaux">
             <option value="">Tous les niveaux</option>
             <option *ngFor="let difficulty of difficulties" [value]="difficulty.value">
               {{ difficulty.icon }} {{ difficulty.label }}
@@ -182,7 +185,8 @@
             </svg>
             <span>Catégorie</span>
           </label>
-          <select [(ngModel)]="filters.category" (change)="onFilterChange()" class="filter-select">
+          <select [(ngModel)]="filters.category" (change)="onFilterChange()" class="filter-select"
+            aria-label="Filtre : Toutes les catégories">
             <option value="">Toutes les catégories</option>
             <option *ngFor="let category of categories" [value]="category.value">
               {{ category.icon }} {{ category.label }}
@@ -199,7 +203,8 @@
             </svg>
             <span>Durée</span>
           </label>
-          <select [(ngModel)]="filters.duration" (change)="onFilterChange()" class="filter-select">
+          <select [(ngModel)]="filters.duration" (change)="onFilterChange()" class="filter-select"
+            aria-label="Filtre : Toute durée">
             <option value="">Toute durée</option>
             <option *ngFor="let duration of durations; trackBy: trackByValue" [value]="duration.value">
               {{ duration.label }}
@@ -256,7 +261,8 @@
         <!-- Sort and View Controls -->
         <div class="view-controls">
           <div class="sort-controls">
-            <select [(ngModel)]="filters.sortBy" (change)="onFilterChange()" class="sort-select">
+            <select [(ngModel)]="filters.sortBy" (change)="onFilterChange()" class="sort-select"
+            aria-label="Filtre : 📝 Nom">
               <option value="name">📝 Nom</option>
               <option value="difficulty">⚡ Difficulté</option>
               <option value="duration">⏱️ Durée</option>

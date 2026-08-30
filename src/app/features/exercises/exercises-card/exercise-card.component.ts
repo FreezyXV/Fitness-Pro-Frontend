@@ -1,6 +1,7 @@
 // src/app/exercises-filtres/exercises-detail/exercise-card.component.ts - Enhanced Dashboard Style
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, ElementRef, ViewChild, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { posterUrl, videoUrl } from '@app/utils/exercise-media';
 import { RouterModule, Router } from '@angular/router';
 import { Subject, takeUntil, timer, of } from 'rxjs';
 import { catchError, retry, delay } from 'rxjs/operators';
@@ -701,7 +702,16 @@ export class ExerciseCardComponent implements OnInit, OnDestroy {
 
   // Enhanced getters with performance optimization
   get currentVideoSrc(): string {
-    return this.currentVideoUrl || this.exercise.videoUrl || '';
+    return this.currentVideoUrl || videoUrl(this.exercise.videoUrl, 'card');
+  }
+
+  /**
+   * Image de premiere frame. Sans elle la carte affiche un rectangle noir
+   * jusqu'a ce que la video se charge : avec preload="metadata" et une grille
+   * de vignettes, cela faisait une page de trous noirs au chargement.
+   */
+  get videoPoster(): string {
+    return posterUrl(this.exercise.videoUrl, 'card');
   }
 
   get hasVideo(): boolean {

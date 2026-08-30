@@ -1,0 +1,110 @@
+<div class="scanner-backdrop" (click)="close()" aria-hidden="true"></div>
+
+<div class="scanner" role="dialog" aria-modal="true" aria-labelledby="scanner-title">
+  <header class="scanner-head">
+    <h2 id="scanner-title">Scanner un produit</h2>
+    <button type="button" class="icon-btn" (click)="close()" aria-label="Fermer le scanner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </header>
+
+  <!-- ============ ACCUEIL ============ -->
+  <div class="scanner-body" *ngIf="state() === 'idle'">
+    <p class="scanner-lead">
+      Vise le code-barres du produit. Les informations nutritionnelles
+      proviennent d'OpenFoodFacts.
+    </p>
+
+    <button
+      type="button"
+      class="btn-primary"
+      *ngIf="supportsCamera"
+      (click)="startCamera()"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9a2 2 0 0 1 2-2h1.5l1.2-2h6.6l1.2 2H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <circle cx="12" cy="13" r="3.5" />
+      </svg>
+      Ouvrir la caméra
+    </button>
+
+    <!-- Chemin de secours, toujours visible : c'est le seul disponible sur
+         iOS Safari, et il depanne quand le code-barres est abime. -->
+    <form class="manual" (ngSubmit)="submitManualCode()">
+      <label class="manual-label" for="barcode-input">
+        {{ supportsCamera ? 'Ou saisir le code' : 'Saisir le code-barres' }}
+      </label>
+      <div class="manual-row">
+        <input
+          id="barcode-input"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          maxlength="13"
+          placeholder="3017620422003"
+          [ngModel]="manualCode()"
+          (ngModelChange)="manualCode.set($event)"
+          name="barcode"
+        />
+        <button type="submit" class="btn-secondary" [disabled]="manualCode().length < 8">
+          Chercher
+        </button>
+      </div>
+      <p class="manual-hint" *ngIf="!supportsCamera">
+        Le scan par caméra n'est pas disponible sur ce navigateur.
+      </p>
+    </form>
+  </div>
+
+  <!-- ============ AUTORISATION ============ -->
+  <div class="scanner-body scanner-centered" *ngIf="state() === 'requesting'">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Autorise l'accès à la caméra…</p>
+  </div>
+
+  <!-- ============ SCAN ============ -->
+  <div class="scanner-body" *ngIf="state() === 'scanning'">
+    <div class="viewfinder">
+      <video #video playsinline muted aria-label="Flux de la caméra"></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+    <p class="scanner-hint">Centre le code-barres dans le cadre.</p>
+    <button type="button" class="btn-ghost" (click)="retry()">Saisir le code à la main</button>
+  </div>
+
+  <!-- ============ RECHERCHE ============ -->
+  <div class="scanner-body scanner-centered" *ngIf="state() === 'looking-up'">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Recherche du produit…</p>
+  </div>
+
+  <!-- ============ INTROUVABLE ============ -->
+  <div class="scanner-body scanner-centered" *ngIf="state() === 'not-found'">
+    <div class="state-icon" aria-hidden="true">🔍</div>
+    <h3>Produit inconnu</h3>
+    <p>
+      Le code {{ lastCode() }} n'est pas référencé dans OpenFoodFacts. Tu peux
+      chercher le produit par son nom, ou l'ajouter à la base collaborative.
+    </p>
+    <button type="button" class="btn-secondary" (click)="retry()">Réessayer</button>
+  </div>
+
+  <!-- ============ REFUS / INDISPONIBLE ============ -->
+  <div class="scanner-body scanner-centered" *ngIf="state() === 'denied' || state() === 'unsupported'">
+    <div class="state-icon" aria-hidden="true">📷</div>
+    <h3>Caméra indisponible</h3>
+    <p *ngIf="state() === 'denied'">
+      L'accès à la caméra a été refusé. Tu peux l'autoriser dans les réglages du
+      navigateur, ou saisir le code à la main.
+    </p>
+    <p *ngIf="state() === 'unsupported'">
+      Ce navigateur ne sait pas décoder les codes-barres. Saisis le code
+      à 13 chiffres imprimé sous le code-barres.
+    </p>
+    <button type="button" class="btn-secondary" (click)="retry()">Saisir le code</button>
+  </div>
+</div>

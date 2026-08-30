@@ -1,6 +1,7 @@
 // src/app/exercises-filtres/exercises-detail/exercises-detail.component.ts - FIXED VIDEO LOADING
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { posterUrl, videoUrl } from '@app/utils/exercise-media';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Subject, takeUntil, timer, interval, fromEvent, of, BehaviorSubject } from 'rxjs';
@@ -294,7 +295,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
       bodyPart: 'cardio',
       difficulty: 'intermediate',
       duration: 1,
-      videoUrl: '/assets/ExercicesVideos/90-90-HIP-CROSSOVER.mp4',
+      videoUrl: '90-90-HIP-CROSSOVER',
       instructions: [
         'Assis, jambes fléchies à 90°',
         'Basculez les jambes d\'un côté à l\'autre',
@@ -334,61 +335,27 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
     this.updateVideoState({ isLoading: false, hasError: false });
   }
 
+  /**
+   * Pointait vers un bucket S3 inexistant (`NoSuchBucket`), ce qui cassait la
+   * lecture de TOUTES les demonstrations. La resolution est desormais
+   * centralisee dans exercise-media, avec transcodage a la volee.
+   */
   private normalizeVideoUrl(url: string): string {
-    if (!url) return '';
-
-    if (url.includes('imgur.com')) {
-      const parts = url.split('/');
-      const imgurId = parts.pop() || '';
-      const directUrl = `https://i.imgur.com/${imgurId}.mp4`;
-      console.log(`Normalized Imgur URL: ${directUrl}`);
-      return directUrl;
-    }
-  
-    // If it's already a full URL, return as is
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-  
-    const baseUrl = 'https://fitness-pro-videos.s3.eu-west-3.amazonaws.com/';
-    const filename = url.split('/').pop() || url;
-  
-    // Construct the full URL
-    const fullUrl = `${baseUrl}${filename}`;
-  
-    console.log(`Normalized URL: ${fullUrl}`);
-    return fullUrl;
+    return videoUrl(url, 'detail');
   }
 
+  /** Image de premiere frame, affichee avant le chargement de la video. */
+  get videoPoster(): string {
+    return posterUrl(this.exercise?.videoUrl, 'detail');
+  }
+
+  /**
+   * Il n'existe plus qu'une URL par exercice. Cette methode enumerait des
+   * variantes de nom de fichier (casse, tirets, underscores) pour deviner le
+   * bon chemin local : un contournement qui n'a plus d'objet.
+   */
   private generateAlternativeUrls(originalUrl: string): string[] {
-    if (!originalUrl) return [];
-    
-    const alternatives = [originalUrl];
-    
-    // If it's a local file, generate variations
-    if (originalUrl.includes('/assets/ExercicesVideos/')) {
-      const filename = originalUrl.split('/').pop() || '';
-      const basePath = '/assets/ExercicesVideos/';
-      
-      // Generate different filename variations
-      const variations = [
-        filename,
-        filename.toLowerCase(),
-        filename.replace(/\s+/g, '-'),
-        filename.replace(/\s+/g, '_'),
-        filename.replace(/[^a-zA-Z0-9.-]/g, '_'),
-        filename.replace(/[^a-zA-Z0-9.-]/g, '-')
-      ];
-      
-      variations.forEach(variation => {
-        const url = basePath + variation;
-        if (!alternatives.includes(url)) {
-          alternatives.push(url);
-        }
-      });
-    }
-    
-    return alternatives;
+    return originalUrl ? [originalUrl] : [];
   }
 
   // ===== STATE MANAGEMENT HELPERS =====

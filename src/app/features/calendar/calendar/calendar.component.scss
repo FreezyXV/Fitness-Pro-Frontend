@@ -208,7 +208,7 @@ padding: 0.25rem;
     font-weight: 600;
 
     .breadcrumb-item {
-      color: $gray-600;
+      color: $text-primary;
       text-decoration: none;
       display: flex;
       align-items: center;
@@ -230,7 +230,7 @@ padding: 0.25rem;
 
     .breadcrumb-separator {
       margin: 0 $space-3;
-      color: $gray-400;
+      color: $text-muted;
     }
   }
 
@@ -252,7 +252,7 @@ padding: 0.25rem;
       }
 
       .page-subtitle {
-        color: $gray-600;
+        color: $text-primary;
         font-size: 1.25rem;
         font-weight: 500;
         margin: 0;
@@ -347,7 +347,7 @@ padding: 0.25rem;
 
       &:hover {
         background: $primary-dark;
-        color: white;
+        color: $on-primary;
         transform: scale(1.05);
         box-shadow: $shadow-lg;
       }
@@ -429,7 +429,7 @@ padding: 0.25rem;
         border: none;
         border-radius: $radius-lg;
         background: transparent;
-        color: $gray-600;
+        color: $text-primary;
         font-weight: 600;
         font-size: 0.875rem;
         cursor: pointer;
@@ -442,7 +442,7 @@ padding: 0.25rem;
 
         &.active {
           background: $primary-dark;
-          color: white;
+          color: $on-primary;
           box-shadow: $shadow-sm;
         }
       }
@@ -502,7 +502,7 @@ padding: 0.25rem;
     }
 
     p {
-      color: $gray-600;
+      color: $text-primary;
       font-size: 1.125rem;
       font-weight: 500;
       margin: 0;
@@ -541,7 +541,8 @@ padding: 0.25rem;
           }
 
           .day-name {
-            color: white;
+            // Pose sur $dark-gradient, pas sur un aplat de marque.
+            color: $text-primary;
             font-weight: 700;
             font-size: 0.875rem;
             text-transform: uppercase;
@@ -579,10 +580,12 @@ padding: 0.25rem;
 
           &.other-month {
             background: $surface-secondary;
-            opacity: 0.6;
+            // Meme correction que dans le mini-calendrier : attenuer sans
+            // descendre sous le seuil de lisibilite.
+            opacity: 0.85;
 
             .day-number {
-              color: $gray-400;
+              color: $text-muted;
             }
           }
 
@@ -596,7 +599,7 @@ padding: 0.25rem;
 
             .day-number {
               background: $primary-dark;
-              color: white;
+              color: $on-primary;
               border-radius: 50%;
               width: 32px;
               height: 32px;
@@ -697,7 +700,7 @@ padding: 0.25rem;
                   position: absolute;
                   top: -2px;
                   left: -1px;
-                  color: white;
+                  color: $on-primary;
                   font-size: 6px;
                   font-weight: 700;
                 }
@@ -706,7 +709,7 @@ padding: 0.25rem;
 
             .more-events {
               font-size: 0.75rem;
-              color: $gray-500;
+              color: $text-muted;
               font-weight: 600;
               background: $surface-tertiary;
               padding: $space-1 $space-2;
@@ -726,7 +729,7 @@ padding: 0.25rem;
         grid-template-columns: repeat(7, 1fr);
         background: $dark-gradient;
         padding: $space-4 $space-6;
-        color: white;
+        color: $on-primary;
         border-bottom: $border-width solid $border-color;
 
         .week-day {
@@ -763,13 +766,13 @@ padding: 0.25rem;
 
               &.today {
                 background: $primary-dark;
-                color: white;
+                color: $on-primary;
                 box-shadow: $shadow-md;
               }
 
               &.selected {
                 background: $accent-gradient;
-                color: white;
+                color: $on-primary;
                 box-shadow: $shadow-md;
                 transform: scale(1.1);
               }
@@ -814,7 +817,7 @@ padding: 0.25rem;
                 opacity: 0.7;
                 .event-title {
                   text-decoration: line-through;
-                  color: $gray-500;
+                  color: $text-muted;
                 }
               }
 
@@ -825,7 +828,7 @@ padding: 0.25rem;
 
                 .event-time {
                   font-size: 0.75rem;
-                  color: $gray-600;
+                  color: $text-primary;
                   font-weight: 500;
                 }
 
@@ -844,7 +847,7 @@ padding: 0.25rem;
 
             .empty-day-message {
               text-align: center;
-              color: $gray-500;
+              color: $text-muted;
               font-size: 0.875rem;
               padding: $space-4;
               margin-top: $space-4;
@@ -861,11 +864,12 @@ padding: 0.25rem;
       .day-view-header {
         background: $dark-gradient;
         padding: $space-6;
-        color: white;
+        color: $on-primary;
         border-bottom: $border-width solid $border-color;
 
         .day-title {
-          color: white;
+          // Pose sur $dark-gradient : c'est un fond sombre, pas un aplat de marque.
+          color: $text-primary;
           font-size: 1.8rem;
           font-weight: 700;
           margin: 0 0 $space-2 0;
@@ -924,7 +928,7 @@ padding: 0.25rem;
 
             .time-label {
               padding: $space-4;
-              color: $gray-500;
+              color: $text-muted;
               font-weight: 600;
               font-size: 0.875rem;
               border-right: $border-width solid $border-color;
@@ -954,7 +958,7 @@ padding: 0.25rem;
 
                   .event-title {
                     text-decoration: line-through;
-                    color: $gray-500;
+                    color: $text-muted;
                   }
                 }
 
@@ -987,7 +991,7 @@ padding: 0.25rem;
                 }
 
                 .event-details {
-                  color: $gray-600;
+                  color: $text-primary;
                   font-size: 0.875rem;
                   line-height: 1.4;
                 }
@@ -998,7 +1002,7 @@ padding: 0.25rem;
 
         .empty-day-message {
           text-align: center;
-          color: $gray-500;
+          color: $text-muted;
           font-size: 1rem;
           padding: $space-12 $space-6;
           margin-top: $space-6;
@@ -1071,16 +1075,16 @@ padding: 0.25rem;
         border: $border-width solid $border-color;
 
         &.workout {
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
         }
         &.time {
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
         }
         &.completion {
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
         }
         &.events {
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
         }
 
         .stat-icon {
@@ -1099,7 +1103,7 @@ padding: 0.25rem;
 
           .stat-label {
             font-size: 0.75rem;
-            color: $gray-600;
+            color: $text-primary;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -1123,7 +1127,8 @@ padding: 0.25rem;
       align-items: center;
 
       .day-title {
-        color: white;
+        // Fond sombre : pas un aplat de marque.
+        color: $text-primary;
         font-size: 1.125rem;
         font-weight: 700;
         margin: 0;
@@ -1146,11 +1151,11 @@ padding: 0.25rem;
 
           &.completed {
             opacity: 0.7;
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
 
             .event-title {
               text-decoration: line-through;
-              color: $gray-500;
+              color: $text-muted;
             }
           }
 
@@ -1198,7 +1203,7 @@ padding: 0.25rem;
                 display: flex;
                 align-items: center;
                 font-size: 0.75rem;
-                color: $gray-500;
+                color: $text-muted;
                 font-weight: 600;
                 background: rgba($primary-500, 0.1);
                 padding: $space-1 $space-2;
@@ -1213,7 +1218,7 @@ padding: 0.25rem;
 
               .event-description {
                 font-size: 0.75rem;
-                color: $gray-600;
+                color: $text-primary;
                 line-height: 1.4;
                 font-style: italic;
               }
@@ -1223,30 +1228,12 @@ padding: 0.25rem;
       }
 
       .empty-state {
-        text-align: center;
-        padding: $space-12 $space-6;
-        @include glass-morphism(0.6);
-        border-radius: $radius-xl;
-        border: $border-width solid $border-color;
-
-        .empty-icon {
-          font-size: 3rem;
-          margin-bottom: $space-6;
-          opacity: 0.7;
-          animation: pulse 3s ease infinite;
-        }
-
+        @include empty-state;
         h4 {
           font-size: 1.125rem;
           font-weight: 700;
           @include text-gradient($primary-dark);
           margin: 0 0 $space-3 0;
-        }
-
-        p {
-          color: $gray-600;
-          margin: 0 0 $space-6 0;
-          line-height: 1.5;
         }
       }
     }
@@ -1282,7 +1269,7 @@ padding: 0.25rem;
 
   &.btn-primary {
     background: $primary-dark;
-    color: white;
+    color: $on-primary;
     box-shadow: 0 4px 14px 0 rgba($primary-500, 0.4);
 
     &:hover {
@@ -1335,7 +1322,7 @@ padding: 0.25rem;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: $gray-500;
+  color: $text-muted;
 
   &:hover {
     background: rgba($primary-500, 0.1);
@@ -1345,7 +1332,7 @@ padding: 0.25rem;
 
   &.active {
     background: $success;
-    color: white;
+    color: $on-primary;
   }
 }
 
@@ -1361,7 +1348,7 @@ padding: 0.25rem;
   height: 56px;
   border-radius: 50%;
   background: $primary-dark;
-  color: white;
+  color: $on-primary;
   border: none;
   cursor: pointer;
   display: flex;
@@ -1931,13 +1918,13 @@ padding: 0.25rem;
 }
 
 .calendar-container .calendar-day {
-  border-color: $border-width solid $border-color;
+  border: $border-width solid $border-color;
 
   &.today,
   &.selected,
   &:hover {
     background: rgba($primary-color, 0.15);
-    border-color: $border-width solid $border-color;
+    border: $border-width solid $border-color;
   }
 }
 
@@ -1971,7 +1958,7 @@ padding: 0.25rem;
 }
 
 .calendar-container .day-view-content .time-slot {
-  border-color: $border-width solid $border-color;
+  border: $border-width solid $border-color;
 
   &.current-hour {
     background: rgba($primary-color, 0.15);

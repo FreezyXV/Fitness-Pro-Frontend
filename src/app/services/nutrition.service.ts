@@ -33,6 +33,7 @@ import {
   MEAL_TEMPLATES,
   FoodDatabaseService,
 } from '@features/nutrition/food-database';
+import { OpenFoodFactsService } from '@app/services/open-food-facts.service';
 
 // ===== INTERFACES POUR LE SERVICE =====
 interface NutritionGoals {
@@ -248,7 +249,10 @@ export class NutritionService {
 
   private offlineQueue: Array<{ method: string; url: string; data?: any }> = [];
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private openFoodFacts: OpenFoodFactsService
+  ) {
     this.initializeService();
     this.setupOfflineSupport();
     this.startPeriodicTasks();
@@ -381,8 +385,32 @@ export class NutritionService {
       return of(cached);
     }
 
-    // Utiliser la base de données locale d'abord
+    // La base locale d'abord : 54 aliments curates, avec micronutriments
+    // complets. OpenFoodFacts vient ensuite apporter la couverture (produits
+    // de marque, references francaises) que la base locale n'aura jamais.
     return this.getLocalFoodsDatabase(query, limit, filters).pipe(
+      switchMap((localFoods) => {
+        const remaining = limit - localFoods.length;
+        if (remaining <= 0) return of(localFoods);
+
+        return this.openFoodFacts.search(query, remaining).pipe(
+          map((remoteFoods) => {
+            // Indexation : sans elle, addMealEntry() ne retrouverait pas le
+            // produit et l'ajout au repas echouerait sans message.
+            FoodDatabaseService.registerExternalFoods(remoteFoods);
+
+            const seen = new Set(localFoods.map((f) => normalizeName(f.name)));
+            const deduped = remoteFoods.filter((f) => {
+              const key = normalizeName(f.name);
+              if (seen.has(key)) return false;
+              seen.add(key);
+              return true;
+            });
+
+            return [...localFoods, ...deduped];
+          })
+        );
+      }),
       tap((foods) => {
         this.setCache(cacheKey, foods, this.DEFAULT_TTL);
         this.trackAnalytics('food_search_success', {
@@ -1168,4 +1196,18 @@ export class NutritionService {
 
     return of(true);
   }
+}
+
+/**
+ * Cle de deduplication local / OpenFoodFacts. On retire les accents, la casse
+ * et la ponctuation : sans ca, "Poulet" et "poulet" apparaitraient deux fois
+ * dans les resultats.
+ */
+function normalizeName(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
 }

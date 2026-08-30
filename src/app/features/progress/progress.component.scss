@@ -1,0 +1,352 @@
+@use 'variables' as *;
+@use 'design-system' as *;
+
+.progress-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @include respond-below(md) {
+    padding: 1rem;
+    gap: 1rem;
+  }
+}
+
+// =============================================
+// EN-TETE
+// =============================================
+
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: $text-primary;
+  }
+}
+
+.page-sub {
+  margin: 0.25rem 0 0;
+  color: $text-secondary;
+  font-size: 0.9375rem;
+}
+
+.period-switch {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border: $border-width solid $border-color;
+  border-radius: 999px;
+
+  button {
+    appearance: none;
+    border: 0;
+    background: none;
+    font: inherit;
+    cursor: pointer;
+
+    min-height: 40px;
+    padding: 0 0.875rem;
+    border-radius: 999px;
+
+    color: $text-secondary;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background 0.18s ease, color 0.18s ease;
+
+    &.is-active {
+      background: $primary-color;
+      color: $on-primary;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $primary-color;
+      outline-offset: 2px;
+    }
+  }
+
+  @include respond-below(sm) {
+    width: 100%;
+
+    button {
+      flex: 1;
+      padding: 0 0.5rem;
+    }
+  }
+}
+
+// =============================================
+// INDICATEURS
+// =============================================
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+
+  @include respond-below(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+
+  padding: 1rem;
+  border: $border-width solid $border-color;
+  border-radius: 1.25rem;
+  background: $surface-secondary;
+}
+
+.kpi-value {
+  font-size: clamp(1.375rem, 4vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: $text-primary;
+}
+
+.kpi-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+// =============================================
+// CARTES
+// =============================================
+
+.card {
+  padding: 1.25rem;
+  border: $border-width solid $border-color;
+  border-radius: 1.5rem;
+  background: $surface-secondary;
+
+  h2 {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: $text-primary;
+  }
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.card-sub {
+  margin: 0.25rem 0 0;
+  max-width: 52ch;
+  color: $text-secondary;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+// =============================================
+// SELECTEUR D'EXERCICE
+// =============================================
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  @include respond-below(sm) {
+    width: 100%;
+  }
+}
+
+.field-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $text-secondary;
+}
+
+.field-select {
+  min-height: 44px;
+  padding: 0 2rem 0 0.875rem;
+
+  appearance: none;
+  border: $border-width solid $border-color;
+  border-radius: 0.875rem;
+  background: $bg-primary;
+  // Chevron dessine en CSS : evite une requete pour une icone de 200 octets.
+  background-image: linear-gradient(45deg, transparent 50%, $text-secondary 50%),
+                    linear-gradient(135deg, $text-secondary 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+
+  color: $text-primary;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+// =============================================
+// TENDANCE
+// =============================================
+
+.trend {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.trend-badge {
+  padding: 0.3125rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 800;
+
+  &.is-up {
+    background: rgba($success-color, 0.15);
+    color: $success-color;
+  }
+
+  &.is-down {
+    background: rgba($danger-color, 0.15);
+    color: $danger-color;
+  }
+
+  &.is-flat {
+    background: rgba($text-secondary, 0.15);
+    color: $text-secondary;
+  }
+}
+
+.trend-text {
+  color: $text-secondary;
+  font-size: 0.875rem;
+}
+
+// =============================================
+// RECORDS
+// =============================================
+
+.record {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: $border-width solid $border-color;
+
+  @include respond-below(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.record-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.record-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $text-secondary;
+}
+
+.record-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: $primary-color;
+}
+
+.record-date {
+  font-size: 0.75rem;
+  color: $text-secondary;
+}
+
+// =============================================
+// ETAT VIDE
+// =============================================
+
+.onboarding-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+
+  padding: 3rem 1.5rem;
+  border: $border-width solid $border-color;
+  border-radius: 1.5rem;
+  background: $surface-secondary;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $text-primary;
+  }
+
+  p {
+    margin: 0;
+    max-width: 46ch;
+    color: $text-secondary;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+}
+
+.empty-icon svg {
+  width: 44px;
+  height: 44px;
+  color: $primary-color;
+  opacity: 0.6;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+  margin-top: 0.5rem;
+  padding: 0 1.5rem;
+
+  border-radius: 999px;
+  background: $primary-color;
+  color: $on-primary;
+
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 3px;
+  }
+}

@@ -203,7 +203,7 @@ padding: 0.25rem;
   flex-direction: column;
   gap: 4rem;
 
-  @media (max-width: 1400px) {
+  @include respond-below(xl) {
     width: 100%;
     gap: 3.5rem;
   }
@@ -308,7 +308,7 @@ padding: 0.25rem;
 
         .exercise-count {
           font-size: 0.9rem;
-          color: $gray-600;
+          color: $text-primary;
           font-weight: 600;
         }
       }
@@ -380,7 +380,7 @@ padding: 0.25rem;
 
       &:hover {
         color: $primary-color;
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
         transform: translateX(-6px);
         background: rgba($surface-secondary, 1);
         box-shadow: 0 12px 32px rgba($primary-color, 0.15);
@@ -403,7 +403,7 @@ padding: 0.25rem;
         border: none;
         background: rgba($surface-secondary, 0.95);
         backdrop-filter: blur(16px);
-        color: $gray-600;
+        color: $text-primary;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -413,14 +413,14 @@ padding: 0.25rem;
 
         &:hover {
           color: $primary-color;
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
           transform: scale(1.1);
           box-shadow: 0 12px 32px rgba($primary-color, 0.2);
         }
 
         &.favorite-btn.active {
           background: rgba($danger-color, 0.1);
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
           color: $danger-color;
         }
 
@@ -501,30 +501,30 @@ padding: 0.25rem;
       .difficulty-badge {
         &[data-level="beginner"] {
           color: $success-color;
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
           background: rgba($success-color, 0.05);
         }
         &[data-level="intermediate"] {
           color: $warning-color;
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
           background: rgba($warning-color, 0.05);
         }
         &[data-level="advanced"] {
           color: $danger-color;
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
           background: rgba($danger-color, 0.05);
         }
       }
 
       .category-badge {
         color: $primary-color;
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
         background: rgba($primary-color, 0.05);
       }
 
       .status-badge {
         color: $secondary-color;
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
         background: rgba($secondary-color, 0.05);
       }
     }
@@ -556,7 +556,7 @@ padding: 0.25rem;
 
     .plan-description {
       font-size: clamp(1.125rem, 2.5vw, 1.375rem);
-      color: $gray-600;
+      color: $text-primary;
       line-height: 1.6;
       margin: 0;
       font-weight: 500;
@@ -596,7 +596,7 @@ padding: 0.25rem;
       border: $border-width solid $border-color;
 
       &.session-progress {
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
         animation: session-pulse 3s ease-in-out infinite;
       }
 
@@ -638,7 +638,7 @@ padding: 0.25rem;
 
         .stat-label {
           font-size: clamp(0.8rem, 2vw, 0.9rem);
-          color: $gray-600;
+          color: $text-primary;
           text-transform: uppercase;
           letter-spacing: 0.1em;
           font-weight: 700;
@@ -659,7 +659,7 @@ padding: 0.25rem;
   gap: 4rem;
   align-items: start;
 
-  @media (max-width: 1200px) {
+  @include respond-below(xl) {
     grid-template-columns: 1.2fr 0.8fr;
     gap: 3rem;
   }
@@ -684,13 +684,7 @@ padding: 0.25rem;
     }
 
     .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 3rem;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-
+      @include card-header;
       .section-title {
         display: flex;
         align-items: center;
@@ -707,11 +701,10 @@ padding: 0.25rem;
 
         .exercise-counter {
           font-size: 1.125rem;
-          color: $gray-500;
+          color: $text-muted;
           font-weight: 600;
         }
       }
-
       .section-controls {
         display: flex;
         gap: 0.75rem;
@@ -732,13 +725,13 @@ padding: 0.25rem;
 
           &:hover {
             color: $primary-color;
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
             transform: translateY(-2px);
           }
 
           &.active {
             background: $primary-dark;
-            color: white;
+            color: $on-primary;
             border-color: transparent;
             box-shadow: 0 8px 25px rgba($primary-color, 0.3);
           }
@@ -767,7 +760,7 @@ padding: 0.25rem;
 
           // Exercise Status States
           &.exercise-not-started {
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
           }
 
           &.exercise-in-progress {
@@ -830,7 +823,7 @@ padding: 0.25rem;
                 justify-content: center;
                 font-weight: 900;
                 font-size: 1.25rem;
-                color: white;
+                color: $on-primary;
                 background: $secondary-gradient;
                 box-shadow: 0 8px 25px rgba($secondary-color, 0.3);
                 position: relative;
@@ -847,7 +840,7 @@ padding: 0.25rem;
                 border: $border-width solid $border-color;
 
                 &.status-not_started {
-                  border-color: $border-width solid $border-color;
+                  border: $border-width solid $border-color;
                 }
 
                 &.status-in_progress {
@@ -891,7 +884,7 @@ padding: 0.25rem;
 
                   &.status-not_started {
                     background: rgba($gray-400, 0.1);
-                    color: $gray-600;
+                    color: $text-primary;
                     border: $border-width solid $border-color;
                   }
 
@@ -921,7 +914,7 @@ padding: 0.25rem;
                   align-items: center;
                   gap: 0.5rem;
                   font-size: 0.9rem;
-                  color: $gray-600;
+                  color: $text-primary;
                   font-weight: 600;
 
                   svg {
@@ -945,7 +938,7 @@ padding: 0.25rem;
             }
 
             .expand-toggle {
-              color: $gray-400;
+              color: $text-muted;
               flex-shrink: 0;
 
               svg {
@@ -1037,7 +1030,7 @@ padding: 0.25rem;
                   transition: all 0.3s ease;
 
                   &:hover {
-                    border-color: $border-width solid $border-color;
+                    border: $border-width solid $border-color;
                     transform: scale(1.02);
                   }
 
@@ -1050,7 +1043,7 @@ padding: 0.25rem;
                     justify-content: center;
                     font-size: 1.125rem;
                     background: $info-gradient;
-                    color: white;
+                    color: $on-primary;
                     flex-shrink: 0;
                   }
 
@@ -1059,7 +1052,7 @@ padding: 0.25rem;
 
                     .config-label {
                       display: block;
-                      color: $gray-600;
+                      color: $text-primary;
                       font-size: 0.8rem;
                       font-weight: 600;
                       text-transform: uppercase;
@@ -1101,7 +1094,7 @@ padding: 0.25rem;
                   .meta-content {
                     .meta-label {
                       display: block;
-                      color: $gray-600;
+                      color: $text-primary;
                       font-size: 0.8rem;
                       font-weight: 600;
                       margin-bottom: 0.25rem;
@@ -1130,7 +1123,7 @@ padding: 0.25rem;
                   }
 
                   .meta-label {
-                    color: $gray-600;
+                    color: $text-primary;
                     font-size: 0.9rem;
                     font-weight: 600;
                     text-transform: uppercase;
@@ -1249,7 +1242,7 @@ padding: 0.25rem;
           }
 
           .no-exercises-description {
-            color: $gray-600;
+            color: $text-primary;
             margin-bottom: 2rem;
             font-size: 1.125rem;
             line-height: 1.6;
@@ -1284,8 +1277,7 @@ padding: 0.25rem;
   }
 
   .card-header {
-    margin-bottom: 2rem;
-
+    @include card-header;
     .section-title {
       display: flex;
       align-items: center;
@@ -1318,7 +1310,7 @@ padding: 0.25rem;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
         transform: scale(1.02);
         box-shadow: 0 10px 30px rgba($primary-color, 0.15);
       }
@@ -1342,7 +1334,7 @@ padding: 0.25rem;
 
         .info-label {
           display: block;
-          color: $gray-600;
+          color: $text-primary;
           font-size: 0.8rem;
           font-weight: 700;
           text-transform: uppercase;
@@ -1374,8 +1366,7 @@ padding: 0.25rem;
   }
 
   .card-header {
-    margin-bottom: 2rem;
-
+    @include card-header;
     .section-title {
       display: flex;
       align-items: center;
@@ -1408,7 +1399,7 @@ padding: 0.25rem;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
         transform: scale(1.02);
         box-shadow: 0 10px 30px rgba($primary-color, 0.15);
       }
@@ -1422,7 +1413,7 @@ padding: 0.25rem;
         justify-content: center;
         font-size: 1.5rem;
         background: $primary-gradient;
-        color: white;
+        color: $on-primary;
         box-shadow: 0 6px 20px rgba($primary-color, 0.3);
         flex-shrink: 0;
       }
@@ -1432,7 +1423,7 @@ padding: 0.25rem;
 
         .overview-label {
           display: block;
-          color: $gray-600;
+          color: $text-primary;
           font-size: 0.8rem;
           font-weight: 700;
           text-transform: uppercase;
@@ -1490,8 +1481,7 @@ padding: 0.25rem;
   }
 
   .card-header {
-    margin-bottom: 2rem;
-
+    @include card-header;
     .section-title {
       display: flex;
       align-items: center;
@@ -1539,7 +1529,7 @@ padding: 0.25rem;
 
         .stat-label {
           font-size: 0.8rem;
-          color: $gray-600;
+          color: $text-primary;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.05em;
@@ -1600,7 +1590,7 @@ padding: 0.25rem;
 
           .session-date {
             font-size: 0.9rem;
-            color: $gray-600;
+            color: $text-primary;
             font-weight: 500;
           }
 
@@ -1657,7 +1647,7 @@ padding: 0.25rem;
     .action-btn.primary.large {
       @include enhanced-button($secondary-gradient, black, large);
       box-shadow: 0 15px 40px rgba($secondary-color, 0.4);
-      color: black;
+      color: $on-primary;
       position: relative;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       overflow: hidden;
@@ -1734,7 +1724,7 @@ padding: 0.25rem;
 
       &:hover {
         background: rgba($info-color, 0.15);
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
       }
     }
 
@@ -1753,7 +1743,7 @@ padding: 0.25rem;
 
       &:hover {
         background: rgba($gray-100, 0.8);
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
       }
     }
 
@@ -1763,7 +1753,7 @@ padding: 0.25rem;
 
       &:hover {
         background: rgba($warning-color, 0.15);
-        border-color: $border-width solid $border-color;
+        border: $border-width solid $border-color;
       }
     }
 
@@ -1898,7 +1888,7 @@ padding: 0.25rem;
       font-size: 3rem;
       margin: 0 auto 2rem;
       background: $danger-gradient;
-      color: white;
+      color: $on-primary;
       box-shadow: 0 15px 40px rgba($danger-color, 0.4);
     }
 
@@ -1910,7 +1900,7 @@ padding: 0.25rem;
     }
 
     .error-message {
-      color: $gray-600;
+      color: $text-primary;
       margin-bottom: 3rem;
       line-height: 1.6;
       font-size: 1.125rem;

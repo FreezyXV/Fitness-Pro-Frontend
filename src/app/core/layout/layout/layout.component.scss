@@ -22,23 +22,22 @@
   z-index: 1; // Ensure content appears above background but below sidebar
 
   // Desktop: add margin for fixed sidebar (320px + 2rem + 1rem spacing)
-  @media (min-width: calc(#{$breakpoint-md} + 1px)) {
+  @include respond-above(md) {
     margin-top: 15px;
     margin-left: 350px; // Accounts for sidebar width + positioning
     width: 100%;
     margin-bottom: 15px;
   }
 
-  // Mobile: full width with top padding for burger menu button
+  // Mobile: pleine largeur. Le padding bas reserve la place de la barre
+  // d'onglets (56px) + l'encoche gestuelle, sinon le dernier bloc de chaque
+  // page passe sous la barre et devient inatteignable.
   @include respond-below(md) {
-    width: 100vw;
+    width: 100%;
     margin-left: 0;
-
-    padding-top: 1rem; // Space for mobile toggle button
-    min-height: calc(100vh - 80px);
-    display: block; // Ensure content is visible
-    opacity: 1; // Ensure content is not hidden
-    visibility: visible; // Force visibility
+    padding-top: 0.5rem;
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 0.5rem);
+    display: block;
   }
 }
 

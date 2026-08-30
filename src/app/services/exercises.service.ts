@@ -9,6 +9,7 @@ import {
   APP_CONFIG,
 } from '@shared';
 import { ApiService } from '@core/services/api.service';
+import { videoUrl, hasHostedMedia } from '@app/utils/exercise-media';
 
 interface CacheEntry<T> {
   data: T;
@@ -57,19 +58,6 @@ export class ExercisesService {
       .get<ApiResponse<any>>('exercises', { params })
       .pipe(
         map((response) => this.extractExercisesFromResponse(response)),
-        switchMap((exercises) => {
-          if (exercises.length === 0 && !filters) {
-            return this.seedPortfolioData().pipe(
-              switchMap(() =>
-                this.api
-                  .get<ApiResponse<any>>('exercises', { params })
-                  .pipe(map((res) => this.extractExercisesFromResponse(res)))
-              ),
-              catchError(() => of(exercises))
-            );
-          }
-          return of(exercises);
-        }),
         tap((exercises) => {
           this.exercisesSubject.next(exercises);
           this.setCachedData(cacheKey, exercises);
@@ -194,7 +182,10 @@ export class ExercisesService {
       return of(false);
     }
 
-    if (url.startsWith('/assets/ExercicesVideos/')) {
+    // Les medias que nous hebergeons n'ont pas besoin d'etre sondes : une
+    // requete HEAD par vignette ajoutait un aller-retour reseau par carte,
+    // pour verifier une URL que nous construisons nous-memes.
+    if (hasHostedMedia(url) || url.includes('res.cloudinary.com')) {
       return of(true);
     }
 
@@ -224,16 +215,12 @@ export class ExercisesService {
   // PRIVATE HELPERS
   // ==============================================================================
 
-  private seedPortfolioData(): Observable<any> {
-    console.log('🌱 ExercisesService: Seeding portfolio demo data...');
-    return this.api.post('portfolio-seed', {}).pipe(
-      tap((response) => console.log('✅ Portfolio seeding response:', response)),
-      catchError((error) => {
-        console.error('❌ Portfolio seeding failed:', error);
-        return of({ success: false, message: 'Seeding failed' });
-      })
-    );
-  }
+  /**
+   * SUPPRIME. Cette methode appelait `POST /api/portfolio-seed`, une route
+   * qui n'existe pas cote backend (verifie : 405 sur l'instance deployee).
+   * Chaque catalogue vide declenchait donc un aller-retour reseau voue a
+   * l'echec, avale par un catchError.
+   */
 
   private loadFavorites(): void {
     this.api
@@ -336,22 +323,25 @@ export class ExercisesService {
     };
   }
 
+  /**
+   * Cette methode reecrivait toute URL vers
+   * `fitness-pro-videos.s3.eu-west-3.amazonaws.com`, un bucket qui repond
+   * `NoSuchBucket` : AUCUNE demonstration ne se lisait en production, alors
+   * meme que 1,1 Go de videos locales etaient livrees a chaque visiteur.
+   * La resolution passe desormais par Cloudinary.
+   */
   private normalizeVideoUrl(url?: string): string {
-    if (!url) return '';
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-    const baseUrl = 'https://fitness-pro-videos.s3.eu-west-3.amazonaws.com/';
-    const filename = url.split('/').pop() || url;
-    return `${baseUrl}${filename}`;
+    return videoUrl(url, 'card');
   }
 
+  /**
+   * Il n'y a plus qu'une URL canonique par exercice : la machinerie d'essais
+   * successifs n'existait que pour compenser les noms de fichiers locaux
+   * approximatifs. On conserve la signature, les appelants la parcourent.
+   */
   getAlternativeVideoUrls(originalUrl: string): string[] {
-    if (!originalUrl) {
-      return [];
-    }
-    const normalizedUrl = this.normalizeVideoUrl(originalUrl);
-    return [normalizedUrl];
+    const resolved = videoUrl(originalUrl, 'card');
+    return resolved ? [resolved] : [];
   }
 
   getVideoMetadata(

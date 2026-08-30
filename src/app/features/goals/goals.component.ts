@@ -28,6 +28,7 @@ import {
   query,
   stagger,
 } from '@angular/animations';
+import { RouterModule } from '@angular/router';
 import { Subject, BehaviorSubject, interval, of, Observable } from 'rxjs';
 import {
   takeUntil,
@@ -315,7 +316,7 @@ class StorageUtils {
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './goals.component.html',
   styleUrls: ['./goals.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -452,6 +453,9 @@ export class GoalsComponent implements OnInit, OnDestroy {
   milestoneForm!: FormGroup;
   minDate = new Date().toISOString().split('T')[0];
 
+  /** Vrai quand la page affiche des exemples et non les donnees du visiteur. */
+  isDemoData = false;
+
   constructor(
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -461,6 +465,15 @@ export class GoalsComponent implements OnInit, OnDestroy {
   ) {
     this.initializeForms();
     this.loadFiltersFromStorage();
+
+    // Le service bascule ce drapeau des qu'il sert des exemples plutot que
+    // des donnees reelles.
+    this.goalsService.dataSource$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((source) => {
+        this.isDemoData = source === 'demo';
+        this.cdr.markForCheck();
+      });
     this.setupSearchDebounce();
     this.setupViewModeFromStorage();
     this.setupAutosave();

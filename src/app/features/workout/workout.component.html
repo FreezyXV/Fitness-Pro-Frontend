@@ -122,6 +122,7 @@
             (input)="onSearchChange(filters.searchTerm)"
             placeholder="Rechercher un programme..."
             class="search-input"
+            aria-label="Rechercher un programme"
           />
           <button
             *ngIf="filters.searchTerm"
@@ -165,7 +166,7 @@
             [(ngModel)]="filters.activeFilter"
             (change)="setFilter(filters.activeFilter)"
             class="filter-select"
-          >
+            aria-label="Filtre : Toutes les catégories">
             <option value="all">Toutes les catégories</option>
             <option
               *ngFor="let category of categories"
@@ -195,7 +196,7 @@
             [(ngModel)]="filters.activeDifficultyFilter"
             (change)="setDifficultyFilter(filters.activeDifficultyFilter)"
             class="filter-select"
-          >
+            aria-label="Filtre : Tous les niveaux">
             <option value="all">Tous les niveaux</option>
             <option
               *ngFor="let difficulty of difficultyLevels"
@@ -225,7 +226,7 @@
             [(ngModel)]="filters.sortBy"
             (change)="setSortBy(filters.sortBy)"
             class="filter-select"
-          >
+            aria-label="Filtrer les résultats">
             <option *ngFor="let option of sortOptions" [value]="option.value">
               {{ option.label }}
             </option>
@@ -272,7 +273,8 @@
               type="checkbox"
               [(ngModel)]="filters.showOnlyCustom"
               (change)="toggleCustomFilter()"
-            />
+            aria-label="Champ de saisie"
+          />
             <span class="checkbox-label">Mes programmes seulement</span>
           </label>
 
@@ -281,7 +283,8 @@
               type="checkbox"
               [(ngModel)]="filters.showOnlyPublic"
               (change)="togglePublicFilter()"
-            />
+            aria-label="Champ de saisie"
+          />
             <span class="checkbox-label">Programmes publics seulement</span>
           </label>
         </div>

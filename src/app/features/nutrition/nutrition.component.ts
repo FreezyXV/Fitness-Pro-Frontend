@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '@app/pipes/filter.pipe';
+import { BarcodeScannerComponent } from '@app/shared/components/barcode-scanner/barcode-scanner.component';
 
 import { Subject, BehaviorSubject, timer } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -157,7 +158,7 @@ interface SearchFilters {
 @Component({
   selector: 'app-nutrition',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe],
+  imports: [CommonModule, FormsModule, FilterPipe, BarcodeScannerComponent],
   templateUrl: './nutrition.component.html',
   styleUrls: ['./nutrition.component.scss'],
 })
@@ -359,6 +360,11 @@ export class NutritionComponent implements OnInit, OnDestroy {
   // ===== RECHERCHE ET REPAS OPTIMISÉS =====
   searchTerm = '';
   searchResults: Food[] = [];
+
+  // ===== SCAN DE CODE-BARRES =====
+  /** Ouverture du scanner. Le composant gere lui-meme camera et recherche. */
+  showScanner = false;
+
   selectedFood: Food | null = null;
   quantity = 100;
   recentEntries: FoodEntry[] = [];
@@ -522,6 +528,32 @@ export class NutritionComponent implements OnInit, OnDestroy {
   }
 
   // ===== GESTION DE LA BASE DE DONNÉES D'ALIMENTS =====
+
+  openScanner(): void {
+    this.showScanner = true;
+  }
+
+  closeScanner(): void {
+    this.showScanner = false;
+  }
+
+  /**
+   * Produit reconnu par le scanner. On l'indexe pour que addFoodEntry() puisse
+   * le retrouver par son id, puis on l'affiche seul en tete de resultats :
+   * apres un scan, l'utilisateur attend UN produit, pas une liste.
+   */
+  onScannedFood(food: Food): void {
+    FoodDatabaseService.registerExternalFood(food);
+    this.showScanner = false;
+    this.searchResults = [food];
+    this.selectedFoodForInfo = food;
+    this.cdr.markForCheck();
+  }
+
+  /** Vrai pour un aliment issu d'OpenFoodFacts (donnee contributive). */
+  isCommunityFood(food: Food): boolean {
+    return food.source === 'openfoodfacts';
+  }
 
   searchFoods(): void {
     if (this.searchTerm.trim()) {

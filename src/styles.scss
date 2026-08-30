@@ -71,13 +71,15 @@ html {
   --color-secondary: #79ffc0;
   --color-accent: #fff066;
 
+  // Echelle de gris monotone. Elle etait cassee : --gray-600 valait #f6f6f2,
+  // soit un quasi-blanc coince entre --gray-500 et --gray-700.
   --gray-50: #0b0b0f;
   --gray-100: #111118;
   --gray-200: #181820;
   --gray-300: #21212a;
   --gray-400: #2c2c36;
   --gray-500: #42424c;
-  --gray-600: #f6f6f2;
+  --gray-600: #5a5a64;
   --gray-700: #7d7d85;
   --gray-800: #a4a4ab;
   --gray-900: #e4e4e7;
@@ -87,16 +89,24 @@ html {
   --danger-color: #ff6b6b;
   --info-color: #7ecbff;
 
-  --border-radius: 3rem;
-  --border-radius-lg: 3rem;
-  --border-radius-xl: 3rem;
-  --border-radius-2xl: 3rem;
+  // Echelle de rayons : les quatre tokens valaient 3rem, donc aucune
+  // hierarchie n'etait exprimable.
+  --border-radius-sm: 0.625rem;
+  --border-radius: 1.125rem;
+  --border-radius-lg: 1.5rem;
+  --border-radius-xl: 2rem;
+  --border-radius-2xl: 2.5rem;
+  --border-radius-pill: 999px;
   --border-color: rgba(212, 255, 61, 0.35);
 
-  --shadow: none;
-  --shadow-lg: none;
-  --shadow-xl: none;
-  --shadow-2xl: none;
+  // Echelle d'elevation : les quatre tokens valaient `none` pendant que 120
+  // box-shadow ecrits en dur les contournaient.
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.50);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.60);
+  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.65);
+  --glow-primary: 0 6px 22px rgba(212, 255, 61, 0.26);
 
   --transition-base: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-fast: all 0.2s ease;
@@ -198,12 +208,12 @@ a {
   @include button-base;
 
   // Enhanced mobile responsiveness
-  @media (max-width: $breakpoint-md) {
+  @include respond-below(md) {
     min-height: 44px; // Touch-friendly minimum
     font-weight: 600;
   }
 
-  @media (max-width: $breakpoint-sm) {
+  @include respond-below(sm) {
     min-height: 48px; // Larger touch target on small screens
     font-size: clamp(0.8rem, 3vw, 0.9rem);
   }
@@ -276,7 +286,7 @@ a {
     padding: $btn-padding-sm;
     font-size: clamp(0.7rem, 2vw, 0.8rem);
 
-    @media (max-width: $breakpoint-sm) {
+    @include respond-below(sm) {
       min-height: 40px;
     }
   }
@@ -285,7 +295,7 @@ a {
     padding: $btn-padding-lg;
     font-size: clamp(0.9rem, 3vw, 1rem);
 
-    @media (max-width: $breakpoint-sm) {
+    @include respond-below(sm) {
       min-height: 52px;
     }
   }
@@ -294,7 +304,7 @@ a {
     padding: $btn-padding-xl;
     font-size: clamp(1rem, 3.5vw, 1.125rem);
 
-    @media (max-width: $breakpoint-sm) {
+    @include respond-below(sm) {
       min-height: 56px;
     }
   }
@@ -578,71 +588,18 @@ a {
 
 // Utility Classes
 .text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
 
-.d-none { display: none; }
-.d-block { display: block; }
-.d-flex { display: flex; }
-.d-inline-flex { display: inline-flex; }
-.d-grid { display: grid; }
 
 .flex-column { flex-direction: column; }
-.flex-row { flex-direction: row; }
-.justify-content-center { justify-content: center; }
-.justify-content-between { justify-content: space-between; }
-.justify-content-around { justify-content: space-around; }
-.align-items-center { align-items: center; }
-.align-items-start { align-items: flex-start; }
-.align-items-end { align-items: flex-end; }
 
 // Spacing System
-.gap-1 { gap: 0.25rem; }
-.gap-2 { gap: 0.5rem; }
-.gap-3 { gap: 0.75rem; }
-.gap-4 { gap: 1rem; }
-.gap-5 { gap: 1.25rem; }
-.gap-6 { gap: 1.5rem; }
 
 .m-0 { margin: 0; }
-.m-1 { margin: 0.25rem; }
-.m-2 { margin: 0.5rem; }
-.m-3 { margin: 0.75rem; }
-.m-4 { margin: 1rem; }
-.m-5 { margin: 1.25rem; }
-.m-6 { margin: 1.5rem; }
 
-.p-0 { padding: 0; }
-.p-1 { padding: 0.25rem; }
-.p-2 { padding: 0.5rem; }
-.p-3 { padding: 0.75rem; }
-.p-4 { padding: 1rem; }
-.p-5 { padding: 1.25rem; }
-.p-6 { padding: 1.5rem; }
-
-.mb-0 { margin-bottom: 0; }
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 0.75rem; }
-.mb-4 { margin-bottom: 1rem; }
-.mb-5 { margin-bottom: 1.25rem; }
-.mb-6 { margin-bottom: 1.5rem; }
-
-.mt-0 { margin-top: 0; }
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-3 { margin-top: 0.75rem; }
-.mt-4 { margin-top: 1rem; }
-.mt-5 { margin-top: 1.25rem; }
-.mt-6 { margin-top: 1.5rem; }
 
 // Color Classes
 .text-primary { color: var(--primary-color) !important; }
 .text-secondary { color: var(--secondary-color) !important; }
-.text-success { color: var(--success-color) !important; }
-.text-danger { color: var(--danger-color) !important; }
-.text-warning { color: var(--warning-color) !important; }
-.text-info { color: var(--info-color) !important; }
 .text-muted { color: var(--gray-500) !important; }
 
 // Loading Spinner
@@ -809,13 +766,13 @@ a {
 }
 
 // Responsive Design
-@media (max-width: 1200px) {
+@include respond-below(xl) {
   .container {
     padding: 0 1.5rem;
   }
 }
 
-@media (max-width: 768px) {
+@include respond-below(md) {
   body {
     font-size: 14px;
   }
@@ -842,7 +799,7 @@ a {
   }
 }
 
-@media (max-width: 480px) {
+@include respond-below(xs) {
   .modal .modal-header,
   .modal .modal-body,
   .modal .modal-footer {
@@ -899,63 +856,33 @@ a {
 
 // Flexbox Layout Utilities - Most Used Patterns
 .flex-center { @include flex-center; }
-.flex-center-gap { @include flex-center(1rem); }
-.flex-center-gap-lg { @include flex-center(1.5rem); }
-.flex-between { @include flex-between; }
-.flex-between-start { @include flex-between(flex-start); }
-.flex-between-end { @include flex-between(flex-end); }
 .flex-column { @include flex-column; }
-.flex-column-center { @include flex-column(0, center); }
-.flex-column-gap { @include flex-column(1rem); }
-.flex-column-gap-lg { @include flex-column(1.5rem); }
 
 // Grid Layout Utilities
 .grid-auto-fit { @include grid-auto-fit; }
-.grid-auto-fit-sm { @include grid-auto-fit(250px, 1.5rem); }
-.grid-auto-fit-lg { @include grid-auto-fit(350px, 2.5rem); }
 
 // Card Layout Utilities
-.card-interactive { @include card-interactive; }
-.card-interactive-no-hover { @include card-interactive(false); }
-.card-static { @include card-static; }
 
 // Typography Utilities
-.title-text { @include title-text; }
-.title-text-lg { @include title-text(2rem, 800); }
-.title-text-xl { @include title-text(2.5rem, 900); }
-.body-text { @include body-text; }
-.body-text-sm { @include body-text(0.875rem, 400); }
-.body-text-lg { @include body-text(1.125rem, 500); }
+// Un seul appelant (workout-plan-detail) : ecrit en clair plutot que de
+// maintenir un mixin parametre pour lui seul.
+.title-text {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: $text-primary;
+}
 .text-ellipsis { @include text-ellipsis; }
-.text-ellipsis-2 { @include text-ellipsis(2); }
-.text-ellipsis-3 { @include text-ellipsis(3); }
 
 // Layout Utilities
-.container-fluid {
-  width: 100%;
-  padding: 0 1rem;
-  margin: 0 auto;
-}
 
-.container { @include container; }
-.container-sm { @include container(1200px, 1.5rem); }
-.container-lg { @include container(1600px, 2.5rem); }
 
 // Background Utilities
 .bg-glass { @include glass-effect; }
 .bg-glass-dark { @include glass-effect-dark; }
 .bg-primary { background: $bg-primary !important; }
 .bg-secondary { background: $surface-secondary !important; }
-.bg-success { background: rgba($success-color, 0.15) !important; }
-.bg-warning { background: rgba($warning-color, 0.15) !important; }
-.bg-danger { background: rgba($danger-color, 0.15) !important; }
-.bg-gradient-primary { background: $primary-color !important; }
-.bg-gradient-secondary { background: $secondary-color !important; }
 
 // Text Utilities
-.text-gradient-primary { @include text-gradient($primary-color); }
-.text-gradient-secondary { @include text-gradient($secondary-color); }
-.text-gradient-success { @include text-gradient($success-color); }
 
 // Shadow Utilities
 .shadow-sm { box-shadow: $shadow-sm !important; }
@@ -971,32 +898,13 @@ a {
 // Border Radius Utilities
 .rounded-sm { border-radius: $border-radius-sm !important; }
 .rounded { border-radius: $border-radius !important; }
-.rounded-md { border-radius: $border-radius-md !important; }
-.rounded-lg { border-radius: $border-radius-lg !important; }
-.rounded-xl { border-radius: $border-radius-xl !important; }
-.rounded-2xl { border-radius: $border-radius-2xl !important; }
-.rounded-full { border-radius: $border-radius-full !important; }
 
 // Animation Utilities
-.animate-float { @include floating-animation; }
-.animate-pulse { animation: smooth-pulse 3s infinite; }
-.animate-bounce { animation: bounce 2s infinite; }
-.animate-spin { animation: spin 1s linear infinite; }
-.animate-slide-up { animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-.animate-fade-in { animation: fade-in-scale 0.6s ease; }
 
 // Hover Effects
 .hover-lift { 
   transition: $transition-smooth;
   &:hover { transform: $transform-hover; }
-}
-.hover-lift-lg { 
-  transition: $transition-smooth;
-  &:hover { transform: $transform-hover-lg; }
-}
-.hover-scale { 
-  transition: $transition-smooth;
-  &:hover { transform: scale(1.05); }
 }
 
 // Loading States
@@ -1020,11 +928,17 @@ a {
   }
 }
 
-// State Classes
-.success { color: $success-color !important; }
-.warning { color: $warning-color !important; }
-.danger { color: $danger-color !important; }
-.info { color: $info-color !important; }
+// Les utilitaires globaux `.success` / `.warning` / `.danger` / `.info`
+// ont ete supprimes.
+//
+// Ils forcaient une couleur de texte avec `!important` sur TOUT element
+// portant l'un de ces mots — or dans ce projet ils ne sont jamais employes
+// comme utilitaires de couleur (0 usage isole sur 9), mais toujours comme
+// MODIFICATEURS de composants : `class="status-badge warning"`.
+//
+// Resultat : la pastille « Bientot » de la page Objectifs recevait un texte
+// ambre sur un fond ambre, soit un rapport de contraste de 1,89:1, et aucune
+// regle de composant ne pouvait reprendre la main a cause du !important.
 
 // Interaction States
 .disabled {

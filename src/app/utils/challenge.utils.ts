@@ -83,7 +83,7 @@ import { DateUtils } from '@shared';
         hard: {
           label: 'Difficile',
           emoji: '🔴',
-          color: '#ef4444',
+          color: '#ff7a7a',
           description: 'Pour les plus motivés',
           timeCommitment: '60+ min/jour',
           pointMultiplier: 2
@@ -94,16 +94,21 @@ import { DateUtils } from '@shared';
   
     static getCategoryConfig(category: ChallengeCategory) {
       const configs = {
+        // Ces teintes servent de COULEUR DE TEXTE sur le fond sombre de
+        // l'app. Les valeurs Material d'origine (#34a853, #4285f4, #9c27b0,
+        // #795548, #607d8b…) sont calibrees pour un fond blanc et tombaient
+        // entre 1,9:1 et 3,6:1 ici, sous le seuil AA de 4,5:1. Les teintes
+        // sont conservees, seule la luminosite est remontee.
         fitness: { label: 'Fitness', icon: '💪', color: '#f28b82' },
         wellness: { label: 'Bien-être', icon: '🧘', color: '#a3d9a5' },
         cardio: { label: 'Cardio', icon: '❤️', color: '#fbbc04' },
-        strength: { label: 'Force', icon: '🏋️', color: '#34a853' },
-        nutrition: { label: 'Nutrition', icon: '🍎', color: '#4285f4' },
-        mindfulness: { label: 'Méditation', icon: '🧠', color: '#9c27b0' },
-        social: { label: 'Social', icon: '👥', color: '#ff9800' },
-        flexibility: { label: 'Souplesse', icon: '🤸', color: '#e91e63' },
-        endurance: { label: 'Endurance', icon: '🏃', color: '#795548' },
-        balance: { label: 'Équilibre', icon: '⚖️', color: '#607d8b' }
+        strength: { label: 'Force', icon: '🏋️', color: '#5bd47c' },
+        nutrition: { label: 'Nutrition', icon: '🍎', color: '#7aa9ff' },
+        mindfulness: { label: 'Méditation', icon: '🧠', color: '#d17ae0' },
+        social: { label: 'Social', icon: '👥', color: '#ffb454' },
+        flexibility: { label: 'Souplesse', icon: '🤸', color: '#ff6f9c' },
+        endurance: { label: 'Endurance', icon: '🏃', color: '#c89b86' },
+        balance: { label: 'Équilibre', icon: '⚖️', color: '#9db8c6' }
       };
       return configs[category] || configs.fitness;
     }

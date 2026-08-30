@@ -161,12 +161,14 @@ export class BMIUtils {
   }
 
   static getColor(bmi: number): string {
-    if (!bmi || bmi === 0 || isNaN(bmi)) return '#6b7280';
+    // Teintes calibrees pour le fond SOMBRE de l'app : les valeurs
+    // precedentes (#6b7280, #3b82f6, #ef4444) tombaient entre 3,6:1 et 4,0:1.
+    if (!bmi || bmi === 0 || isNaN(bmi)) return '#cbd0c2'; // = $text-secondary, etat neutre
 
-    if (bmi < 18.5) return '#3b82f6'; // Blue for underweight
-    if (bmi < 25) return '#10b981'; // Green for normal
-    if (bmi < 30) return '#f59e0b'; // Orange for overweight
-    return '#ef4444'; // Red for obese
+    if (bmi < 18.5) return '#7aa9ff'; // bleu, insuffisance ponderale
+    if (bmi < 25) return '#34d399';   // vert, intervalle de reference
+    if (bmi < 30) return '#fbbf24';   // ambre
+    return '#ff7a7a';                 // rouge
   }
 
   static getPosition(bmi: number): number {

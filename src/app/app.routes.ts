@@ -6,6 +6,7 @@ import { Routes } from '@angular/router';
 
 // Import guards
 import { AuthGuard, GuestGuard } from '@core/guards/auth.guard';
+import { OnboardingGuard } from '@core/guards/onboarding.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -41,12 +42,23 @@ export const routes: Routes = [
     title: 'Séance en cours'
   },
 
+  // Parcours d'entree : plein ecran, hors LayoutComponent. Afficher une
+  // sidebar ou une barre d'onglets pendant l'onboarding inviterait a le fuir
+  // avant de l'avoir termine.
+  {
+    path: 'onboarding',
+    loadComponent: () =>
+      import('@features/onboarding/onboarding.component').then(m => m.OnboardingComponent),
+    canActivate: [AuthGuard],
+    title: 'Bienvenue'
+  },
+
   // Protected routes
   {
     path: '',
     loadComponent: () =>
       import('@core/layout/layout/layout.component').then(m => m.LayoutComponent),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, OnboardingGuard],
     children: [
       {
         path: 'dashboard',
@@ -100,6 +112,12 @@ export const routes: Routes = [
         title: 'Détails du Programme'
       },
 
+      {
+        path: 'progress',
+        loadComponent: () =>
+          import('@features/progress/progress.component').then(m => m.ProgressComponent),
+        title: 'Ma progression'
+      },
       {
         path: 'nutrition',
         loadComponent: () =>

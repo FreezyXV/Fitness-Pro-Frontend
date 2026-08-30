@@ -93,7 +93,7 @@
       justify-content: center;
       margin: 0 auto map.get($spacers, 4);
       font-size: $font-size-3xl;
-      color: white;
+      color: $on-primary;
       font-weight: $font-weight-bold;
       box-shadow: $shadow-primary;
       @include floating-animation(4s);
@@ -126,7 +126,7 @@
 
     .subtitle {
       font-size: $font-size-base;
-      color: $gray-600;
+      color: $text-primary;
       font-weight: $font-weight-medium;
       opacity: 0.8;
     }
@@ -181,7 +181,7 @@
           right: map.get($spacers, 4);
           top: 50%;
           transform: translateY(-50%);
-          color: $gray-400;
+          color: $text-muted;
           font-size: $font-size-lg;
           transition: $transition-fast;
           cursor: pointer;
@@ -234,7 +234,7 @@
           height: 16px;
           border-radius: 50%;
           background: $danger-color;
-          color: white;
+          color: $on-primary;
           animation: errorIconBounce 0.6s ease-out;
         }
       }
@@ -252,7 +252,7 @@
         display: flex;
         align-items: center;
         gap: map.get($spacers, 2);
-        color: $gray-600;
+        color: $text-primary;
         cursor: pointer;
         transition: $transition-fast;
 
@@ -288,7 +288,7 @@
         }
 
         &:hover {
-          color: $primary-dark;
+          color: $on-primary;
 
           &::after {
             width: 100%;
@@ -316,7 +316,7 @@
       & {
         width: 100%;
         background: #b3ff00;
-        color: black;
+        color: $on-primary;
         font-size: $font-size-base;
         margin-top: map.get($spacers, 2);
         box-shadow: $shadow-primary;
@@ -368,7 +368,7 @@
 
     span {
       padding: 0 map.get($spacers, 3);
-      color: $gray-500;
+      color: $text-muted;
       font-size: $font-size-sm;
       font-weight: $font-weight-medium;
       letter-spacing: 0.05em;
@@ -399,7 +399,7 @@
 
     &:hover {
       background: $gray-50;
-      border-color: $gray-400;
+      border-color: $text-muted;
       color: $gray-800;
       transform: translateY(-2px);
       box-shadow: $shadow-md;
@@ -432,7 +432,7 @@
 
     padding-top: map.get($spacers, 6);
     border-top: 1px solid $gray-200;
-    color: $gray-600;
+    color: $text-primary;
     font-size: $font-size-sm;
 
     a {
@@ -455,7 +455,7 @@
       }
 
       &:hover {
-        color: $primary-dark;
+        color: $on-primary;
 
         &::after {
           width: 100%;
@@ -468,7 +468,7 @@
 // Additional login-specific animations are now handled by the global animation system
 
 // Responsive design - No scroll on any screen
-@media (max-width: map.get($grid-breakpoints, md)) {
+@include respond-below(md) {
   .login-wrapper {
     padding: map.get($spacers, 4);
   }
@@ -478,7 +478,7 @@
   }
 }
 
-@media (max-width: map.get($grid-breakpoints, sm)) {
+@include respond-below(sm) {
   .login-wrapper {
     padding: map.get($spacers, 3);
   }
@@ -543,7 +543,7 @@
   }
 }
 
-@media (max-width: map.get($grid-breakpoints, xs)) {
+@include respond-below(xs) {
   .login-wrapper {
     padding: map.get($spacers, 2);
     min-height: 100vh;
@@ -631,7 +631,7 @@
 }
 
 // Extra small devices - prevent any scrolling
-@media (max-width: 360px) {
+@include respond-below(xxs) {
   .login-card {
     padding: map.get($spacers, 3) map.get($spacers, 3);
 

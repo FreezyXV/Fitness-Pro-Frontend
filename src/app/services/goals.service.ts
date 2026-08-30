@@ -79,6 +79,24 @@ export class GoalsService {
   public userScore$ = this.userScoreSubject.asObservable();
   public achievements$ = this.achievementsSubject.asObservable();
 
+  /**
+   * Origine des donnees actuellement exposees.
+   *
+   * 'demo' n'est legitime que pour un visiteur non connecte, sur la route
+   * publique /goals : montrer des exemples est alors un choix produit. Pour un
+   * utilisateur connecte, substituer des donnees inventees a ses vraies
+   * donnees est le pire echec possible dans une app de suivi — il ne peut plus
+   * distinguer sa progression reelle d'un echantillon.
+   *
+   * L'interface DOIT afficher l'etat 'demo'. Voir GoalsComponent.
+   */
+  private readonly dataSourceSubject = new BehaviorSubject<'live' | 'demo'>('live');
+  public dataSource$ = this.dataSourceSubject.asObservable();
+
+  get isDemoData(): boolean {
+    return this.dataSourceSubject.value === 'demo';
+  }
+
   constructor(private http: HttpClient) {
     // Only load data if user has a token (is potentially authenticated)
     if (this.hasAuthToken()) {
@@ -109,8 +127,9 @@ export class GoalsService {
     this.getAchievements().subscribe();
   }
 
+  /** Exemples affiches au visiteur non connecte. Toujours etiquetes. */
   private loadDemoData(): void {
-    // Load demo data for unauthenticated users
+    this.dataSourceSubject.next('demo');
     const demoGoals: Goal[] = [
       {
         id: 1,
@@ -200,8 +219,9 @@ export class GoalsService {
           this.calculateStats(goals);
         }),
         catchError(error => {
-          console.error('🚨 GoalsService: Public API error, falling back to demo data:', error);
-          // Return demo data on API failure
+          // Visiteur non connecte : on peut montrer des exemples, mais on
+          // bascule explicitement le drapeau pour que l'ecran l'annonce.
+          console.warn('GoalsService: point public injoignable, bascule en mode démonstration', error);
           this.loadDemoData();
           return of(this.goalsSubject.value);
         })
@@ -218,23 +238,17 @@ export class GoalsService {
     }).pipe(
       map(response => response.data || []),
       tap(goals => {
+        this.dataSourceSubject.next('live');
         this.goalsSubject.next(goals);
         this.calculateStats(goals);
       }),
       catchError(error => {
-        console.error('🚨 GoalsService: API error, falling back to public endpoint:', error);
-        // Try public endpoint as fallback
-        return this.http.get<{success: boolean, data: Goal[], message: string}>(`${environment.apiUrl}/goals/public`).pipe(
-          map(response => response.data || []),
-          tap(goals => {
-            this.goalsSubject.next(goals);
-            this.calculateStats(goals);
-          }),
-          catchError(() => {
-            this.loadDemoData();
-            return of(this.goalsSubject.value);
-          })
-        );
+        // L'utilisateur est connecte : ses objectifs sont des DONNEES, pas un
+        // contenu de vitrine. Basculer sur le point public puis sur des
+        // exemples lui montrait les objectifs de quelqu'un d'autre comme s'ils
+        // etaient les siens. L'erreur remonte a l'ecran, qui l'affiche.
+        console.error('GoalsService: chargement des objectifs impossible', error);
+        return throwError(() => error);
       })
     );
   }
@@ -461,18 +475,10 @@ export class GoalsService {
       map(response => response.data),
       tap(score => this.userScoreSubject.next(score)),
       catchError(error => {
-        console.warn('🚨 GoalsService: User score API error, falling back to demo data:', error);
-        // Return demo data on API failure
-        const demoScore: UserScore = {
-          total_points: 125,
-          level: 3,
-          achievements_unlocked: 1,
-          goals_completed: 3,
-          current_streak: 7,
-          next_level_points: 200
-        };
-        this.userScoreSubject.next(demoScore);
-        return of(demoScore);
+        // Un score invente (125 points, niveau 3, 7 jours de serie) affiche a
+        // un utilisateur connecte est un mensonge sur sa propre progression.
+        console.error('GoalsService: score utilisateur indisponible', error);
+        return throwError(() => error);
       })
     );
   }
@@ -490,28 +496,8 @@ export class GoalsService {
       map(response => response.data || []),
       tap(achievements => this.achievementsSubject.next(achievements)),
       catchError(error => {
-        console.warn('🚨 GoalsService: Achievements API error, falling back to demo data:', error);
-        // Return demo data on API failure
-        const demoAchievements: Achievement[] = [
-          {
-            id: 1,
-            name: "Premier Objectif",
-            description: "Créer votre premier objectif",
-            icon: "🎯",
-            points: 10,
-            unlocked_at: "2024-01-15"
-          },
-          {
-            id: 2,
-            name: "Persévérant",
-            description: "Compléter 5 objectifs",
-            icon: "💪",
-            points: 50,
-            unlocked_at: undefined
-          }
-        ];
-        this.achievementsSubject.next(demoAchievements);
-        return of(demoAchievements);
+        console.error('GoalsService: succès indisponibles', error);
+        return throwError(() => error);
       })
     );
   }

@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkoutService } from '@app/services/workout.service';
+import { LoadSuggestion, LoggedSet, TrainingLogService } from '@app/services/training-log.service';
 
 /** Un exercice tel que l'API le renvoie : le pivot est aplati dans l'objet. */
 interface SessionExercise {
@@ -38,6 +39,8 @@ interface CompletedSet {
   reps: number | null;
   weight: number | null;
   seconds: number | null;
+  /** Horodatage de la validation, pour le journal d'entrainement. */
+  ts: string;
 }
 
 type Phase = 'loading' | 'ready' | 'working' | 'resting' | 'finished' | 'error';
@@ -56,6 +59,7 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly workoutService = inject(WorkoutService);
+  private readonly trainingLog = inject(TrainingLogService);
 
   readonly phase = signal<Phase>('loading');
   readonly errorMessage = signal<string | null>(null);
@@ -70,6 +74,9 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
   readonly weight = signal<number | null>(null);
   /** Vrai tant que la charge affichee vient de l'historique et non d'une saisie. */
   readonly weightFromHistory = signal(false);
+
+  /** Proposition de charge issue de la double progression. */
+  readonly suggestion = signal<LoadSuggestion | null>(null);
 
   readonly restRemaining = signal(0);
   readonly restTotal = signal(0);
@@ -218,15 +225,30 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** Prepare la saisie : repetitions prevues et charge de la derniere fois. */
+  /**
+   * Prepare la saisie. La charge n'est plus seulement « celle de la derniere
+   * fois » : le journal propose une progression. Un carnet qui se contente
+   * d'enregistrer laisse l'utilisateur decider seul quand monter, et c'est
+   * precisement la ou la plupart s'arretent.
+   */
   private prepareCurrentSet(): void {
     const c = this.current();
     if (!c) return;
 
-    const remembered = this.lastWeightFor(c.exercise.id);
+    const suggestion = this.trainingLog.suggestNextLoad(
+      c.exercise.id,
+      c.exercise.reps ?? null,
+      c.setsInExercise
+    );
+
+    // La suggestion ne s'affiche que sur la premiere serie de l'exercice :
+    // repetee a chaque serie elle deviendrait du bruit.
+    this.suggestion.set(c.setNumber === 1 ? suggestion : null);
+
+    const weight = suggestion.weight ?? this.lastWeightFor(c.exercise.id);
     this.reps.set(c.exercise.reps ?? null);
-    this.weight.set(remembered);
-    this.weightFromHistory.set(remembered !== null);
+    this.weight.set(weight);
+    this.weightFromHistory.set(weight !== null);
     this.holdRemaining.set(c.exercise.durationSeconds ?? 0);
   }
 
@@ -241,6 +263,7 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
       reps: this.isTimedExercise() ? null : this.reps(),
       weight: this.weight(),
       seconds: this.isTimedExercise() ? c.exercise.durationSeconds ?? null : null,
+      ts: new Date().toISOString(),
     };
 
     this.done.update((list) => [...list, record]);
@@ -293,6 +316,7 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
   }
 
   setWeight(value: number | null): void {
+    this.suggestion.set(null);
     this.weight.set(value);
     this.weightFromHistory.set(false);
   }
@@ -325,14 +349,71 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
 
     const minutes = Math.max(1, Math.round(this.elapsedSeconds() / 60));
 
+    // Journal local d'abord : c'est la seule ecriture qui reussit toujours
+    // (hors ligne, mode invite, backend endormi). La page Progression s'appuie
+    // dessus, donc une seance realisee n'est jamais perdue.
+    this.trainingLog.appendSets(this.toLoggedSets());
+
     if (this.sessionId) {
       this.workoutService
         .completeWorkoutSession(this.sessionId, {
           actual_duration: minutes,
           notes: `${this.done().length} séries réalisées.`,
+          // Sans ce champ le backend n'enregistrait que la duree : les charges
+          // et repetitions de la seance etaient purement et simplement perdues.
+          exercises: this.toApiExercises(),
         })
         .subscribe({ error: () => {} });
     }
+  }
+
+  /** Series realisees, au format du journal local. */
+  private toLoggedSets(): LoggedSet[] {
+    return this.done().map((s) => ({
+      ts: s.ts,
+      sessionId: this.sessionId,
+      templateId: this.templateId,
+      workoutName: this.workoutName(),
+      exerciseId: s.exerciseId,
+      exerciseName: s.exerciseName,
+      setNumber: s.setNumber,
+      reps: s.reps,
+      weight: s.weight,
+      seconds: s.seconds,
+    }));
+  }
+
+  /**
+   * Agregation par exercice attendue par le backend : la table pivot ne tient
+   * qu'une ligne par exercice, on y remonte donc le nombre de series, les
+   * repetitions de la derniere serie et la charge la plus lourde travaillee.
+   */
+  private toApiExercises(): Array<Record<string, unknown>> {
+    const byExercise = new Map<number, { sets: CompletedSet[]; order: number }>();
+
+    this.done().forEach((s) => {
+      const entry = byExercise.get(s.exerciseId);
+      if (entry) {
+        entry.sets.push(s);
+      } else {
+        byExercise.set(s.exerciseId, { sets: [s], order: byExercise.size });
+      }
+    });
+
+    return [...byExercise.entries()].map(([exerciseId, { sets, order }]) => {
+      const weights = sets.map((s) => s.weight ?? 0);
+      const seconds = sets.reduce((sum, s) => sum + (s.seconds ?? 0), 0);
+
+      return {
+        exercise_id: exerciseId,
+        order_index: order,
+        completed_sets: sets.length,
+        completed_reps: sets[sets.length - 1].reps ?? null,
+        weight_used: Math.max(...weights) || null,
+        actual_duration_seconds: seconds || null,
+        is_completed: true,
+      };
+    });
   }
 
   quit(): void {
@@ -346,6 +427,11 @@ export class WorkoutSessionComponent implements OnInit, OnDestroy {
   }
 
   // ------------------------------------------------------------------ format
+
+  /** Separateur de milliers francais : "1 240 kg", pas "1,240 kg". */
+  formatVolume(value: number): string {
+    return value.toLocaleString('fr-FR', { maximumFractionDigits: 0 });
+  }
 
   formatClock(totalSeconds: number): string {
     const m = Math.floor(totalSeconds / 60);

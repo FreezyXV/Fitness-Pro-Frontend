@@ -6,6 +6,9 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import { AuthService } from './services/auth.service';
+import { PwaService } from './core/services/pwa.service';
+import { ReminderService } from './core/services/reminder.service';
+import { BackendWakeService, EXPECTED_WAKE_SECONDS } from './core/services/backend-wake.service';
 import { ExercisesService } from './services/exercises.service';
 
 @Component({
@@ -13,8 +16,41 @@ import { ExercisesService } from './services/exercises.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
+    <!-- Reveil du serveur. Prioritaire sur le spinner generique : il explique
+         une attente longue au lieu de la subir. -->
+    <div class="wake-overlay" *ngIf="showWakeOverlay()" role="status" aria-live="polite">
+      <div class="wake-card">
+        <div class="wake-bar"><div class="wake-fill" [style.width.%]="wakeProgress()"></div></div>
+        <h2>Réveil du serveur</h2>
+        <p>
+          L'hébergement gratuit met le serveur en veille après un moment
+          d'inactivité. Le redémarrage prend environ {{ expectedWakeSeconds }} secondes.
+        </p>
+        <p class="wake-timer">{{ wake.elapsed() }} s</p>
+        <button type="button" class="banner-dismiss wake-skip" (click)="wake.dismiss()">
+          Continuer sans attendre
+        </button>
+      </div>
+    </div>
+
+    <div class="wake-overlay" *ngIf="wake.failed() && !wake.dismissed()" role="alert">
+      <div class="wake-card">
+        <h2>Serveur injoignable</h2>
+        <p>
+          Le serveur n'a pas répondu. Tes séances enregistrées sur l'appareil
+          restent consultables.
+        </p>
+        <div class="wake-actions">
+          <button type="button" class="banner-action" (click)="wake.retry()">Réessayer</button>
+          <button type="button" class="banner-dismiss wake-skip" (click)="wake.dismiss()">
+            Continuer hors ligne
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Loading Overlay -->
-    <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-overlay" *ngIf="isLoading && !showWakeOverlay()">
       <div class="loading-spinner">
         <div class="spinner"></div>
         <p>Chargement...</p>
@@ -26,7 +62,27 @@ import { ExercisesService } from './services/exercises.service';
 
     <!-- Connection Status -->
     <div class="connection-status" [class.offline]="!isOnline" *ngIf="!isOnline">
-      <span>⚠️ Connexion interrompue</span>
+      <span>⚠️ Hors ligne — tes séances restent enregistrées sur l'appareil</span>
+    </div>
+
+    <!-- Mise a jour disponible. On ne recharge jamais sans l'accord de
+         l'utilisateur : couper une seance en cours serait inacceptable. -->
+    <div class="app-banner" *ngIf="pwa.updateReady()" role="status">
+      <span>Une nouvelle version est disponible.</span>
+      <button type="button" class="banner-action" (click)="pwa.applyUpdate()">
+        Mettre à jour
+      </button>
+      <button type="button" class="banner-dismiss" (click)="pwa.dismissUpdate()"
+              aria-label="Plus tard">✕</button>
+    </div>
+
+    <!-- Invite d'installation, proposee seulement quand le navigateur la juge
+         pertinente (evenement beforeinstallprompt). -->
+    <div class="app-banner install" *ngIf="showInstallBanner()" role="status">
+      <span>Installe FitnessPro pour l'utiliser hors ligne à la salle.</span>
+      <button type="button" class="banner-action" (click)="install()">Installer</button>
+      <button type="button" class="banner-dismiss" (click)="dismissInstall()"
+              aria-label="Plus tard">✕</button>
     </div>
   `,
   styles: [`
@@ -87,6 +143,129 @@ import { ExercisesService } from './services/exercises.service';
       from { transform: translateX(100%); }
       to { transform: translateX(0); }
     }
+
+    .app-banner {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      /* Au-dessus de la bottom nav (56px) plus l'encoche gestuelle. */
+      bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 12px);
+      z-index: 1200;
+
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+
+      width: min(520px, calc(100vw - 2rem));
+      padding: 0.75rem 0.75rem 0.75rem 1rem;
+
+      background: #0f0f16;
+      border: 1px solid rgba(212, 255, 61, 0.35);
+      border-radius: 1rem;
+      color: #f6f6f2;
+      font-size: 0.875rem;
+    }
+
+    .app-banner span { flex: 1; }
+
+    .banner-action {
+      flex-shrink: 0;
+      min-height: 40px;
+      padding: 0 0.875rem;
+      border: 0;
+      border-radius: 999px;
+      background: #d4ff3d;
+      color: #050505;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .banner-dismiss {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 999px;
+      background: none;
+      color: #a3a6a0;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .banner-action:focus-visible,
+    .banner-dismiss:focus-visible {
+      outline: 2px solid #d4ff3d;
+      outline-offset: 2px;
+    }
+
+    .wake-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: grid;
+      place-items: center;
+      padding: 1.5rem;
+      background: #050505;
+    }
+
+    .wake-card {
+      width: min(420px, 100%);
+      text-align: center;
+      color: #f6f6f2;
+    }
+
+    .wake-card h2 {
+      margin: 1.25rem 0 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .wake-card p {
+      margin: 0;
+      color: #a3a6a0;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    .wake-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(212, 255, 61, 0.15);
+      overflow: hidden;
+    }
+
+    .wake-fill {
+      height: 100%;
+      background: #d4ff3d;
+      border-radius: 2px;
+      transition: width 1s linear;
+    }
+
+    .wake-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 1.25rem;
+    }
+
+    .wake-skip {
+      width: auto;
+      height: auto;
+      min-height: 44px;
+      padding: 0 1rem;
+      font-size: 0.875rem;
+      text-decoration: underline;
+    }
+
+    .wake-timer {
+      margin-top: 1rem !important;
+      font-size: 1.75rem !important;
+      font-weight: 800;
+      color: #d4ff3d !important;
+      font-variant-numeric: tabular-nums;
+    }
   `]
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -97,18 +276,71 @@ export class AppComponent implements OnInit, OnDestroy {
   isOnline = navigator.onLine;
   currentRoute = '';
 
+  /** Masquee pour la session apres un refus explicite. */
+  private installDismissed = false;
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private exercisesService: ExercisesService
+    private exercisesService: ExercisesService,
+    public pwa: PwaService,
+    private reminders: ReminderService,
+    public wake: BackendWakeService
   ) {
     this.setupOnlineStatusMonitoring();
+
+    // Des le constructeur : le reveil du conteneur se deroule alors en
+    // parallele du bootstrap Angular au lieu de s'y ajouter.
+    this.wake.warm();
+  }
+
+  readonly expectedWakeSeconds = EXPECTED_WAKE_SECONDS;
+
+  /** Progression indicative : plafonnee a 95 % tant que le serveur n'a pas repondu. */
+  wakeProgress(): number {
+    return Math.min(95, (this.wake.elapsed() / EXPECTED_WAKE_SECONDS) * 100);
+  }
+
+  /**
+   * L'ecran d'attente ne doit jamais enfermer l'utilisateur. Il disparait des
+   * qu'il le demande, et de lui-meme au-dela du temps de reveil annonce : au
+   * dela, l'attente n'est plus explicable et mieux vaut rendre la main. Le ping
+   * continue en arriere-plan pendant ce temps.
+   */
+  showWakeOverlay(): boolean {
+    return (
+      this.wake.waking() &&
+      this.isOnline &&
+      !this.wake.dismissed() &&
+      this.wake.elapsed() <= EXPECTED_WAKE_SECONDS + 15
+    );
   }
 
   ngOnInit(): void {
     this.trackRouteChanges();
     this.setupLoadingState();
     this.performInitialChecks();
+
+    // Service worker + rattrapage des rappels. Les deux echouent en silence
+    // si la plateforme ne les supporte pas : l'app fonctionne sans.
+    this.pwa.init();
+    this.reminders.init();
+  }
+
+  showInstallBanner(): boolean {
+    return (
+      this.pwa.installAvailable() &&
+      !this.pwa.isInstalled() &&
+      !this.installDismissed
+    );
+  }
+
+  install(): void {
+    this.pwa.promptInstall();
+  }
+
+  dismissInstall(): void {
+    this.installDismissed = true;
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,11 @@
 <div class="app-container">
+  <!-- Desktop : navigation laterale. Masquee sous le point de rupture md. -->
   <app-sidebar></app-sidebar>
+
   <main class="main-content">
     <router-outlet></router-outlet>
   </main>
+
+  <!-- Mobile : barre d'onglets basse. Masquee au-dessus de md. -->
+  <app-bottom-nav></app-bottom-nav>
 </div>

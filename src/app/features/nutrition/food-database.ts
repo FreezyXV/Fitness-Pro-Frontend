@@ -54,6 +54,15 @@ export interface Food extends NutritionalValues {
     origin: string;
     sustainability: SustainabilityLevel;
     priceRange: PriceRange;
+
+    // ----- Aliments importes d'une base externe -----
+    // Optionnels : les 54 aliments curates de FOOD_DATABASE ne les portent pas.
+    /** 'openfoodfacts' pour un produit contributif, absent pour la base interne. */
+    source?: 'local' | 'openfoodfacts';
+    /** Code-barres EAN/UPC, quand l'aliment vient d'un scan. */
+    barcode?: string;
+    /** Nutri-Score A a E, tel que publie par OpenFoodFacts. */
+    nutriScore?: string;
 }
 
 export enum FoodCategory {
@@ -1353,13 +1362,33 @@ export const MEAL_TEMPLATES: PlannedMeal[] = [
 
 // FONCTIONS UTILITAIRES POUR LA BASE DE DONNÉES
 export class FoodDatabaseService {
-    
+
+    /**
+     * Aliments issus d'une base externe (OpenFoodFacts), indexes a l'execution.
+     *
+     * Ils vivent a part de FOOD_DATABASE pour deux raisons : ne pas polluer la
+     * base curatee utilisee par les regimes et les suggestions, et rester
+     * resolvables par getFoodById() — sans quoi addMealEntry() ne retrouverait
+     * jamais un produit scanne et l'ajout echouerait silencieusement.
+     */
+    private static readonly externalFoods = new Map<string, Food>();
+
+    /** Indexe un aliment externe pour qu'il devienne resolvable par son id. */
+    static registerExternalFood(food: Food): void {
+        this.externalFoods.set(food.id, food);
+    }
+
+    static registerExternalFoods(foods: Food[]): void {
+        foods.forEach(food => this.registerExternalFood(food));
+    }
+
     static getAllFoods(): Food[] {
         return FOOD_DATABASE;
     }
 
     static getFoodById(id: string): Food | undefined {
-        return FOOD_DATABASE.find(food => food.id === id);
+        return FOOD_DATABASE.find(food => food.id === id)
+            ?? this.externalFoods.get(id);
     }
 
     static getFoodsByCategory(category: FoodCategory): Food[] {

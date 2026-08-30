@@ -316,13 +316,37 @@
             </div>
             <input
               type="text"
-              placeholder="Rechercher dans {{
-                foodDatabase.length
-              }} aliments..."
+              placeholder="Rechercher un aliment ou un produit..."
               [(ngModel)]="searchTerm"
               (input)="searchFoods()"
               class="search-input advanced"
-            />
+            aria-label="Rechercher un aliment ou un produit"
+          />
+            <!-- Scan : place juste apres le champ, parce que c'est le geste
+                 le plus rapide pour ajouter un produit du commerce. -->
+            <button
+              type="button"
+              class="filters-toggle scan-toggle"
+              (click)="openScanner()"
+              aria-label="Scanner un code-barres"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+                <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+                <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+                <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+                <path d="M7 8v8M10.5 8v8M14 8v8M17 8v8" />
+              </svg>
+            </button>
             <button
               class="filters-toggle"
               (click)="showAdvancedFilters = !showAdvancedFilters"
@@ -348,7 +372,7 @@
                 <select
                   [(ngModel)]="searchFilters.category"
                   (change)="searchFoods()"
-                >
+            aria-label="Filtre : Toutes">
                   <option [ngValue]="null">Toutes</option>
                   <option
                     *ngFor="let category of foodCategories"
@@ -366,7 +390,8 @@
                   [(ngModel)]="searchFilters.maxCalories"
                   placeholder="ex: 100"
                   (input)="searchFoods()"
-                />
+            aria-label="ex: 100"
+          />
               </div>
 
               <div class="filter-group">
@@ -376,7 +401,8 @@
                   [(ngModel)]="searchFilters.minProtein"
                   placeholder="ex: 10"
                   (input)="searchFoods()"
-                />
+            aria-label="ex: 10"
+          />
               </div>
             </div>
 
@@ -451,12 +477,34 @@
           <div
             *ngFor="let food of searchResults"
             class="food-card detailed"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="'Voir la fiche de ' + food.name"
             (click)="openFoodInfoModal(food)"
+            (keydown.enter)="openFoodInfoModal(food)"
+            (keydown.space)="openFoodInfoModal(food)"
           >
             <div class="food-image-container">
-              <img [src]="food.imageUrl" [alt]="food.name" class="food-image" />
+              <img
+                [src]="food.imageUrl"
+                [alt]="food.name"
+                class="food-image"
+                loading="lazy"
+              />
               <div class="food-badges">
                 <span class="verified-badge" *ngIf="food.verified">✓</span>
+                <!-- Donnee contributive : on l'annonce plutot que de la
+                     presenter au meme niveau que la base curatee. -->
+                <span
+                  class="community-badge"
+                  *ngIf="isCommunityFood(food)"
+                  title="Donnée communautaire OpenFoodFacts, non vérifiée"
+                >OFF</span>
+                <span
+                  class="nutriscore-badge"
+                  *ngIf="food.nutriScore"
+                  [ngClass]="'nutriscore-' + food.nutriScore.toLowerCase()"
+                >{{ food.nutriScore }}</span>
                 <span
                   class="sustainability-badge"
                   [ngClass]="'sustainability-' + food.sustainability"
@@ -1148,7 +1196,8 @@
                 step="0.1"
                 min="0"
                 max="2"
-              />
+            aria-label="0.0"
+          />
               <button class="water-add-btn" (click)="addCustomWater()">
                 <svg
                   width="16"
@@ -1489,7 +1538,8 @@
               [(ngModel)]="searchTerm"
               (input)="searchFoods()"
               class="search-input"
-            />
+            aria-label="Rechercher un aliment"
+          />
           </div>
 
           <!-- Résultats de recherche -->
@@ -1515,7 +1565,8 @@
           <!-- Sélection du type de repas -->
           <div class="meal-type-section">
             <label>Type de repas:</label>
-            <select [(ngModel)]="selectedMealType" class="meal-type-select">
+            <select [(ngModel)]="selectedMealType" class="meal-type-select"
+            aria-label="Type de repas">
               <option *ngFor="let mealType of mealTypes" [value]="mealType.key">
                 {{ mealType.icon }} {{ mealType.label }}
               </option>
@@ -1531,7 +1582,8 @@
               min="1"
               max="1000"
               class="quantity-input"
-            />
+            aria-label="Champ de saisie"
+          />
           </div>
 
           <!-- Aperçu nutritionnel -->
@@ -1597,7 +1649,8 @@
                   name="dietName"
                   placeholder="Mon régime personnalisé"
                   required
-                />
+            aria-label="Mon régime personnalisé"
+          />
               </div>
               <div class="form-group">
                 <label>Objectif calorique *</label>
@@ -1608,7 +1661,8 @@
                   min="1200"
                   max="5000"
                   required
-                />
+            aria-label="Champ de saisie"
+          />
               </div>
             </div>
 
@@ -1636,7 +1690,8 @@
                   min="10"
                   max="70"
                   (input)="adjustMacroPercentages()"
-                />
+            aria-label="Champ de saisie"
+          />
               </div>
               <div class="macro-slider">
                 <label
@@ -1649,7 +1704,8 @@
                   min="15"
                   max="50"
                   (input)="adjustMacroPercentages()"
-                />
+            aria-label="Champ de saisie"
+          />
               </div>
               <div class="macro-slider">
                 <label>Lipides: {{ dietCreationForm.fatPercentage }}%</label>
@@ -1660,7 +1716,8 @@
                   min="15"
                   max="60"
                   (input)="adjustMacroPercentages()"
-                />
+            aria-label="Champ de saisie"
+          />
               </div>
             </div>
 
@@ -2302,3 +2359,11 @@
     </div>
   </div>
 </div>
+
+<!-- Scanner de code-barres. Monte a la demande : la camera n'est jamais
+     initialisee tant que l'utilisateur ne l'a pas explicitement ouverte. -->
+<app-barcode-scanner
+  *ngIf="showScanner"
+  (foodFound)="onScannedFood($event)"
+  (closed)="closeScanner()"
+></app-barcode-scanner>

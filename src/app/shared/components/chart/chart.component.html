@@ -1,0 +1,112 @@
+<figure class="chart" *ngIf="!isEmpty(); else empty">
+  <!-- role="img" + aria-label : le graphique est annonce comme une image
+       porteuse de sens, avec son resume chiffre. Le tableau ci-dessous prend
+       le relais pour qui veut les valeurs exactes. -->
+  <svg
+    #svg
+    class="chart-svg"
+    [attr.viewBox]="viewBox"
+    role="img"
+    [attr.aria-label]="summary()"
+    tabindex="0"
+    (pointermove)="onPointerMove($event, svg)"
+    (pointerleave)="onPointerLeave()"
+    (blur)="onPointerLeave()"
+    (keydown)="onKeydown($event)"
+  >
+    <!-- Graduations horizontales + axe Y -->
+    <g class="grid">
+      <g *ngFor="let tick of yTicks()">
+        <line
+          [attr.x1]="plotLeft" [attr.x2]="plotRight"
+          [attr.y1]="tick.y"   [attr.y2]="tick.y"
+        />
+        <text
+          class="axis-label"
+          [attr.x]="plotLeft - 8"
+          [attr.y]="tick.y + 4"
+          text-anchor="end"
+        >{{ formatTick(tick.value) }}</text>
+      </g>
+    </g>
+
+    <!-- Graduations de l'axe X -->
+    <g class="axis-x">
+      <text
+        *ngFor="let tick of xTicks()"
+        class="axis-label"
+        [attr.x]="tick.x"
+        [attr.y]="plotBottom + 18"
+        text-anchor="middle"
+      >{{ tick.text }}</text>
+    </g>
+
+    <!-- Serie -->
+    <ng-container *ngIf="chartType() === 'line'">
+      <path class="area" [attr.d]="areaPath()" />
+      <path class="line" [attr.d]="linePath()" />
+      <circle
+        *ngFor="let dot of dots()"
+        class="dot"
+        [class.is-active]="activeIndex() === dot.i"
+        [attr.cx]="dot.cx"
+        [attr.cy]="dot.cy"
+        r="3.5"
+      />
+    </ng-container>
+
+    <ng-container *ngIf="chartType() === 'bar'">
+      <rect
+        *ngFor="let bar of bars()"
+        class="bar"
+        [class.is-active]="activeIndex() === bar.i"
+        [attr.x]="bar.x"
+        [attr.y]="bar.y"
+        [attr.width]="bar.width"
+        [attr.height]="bar.height"
+        rx="2"
+      />
+    </ng-container>
+
+    <!-- Infobulle -->
+    <g class="tooltip" *ngIf="active() as a">
+      <line class="tooltip-guide"
+            [attr.x1]="a.x" [attr.x2]="a.x"
+            [attr.y1]="plotTop" [attr.y2]="plotBottom" />
+      <rect class="tooltip-box"
+            [attr.x]="a.boxX" [attr.y]="a.boxY"
+            [attr.width]="a.boxWidth" height="40" rx="8" />
+      <text class="tooltip-title" [attr.x]="a.boxX + 10" [attr.y]="a.boxY + 16">{{ a.title }}</text>
+      <text class="tooltip-value" [attr.x]="a.boxX + 10" [attr.y]="a.boxY + 32">{{ a.value }}</text>
+    </g>
+  </svg>
+
+  <!-- Equivalent textuel : seule facon fiable de restituer des valeurs
+       exactes a un lecteur d'ecran. Masque visuellement, pas du DOM. -->
+  <figcaption class="sr-only">
+    <table>
+      <caption>{{ caption }}</caption>
+      <thead>
+        <tr><th scope="col">Date</th><th scope="col">Valeur ({{ unit || 'sans unité' }})</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let point of data()">
+          <td>{{ point.label ?? rowLabel(point) }}</td>
+          <td>{{ point.y }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </figcaption>
+</figure>
+
+<ng-template #empty>
+  <div class="chart-empty">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+         stroke-linecap="round" aria-hidden="true">
+      <path d="M3 3v18h18" />
+      <path d="M7 15l4-4 3 3 5-6" />
+    </svg>
+    <p>Pas encore assez de données.</p>
+    <p class="chart-empty-hint">Termine une séance pour voir ta courbe apparaître.</p>
+  </div>
+</ng-template>

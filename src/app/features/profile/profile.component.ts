@@ -76,6 +76,8 @@ class FormUtils {
   }
 }
 
+import { ReminderService, ReminderSettings } from '@core/services/reminder.service';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -136,12 +138,56 @@ export class ProfileComponent implements OnInit, OnDestroy {
     { value: 'extremely_active', label: 'Extrêmement actif' }
   ];
 
+  // ===== RAPPELS DE SEANCE =====
+  /** Public : le template interroge `supported` et `permission()`. */
+  reminderSettings: ReminderSettings = { enabled: false, days: [], time: '18:00' };
+
+  readonly weekDays = [
+    { iso: 1, short: 'Lun' },
+    { iso: 2, short: 'Mar' },
+    { iso: 3, short: 'Mer' },
+    { iso: 4, short: 'Jeu' },
+    { iso: 5, short: 'Ven' },
+    { iso: 6, short: 'Sam' },
+    { iso: 7, short: 'Dim' },
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    public reminders: ReminderService
   ) {
     this.initializeForms();
+    this.reminderSettings = { ...this.reminders.settings() };
+  }
+
+  /**
+   * Activation des rappels. save() demande l'autorisation si besoin et
+   * repasse `enabled` a false en cas de refus : on relit donc l'etat reel du
+   * service plutot que de faire confiance a la case cochee.
+   */
+  async toggleReminders(event: Event): Promise<void> {
+    const enabled = (event.target as HTMLInputElement).checked;
+    await this.reminders.save({ ...this.reminderSettings, enabled });
+    this.reminderSettings = { ...this.reminders.settings() };
+  }
+
+  async toggleReminderDay(iso: number): Promise<void> {
+    const days = this.reminderSettings.days.includes(iso)
+      ? this.reminderSettings.days.filter((d) => d !== iso)
+      : [...this.reminderSettings.days, iso].sort((a, b) => a - b);
+
+    await this.reminders.save({ ...this.reminderSettings, days });
+    this.reminderSettings = { ...this.reminders.settings() };
+  }
+
+  async setReminderTime(event: Event): Promise<void> {
+    const time = (event.target as HTMLInputElement).value;
+    if (!time) return;
+
+    await this.reminders.save({ ...this.reminderSettings, time });
+    this.reminderSettings = { ...this.reminders.settings() };
   }
 
   ngOnInit(): void {
@@ -358,14 +404,14 @@ getBMIPosition(): number {
 
   getBMIColor(): string {
     if (!this.user || !this.user.height || !this.user.weight) {
-      return '#6b7280';
+      return '#cbd0c2'; // = $text-secondary, lisible sur fond sombre
     }
     
     try {
       const bmi = BMIUtils.calculate(this.user.height, this.user.weight);
       return BMIUtils.getColor(bmi);
     } catch (error) {
-      return '#6b7280';
+      return '#cbd0c2'; // = $text-secondary, lisible sur fond sombre
     }
   }
 

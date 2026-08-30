@@ -285,7 +285,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     this.error = null;
 
     // Simulate API call with enhanced mock data
-    of(this.getMockChallenges())
+    of(this.getBuiltInChallenges())
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => {
@@ -306,7 +306,12 @@ export class ChallengesComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getMockChallenges(): EnhancedChallenge[] {
+  /**
+   * Defis proposes par l'application : du CONTENU, au meme titre qu'un
+   * programme d'entrainement predefini. Les champs decrivant l'etat de
+   * l'utilisateur partent a zero et n'evoluent que par ses actions.
+   */
+  private getBuiltInChallenges(): EnhancedChallenge[] {
     const now = new Date();
     const getDate = (days: number) => new Date(now.getTime() + days * 24 * 60 * 60 * 1000);
     
@@ -323,17 +328,20 @@ export class ChallengesComponent implements OnInit, OnDestroy {
         unit: 'jours',
         reward: '150 points + Badge Zen Master',
         rewardPoints: 150,
-        participantsCount: 2847,
-        participants: 2847,
+        // Etat utilisateur et communaute remis a zero : cette copie annoncait
+        // 2 847 participants et 18 jours de progression a quelqu'un qui
+        // ouvrait l'app pour la premiere fois.
+        participantsCount: 0,
+        participants: 0,
         maxParticipants: undefined,
-        isJoined: true,
+        isJoined: false,
         isCompleted: false,
-        currentProgress: 18,
-        progress: 18,
+        currentProgress: 0,
+        progress: 0,
         maxProgress: 30,
         image: '/assets/images/meditation-challenge.jpg',
-        status: 'active',
-        startDate: getDate(-18).toISOString(),
+        status: 'available',
+        startDate: now.toISOString(),
         endDate: getDate(12).toISOString(),
         tasks: [
           {
@@ -669,75 +677,15 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     };
   }
 
+  /**
+   * Le classement reste vide tant qu'il n'existe pas de vrais pratiquants a
+   * classer. Cette methode remplissait la liste de deux profils inventes
+   * ('Sarah Champion', 'Alex Warrior'), dont l'un marque comme etant
+   * l'utilisateur courant : l'app attribuait donc a chaque visiteur un
+   * palmares qui n'etait pas le sien. L'ecran affiche un etat vide honnete.
+   */
   private loadLeaderboardData(): void {
-    this.leaderboardData = [
-      {
-        id: 1,
-        name: 'Sarah Champion',
-        avatar: '/assets/avatars/user1.jpg',
-        points: 2450,
-        progress: 95,
-        rank: 1,
-        score: 2450,
-        challengesWon: 18,
-        streak: 67,
-        badges: ['🏆', '🔥', '💪', '🧠'],
-        totalChallenges: 22
-      },
-      {
-        id: 2,
-        name: 'Alex Warrior',
-        avatar: '/assets/avatars/user2.jpg',
-        points: 2100,
-        progress: 87,
-        rank: 2,
-        score: 2100,
-        isCurrentUser: true,
-        challengesWon: 14,
-        streak: 45,
-        badges: ['🔥', '💪', '🧠'],
-        totalChallenges: 18
-      },
-      {
-        id: 3,
-        name: 'Emma Fitness',
-        avatar: '/assets/avatars/user3.jpg',
-        points: 1950,
-        progress: 82,
-        rank: 3,
-        score: 1950,
-        challengesWon: 12,
-        streak: 38,
-        badges: ['💪', '🧠'],
-        totalChallenges: 16
-      },
-      {
-        id: 4,
-        name: 'Mike Strong',
-        avatar: '/assets/avatars/user4.jpg',
-        points: 1750,
-        progress: 78,
-        rank: 4,
-        score: 1750,
-        challengesWon: 10,
-        streak: 32,
-        badges: ['💪'],
-        totalChallenges: 14
-      },
-      {
-        id: 5,
-        name: 'Lisa Zen',
-        avatar: '/assets/avatars/user5.jpg',
-        points: 1620,
-        progress: 72,
-        rank: 5,
-        score: 1620,
-        challengesWon: 9,
-        streak: 28,
-        badges: ['🧠'],
-        totalChallenges: 13
-      }
-    ];
+    this.leaderboardData = [];
   }
 
   private refreshChallenges(): void {

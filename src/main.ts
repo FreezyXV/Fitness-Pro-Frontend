@@ -2,6 +2,39 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
+import { environment } from './environments/environment';
+
+/**
+ * Coupe les journaux de developpement en production.
+ *
+ * L'app comptait 352 appels a console.log, dont dans le service
+ * d'authentification (« Attempting guest login », contenu des jetons stockes,
+ * emails). Publies dans la console d'un navigateur, ils bruitent le
+ * diagnostic des vrais problemes et exposent des informations qui n'ont rien
+ * a y faire.
+ *
+ * On neutralise ici plutot que de reecrire 352 sites d'appel : le compilateur
+ * ne supprime pas ces appels, et un service de log dedie aurait demande de
+ * toucher chaque fichier pour un benefice identique.
+ *
+ * warn et error sont CONSERVES : ce sont eux qui servent au diagnostic en
+ * production, et les couper reviendrait a se priver de tout signal.
+ */
+function silenceDevLogsInProduction(): void {
+  if (!environment.production) return;
+
+  const noop = () => undefined;
+  console.log = noop;
+  console.debug = noop;
+  console.info = noop;
+  console.trace = noop;
+  console.group = noop;
+  console.groupCollapsed = noop;
+  console.groupEnd = noop;
+  console.table = noop;
+}
+
+silenceDevLogsInProduction();
 
 // Global error handler
 function setupGlobalErrorHandler(): void {

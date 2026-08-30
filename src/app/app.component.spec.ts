@@ -145,7 +145,9 @@ describe('AppComponent', () => {
 
     const connectionStatus = fixture.nativeElement.querySelector('.connection-status');
     expect(connectionStatus).toBeTruthy();
-    expect(connectionStatus?.textContent).toContain('Connexion interrompue');
+    // Le message a change volontairement : « Connexion interrompue » ne
+    // disait pas a l'utilisateur ce qu'il advenait de sa seance en cours.
+    expect(connectionStatus?.textContent).toContain('Hors ligne');
   });
 
   it('should hide connection status while online', () => {

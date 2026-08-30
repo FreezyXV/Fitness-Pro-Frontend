@@ -69,7 +69,11 @@ $gray-200: #181820;
 $gray-300: #21212a;
 $gray-400: #2c2c36;
 $gray-500: #42424c;
-$gray-600: #f6f6f2;
+// Etait #f6f6f2 (quasi blanc) : l'echelle n'etait pas monotone et
+// var(--gray-600) cassait silencieusement tout contraste. Les 137 usages
+// designaient en realite une couleur de texte, ils pointent desormais sur
+// $text-primary. La valeur ci-dessous remet l'echelle en ordre.
+$gray-600: #5a5a64;
 $gray-700: #7d7d85;
 $gray-800: #a4a4ab;
 $gray-900: #e4e4e7;
@@ -90,6 +94,12 @@ $text-secondary: #cbd0c2;
 $text-muted: #9ea294;
 $text-light: #f6f6f2;
 $text-inverse: #050505;
+
+// Couleur du texte POSE SUR un aplat de la couleur de marque. Token dedie
+// parce que l'erreur est facile : $primary-dark ressemble a un neutre sombre
+// alors que c'est un lime fonce (#a1d428), illisible sur le lime clair.
+// Rapport de contraste sur $primary-color : 15,3:1.
+$on-primary: #050505;
 
 // =============================================
 // TYPOGRAPHY
@@ -186,70 +196,67 @@ $border-color: rgba(212, 255, 61, 0.35);
 $border-color-focus: rgba(212, 255, 61, 0.65);
 
 // Border radius system
-$border-radius: 3rem;
-$border-radius-sm: 3rem;
-$border-radius-md: 3rem;
-$border-radius-lg: 3rem;
-$border-radius-xl: 3rem;
-$border-radius-2xl: 3rem;
-$border-radius-3xl: 3rem;
-$border-radius-4xl: 3rem;
-$border-radius-full: 3rem;
-
-// Border radius aliases
-$radius-xs: 3rem;
-$radius-sm: 3rem;
-$radius-md: 3rem;
-$radius-lg: 3rem;
-$radius-xl: 3rem;
-$radius-2xl: 3rem;
-$radius-3xl: 3rem;
-$radius-4xl: 3rem;
+// Les 17 tokens valaient tous 3rem : une puce de 20px et une carte pleine
+// largeur recevaient le meme rayon de 48px, ce qui transformait les petits
+// elements en pilules et les grands en galets. L'echelle ci-dessous restaure
+// une hierarchie tout en gardant le parti pris genereux du design.
+$radius-xs:   0.375rem;  // puces, badges
+$radius-sm:   0.625rem;  // champs, petits boutons
+$radius-md:   0.875rem;  // boutons, tuiles
+$radius-lg:   1.125rem;  // valeur par defaut
+$radius-xl:   1.5rem;    // cartes
+$radius-2xl:  2rem;      // grandes cartes
+$radius-3xl:  2.5rem;    // sections
+$radius-4xl:  3rem;      // heros
+// Deux tokens distincts, volontairement : `full` fait un cercle (element
+// carre), `pill` fait un bouton allonge. Les confondre deformait les avatars.
 $radius-full: 50%;
+$radius-pill: 999px;
+
+// Alias historiques. Conserves parce qu'ils sont utilises 510 fois ; ils
+// pointent desormais sur l'echelle plutot que sur une valeur unique.
+$border-radius-sm:   $radius-sm;
+$border-radius:      $radius-lg;
+$border-radius-md:   $radius-md;
+$border-radius-lg:   $radius-xl;
+$border-radius-xl:   $radius-2xl;
+$border-radius-2xl:  $radius-3xl;
+$border-radius-3xl:  $radius-4xl;
+$border-radius-4xl:  $radius-4xl;
+$border-radius-full: $radius-pill;
 
 // =============================================
 // SHADOWS
 // =============================================
 
-$shadow-xs: none;
-$shadow-sm: none;
-$shadow-md: none;
-$shadow-lg: none;
-$shadow-xl: none;
-$shadow-2xl: none;
-$shadow-3xl: none;
+// Les ~25 tokens valaient tous `none`, et 120 box-shadow ecrits en dur les
+// contournaient avec des halos de l'ancienne couleur de marque. On retablit
+// une echelle reelle : ombres neutres pour la profondeur, halo colore reserve
+// aux actions principales.
+//
+// Sur un fond #050505 une ombre noire est presque invisible : les opacites
+// sont donc elevees, c'est volontaire.
+$shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.40);
+$shadow-sm:  0 2px 6px rgba(0, 0, 0, 0.45);
+$shadow-md:  0 4px 12px rgba(0, 0, 0, 0.50);
+$shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.55);
+$shadow-xl:  0 16px 40px rgba(0, 0, 0, 0.60);
+$shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.65);
+$shadow-3xl: 0 32px 80px rgba(0, 0, 0, 0.70);
 
-// Base shadow alias
-$shadow: none;
+$shadow: $shadow-md;
 
 // =============================================
 // BREAKPOINTS
 // =============================================
 
-$breakpoint-sm: 640px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 1024px;
-$breakpoint-xl: 1280px;
-$breakpoint-2xl: 1536px;
-
-$grid-breakpoints: (
-  xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px,
-  xxl: 1400px
-);
-
-$breakpoints: (
-  "xs": 320px,
-  "sm": 480px,
-  "md": 768px,
-  "lg": 1024px,
-  "xl": 1200px,
-  "xxl": 1400px,
-  "xxxl": 1600px,
-);
+// Les trois echelles qui vivaient ici ($breakpoint-*, $grid-breakpoints et
+// une map $breakpoints que _design-system.scss masquait de toute facon) ont
+// ete supprimees au profit d'une reference unique.
+//
+// L'echelle canonique et les mixins respond-below() / respond-above() sont
+// definis dans _design-system.scss. N'ecrivez plus jamais de media query
+// avec une valeur en dur : utilisez les mixins.
 
 // =============================================
 // Z-INDEX
@@ -490,28 +497,24 @@ $gradient-info-enhanced: $info-color;
 // =============================================
 
 // Premium Shadow System
-$shadow-premium: none;
-$shadow-premium-hover: none;
+// Halos derives de la couleur de marque. Definis APRES $primary-color pour
+// que tout changement de marque se propage sans rien reecrire.
+$glow-primary-sm: 0 2px 12px rgba($primary-color, 0.18);
+$glow-primary-md: 0 6px 22px rgba($primary-color, 0.26);
+$glow-primary-lg: 0 12px 36px rgba($primary-color, 0.32);
+$glow-danger-md:  0 6px 22px rgba($danger-color, 0.26);
+$focus-ring:      0 0 0 3px rgba($primary-color, 0.35);
+
 
 // Component-specific premium shadows
-$shadow-button: none;
-$shadow-button-hover: none;
-$shadow-card-premium: none;
 
 // Interactive Shadows
-$shadow-primary: none;
-$shadow-primary-hover: none;
-$shadow-secondary: none;
-$shadow-secondary-hover: none;
-$shadow-danger: none;
-$shadow-danger-hover: none;
+$shadow-primary: $glow-primary-md;
+$shadow-primary-hover: $glow-primary-lg;
+$shadow-secondary: $shadow-md;
+$shadow-danger: $glow-danger-md;
 
 // Glassmorphism & Focus Shadows
-$shadow-glass: none;
-$shadow-glass-hover: none;
-$shadow-focus: none;
-$shadow-focus-danger: none;
-$form-input-shadow-focus: none;
 
 // Glassmorphism Variables
 $glass-bg: rgba($surface-secondary, 0.05);
@@ -611,6 +614,18 @@ $white-rgba-30: $glass-white-30;
 // endroit.
 
 // Rouges / danger — trois rouges coexistent pour le meme role
+// Teintes claires des memes couleurs, destinees au TEXTE sur fond sombre.
+// Les nuances 600 a 900 de cette palette sont calibrees pour un fond blanc :
+// utilisees comme couleur de texte ici, elles tombaient entre 2,0:1 et 3,9:1.
+// On garde les deux gammes : la sombre reste correcte pour un aplat.
+$c-red-300-on-dark:     #fc8181;
+$c-orange-300-on-dark:  #fdba74;
+$c-orange-200-on-dark:  #fed7aa;
+$c-emerald-300-on-dark: #6ee7b7;
+$c-green-300-on-dark:   #86efac;
+$c-violet-300-on-dark:  #c4b5fd;
+$c-cyan-300-on-dark:    #67e8f9;
+
 $c-red-500: #ef4444;
 $c-red-600: #dc2626;
 $c-red-bootstrap: #dc3545;
@@ -621,7 +636,7 @@ $c-red-100: #fed7d7;
 $c-green-500: #22c55e;
 $c-green-600: #16a34a;
 $c-green-bootstrap: #28a745;
-$c-green-brand: #21bf73;
+$c-green-brand: $primary-color;
 $c-emerald-500: #10b981;
 $c-emerald-600: #059669;
 
@@ -639,7 +654,7 @@ $c-terracotta: #e17055;
 $c-blue-500: #3b82f6;
 $c-cyan-600: #0891b2;
 $c-cyan-bootstrap: #17a2b8;
-$c-indigo-400: #667eea;
+$c-indigo-400: $secondary-color;
 $c-purple-500: #764ba2;
 $c-violet-600: #7c3aed;
 

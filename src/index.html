@@ -1,11 +1,44 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Frontend</title>
+  <title>FitnessPro — Entraînement & nutrition</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Suis tes séances, tes charges et ta nutrition. Fonctionne hors ligne à la salle.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#050505">
+
+  <!-- iOS n'implemente pas le manifest : ces balises sont le seul moyen
+       d'obtenir une icone et un affichage plein ecran a l'ajout a l'accueil. -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FitnessPro">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Reveil anticipe du backend.
+       Le serveur est heberge sur un plan gratuit qui se met en veille : la
+       premiere requete met 30 a 50 s. Ce ping part AVANT le telechargement des
+       bundles Angular, donc le redemarrage du conteneur se deroule pendant que
+       l'app se charge, au lieu de s'y ajouter. Quelques centaines d'octets pour
+       recuperer plusieurs dizaines de secondes.
+       preconnect ouvre en plus TCP+TLS des le parsing du <head>. -->
+  <link rel="preconnect" href="https://fitness-pro-backend-n30g.onrender.com" crossorigin>
+  <script>
+    (function () {
+      var host = location.hostname;
+      if (host === 'localhost' || host === '127.0.0.1') return;
+      // keepalive : la requete survit a la navigation qui suit.
+      fetch('https://fitness-pro-backend-n30g.onrender.com/api/status', {
+        cache: 'no-store',
+        keepalive: true
+      }).catch(function () { /* l'app gere le cas via BackendWakeService */ });
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

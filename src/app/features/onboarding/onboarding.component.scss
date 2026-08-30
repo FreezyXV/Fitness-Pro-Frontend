@@ -1,0 +1,414 @@
+@use 'variables' as *;
+@use 'design-system' as *;
+
+.onboarding {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  // dvh : sur mobile, la barre d'URL fait varier 100vh et coupe le bas.
+  min-height: 100dvh;
+  background: $bg-primary;
+  padding: env(safe-area-inset-top, 0px) 1.25rem calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
+}
+
+// =============================================
+// EN-TETE
+// =============================================
+
+.ob-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.ob-back {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: $text-secondary;
+  cursor: pointer;
+
+  svg { width: 20px; height: 20px; }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: -2px;
+  }
+}
+
+.ob-progress {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba($primary-color, 0.15);
+  overflow: hidden;
+}
+
+.ob-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: $primary-color;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ob-count {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: $text-secondary;
+  font-variant-numeric: tabular-nums;
+}
+
+// =============================================
+// CORPS
+// =============================================
+
+.ob-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+}
+
+.ob-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: $text-primary;
+  text-align: center;
+}
+
+.ob-lead {
+  margin: 0;
+  color: $text-secondary;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+// =============================================
+// CHOIX
+// =============================================
+
+.ob-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.ob-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+
+  // 68px : cible large, atteignable au pouce sans viser.
+  min-height: 68px;
+  padding: 0.875rem 1.25rem;
+
+  appearance: none;
+  border: $border-width solid $border-color;
+  border-radius: 1.25rem;
+  background: $surface-secondary;
+  cursor: pointer;
+  text-align: left;
+
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.12s ease;
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &.is-selected {
+    border-color: $primary-color;
+    background: rgba($primary-color, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+.ob-choice-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $text-primary;
+}
+
+.ob-choice-hint {
+  font-size: 0.8125rem;
+  color: $text-secondary;
+}
+
+// =============================================
+// MESURES
+// =============================================
+
+.ob-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ob-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+
+  @include respond-below(xs) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ob-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+
+  label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $text-secondary;
+  }
+}
+
+.ob-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+
+  padding: 0 0.75rem;
+  border: $border-width solid $border-color;
+  border-radius: 0.875rem;
+  background: $surface-secondary;
+
+  &:focus-within {
+    border-color: $primary-color;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    min-height: 52px;
+
+    border: 0;
+    background: none;
+    color: $text-primary;
+    font: inherit;
+    // 1rem minimum : en dessous, iOS zoome automatiquement au focus.
+    font-size: 1rem;
+    font-weight: 700;
+
+    &:focus { outline: none; }
+
+    // Les fleches natives volent de la place sans servir au tactile.
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+    appearance: textfield;
+  }
+}
+
+.ob-unit {
+  flex-shrink: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: $text-secondary;
+}
+
+.ob-gender {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  legend {
+    width: 100%;
+    padding: 0 0 0.5rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: $text-secondary;
+  }
+}
+
+.ob-pill {
+  min-height: 48px;
+  padding: 0 1.125rem;
+
+  appearance: none;
+  border: $border-width solid $border-color;
+  border-radius: 999px;
+  background: $surface-secondary;
+  color: $text-secondary;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  &.is-selected {
+    background: $primary-color;
+    border-color: $primary-color;
+    color: $on-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+  }
+}
+
+// =============================================
+// ACTIONS
+// =============================================
+
+.ob-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.ob-primary {
+  min-height: 54px;
+  padding: 0 1.5rem;
+
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  background: $primary-color;
+  color: $on-primary;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 3px;
+  }
+}
+
+.ob-ghost {
+  min-height: 48px;
+
+  appearance: none;
+  border: 0;
+  background: none;
+  color: $text-secondary;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+}
+
+// =============================================
+// RESULTAT
+// =============================================
+
+.ob-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.ob-check {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+
+  border-radius: 999px;
+  background: rgba($primary-color, 0.15);
+  color: $primary-color;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.ob-program {
+  width: 100%;
+  padding: 1.25rem;
+  border: $border-width solid $primary-color;
+  border-radius: 1.25rem;
+  background: rgba($primary-color, 0.07);
+  text-align: left;
+
+  h2 {
+    margin: 0 0 0.375rem;
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: $text-primary;
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+}
+
+.ob-program-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+
+  span {
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    background: rgba($primary-color, 0.15);
+    color: $primary-color;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
+
+.ob-result .ob-primary,
+.ob-result .ob-ghost {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-progress-fill,
+  .ob-choice {
+    transition: none;
+  }
+}

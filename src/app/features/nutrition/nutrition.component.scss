@@ -258,7 +258,7 @@ padding: 0.25rem;
       height: 100px;
       background: radial-gradient(
         circle,
-        rgba(33, 191, 115, 0.2),
+        rgba($primary-color, 0.2),
         transparent 70%
       );
       border-radius: 50%;
@@ -304,7 +304,7 @@ padding: 0.25rem;
       }
 
       .page-subtitle {
-        color: $gray-600;
+        color: $text-primary;
         font-size: clamp(0.875rem, 2.5vw, 1.125rem);
         margin: 0;
         font-weight: 500;
@@ -348,7 +348,7 @@ padding: 0.25rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 8px 20px rgba(33, 191, 115, 0.3);
+        box-shadow: 0 8px 20px rgba($primary-color, 0.3);
       }
 
       .stat-content {
@@ -395,12 +395,12 @@ padding: 0.25rem;
 
       &.primary {
         background: $primary-gradient;
-        color: black;
-        box-shadow: 0 8px 30px rgba(33, 191, 115, 0.4);
+        color: $on-primary;
+        box-shadow: 0 8px 30px rgba($primary-color, 0.4);
 
         &:hover {
           transform: translateY(-3px);
-          box-shadow: 0 15px 40px rgba(33, 191, 115, 0.5);
+          box-shadow: 0 15px 40px rgba($primary-color, 0.5);
 
           &::before {
             left: 100%;
@@ -410,12 +410,12 @@ padding: 0.25rem;
 
       &.secondary {
         background: $secondary-gradient;
-        color: black;
-        box-shadow: 0 8px 30px rgba(0, 181, 173, 0.4);
+        color: $on-primary;
+        box-shadow: 0 8px 30px rgba($secondary-color, 0.4);
 
         &:hover {
           transform: translateY(-3px);
-          box-shadow: 0 15px 40px rgba(0, 181, 173, 0.5);
+          box-shadow: 0 15px 40px rgba($secondary-color, 0.5);
 
           &::before {
             left: 100%;
@@ -425,7 +425,7 @@ padding: 0.25rem;
 
       &.tertiary {
         background: $info-gradient;
-        color: black;
+        color: $on-primary;
         box-shadow: 0 8px 30px rgba(116, 185, 255, 0.4);
 
         &:hover {
@@ -440,12 +440,12 @@ padding: 0.25rem;
 
       &.quaternary {
         background: $accent-gradient;
-        color: white;
-        box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        color: $on-primary;
+        box-shadow: 0 8px 30px rgba($secondary-color, 0.4);
 
         &:hover {
           transform: translateY(-3px);
-          box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+          box-shadow: 0 15px 40px rgba($secondary-color, 0.5);
 
           &::before {
             left: 100%;
@@ -483,7 +483,7 @@ padding: 0.25rem;
         align-items: center;
         gap: 0.5rem;
         background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
-        color: white;
+        color: $on-primary;
         padding: 0.75rem 1rem;
         border-radius: $border-radius-xl;
         font-weight: 700;
@@ -600,7 +600,7 @@ padding: 0.25rem;
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 8px 20px rgba($secondary-color, 0.3);
     }
 
     .selected-date {
@@ -665,53 +665,12 @@ padding: 0.25rem;
     }
 
     .nav-tab {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 2rem;
-      border: none;
-      background: transparent;
-      border-radius: $border-radius-xl;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      color: $gray-600;
-      font-size: 0.875rem;
-      font-weight: 600;
-      position: relative;
-      overflow: hidden;
-
+      @include tab-base;
       &::before {
-        @include shimmer-overlay(rgba(33, 191, 115, 0.1), left 0.6s, $skew: null);
+        @include shimmer-overlay(rgba($primary-color, 0.1), left 0.6s, $skew: null);
       }
-
       .nav-icon {
         transition: transform 0.3s ease;
-      }
-
-      &:hover {
-        background: rgba(33, 191, 115, 0.1);
-        color: $primary-color;
-        transform: translateY(-2px);
-
-        .nav-icon {
-          transform: scale(1.1);
-        }
-
-        &::before {
-          left: 100%;
-        }
-      }
-
-      &.active {
-        background: $primary-gradient;
-        color: black;
-        box-shadow: 0 8px 20px rgba(33, 191, 115, 0.4);
-
-        .nav-icon {
-          transform: scale(1.1);
-        }
       }
     }
   }
@@ -758,61 +717,18 @@ padding: 0.25rem;
   }
 
   .card-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-
-    .header-icon {
-      font-size: 2rem;
-      width: 60px;
-      height: 60px;
-      border-radius: $border-radius-xl;
-      background: $primary-gradient;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 20px rgba(33, 191, 115, 0.3);
-      animation: float 6s ease-in-out infinite;
-    }
-
-    .header-content {
-      flex: 1;
-
-      h2,
-      h3 {
-        margin: 0 0 0.25rem 0;
-        color: $gray-900;
-        font-weight: 800;
-      }
-
-      h2 {
-        font-size: 1.75rem;
-      }
-
-      h3 {
-        font-size: 1.5rem;
-      }
-
-      p {
-        margin: 0;
-        color: $gray-600;
-        font-size: 1rem;
-      }
-    }
-
+    @include card-header;
     &.expandable {
       cursor: pointer;
       user-select: none;
 
       &:hover {
-        background: rgba(33, 191, 115, 0.05);
+        background: rgba($primary-color, 0.05);
         border-radius: $border-radius-lg;
         margin: -0.5rem;
         padding: 0.5rem;
       }
     }
-
     .expand-btn {
       background: rgba($surface-secondary, 0.8);
       border: $border-width solid $border-color;
@@ -824,10 +740,10 @@ padding: 0.25rem;
       justify-content: center;
       cursor: pointer;
       transition: all 0.3s ease;
-      color: $gray-600;
+      color: $text-primary;
 
       &:hover {
-        background: rgba(33, 191, 115, 0.1);
+        background: rgba($primary-color, 0.1);
         border-color: $primary-color;
         color: $primary-color;
         transform: scale(1.1);
@@ -864,7 +780,7 @@ padding: 0.25rem;
         position: absolute;
         left: 1rem;
         z-index: 2;
-        color: $gray-500;
+        color: $text-muted;
       }
 
       .search-input {
@@ -888,12 +804,12 @@ padding: 0.25rem;
         }
 
         &::placeholder {
-          color: $gray-400;
+          color: $text-muted;
         }
       }
 
       .filters-toggle {
-        @include modern-button(rgba(102, 126, 234, 0.1));
+        @include modern-button(rgba($secondary-color, 0.1));
         width: 48px;
         height: 48px;
         border-radius: $border-radius-lg;
@@ -901,7 +817,7 @@ padding: 0.25rem;
         border: $border-width solid $border-color;
 
         &:hover {
-          background: rgba(102, 126, 234, 0.2);
+          background: rgba($secondary-color, 0.2);
           border-color: $accent-color;
         }
       }
@@ -974,12 +890,12 @@ padding: 0.25rem;
 
                 &:hover {
                   border-color: $primary-color;
-                  background: rgba(33, 191, 115, 0.1);
+                  background: rgba($primary-color, 0.1);
                 }
 
                 &.active {
                   background: $primary-gradient;
-                  color: white;
+                  color: $on-primary;
                   border-color: $primary-color;
                 }
               }
@@ -1014,12 +930,12 @@ gap: 2rem;
         transform: translateY(-2px);
         box-shadow: $shadow;
         border-color: $primary-color;
-        background: rgba(33, 191, 115, 0.1);
+        background: rgba($primary-color, 0.1);
       }
 
       &.selected {
         background: $primary-gradient;
-        color: black;
+        color: $on-primary;
         border-color: $primary-color;
       }
 
@@ -1043,12 +959,12 @@ gap: 2rem;
         }
 
         .category-count {
-          color: white;
+          color: $on-primary;
           font-size: 1rem;
           opacity: 0.8;
 
           &.selected {
-         color: black;
+         color: $on-primary;
           }
         }
       }
@@ -1108,7 +1024,7 @@ gap: 2rem;
 
           .verified-badge {
             background: $success-gradient;
-            color: white;
+            color: $on-primary;
             padding: 0.25rem 0.5rem;
             border-radius: $border-radius;
             font-size: 0.75rem;
@@ -1157,7 +1073,7 @@ gap: 2rem;
         }
 
         .food-description {
-          color: $gray-600;
+          color: $text-primary;
           font-size: 1rem;
           line-height: 1.4;
           margin-bottom: 1rem;
@@ -1187,7 +1103,7 @@ gap: 2rem;
             }
 
             .nutrition-unit {
-              color: $gray-600;
+              color: $text-primary;
               font-size: 1rem;
               font-weight: 600;
             }
@@ -1202,7 +1118,7 @@ gap: 2rem;
 
           .dietary-tag {
             padding: 0.25rem 0.5rem;
-            background: rgba(33, 191, 115, 0.1);
+            background: rgba($primary-color, 0.1);
             color: $primary-color;
             border-radius: $border-radius;
             font-size: 0.75rem;
@@ -1210,7 +1126,7 @@ gap: 2rem;
           }
 
           .more-tags {
-            color: $gray-500;
+            color: $text-muted;
             font-size: 0.75rem;
             font-weight: 600;
           }
@@ -1225,7 +1141,7 @@ gap: 2rem;
         border-top: $border-width solid $border-color;
 
         .btn-icon {
-          @include modern-button(rgba(33, 191, 115, 0.1));
+          @include modern-button(rgba($primary-color, 0.1));
           width: 36px;
           height: 36px;
           border-radius: 50%;
@@ -1233,7 +1149,7 @@ gap: 2rem;
           border: $border-width solid $border-color;
 
           &:hover {
-            background: rgba(33, 191, 115, 0.2);
+            background: rgba($primary-color, 0.2);
             border-color: $primary-color;
           }
         }
@@ -1272,25 +1188,25 @@ gap: 2rem;
 
       &.create-diet {
         background: $primary-gradient;
-        color: white;
-        box-shadow: 0 8px 20px rgba(33, 191, 115, 0.3);
+        color: $on-primary;
+        box-shadow: 0 8px 20px rgba($primary-color, 0.3);
       }
 
       &.ai-diet {
         background: $accent-gradient;
-        color: white;
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        color: $on-primary;
+        box-shadow: 0 8px 20px rgba($secondary-color, 0.3);
       }
 
       &.templates {
         background: $info-gradient;
-        color: white;
+        color: $on-primary;
         box-shadow: 0 8px 20px rgba(116, 185, 255, 0.3);
       }
 
       &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 15px 40px rgba(33, 191, 115, 0.4);
+        box-shadow: 0 15px 40px rgba($primary-color, 0.4);
 
         &::before {
           left: 100%;
@@ -1310,14 +1226,14 @@ gap: 2rem;
 
       .action-content {
         h3 {
-          color: black;
+          color: $on-primary;
           margin: 0 0 0.25rem 0;
           font-size: 1.125rem;
           font-weight: 700;
         }
 
         p {
-          color: black;
+          color: $on-primary;
           margin: 0;
           opacity: 0.9;
         }
@@ -1350,11 +1266,11 @@ gap: 2rem;
       }
 
       &.professional {
-        border-color: 4px solid $primary-color;
+        border: 4px solid $primary-color;
       }
 
       &.custom {
-        border-color: 4px solid $accent-color;
+        border: 4px solid $accent-color;
       }
 
       .diet-header {
@@ -1411,7 +1327,7 @@ gap: 2rem;
           }
 
           .custom-badge {
-            background: rgba(102, 126, 234, 0.2);
+            background: rgba($secondary-color, 0.2);
             color: $accent-color;
           }
         }
@@ -1443,7 +1359,7 @@ gap: 2rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: $on-primary;
             font-size: 0.75rem;
             font-weight: 600;
 
@@ -1474,7 +1390,7 @@ gap: 2rem;
 
         .objective-tag {
           padding: 0.25rem 0.5rem;
-          background: rgba(33, 191, 115, 0.1);
+          background: rgba($primary-color, 0.1);
           color: $primary-color;
           border-radius: $border-radius;
           font-size: 0.75rem;
@@ -1502,7 +1418,7 @@ gap: 2rem;
         }
 
         .diet-duration {
-          color: $gray-600;
+          color: $text-primary;
           font-size: 0.875rem;
           font-weight: 600;
         }
@@ -1515,7 +1431,7 @@ gap: 2rem;
         margin-top: 1rem;
 
         .btn-icon {
-          @include modern-button(rgba(102, 126, 234, 0.1));
+          @include modern-button(rgba($secondary-color, 0.1));
           width: 36px;
           height: 36px;
           border-radius: 50%;
@@ -1524,16 +1440,16 @@ gap: 2rem;
 
           &.edit {
             color: $primary-color;
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
           }
 
           &.share {
             color: $info-gradient;
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
           }
 
           &:hover {
-            background: rgba(102, 126, 234, 0.2);
+            background: rgba($secondary-color, 0.2);
             border-color: $accent-color;
           }
         }
@@ -1564,7 +1480,7 @@ gap: 2rem;
 
       &.pre-workout {
         background: rgba(255, 107, 107, 0.2);
-        color: #e74c3c;
+        color: #ff7a6b;
         border: $border-width solid $border-color;
 
         &:hover {
@@ -1575,7 +1491,7 @@ gap: 2rem;
 
       &.post-workout {
         background: rgba(116, 185, 255, 0.2);
-        color: #3498db;
+        color: #7ec8f5;
         border: $border-width solid $border-color;
 
         &:hover {
@@ -1681,7 +1597,7 @@ gap: 2rem;
       }
 
       .tip-science {
-        color: $gray-600;
+        color: $text-primary;
         font-style: italic;
         font-size: 0.875rem;
       }
@@ -1787,12 +1703,12 @@ gap: 2rem;
             }
 
             .separator {
-              color: $gray-500;
+              color: $text-muted;
               font-size: 1.25rem;
             }
 
             .goal {
-              color: $gray-600;
+              color: $text-primary;
               font-size: 1rem;
               font-weight: 600;
             }
@@ -1832,7 +1748,7 @@ gap: 2rem;
         .remaining,
         .remaining-info {
           font-size: 0.875rem;
-          color: $gray-600;
+          color: $text-primary;
           font-weight: 500;
         }
       }
@@ -1847,18 +1763,7 @@ gap: 2rem;
   box-shadow: 0 25px 50px rgba(116, 185, 255, 0.3);
 
   .card-header {
-    .header-icon {
-      background: rgba($surface-secondary, 0.2);
-      color: white;
-    }
-
-    .header-content {
-      h3,
-      p {
-        color: rgb(71, 130, 247);
-      }
-    }
-
+    @include card-header;
     .hydration-percentage {
       font-size: 1.5rem;
       font-weight: 800;
@@ -1925,7 +1830,7 @@ gap: 2rem;
 
           &:hover {
             background: rgb(71, 130, 247);
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
             transform: translateY(-2px) scale(1.05);
           }
         }
@@ -1952,7 +1857,7 @@ gap: 2rem;
 
           &:focus {
             outline: none;
-            border-color: $border-width solid $border-color;
+            border: $border-width solid $border-color;
             background: rgb(71, 130, 247);
           }
         }
@@ -2000,19 +1905,19 @@ gap: 2rem;
 
       &.primary {
         background: $primary-gradient;
-        color: white;
-        box-shadow: 0 8px 20px rgba(33, 191, 115, 0.3);
+        color: $on-primary;
+        box-shadow: 0 8px 20px rgba($primary-color, 0.3);
       }
 
       &.secondary {
         background: $secondary-gradient;
-        color: white;
-        box-shadow: 0 8px 20px rgba(0, 181, 173, 0.3);
+        color: $on-primary;
+        box-shadow: 0 8px 20px rgba($secondary-color, 0.3);
       }
 
       &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 15px 40px rgba(33, 191, 115, 0.4);
+        box-shadow: 0 15px 40px rgba($primary-color, 0.4);
 
         &::before {
           left: 100%;
@@ -2032,14 +1937,14 @@ gap: 2rem;
 
       .action-content {
         h3 {
-          color: black;
+          color: $on-primary;
           margin: 0 0 0.25rem 0;
           font-size: 1.125rem;
           font-weight: 700;
         }
 
         p {
-          color: black;
+          color: $on-primary;
           margin: 0;
           opacity: 0.9;
         }
@@ -2104,11 +2009,11 @@ gap: 2rem;
           }
 
           .meal-timing {
-            color: $gray-600;
+            color: $text-primary;
             font-size: 0.75rem;
             font-weight: 600;
             padding: 0.25rem 0.5rem;
-            background: rgba(33, 191, 115, 0.1);
+            background: rgba($primary-color, 0.1);
             border-radius: $border-radius-lg;
           }
         }
@@ -2175,7 +2080,7 @@ gap: 2rem;
 
               p {
                 margin: 0;
-                color: $gray-600;
+                color: $text-primary;
                 font-size: 0.875rem;
               }
             }
@@ -2197,7 +2102,7 @@ gap: 2rem;
               }
 
               .unit {
-                color: $gray-600;
+                color: $text-primary;
                 font-size: 0.75rem;
                 font-weight: 600;
               }
@@ -2225,13 +2130,13 @@ gap: 2rem;
           font-size: 3rem;
           margin-bottom: 1rem;
           opacity: 0.5;
-          color: $gray-400;
+          color: $text-muted;
         }
 
         p {
           margin: 0 0 1.5rem 0;
           font-size: 1rem;
-          color: $gray-600;
+          color: $text-primary;
         }
 
         .add-first-btn {
@@ -2348,7 +2253,7 @@ gap: 2rem;
       }
 
       .insight-action {
-        background: rgba(33, 191, 115, 0.1);
+        background: rgba($primary-color, 0.1);
         padding: 1rem;
         border-radius: $border-radius-lg;
         margin-bottom: 1rem;
@@ -2360,7 +2265,7 @@ gap: 2rem;
       }
 
       .insight-science {
-        color: $gray-600;
+        color: $text-primary;
         font-style: italic;
         font-size: 0.875rem;
       }
@@ -2441,13 +2346,13 @@ gap: 2rem;
         border-color: #95a5a6;
       }
       &.rarity-rare {
-        border-color: #3498db;
+        border-color: #7ec8f5;
       }
       &.rarity-epic {
         border-color: #9b59b6;
       }
       &.rarity-legendary {
-        border-color: #f39c12;
+        border-color: #ffc85c;
       }
 
       .achievement-icon {
@@ -2465,7 +2370,7 @@ gap: 2rem;
 
         p {
           margin: 0 0 1rem 0;
-          color: $gray-600;
+          color: $text-primary;
           line-height: 1.5;
         }
 
@@ -2483,7 +2388,7 @@ gap: 2rem;
 
           .progress-text {
             font-size: 0.875rem;
-            color: $gray-600;
+            color: $text-primary;
             font-weight: 600;
           }
         }
@@ -2533,7 +2438,7 @@ gap: 2rem;
 
         .challenge-reward {
           background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
-          color: white;
+          color: $on-primary;
           padding: 0.5rem 1rem;
           border-radius: $border-radius-xl;
           font-size: 0.875rem;
@@ -2595,11 +2500,11 @@ gap: 2rem;
 
     &.primary {
       background: $primary-gradient;
-      color: white;
+      color: $on-primary;
 
       &:hover {
         transform: scale(1.1) translateY(-2px);
-        box-shadow: 0 15px 40px rgba(33, 191, 115, 0.4);
+        box-shadow: 0 15px 40px rgba($primary-color, 0.4);
 
         &::before {
           left: 100%;
@@ -2853,7 +2758,7 @@ gap: 2rem;
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        color: $gray-600;
+        color: $text-primary;
         font-size: 1.125rem;
         font-weight: 700;
       }
@@ -2877,7 +2782,7 @@ gap: 2rem;
             position: absolute;
             left: 1rem;
             z-index: 2;
-            color: $gray-500;
+            color: $text-muted;
           }
 
           .search-input {
@@ -2896,7 +2801,7 @@ gap: 2rem;
             }
 
             &::placeholder {
-              color: $gray-400;
+              color: $text-muted;
             }
           }
         }
@@ -2917,7 +2822,7 @@ gap: 2rem;
           margin-bottom: 0.5rem;
 
           &:hover {
-            background: rgba(33, 191, 115, 0.1);
+            background: rgba($primary-color, 0.1);
           }
 
           &.selected {
@@ -3002,7 +2907,7 @@ gap: 2rem;
             }
 
             .label {
-              color: $gray-600;
+              color: $text-primary;
               font-weight: 600;
             }
 
@@ -3057,7 +2962,7 @@ gap: 2rem;
                 &:focus {
                   outline: none;
                   border-color: $primary-color;
-                  box-shadow: 0 0 0 3px rgba(33, 191, 115, 0.1);
+                  box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
                 }
               }
 
@@ -3095,7 +3000,7 @@ gap: 2rem;
                   background: $primary-gradient;
                   border-radius: 50%;
                   cursor: pointer;
-                  box-shadow: 0 4px 8px rgba(33, 191, 115, 0.3);
+                  box-shadow: 0 4px 8px rgba($primary-color, 0.3);
                 }
 
                 &::-moz-range-thumb {
@@ -3105,7 +3010,7 @@ gap: 2rem;
                   border-radius: 50%;
                   cursor: pointer;
                   border: none;
-                  box-shadow: 0 4px 8px rgba(33, 191, 115, 0.3);
+                  box-shadow: 0 4px 8px rgba($primary-color, 0.3);
                 }
               }
             }
@@ -3162,7 +3067,7 @@ gap: 2rem;
 
               &:hover {
                 border-color: $primary-color;
-                background: rgba(33, 191, 115, 0.1);
+                background: rgba($primary-color, 0.1);
               }
 
               &.active {
@@ -3191,7 +3096,7 @@ gap: 2rem;
 
               &:hover {
                 border-color: $primary-color;
-                background: rgba(33, 191, 115, 0.1);
+                background: rgba($primary-color, 0.1);
               }
 
               &.active {
@@ -3226,7 +3131,7 @@ gap: 2rem;
 
           &.selected {
             border-color: $primary-color;
-            background: rgba(33, 191, 115, 0.1);
+            background: rgba($primary-color, 0.1);
           }
 
           .template-header {
@@ -3269,7 +3174,7 @@ gap: 2rem;
               }
 
               .time {
-                color: $gray-600;
+                color: $text-primary;
                 font-size: 0.875rem;
                 font-weight: 600;
               }
@@ -3302,7 +3207,7 @@ gap: 2rem;
               }
 
               .food-quantity {
-                color: $gray-600;
+                color: $text-primary;
                 font-size: 0.875rem;
                 font-weight: 600;
               }
@@ -3324,7 +3229,7 @@ gap: 2rem;
 
               &.secondary {
                 background: rgba(0, 0, 0, 0.1);
-                color: $gray-600;
+                color: $text-primary;
 
                 &:hover {
                   background: rgba(0, 0, 0, 0.15);
@@ -3363,7 +3268,7 @@ gap: 2rem;
 
         &.secondary {
           background: rgba(0, 0, 0, 0.1);
-          color: $gray-600;
+          color: $text-primary;
 
           &:hover {
             background: rgba(0, 0, 0, 0.15);
@@ -3623,7 +3528,7 @@ gap: 2rem;
 
       &.selected {
         border-color: $primary-color;
-        background: rgba(33, 191, 115, 0.1);
+        background: rgba($primary-color, 0.1);
       }
 
       .diet-comparison-header {
@@ -3660,7 +3565,7 @@ gap: 2rem;
           .rating-label {
             font-size: 0.875rem;
             font-weight: 600;
-            color: $gray-600;
+            color: $text-primary;
           }
 
           .rating-stars {
@@ -3891,7 +3796,7 @@ gap: 2rem;
     }
 
     p {
-      color: $gray-600;
+      color: $text-primary;
       font-size: 1.125rem;
       margin: 0;
     }
@@ -3918,7 +3823,7 @@ gap: 2rem;
       &:focus {
         outline: none;
         border-color: $primary-color;
-        box-shadow: 0 0 0 3px rgba(33, 191, 115, 0.1);
+        box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
       }
     }
   }
@@ -4051,12 +3956,7 @@ align-items: end;
       flex-wrap: wrap;
 
       .nav-tab {
-        flex: 0 1 calc(50% - 0.25rem);
-        min-width: 80px;
-
-        span {
-          font-size: 0.75rem;
-        }
+        @include tab-base;
       }
     }
 
@@ -4461,7 +4361,7 @@ textarea:focus {
     &:focus {
       outline: none;
       border-color: $primary-color;
-      box-shadow: 0 0 0 3px rgba(33, 191, 115, 0.1);
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
     }
 
     option {
@@ -4474,8 +4374,8 @@ textarea:focus {
 .current-diet-card {
   @extend %card-base;
   background: linear-gradient(135deg, $primary-color 0%, #00b5ad 100%);
-  color: white;
-  box-shadow: 0 25px 50px rgba(33, 191, 115, 0.3);
+  color: $on-primary;
+  box-shadow: 0 25px 50px rgba($primary-color, 0.3);
   position: relative;
   overflow: hidden;
 
@@ -4496,21 +4396,11 @@ textarea:focus {
   }
 
   .card-header {
-    .header-icon {
-      background: rgba($surface-secondary, 0.2);
-      color: white;
-    }
-
-    .header-content {
-      h3, p {
-        color: white;
-      }
-    }
-
+    @include card-header;
     .diet-score {
       font-size: 1.5rem;
       font-weight: 800;
-      color: white;
+      color: $on-primary;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       padding: 0.5rem 1rem;
       border-radius: $border-radius-xl;
@@ -4542,7 +4432,7 @@ textarea:focus {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 0.5rem;
-      color: white;
+      color: $on-primary;
       font-weight: 600;
     }
 
@@ -4584,19 +4474,19 @@ textarea:focus {
 
       &.secondary {
         background: rgba($surface-secondary, 0.2);
-        color: white;
+        color: $on-primary;
 
         &:hover {
           background: rgba($surface-secondary, 0.3);
-          border-color: $border-width solid $border-color;
+          border: $border-width solid $border-color;
           transform: translateY(-2px);
         }
       }
 
       &.warning {
         background: rgba(239, 68, 68, 0.3);
-        color: white;
-        border-color: $border-width solid $border-color;
+        color: $on-primary;
+        border: $border-width solid $border-color;
 
         &:hover {
           background: rgba(239, 68, 68, 0.5);
@@ -4652,14 +4542,14 @@ textarea:focus {
     }
 
     &.details {
-      background: rgba(33, 191, 115, 0.2);
+      background: rgba($primary-color, 0.2);
       color: $primary-color;
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba(33, 191, 115, 0.3);
+        background: rgba($primary-color, 0.3);
         transform: translateY(-2px) scale(1.1);
-        box-shadow: 0 8px 20px rgba(33, 191, 115, 0.4);
+        box-shadow: 0 8px 20px rgba($primary-color, 0.4);
       }
     }
 
@@ -4709,7 +4599,7 @@ textarea:focus {
 // Currently Followed Diet Styling
 .diet-card.currently-followed {
   border: $border-width solid $border-color;
-  background: linear-gradient(135deg, rgba(33, 191, 115, 0.1) 0%, rgba(0, 181, 173, 0.1) 100%);
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($secondary-color, 0.1) 100%);
   position: relative;
   overflow: hidden;
 
@@ -4723,7 +4613,7 @@ textarea:focus {
     background: linear-gradient(
       45deg,
       transparent,
-      rgba(33, 191, 115, 0.1),
+      rgba($primary-color, 0.1),
       transparent
     );
     animation: shimmer 3s infinite;
@@ -4731,7 +4621,7 @@ textarea:focus {
 
   &:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(33, 191, 115, 0.3);
+    box-shadow: 0 20px 40px rgba($primary-color, 0.3);
   }
 
   .diet-actions {
@@ -4784,7 +4674,7 @@ textarea:focus {
         }
 
         .stat-label {
-          color: $gray-600;
+          color: $text-primary;
           font-size: 0.875rem;
           font-weight: 600;
         }
@@ -4893,7 +4783,7 @@ textarea:focus {
       }
 
       .macro-grams {
-        color: $gray-600;
+        color: $text-primary;
         font-size: 0.875rem;
         font-weight: 600;
       }
@@ -4938,7 +4828,7 @@ textarea:focus {
       gap: 0.5rem;
 
       .objective-tag {
-        background: rgba(33, 191, 115, 0.2);
+        background: rgba($primary-color, 0.2);
         color: $primary-color;
         padding: 0.5rem 1rem;
         border-radius: $border-radius-lg;
@@ -4947,7 +4837,7 @@ textarea:focus {
         transition: all 0.3s ease;
 
         &:hover {
-          background: rgba(33, 191, 115, 0.3);
+          background: rgba($primary-color, 0.3);
           transform: translateY(-1px);
         }
       }
@@ -4972,7 +4862,7 @@ textarea:focus {
 
 // Current Tracking Section
 .current-tracking {
-  background: linear-gradient(135deg, rgba(33, 191, 115, 0.1) 0%, rgba(0, 181, 173, 0.1) 100%);
+  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($secondary-color, 0.1) 100%);
   padding: 1.5rem;
   border-radius: $border-radius-xl;
   border: $border-width solid $border-color;
@@ -4998,7 +4888,7 @@ textarea:focus {
 
       .label {
         display: block;
-        color: $gray-600;
+        color: $text-primary;
         font-size: 0.875rem;
         font-weight: 600;
         margin-bottom: 0.25rem;
@@ -5209,7 +5099,7 @@ textarea:focus {
         .nutrient-value {
           font-size: 1.5rem;
           font-weight: 700;
-          color: $c-slate-800;
+          color: $text-muted;
           line-height: 1.2;
         }
 
@@ -5234,7 +5124,7 @@ textarea:focus {
       margin: 0 0 1rem 0;
       font-size: 1.1rem;
       font-weight: 600;
-      color: $c-slate-800;
+      color: $text-muted;
     }
 
     p {
@@ -5272,7 +5162,7 @@ textarea:focus {
     margin: 0 0 1.5rem 0;
     font-size: 1.2rem;
     font-weight: 600;
-    color: $c-slate-800;
+    color: $text-muted;
   }
 
   .nutrients-grid {
@@ -5459,7 +5349,7 @@ textarea:focus {
         .indicator-value {
           font-size: 1.1rem;
           font-weight: 600;
-          color: $c-slate-800;
+          color: $text-muted;
         }
       }
     }
@@ -5536,4 +5426,51 @@ textarea:focus {
 .nutrition-container .action-btn.secondary {
   background: rgba($primary-color, 0.15);
   color: $text-primary;
+}
+
+// =============================================
+// SCAN DE CODE-BARRES & ORIGINE DES DONNEES
+// =============================================
+
+.scan-toggle {
+  // Meme gabarit que .filters-toggle, mais accentue : le scan est l'action
+  // la plus rapide pour ajouter un produit du commerce, elle doit se voir.
+  color: $primary-color;
+}
+
+.community-badge {
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.375rem;
+  background: rgba($text-secondary, 0.2);
+  color: $text-secondary;
+  font-size: 0.5625rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.nutriscore-badge {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 0.25rem;
+  border-radius: 0.375rem;
+  color: #0b0b0b;
+  font-size: 0.6875rem;
+  font-weight: 900;
+
+  // Couleurs officielles du Nutri-Score : les detourner induirait en erreur.
+  &.nutriscore-a { background: #038141; color: #fff; }
+  &.nutriscore-b { background: #85bb2f; }
+  &.nutriscore-c { background: #fecb02; }
+  &.nutriscore-d { background: #ee8100; color: #fff; }
+  &.nutriscore-e { background: #e63e11; color: #fff; }
+}
+
+.food-card.detailed {
+  // La carte est desormais operable au clavier : il lui faut un focus visible.
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 3px;
+  }
 }

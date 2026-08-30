@@ -517,28 +517,11 @@ export class ExerciseUtils {
   }
 
   /**
-   * Génère des URLs alternatives pour les vidéos
+   * Il n'existe plus qu'une URL par exercice : la resolution est centralisee
+   * dans exercise-media.ts. Cette methode enumerait des variantes de nom de
+   * fichier pour deviner un chemin local, ce qui n'a plus d'objet.
    */
   static generateAlternativeVideoUrls(originalUrl: string): string[] {
-    if (!originalUrl) return [];
-
-    const alternatives: string[] = [originalUrl];
-    
-    // Si c'est un fichier local, générer des variantes
-    if (originalUrl.includes('/assets/') || originalUrl.startsWith('assets/')) {
-      const filename = originalUrl.split('/').pop() || '';
-      const basePath = '/assets/ExercicesVideos/';
-      
-      alternatives.push(
-        basePath + filename,
-        basePath + filename.toLowerCase(),
-        basePath + filename.replace(/\s+/g, '_'),
-        basePath + filename.replace(/\s+/g, '-'),
-        basePath + filename.replace(/[^a-zA-Z0-9.-]/g, '_')
-      );
-    }
-
-    // Supprimer les doublons
-    return [...new Set(alternatives)];
+    return originalUrl ? [originalUrl] : [];
   }
 }

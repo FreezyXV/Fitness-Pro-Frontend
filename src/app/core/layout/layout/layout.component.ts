@@ -5,6 +5,7 @@ import { RouterOutlet, RouterModule } from '@angular/router';
 
 // Import de votre SidebarComponent sophistiquée
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { BottomNavComponent } from '../bottom-nav/bottom-nav.component';
 
 @Component({
   selector: 'app-layout',
@@ -13,7 +14,8 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
     CommonModule,
     RouterOutlet,
     RouterModule,
-    SidebarComponent  // Utilisation de votre sidebar sophistiquée
+    SidebarComponent,   // Desktop
+    BottomNavComponent  // Mobile
   ],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']

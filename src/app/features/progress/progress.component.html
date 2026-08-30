@@ -1,0 +1,189 @@
+<div class="progress-page">
+
+  <header class="page-head">
+    <div>
+      <h1>Progression</h1>
+      <p class="page-sub">Ce que disent réellement tes séances.</p>
+    </div>
+
+    <!-- Selecteur de periode : un vrai groupe de boutons radio, pas des divs
+         cliquables, pour que la selection soit annoncee et navigable. -->
+    <div class="period-switch" role="radiogroup" aria-label="Période analysée">
+      <button
+        *ngFor="let option of periods"
+        type="button"
+        role="radio"
+        [attr.aria-checked]="period().weeks === option.weeks"
+        [class.is-active]="period().weeks === option.weeks"
+        (click)="selectPeriod(option)"
+      >{{ option.label }}</button>
+    </div>
+  </header>
+
+  <!-- ============ AUCUNE DONNEE ============ -->
+  <section class="onboarding-empty" *ngIf="!hasData()">
+    <div class="empty-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3v18h18" />
+        <path d="M7 15l4-4 3 3 5-6" />
+      </svg>
+    </div>
+    <h2>Ta progression commence à la première séance</h2>
+    <p>
+      Dès que tu termines une séance, les charges et le volume que tu as
+      réellement travaillés apparaissent ici. Rien n'est simulé : tant que tu
+      n'as pas soulevé, il n'y a rien à montrer.
+    </p>
+    <a routerLink="/workouts" class="btn-primary">Voir mes programmes</a>
+  </section>
+
+  <!-- ============ DONNEES ============ -->
+  <ng-container *ngIf="hasData()">
+
+    <!-- Indicateurs -->
+    <section class="kpi-row" aria-label="Résumé de la période">
+      <div class="kpi">
+        <span class="kpi-value">{{ summary().sessions }}</span>
+        <span class="kpi-label">séances</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-value">{{ summary().sessionsPerWeek }}</span>
+        <span class="kpi-label">par semaine</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-value">{{ summary().sets }}</span>
+        <span class="kpi-label">séries</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi-value">{{ formatKg(summary().volumeKg) }}</span>
+        <span class="kpi-label">kg soulevés</span>
+      </div>
+    </section>
+
+    <!-- Volume hebdomadaire -->
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <h2>Volume hebdomadaire</h2>
+          <p class="card-sub">Répétitions × charge, cumulées par semaine.</p>
+        </div>
+      </div>
+      <app-chart
+        [points]="weeklyVolume()"
+        type="bar"
+        unit="kg"
+        caption="Volume soulevé par semaine"
+      ></app-chart>
+    </section>
+
+    <!-- Regularite -->
+    <section class="card">
+      <div class="card-head">
+        <div>
+          <h2>Régularité</h2>
+          <p class="card-sub">Nombre de séances par semaine.</p>
+        </div>
+      </div>
+      <app-chart
+        [points]="weeklySessions()"
+        type="bar"
+        unit="séances"
+        caption="Séances réalisées par semaine"
+      ></app-chart>
+    </section>
+
+    <!-- Charge par exercice -->
+    <section class="card" *ngIf="exercises().length; else noLoadData">
+      <div class="card-head">
+        <div>
+          <h2>Charge par exercice</h2>
+          <p class="card-sub">Série la plus lourde de chaque séance.</p>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="exercise-select">Exercice</label>
+          <select
+            id="exercise-select"
+            class="field-select"
+            [value]="currentExerciseId()"
+            (change)="selectExercise($event)"
+          >
+            <option *ngFor="let ex of exercises()" [value]="ex.exerciseId">
+              {{ ex.exerciseName }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Lecture chiffree avant le graphique : elle repond a la question
+           "est-ce que je progresse" sans avoir a interpreter une courbe. -->
+      <div class="trend" *ngIf="loadTrend() as trend">
+        <span class="trend-badge" [class]="'is-' + trend.direction">
+          <ng-container [ngSwitch]="trend.direction">
+            <ng-container *ngSwitchCase="'up'">+{{ trend.delta }} kg</ng-container>
+            <ng-container *ngSwitchCase="'down'">{{ trend.delta }} kg</ng-container>
+            <ng-container *ngSwitchDefault>stable</ng-container>
+          </ng-container>
+        </span>
+        <span class="trend-text">
+          sur {{ currentExerciseName() }}, {{ period().label | lowercase }}
+          <ng-container *ngIf="trend.direction !== 'flat'">
+            ({{ trend.percent > 0 ? '+' : '' }}{{ trend.percent }} %)
+          </ng-container>
+        </span>
+      </div>
+
+      <app-chart
+        [points]="loadSeries()"
+        type="line"
+        unit="kg"
+        [caption]="'Charge sur ' + currentExerciseName()"
+      ></app-chart>
+
+      <div class="record" *ngIf="personalRecord() as pr">
+        <div class="record-item">
+          <span class="record-label">Record</span>
+          <span class="record-value">{{ pr.weight }} kg × {{ pr.reps }}</span>
+          <span class="record-date">{{ formatDate(pr.date) }}</span>
+        </div>
+        <div class="record-item" *ngIf="recordOneRm() as orm">
+          <span class="record-label">1RM estimé</span>
+          <span class="record-value">{{ orm }} kg</span>
+          <span class="record-date">formule d'Epley</span>
+        </div>
+      </div>
+    </section>
+
+    <ng-template #noLoadData>
+      <section class="card">
+        <h2>Charge par exercice</h2>
+        <p class="card-sub">
+          Aucune charge enregistrée sur la période. Renseigne le poids pendant
+          tes séries pour suivre ta progression de force.
+        </p>
+      </section>
+    </ng-template>
+
+    <!-- 1RM estime -->
+    <section class="card" *ngIf="oneRmSeries().length > 1">
+      <div class="card-head">
+        <div>
+          <h2>1RM estimé — {{ currentExerciseName() }}</h2>
+          <p class="card-sub">
+            Charge maximale théorique sur une répétition, calculée par la
+            formule d'Epley. Indicative : elle perd en précision au-delà de
+            12 répétitions.
+          </p>
+        </div>
+      </div>
+      <app-chart
+        [points]="oneRmSeries()"
+        type="line"
+        unit="kg"
+        [caption]="'1RM estimé sur ' + currentExerciseName()"
+      ></app-chart>
+    </section>
+
+  </ng-container>
+</div>
