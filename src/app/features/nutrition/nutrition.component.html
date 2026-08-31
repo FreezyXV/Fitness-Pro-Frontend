@@ -451,7 +451,9 @@
             [class.selected]="selectedFoodCategory === category"
             (click)="selectFoodCategory(category)"
           >
-            <div class="category-icon">{{ getFoodCategoryIcon(category) }}</div>
+            <div class="category-icon">
+              <app-icon [name]="getFoodCategoryIcon(category)" [size]="28"></app-icon>
+            </div>
             <div class="category-info">
               <h4>{{ getFoodCategoryLabel(category) }}</h4>
               <span class="category-count">
