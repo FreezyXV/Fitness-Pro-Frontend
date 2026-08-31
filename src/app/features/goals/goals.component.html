@@ -122,8 +122,10 @@
       <div class="filter-controls-grid">
         <!-- Status Filter -->
         <div class="filter-group">
+          <!-- Deux des quatre intitules portaient une icone, les deux autres
+               non : les libelles ne partageaient donc aucune ligne de base et
+               les menus deroulants dessous etaient decales de 10 px. -->
           <label class="filter-label">
-            <span>⏱️</span>
             <span>Statut</span>
           </label>
           <select
@@ -140,7 +142,6 @@
         <!-- Category Filter -->
         <div class="filter-group">
           <label class="filter-label">
-            <span><app-icon name="book"></app-icon></span>
             <span>Catégorie</span>
           </label>
           <select
@@ -161,7 +162,6 @@
         <!-- Priority Filter -->
         <div class="filter-group">
           <label class="filter-label">
-            <span><app-icon name="flame"></app-icon></span>
             <span>Priorité</span>
           </label>
           <select
@@ -182,7 +182,6 @@
         <!-- Sort Filter -->
         <div class="filter-group">
           <label class="filter-label">
-            <span>⇅</span>
             <span>Trier par</span>
           </label>
           <select
@@ -431,7 +430,10 @@
             >
               <polyline points="20,6 9,17 4,12" />
             </svg>
-            <span>{{ getGoalActionState(goal.id!) === 'completing' ? getGoalActionLabel(goal.id!, 'Marquer comme accompli') : 'Marquer comme accompli' }}</span>
+            <!-- « Marquer comme accompli » se cassait en trois lignes dans une
+                 carte a deux boutons : le libelle dit la meme chose en un mot,
+                 l'intitule complet reste dans l'infobulle. -->
+            <span>{{ getGoalActionState(goal.id!) === 'completing' ? getGoalActionLabel(goal.id!, 'Accomplir') : 'Accomplir' }}</span>
           </button>
 
           <button
@@ -452,7 +454,7 @@
               <circle cx="12" cy="12" r="10"/>
               <rect x="9" y="9" width="6" height="6"/>
             </svg>
-            <span>{{ getGoalActionState(goal.id!) === 'pausing' ? getGoalActionLabel(goal.id!, 'Mettre en pause') : 'Mettre en pause' }}</span>
+            <span>{{ getGoalActionState(goal.id!) === 'pausing' ? getGoalActionLabel(goal.id!, 'Pause') : 'Pause' }}</span>
           </button>
 
           <!-- PAUSED STATE -->
@@ -491,7 +493,7 @@
             >
               <polyline points="20,6 9,17 4,12" />
             </svg>
-            <span>🎉 Accompli!</span>
+            <span>Accompli</span>
           </button>
 
           <button
@@ -705,9 +707,9 @@
                   class="status-display"
                   [style.color]="selectedGoal.statusColor"
                 >
-                  <span class="status-icon">{{
-                    getStatusIcon(selectedGoal.status)
-                  }}</span>
+                  <!-- getStatusIcon() rendait un emoji (⏳, ▶️, ⏸️, ✅) ; il
+                       renvoie desormais un nom du jeu d'icones. -->
+                  <app-icon class="status-icon" [name]="getStatusIcon(selectedGoal.status)" [size]="14"></app-icon>
                   <span>{{ getStatusLabel(selectedGoal.status) }}</span>
                 </div>
               </div>
@@ -769,7 +771,7 @@
                 class="timeline-item"
                 *ngIf="selectedGoal.daysRemaining !== undefined"
               >
-                <div class="timeline-icon">⏱️</div>
+                <div class="timeline-icon"><app-icon name="clock" [size]="16"></app-icon></div>
                 <div class="timeline-content">
                   <span class="timeline-label">Temps restant</span>
                   <span class="timeline-value">

@@ -40,11 +40,10 @@
         <div class="exercise-meta-info">
           <div class="meta-badges">
             <div class="difficulty-badge" [attr.data-level]="exercise.difficulty">
-              <div class="badge-icon">{{ getDifficultyIcon(exercise.difficulty) }}</div>
-              <span class="badge-text">{{ getDifficultyLabel(exercise.difficulty) }}</span>
+                            <span class="badge-text">{{ getDifficultyLabel(exercise.difficulty) }}</span>
             </div>
             <div class="body-part-badge" [attr.data-body-part]="exercise.bodyPart">
-              <div class="badge-icon">{{ getBodyPartIcon(exercise.bodyPart) }}</div>
+              <app-icon class="badge-icon" [name]="getBodyPartIcon(exercise.bodyPart)" [size]="13"></app-icon>
               <span class="badge-text">{{ getBodyPartLabel(exercise.bodyPart) }}</span>
             </div>
           </div>
@@ -61,7 +60,7 @@
         <!-- Enhanced Quick Stats -->
         <div class="quick-stats-grid">
           <div class="stat-card" *ngIf="exercise.duration">
-            <div class="stat-icon">⏱️</div>
+            <div class="stat-icon"><app-icon name="clock"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ exercise.duration }}</span>
               <span class="stat-label">minutes</span>
@@ -77,7 +76,9 @@
           </div>
           
           <div class="stat-card" *ngIf="exercise.instructions && exercise.instructions.length">
-            <div class="stat-icon"><app-icon name="edit"></app-icon></div>
+            <!-- L'icone etait un CRAYON, le pictogramme de l'edition, pour
+                 compter des etapes d'execution. -->
+            <div class="stat-icon"><app-icon name="clipboard"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ exercise.instructions.length }}</span>
               <span class="stat-label">étapes</span>
@@ -121,9 +122,9 @@
                    [class.error]="videoError" 
                    [class.loading]="videoLoading"
                    [class.success]="!videoError && !videoLoading && hasVideo">
-                <span *ngIf="!videoError && !videoLoading && hasVideo">✓ Vidéo HD</span>
-                <span *ngIf="videoError">⚠ Erreur</span>
-                <span *ngIf="videoLoading">⏳ Chargement</span>
+                <span *ngIf="!videoError && !videoLoading && hasVideo">Vidéo HD</span>
+                <span *ngIf="videoError">Erreur de lecture</span>
+                <span *ngIf="videoLoading">Chargement…</span>
               </div>
             </div>
           </div>
@@ -363,7 +364,7 @@
           
           <div class="info-items">
             <div class="info-item">
-              <div class="info-icon">⏱️</div>
+              <div class="info-icon"><app-icon name="clock"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Durée</span>
                 <span class="info-value">{{ exercise.duration || 'Variable' }}{{ exercise.duration ? ' min' : '' }}</span>
@@ -456,7 +457,7 @@
              (click)="navigateToExercise(relatedExercise.id)">
           <div class="exercise-preview">
             <div class="exercise-icon">
-              {{ getBodyPartIcon(relatedExercise.bodyPart) }}
+              <app-icon [name]="getBodyPartIcon(relatedExercise.bodyPart)" [size]="18"></app-icon>
             </div>
           </div>
           <div class="exercise-info">

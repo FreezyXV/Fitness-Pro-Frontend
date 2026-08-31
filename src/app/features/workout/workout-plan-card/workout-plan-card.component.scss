@@ -892,11 +892,15 @@
         }
       }
 
+      // « Démarrer » et « Détails » tiennent cote a cote a 390 px : les
+      // empiler ajoutait une rangee de 44 px a chacune des six cartes.
       .action-buttons {
-        flex-direction: column;
+        flex-direction: row;
 
         .btn {
-          width: 100%;
+          flex: 1 1 0;
+          width: auto;
+          min-width: 0;
         }
       }
     }
@@ -1143,10 +1147,22 @@
       &::before { display: none !important; }
     }
 
+    // « Démarrer » est l'action de chaque carte, repetee autant de fois
+    // qu'il y a de programmes. En aplat de marque, six cartes donnaient six
+    // pastilles lime, a cote desquelles « Créer un programme » — le seul
+    // bouton primaire de la page — ne se distinguait plus.
+    //
+    // Meme regle sur les trois grilles de cartes : contour d'accent pour
+    // l'action d'une carte, aplat d'accent pour celle de la page.
     .btn-primary {
-      background: $primary-color !important;
-      border-color: transparent !important;
-      color: $on-primary !important;
+      background: rgba($primary-color, 0.08) !important;
+      border: $border-width solid rgba($primary-color, 0.45) !important;
+      color: $primary-color !important;
+
+      &:hover:not(:disabled) {
+        background: rgba($primary-color, 0.16) !important;
+        border-color: rgba($primary-color, 0.75) !important;
+      }
     }
 
     .btn-secondary {
@@ -1172,6 +1188,72 @@
 
       svg { width: 14px; height: 14px; }
       &::before { display: none !important; }
+    }
+  }
+}
+
+
+// =============================================
+// PROGRESSION PERSONNELLE — BANDEAU NEUTRE
+// =============================================
+//
+// Le bandeau etait un aplat vert (rgba(34, 197, 94, .08)) double d'un degre
+// vert en `::before`, avec une barre verte de 8 px et un libelle vert gras :
+// sur une grille de six programmes, six panneaux verts occupaient le tiers
+// bas de chaque carte, pour une information secondaire. C'etait le seul
+// endroit de l'application a utiliser ce vert, sans rapport avec la palette.
+//
+// Une progression se lit dans une barre : elle n'a pas besoin d'un panneau.
+.workout-plan-card-enhanced {
+  .progress-indicator {
+    padding: 0.625rem 0 0 !important;
+    margin-top: 0.125rem;
+    background: none !important;
+    border-top: $border-width solid $border-color !important;
+
+    &::before,
+    &::after { display: none !important; }
+
+    .progress-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.375rem;
+    }
+
+    .progress-detail {
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      color: $text-muted !important;
+      text-align: left !important;
+      margin: 0 !important;
+    }
+
+    .progress-text {
+      font-size: 0.8125rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 0 !important;
+      color: $text-primary !important;
+      text-align: right !important;
+      margin: 0 !important;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-bar {
+      height: 4px !important;
+      margin: 0 !important;
+      border-radius: $radius-pill !important;
+      background: rgba(255, 255, 255, 0.09) !important;
+      overflow: hidden;
+
+      .progress-fill {
+        background: $primary-color !important;
+        border-radius: $radius-pill !important;
+
+        &::before,
+        &::after { display: none !important; }
+      }
     }
   }
 }

@@ -1037,13 +1037,14 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
 
   // ===== UTILITY METHODS =====
 
+  /** Nom d'icone du jeu de l'application (voir IconName). */
   getDifficultyIcon(difficulty: string): string {
     const icons: Record<string, string> = {
-      'beginner': '🟢',
-      'intermediate': '🟡',
-      'advanced': '🔴'
+      'beginner': 'circle',
+      'intermediate': 'bolt',
+      'advanced': 'flame'
     };
-    return icons[difficulty] || '⚪';
+    return icons[difficulty] || 'circle';
   }
 
   getDifficultyLabel(difficulty: string): string {
@@ -1055,20 +1056,22 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
     return labels[difficulty] || 'Débutant';
   }
 
+  /** Nom d'icone du jeu de l'application (voir IconName). */
   getBodyPartIcon(bodyPart: string): string {
     const icons: Record<string, string> = {
-      'chest': '💪',
-      'back': '🏔️',
-      'arms': '💪',
-      'legs': '🦵',
-      'shoulders': '🤲',
-      'abs': '🔥',
-      'cardio': '❤️',
-      'mobility': '🧘',
-      'flexibility': '🤸',
-      'general': '⚡'
+      'chest': 'dumbbell',
+      'back': 'dumbbell',
+      'arms': 'dumbbell',
+      'legs': 'dumbbell',
+      'shoulders': 'dumbbell',
+      'abs': 'flame',
+      'core': 'flame',
+      'cardio': 'flame',
+      'mobility': 'refresh',
+      'flexibility': 'refresh',
+      'general': 'bolt'
     };
-    return icons[bodyPart] || '💪';
+    return icons[bodyPart] || 'dumbbell';
   }
 
   getBodyPartLabel(bodyPart: string): string {
@@ -1079,6 +1082,7 @@ export class ExercisesDetailComponent implements OnInit, OnDestroy {
       'legs': 'Jambes',
       'shoulders': 'Épaules',
       'abs': 'Abdominaux',
+      'core': 'Abdominaux',
       'cardio': 'Cardio',
       'mobility': 'Mobilité',
       'flexibility': 'Flexibilité',

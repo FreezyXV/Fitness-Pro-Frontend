@@ -199,7 +199,7 @@ $forest-gradient: $gradient-forest;
 
         .user-name {
           @include text-gradient($primary-dark);
-          font-weight: 900;
+          font-weight: 800;
         }
       }
 
@@ -903,7 +903,7 @@ $forest-gradient: $gradient-forest;
 
             .summary-number {
               font-size: 2rem;
-              font-weight: 900;
+              font-weight: 800;
               color: $gray-900;
               line-height: 1;
               margin-bottom: 0.5rem;
@@ -2203,10 +2203,17 @@ $forest-gradient: $gradient-forest;
       svg { width: 16px; height: 16px; }
     }
 
+    // `flex-direction` et `align-items` portent un `!important` : la regle
+    // d'origine est imbriquee jusqu'a
+    // `.stats-grid > .stat-card.workout-summary > .summary-stats
+    //  .summary-item .summary-content` (specificite 0-6-0) et remet la
+    // colonne centree. Sans cette marque, le libelle restait centre au milieu
+    // de la ligne et la valeur passait DESSOUS, a droite : « Total
+    // entrainements » au centre, « 128 » a la ligne suivante, colle au bord.
     .summary-content {
-      display: flex;
-      flex-direction: row;
-      align-items: baseline;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: baseline !important;
       justify-content: flex-start !important;
       gap: 0.5rem;
       min-width: 0;

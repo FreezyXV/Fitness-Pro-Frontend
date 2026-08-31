@@ -55,13 +55,14 @@ const EVENT_META: Record<CalendarTask['task_type'], {
   color: string;
   icon: string;
 }> = {
-  workout: { color: '#d4ff3d', icon: '💪' },
-  goal: { color: '#7ecbff', icon: '🎯' },
-  rest: { color: '#d4d4d8', icon: '😴' },
-  nutrition: { color: '#ffd860', icon: '🍎' },
-  meal: { color: '#ffd860', icon: '🍽️' },
-  reminder: { color: '#c4b5fd', icon: '⏰' },
-  other: { color: '#a8a8b0', icon: '📝' }
+  // `icon` designe une entree du jeu d'icones de l'application (IconName).
+  workout: { color: '#d4ff3d', icon: 'dumbbell' },
+  goal: { color: '#7ecbff', icon: 'target' },
+  rest: { color: '#d4d4d8', icon: 'moon' },
+  nutrition: { color: '#ffd860', icon: 'utensils' },
+  meal: { color: '#ffd860', icon: 'utensils' },
+  reminder: { color: '#c4b5fd', icon: 'clock' },
+  other: { color: '#a8a8b0', icon: 'clipboard' }
 };
 
 
@@ -680,7 +681,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getEventIcon(type: CalendarTask['task_type']): string {
-    return EVENT_META[type]?.icon || '📝';
+    return EVENT_META[type]?.icon || 'clipboard';
   }
 
   // =============================================

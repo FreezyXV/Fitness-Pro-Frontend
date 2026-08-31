@@ -55,3 +55,25 @@
     padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 1rem);
   }
 }
+
+// =============================================
+// LARGEUR DE LECTURE
+// =============================================
+//
+// La zone de contenu occupait toute la place restante, sans plafond. Sur un
+// ecran de 1920 px cela donne une colonne utile de 1536 px : les grilles a
+// trois colonnes y produisaient des cartes de 500 px de large pour trois
+// lignes de texte, les formulaires du profil des champs de 700 px, et les
+// en-tetes de page laissaient le titre a gauche et l'action a 1,5 m de la.
+//
+// Le plafond ci-dessous n'a aucun effet en dessous de 1500 px de fenetre :
+// il ne change rien sur un portable, et empeche l'etalement au-dela.
+.main-content > *:not(router-outlet) {
+  display: block;
+  width: 100%;
+
+  @include respond-above(lg) {
+    max-width: 1180px;
+    margin-inline: auto;
+  }
+}

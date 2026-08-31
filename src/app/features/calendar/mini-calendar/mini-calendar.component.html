@@ -126,14 +126,20 @@
                [class.completed]="activity.completed"
                [class]="'activity-' + activity.type">
             <div class="activity-icon">
-              <span [innerHTML]="activity.icon"></span>
+              <app-icon [name]="activity.icon" [size]="16"></app-icon>
             </div>
             <div class="activity-content">
               <span class="activity-title">{{ activity.title }}</span>
-              <small class="activity-time" *ngIf="activity.time">{{ activity.time }}</small>
-              <small class="activity-duration" *ngIf="activity.duration">
-                {{ activity.duration }} min
-              </small>
+              <!-- L'heure et la duree etaient deux <small> poses a la suite du
+                   titre, sans separateur ni mise en forme distincte : la ligne
+                   se lisait « Entrainement HIIT09:00 ». Elles forment
+                   desormais une ligne de precisions sous le titre. -->
+              <span class="activity-meta" *ngIf="activity.time || activity.duration">
+                <small class="activity-time" *ngIf="activity.time">{{ activity.time }}</small>
+                <small class="activity-duration" *ngIf="activity.duration">
+                  {{ activity.duration }} min
+                </small>
+              </span>
             </div>
             <div class="activity-actions" *ngIf="activity.type === 'workout'">
               <button class="btn-icon" 

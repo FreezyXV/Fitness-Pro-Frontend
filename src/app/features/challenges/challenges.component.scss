@@ -2199,11 +2199,24 @@ gap: 1rem;
       &::before { display: none !important; }
     }
 
+    // « Rejoindre » est l'action de CHAQUE carte, pas celle de la page :
+    // huit defis affichaient huit pastilles lime pleine largeur, et le seul
+    // bouton reellement primaire de l'ecran — « Créer un défi » — s'y noyait.
+    //
+    // Regle appliquee aux trois grilles de cartes de l'application
+    // (programmes, exercices, defis) : l'action d'une carte est un CONTOUR
+    // d'accent, l'action de la page un APLAT d'accent. Deux niveaux, lisibles
+    // au premier coup d'oeil.
     .btn-primary,
     .btn-join {
-      background: $primary-color !important;
-      border-color: transparent !important;
-      color: $on-primary !important;
+      background: rgba($primary-color, 0.08) !important;
+      border: $border-width solid rgba($primary-color, 0.45) !important;
+      color: $primary-color !important;
+
+      &:hover:not(:disabled) {
+        background: rgba($primary-color, 0.16) !important;
+        border-color: rgba($primary-color, 0.75) !important;
+      }
     }
 
     // « Abandonner » etait un aplat rouge pleine largeur : l'element le plus

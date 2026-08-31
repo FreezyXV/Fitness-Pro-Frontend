@@ -524,3 +524,133 @@
     &:hover { background: rgba(255, 255, 255, 0.05); }
   }
 }
+
+
+// =============================================
+// JOURNEE SELECTIONNEE — LISTE D'ACTIVITES
+// =============================================
+//
+// La liste etait la partie la plus abimee du tableau de bord :
+//
+//   - la pastille d'icone n'avait pas de surface (aucune des variantes
+//     `.workout` / `.goal` n'est posee sur l'element : le gabarit ecrit
+//     `class="activity-{{type}}"` sur l'ITEM, pas sur l'icone), l'emoji
+//     flottait donc seul, decale au-dessus du titre ;
+//   - `.activity-content` n'ayant pas de direction declaree, titre, heure et
+//     duree s'empilaient en ligne sans separateur : « Entrainement HIIT09:00 » ;
+//   - le bouton de statut, seul enfant de `.activity-actions`, retombait sous
+//     le contenu et se lisait comme une case a cocher orpheline.
+.mini-calendar-container {
+  .activity-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.625rem !important;
+    padding: 0.5rem 0.625rem !important;
+    margin-bottom: 0.375rem !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: $radius-md !important;
+
+    &.completed .activity-title {
+      color: $text-muted;
+      text-decoration: line-through;
+    }
+  }
+
+  .activity-icon {
+    display: grid !important;
+    place-items: center;
+    width: 28px !important;
+    height: 28px !important;
+    flex-shrink: 0;
+    border-radius: $radius-sm !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: $text-secondary !important;
+  }
+
+  .activity-content {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.0625rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .activity-title {
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: $text-primary !important;
+    line-height: 1.35;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .activity-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.6875rem;
+    color: $text-muted;
+
+    // Point de separation entre l'heure et la duree.
+    small + small::before {
+      content: '·';
+      margin-right: 0.375rem;
+    }
+  }
+
+  .activity-actions {
+    flex-shrink: 0;
+
+    .btn-icon {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      border-radius: $radius-sm;
+      background: none;
+      color: $text-muted;
+      cursor: pointer;
+
+      &:hover { background: rgba(255, 255, 255, 0.06); color: $text-primary; }
+    }
+  }
+
+  // Le resume du jour : deux compteurs colles l'un a l'autre, « 2 » puis
+  // « 0cal », sans indication de ce qu'ils comptent.
+  .selected-day-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.625rem;
+
+    h4 {
+      margin: 0;
+      font-size: 0.875rem;
+      font-weight: 650;
+      color: $text-primary;
+    }
+  }
+
+  .day-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    flex-shrink: 0;
+
+    .stat-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: $text-secondary;
+      font-variant-numeric: tabular-nums;
+
+      app-icon { color: $text-muted; }
+    }
+  }
+}

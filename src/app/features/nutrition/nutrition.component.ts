@@ -710,14 +710,15 @@ export class NutritionComponent implements OnInit, OnDestroy {
     ].filter((nutrient) => nutrient.value > 0);
   }
 
+  /** Renvoie un nom d'icone du jeu de l'application (voir IconName). */
   getNutrientCategoryIcon(category: string): string {
     const icons: { [key: string]: string } = {
-      energy: '⚡',
-      macro: '🔥',
-      mineral: '⛰️',
-      vitamin: '🍊',
+      energy: 'bolt',
+      macro: 'flame',
+      mineral: 'droplet',
+      vitamin: 'leaf',
     };
-    return icons[category] || '📊';
+    return icons[category] || 'chart';
   }
 
   getNutrientCategoryLabel(category: string): string {
@@ -1250,20 +1251,21 @@ export class NutritionComponent implements OnInit, OnDestroy {
     return labels[category] || category;
   }
 
+  /** Renvoie un nom d'icone du jeu de l'application (voir IconName). */
   getFoodCategoryIcon(category: FoodCategory): string {
     const icons = {
-      [FoodCategory.PROTEINS]: '🥩',
-      [FoodCategory.VEGETABLES]: '🥬',
-      [FoodCategory.FRUITS]: '🍎',
-      [FoodCategory.GRAINS]: '🌾',
-      [FoodCategory.DAIRY]: '🥛',
-      [FoodCategory.NUTS_SEEDS]: '🥜',
-      [FoodCategory.LEGUMES]: '🫘',
-      [FoodCategory.OILS_FATS]: '🫒',
-      [FoodCategory.BEVERAGES]: '🥤',
-      [FoodCategory.HERBS_SPICES]: '🌿',
-      [FoodCategory.SEAFOOD]: '🐟',
-      [FoodCategory.SUPPLEMENTS]: '💊',
+      [FoodCategory.PROTEINS]: 'flame',
+      [FoodCategory.VEGETABLES]: 'leaf',
+      [FoodCategory.FRUITS]: 'leaf',
+      [FoodCategory.GRAINS]: 'leaf',
+      [FoodCategory.DAIRY]: 'droplet',
+      [FoodCategory.NUTS_SEEDS]: 'leaf',
+      [FoodCategory.LEGUMES]: 'leaf',
+      [FoodCategory.OILS_FATS]: 'droplet',
+      [FoodCategory.BEVERAGES]: 'droplet',
+      [FoodCategory.HERBS_SPICES]: 'leaf',
+      [FoodCategory.SEAFOOD]: 'droplet',
+      [FoodCategory.SUPPLEMENTS]: 'bolt',
     };
     return icons[category] || '🍽️';
   }
@@ -1736,18 +1738,19 @@ export class NutritionComponent implements OnInit, OnDestroy {
     return food ? food.name : 'Aliment inconnu';
   }
 
+  /** Renvoie un nom d'icone du jeu de l'application (voir IconName). */
   getMealTypeIcon(mealType: MealType | string): string {
     const icons = {
-      [MealType.BREAKFAST]: '🌅',
-      [MealType.MORNING_SNACK]: '☕',
-      [MealType.LUNCH]: '☀️',
-      [MealType.AFTERNOON_SNACK]: '🍎',
-      [MealType.PRE_WORKOUT]: '⚡',
-      [MealType.POST_WORKOUT]: '🔋',
-      [MealType.DINNER]: '🌙',
-      [MealType.EVENING_SNACK]: '🌃',
+      [MealType.BREAKFAST]: 'utensils',
+      [MealType.MORNING_SNACK]: 'leaf',
+      [MealType.LUNCH]: 'utensils',
+      [MealType.AFTERNOON_SNACK]: 'leaf',
+      [MealType.PRE_WORKOUT]: 'bolt',
+      [MealType.POST_WORKOUT]: 'flame',
+      [MealType.DINNER]: 'utensils',
+      [MealType.EVENING_SNACK]: 'moon',
     };
-    return icons[mealType as MealType] || '🍽️';
+    return icons[mealType as MealType] || 'utensils';
   }
 
   getMealTypeLabel(mealType: MealType | string): string {

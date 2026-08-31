@@ -2,11 +2,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Workout, Exercise } from '@shared';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-workout-plan-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './workout-plan-card.component.html',
   styleUrls: ['./workout-plan-card.component.scss'],
 })
@@ -23,25 +24,29 @@ export class WorkoutPlanCardComponent {
   @Output() activatePlan = new EventEmitter<Workout>(); // Changed to Workout
 
   // Configuration aligned with backend
+  // `icon` designe une entree du jeu d'icones (IconName), plus un emoji : un
+  // rond vert, un rond jaune et un rond rouge ne se distinguent pas pour qui
+  // ne percoit pas ces teintes, et la pastille porte de toute facon deja son
+  // libelle en clair.
   readonly difficultyLevels = [
-    { value: 'beginner', label: 'Débutant', icon: '🟢', color: '#4CAF50' },
+    { value: 'beginner', label: 'Débutant', icon: 'circle', color: '#4CAF50' },
     {
       value: 'intermediate',
       label: 'Intermédiaire',
-      icon: '🟡',
+      icon: 'bolt',
       color: '#fdba74',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
+    { value: 'advanced', label: 'Avancé', icon: 'flame', color: '#fc8181' },
   ];
 
   readonly categories = [
-    { value: 'strength', label: 'Force', icon: '💪', color: '#4CAF50' },
-    { value: 'cardio', label: 'Cardio', icon: '❤️', color: '#FF5722' },
-    { value: 'hiit', label: 'HIIT', icon: '🔥', color: '#fdba74' },
+    { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#4CAF50' },
+    { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#FF5722' },
+    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#fdba74' },
     {
       value: 'flexibility',
       label: 'Flexibilité',
-      icon: '🧘',
+      icon: 'refresh',
       color: '#c4b5fd',
     },
   ];

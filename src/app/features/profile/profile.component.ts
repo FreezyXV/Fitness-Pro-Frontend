@@ -434,6 +434,15 @@ getBMIPosition(): number {
   // AGE CALCULATION
   // =============================================
 
+  /**
+   * Age a afficher. `calculateAge()` ne sait rien dire tant que la date de
+   * naissance n'est pas saisie, alors que le profil serveur porte deja une
+   * colonne `age` : on retombe dessus plutot que de laisser un trou.
+   */
+  displayedAge(): number | null {
+    return this.calculateAge() ?? this.user?.age ?? null;
+  }
+
   calculateAge(): number | null {
     if (!this.user || !this.user.dateOfBirth) return null;
     

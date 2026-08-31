@@ -85,14 +85,15 @@ interface ChallengeStats {
 }
 
 // Configuration constants
+// `icon` designe une entree du jeu d'icones de l'application (IconName).
 const CHALLENGE_CATEGORIES = [
-  { value: 'fitness', label: 'Fitness', icon: '💪', color: '#fc8181' },
-  { value: 'wellness', label: 'Bien-être', icon: '🧘', color: '#86efac' },
-  { value: 'cardio', label: 'Cardio', icon: '❤️', color: '#fdba74' },
-  { value: 'strength', label: 'Force', icon: '🏋️', color: '#6ee7b7' },
-  { value: 'nutrition', label: 'Nutrition', icon: '🍎', color: '#7ecbff' },
-  { value: 'mindfulness', label: 'Méditation', icon: '🧠', color: '#c4b5fd' },
-  { value: 'social', label: 'Social', icon: '👥', color: '#fdba74' }
+  { value: 'fitness', label: 'Fitness', icon: 'dumbbell', color: '#fc8181' },
+  { value: 'wellness', label: 'Bien-être', icon: 'moon', color: '#86efac' },
+  { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#fdba74' },
+  { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#6ee7b7' },
+  { value: 'nutrition', label: 'Nutrition', icon: 'utensils', color: '#7ecbff' },
+  { value: 'mindfulness', label: 'Méditation', icon: 'bulb', color: '#c4b5fd' },
+  { value: 'social', label: 'Social', icon: 'users', color: '#fdba74' }
 ];
 
 const DIFFICULTY_LEVELS = [

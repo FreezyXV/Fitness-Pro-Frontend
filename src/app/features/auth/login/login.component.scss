@@ -241,7 +241,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: map.get($spacers, 4) 0 map.get($spacers, 6);
+      // 4rem de marge basse (spacer 6) laissaient une bande vide de la
+      // hauteur d'un champ entre « Se souvenir de moi » et le bouton de
+      // connexion, au milieu d'un formulaire de deux champs.
+      margin: map.get($spacers, 3) 0 map.get($spacers, 4);
       font-size: $font-size-sm;
 
       .remember-me {
@@ -311,7 +314,11 @@
       @include button-base($btn-padding-lg, $border-radius-lg);
       & {
         width: 100%;
-        background: #b3ff00;
+        // #b3ff00 : un lime ECRIT EN DUR, distinct du lime de la marque
+        // ($primary-color, #d4ff3d). Le bouton le plus regarde de
+        // l'application n'etait donc pas exactement de la couleur de
+        // l'application.
+        background: $primary-color;
         color: $on-primary;
         font-size: $font-size-base;
         margin-top: map.get($spacers, 2);
@@ -377,15 +384,18 @@
     & {
       width: 100%;
       background: transparent;
-      color: $gray-700;
-      font-size: $font-size-base;
-      border: 2px solid $gray-300;
+      color: $text-secondary;
+      // Cette action secondaire etait rendue en 1rem semi-gras avec une
+      // bordure de 2px, quand l'action principale juste au-dessus tient en
+      // 1rem sur un aplat : la voie de garage pesait visuellement plus lourd
+      // que la voie principale.
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      border: $border-width solid $border-color;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: map.get($spacers, 2);
-      transition: all $transition-fast;
-      font-weight: $font-weight-semibold;
     }
 
     i {
@@ -676,4 +686,24 @@
       font-size: 0.65rem;
     }
   }
+}
+
+
+// =============================================
+// MARQUE
+// =============================================
+//
+// La pastille faisait 88 px pour porter une seule lettre, en $primary-dark
+// (#a1d428, un lime FONCE) avec une encre presque noire dessus : le contraste
+// tombait a 3,1:1, et l'ensemble se lisait comme un aplat olive terne.
+// Elle porte desormais la marque de l'application, sur le lime plein.
+.logo-icon {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: $radius-lg !important;
+  background: $primary-color !important;
+  color: $on-primary !important;
+  box-shadow: none !important;
+
+  svg { display: block; }
 }

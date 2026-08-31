@@ -23,7 +23,6 @@
 
     <!-- Enhanced Difficulty Badge -->
     <div class="difficulty-badge" [attr.data-level]="exercise.difficulty">
-      <span class="difficulty-icon">{{ getDifficultyIcon(exercise.difficulty) }}</span>
       <span class="difficulty-text">{{ getDifficultyLabel(exercise.difficulty) }}</span>
     </div>
   </div>
@@ -119,9 +118,7 @@
     <ng-template #noMediaTemplate>
       <div class="no-media-placeholder">
         <div class="placeholder-content">
-          <div class="placeholder-icon">
-            {{ getBodyPartIcon(exercise.bodyPart) }}
-          </div>
+          <app-icon class="placeholder-icon" [name]="getBodyPartIcon(exercise.bodyPart)" [size]="28"></app-icon>
           <div class="placeholder-text">
             <span class="primary-text" *ngIf="videoError">Vidéo non disponible</span>
             <span class="primary-text" *ngIf="!exercise.videoUrl && !videoError">Démonstration bientôt disponible</span>
@@ -149,7 +146,7 @@
     <div class="exercise-header">
       <h3 class="exercise-title" [title]="exercise.name">{{ exercise.name }}</h3>
       <div class="body-part-tag" [attr.data-body-part]="exercise.bodyPart">
-        <span class="body-part-icon">{{ getBodyPartIcon(exercise.bodyPart) }}</span>
+        <app-icon class="body-part-icon" [name]="getBodyPartIcon(exercise.bodyPart)" [size]="12"></app-icon>
         <span class="body-part-text">{{ getBodyPartLabel(exercise.bodyPart) }}</span>
       </div>
     </div>
@@ -199,8 +196,13 @@
 
       <!-- Muscle Groups Indicator -->
       <div class="stat-item" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
+        <!-- Le trace precedent etait une ETOILE — le pictogramme des favoris,
+             deja present en haut de cette meme carte : la puce « 2 muscles »
+             se lisait comme un compte de favoris. -->
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          <circle cx="12" cy="12" r="9"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="12" cy="12" r="1.5"/>
         </svg>
         <span>{{ exercise.muscleGroups.length }} muscle{{ exercise.muscleGroups.length > 1 ? 's' : '' }}</span>
       </div>
@@ -236,25 +238,25 @@
     <div class="additional-info" *ngIf="viewMode === 'list'">
       <!-- Enhanced Tips Preview -->
       <div class="tips-preview" *ngIf="exercise.tips && exercise.tips.length">
-        <h4>💡 Conseil d'expert</h4>
+        <h4>Conseil d'expert</h4>
         <p>{{ exercise.tips[0] }}</p>
       </div>
 
       <!-- Enhanced Equipment Info -->
       <div class="equipment-info" *ngIf="exercise.equipmentNeeded && exercise.equipmentNeeded !== 'none'">
-        <h4>🏋️‍Équipement nécessaire</h4>
+        <h4>Équipement nécessaire</h4>
         <p>{{ exercise.equipmentNeeded }}</p>
       </div>
 
       <!-- Enhanced Muscle Groups Info -->
       <div class="muscle-groups-info" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
-        <h4>🎯 Muscles ciblés</h4>
+        <h4>Muscles ciblés</h4>
         <p>{{ exercise.muscleGroups.join(', ') }}</p>
       </div>
 
       <!-- Enhanced Video Status -->
       <div class="video-status-info" *ngIf="exercise.videoUrl">
-        <h4>🎥 Démonstration vidéo</h4>
+        <h4>Démonstration vidéo</h4>
         <p *ngIf="hasVideo && !videoError">Démonstration HD disponible - Cliquez pour voir</p>
         <p *ngIf="videoError" class="error-text">
           Vidéo temporairement indisponible
@@ -270,7 +272,7 @@
 
       <!-- Enhanced Estimated Calories -->
       <div class="calories-info" *ngIf="exercise.estimatedCaloriesPerMinute">
-        <h4>🔥 Estimation calorique</h4>
+        <h4>Estimation calorique</h4>
         <p>~{{ exercise.estimatedCaloriesPerMinute }} cal/min</p>
       </div>
     </div>

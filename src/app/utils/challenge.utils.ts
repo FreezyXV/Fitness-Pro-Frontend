@@ -99,16 +99,17 @@ import { DateUtils } from '@shared';
         // #795548, #607d8b…) sont calibrees pour un fond blanc et tombaient
         // entre 1,9:1 et 3,6:1 ici, sous le seuil AA de 4,5:1. Les teintes
         // sont conservees, seule la luminosite est remontee.
-        fitness: { label: 'Fitness', icon: '💪', color: '#f28b82' },
-        wellness: { label: 'Bien-être', icon: '🧘', color: '#a3d9a5' },
-        cardio: { label: 'Cardio', icon: '❤️', color: '#fbbc04' },
-        strength: { label: 'Force', icon: '🏋️', color: '#5bd47c' },
-        nutrition: { label: 'Nutrition', icon: '🍎', color: '#7aa9ff' },
-        mindfulness: { label: 'Méditation', icon: '🧠', color: '#d17ae0' },
-        social: { label: 'Social', icon: '👥', color: '#ffb454' },
-        flexibility: { label: 'Souplesse', icon: '🤸', color: '#ff6f9c' },
-        endurance: { label: 'Endurance', icon: '🏃', color: '#c89b86' },
-        balance: { label: 'Équilibre', icon: '⚖️', color: '#9db8c6' }
+        // `icon` designe une entree du jeu d'icones de l'application.
+        fitness: { label: 'Fitness', icon: 'dumbbell', color: '#f28b82' },
+        wellness: { label: 'Bien-être', icon: 'moon', color: '#a3d9a5' },
+        cardio: { label: 'Cardio', icon: 'flame', color: '#fbbc04' },
+        strength: { label: 'Force', icon: 'dumbbell', color: '#5bd47c' },
+        nutrition: { label: 'Nutrition', icon: 'utensils', color: '#7aa9ff' },
+        mindfulness: { label: 'Méditation', icon: 'bulb', color: '#d17ae0' },
+        social: { label: 'Social', icon: 'users', color: '#ffb454' },
+        flexibility: { label: 'Souplesse', icon: 'refresh', color: '#ff6f9c' },
+        endurance: { label: 'Endurance', icon: 'trending', color: '#c89b86' },
+        balance: { label: 'Équilibre', icon: 'target', color: '#9db8c6' }
       };
       return configs[category] || configs.fitness;
     }
@@ -232,79 +233,86 @@ import { DateUtils } from '@shared';
       this.show({ type: 'info', message, duration });
     }
   
+    /**
+     * Bandeau de notification.
+     *
+     * Il etait construit par `innerHTML` avec une trentaine de proprietes CSS
+     * ecrites en dur : degrade vert-emeraude ou rouge selon le type, texte
+     * blanc, ombre portee de 30 px, `backdrop-filter`, croix de fermeture en
+     * `onclick=""`. C'etait le seul element de l'application a ne suivre
+     * aucune de ses conventions — et il s'affiche PAR-DESSUS n'importe quel
+     * ecran, donc a cote de la mise en page qu'il contredit.
+     *
+     * Il est desormais construit par le DOM plutot que par concatenation de
+     * chaines : le message vient d'un catalogue interne aujourd'hui, mais
+     * `textContent` garantit qu'aucun libelle ne pourra jamais etre interprete
+     * comme du balisage.
+     */
     private static show(options: { type: string; message: string; duration: number }): void {
       this.init();
-  
+
+      // Couleur d'accent du bandeau, reprise des tokens de statut. Elle ne
+      // sert qu'a un liseré : le fond reste la surface sombre des cartes,
+      // comme pour les modales.
+      const accents: Record<string, string> = {
+        success: '#4ade80',
+        error: '#f87171',
+        warning: '#fbbf24',
+        info: '#60a5fa',
+      };
+      const accent = accents[options.type] ?? accents['info'];
+
       const notification = document.createElement('div');
       notification.className = `notification notification-${options.type}`;
-      
-      const colors = {
-        success: 'linear-gradient(135deg, #10b981, #059669)',
-        error: 'linear-gradient(135deg, #ef4444, #dc2626)',
-        warning: 'linear-gradient(135deg, #f59e0b, #d97706)',
-        info: 'linear-gradient(135deg, #3b82f6, #2563eb)'
-      };
-  
-      const icons = {
-        success: '✅',
-        error: '❌',
-        warning: '⚠️',
-        info: 'ℹ️'
-      };
-  
-      notification.innerHTML = `
-        <div style="
-          background: ${colors[options.type as keyof typeof colors]};
-          color: white;
-          padding: 12px 16px;
-          border-radius: 12px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-          backdrop-filter: blur(10px);
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          min-width: 300px;
-          max-width: 500px;
-          pointer-events: auto;
-          transform: translateX(100%);
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        ">
-          <span style="font-size: 16px;">${icons[options.type as keyof typeof icons]}</span>
-          <span style="flex: 1; font-weight: 500;">${options.message}</span>
-          <button onclick="this.parentElement.parentElement.remove()" style="
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-          " onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">×</button>
-        </div>
-      `;
-  
+
+      const panel = document.createElement('div');
+      Object.assign(panel.style, {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        minWidth: '280px',
+        maxWidth: '420px',
+        padding: '12px 14px',
+        borderRadius: '12px',
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        borderLeft: `3px solid ${accent}`,
+        background: '#141416',
+        color: '#f4f4f5',
+        boxShadow: '0 16px 40px rgba(0, 0, 0, 0.55)',
+        font: '500 0.875rem/1.45 Inter, system-ui, sans-serif',
+        pointerEvents: 'auto',
+      } as Partial<CSSStyleDeclaration>);
+
+      const text = document.createElement('span');
+      text.style.flex = '1';
+      text.textContent = options.message;
+
+      const close = document.createElement('button');
+      close.type = 'button';
+      close.setAttribute('aria-label', 'Fermer la notification');
+      Object.assign(close.style, {
+        flexShrink: '0',
+        width: '22px',
+        height: '22px',
+        display: 'grid',
+        placeItems: 'center',
+        padding: '0',
+        border: '0',
+        borderRadius: '6px',
+        background: 'none',
+        color: '#a8a8b0',
+        fontSize: '16px',
+        lineHeight: '1',
+        cursor: 'pointer',
+      } as Partial<CSSStyleDeclaration>);
+      close.textContent = '\u00d7';
+      close.addEventListener('click', () => notification.remove());
+
+      panel.append(text, close);
+      notification.appendChild(panel);
       this.container!.appendChild(notification);
-  
-      // Animate in
-      setTimeout(() => {
-        const inner = notification.firstElementChild as HTMLElement;
-        if (inner) inner.style.transform = 'translateX(0)';
-      }, 100);
-  
-      // Auto remove
-      setTimeout(() => {
-        const inner = notification.firstElementChild as HTMLElement;
-        if (inner) {
-          inner.style.transform = 'translateX(100%)';
-          setTimeout(() => notification.remove(), 300);
-        }
-      }, options.duration);
+
+      setTimeout(() => notification.remove(), options.duration);
     }
   }
   

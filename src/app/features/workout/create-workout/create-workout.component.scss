@@ -155,11 +155,12 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin: 0 0 0.5rem 0;
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: $gray-900;
-  background-size: 200% 200%;
+  margin: 0 0 0.25rem 0;
+  // 2,5rem : le titre de cette page etait un tiers plus gros que ceux de
+  // toutes les autres, qui plafonnent a 1,875rem (voir h1 dans styles.scss).
+  font-size: clamp(1.5rem, 3.2vw, 1.875rem);
+  font-weight: 700;
+  color: $text-primary;
 
   @include respond-below(md) {
     font-size: 1.8rem;
@@ -1732,4 +1733,46 @@
 .create-workout-container .action-btn.secondary {
   background: rgba($primary-color, 0.15);
   color: $text-primary;
+}
+
+
+// =============================================
+// ASSISTANT — INDICATEUR D'ETAPE ET TITRES
+// =============================================
+//
+// L'etape courante etait signalee par un aplat de la couleur de marque a
+// 10 % : sur la surface sombre des cartes, un lime translucide vire au vert
+// olive terne. La bordure porte l'etat, comme sur la case du jour dans le
+// calendrier ; le chiffre garde l'aplat plein, ou il est lisible.
+.create-workout-container {
+  .step-header {
+    text-align: left !important;
+    margin-bottom: 1.25rem;
+  }
+
+  .step-item.active {
+    background: rgba($primary-color, 0.06) !important;
+    border: $border-width solid rgba($primary-color, 0.45) !important;
+  }
+
+  // Le titre de section repetait mot pour mot l'intitule de l'etape affiche
+  // juste au-dessus (« Informations de base »), en 2rem centre : deux fois le
+  // meme mot, dont l'un plus gros que le titre de la page.
+  .step-header > h2,
+  .form-section > h2,
+  .step-content > h2,
+  .section-title {
+    font-size: 1.0625rem !important;
+    font-weight: 650 !important;
+    text-align: left !important;
+    margin: 0 0 0.25rem !important;
+  }
+
+  .step-header > p,
+  .form-section > p,
+  .step-content > .section-subtitle {
+    text-align: left !important;
+    font-size: 0.875rem !important;
+    margin: 0 0 1.25rem !important;
+  }
 }

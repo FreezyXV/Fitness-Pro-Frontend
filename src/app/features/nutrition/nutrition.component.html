@@ -120,7 +120,7 @@
       <div class="achievements-preview">
         <span class="points"><app-icon name="trophy" [size]="16"></app-icon>{{ totalPoints }} pts</span>
         <span class="streak"><app-icon name="flame" [size]="16"></app-icon>{{ weeklyStreak }} jours</span>
-        <span class="database">📚 {{ foodDatabase.length }} aliments</span>
+        <span class="database"><app-icon name="book" [size]="16"></app-icon>{{ foodDatabase.length }} aliments</span>
       </div>
     </div>
   </div>
@@ -378,7 +378,7 @@
                     *ngFor="let category of foodCategories"
                     [ngValue]="category"
                   >
-                    {{ getFoodCategoryIcon(category) }} {{ getFoodCategoryLabel(category) }}
+                    {{ getFoodCategoryLabel(category) }}
                   </option>
                 </select>
               </div>
@@ -505,16 +505,22 @@
                   *ngIf="food.nutriScore"
                   [ngClass]="'nutriscore-' + food.nutriScore.toLowerCase()"
                 >{{ food.nutriScore }}</span>
+                <!-- La pastille affichait un emoji seul — une pousse, un
+                     rond jaune, un rond orange — sans legende : rien
+                     n'indiquait qu'il s'agissait de l'impact environnemental,
+                     et les deux ronds ne se distinguent pas l'un de l'autre.
+                     Le libelle remplace le pictogramme. -->
                 <span
                   class="sustainability-badge"
                   [ngClass]="'sustainability-' + food.sustainability"
+                  title="Impact environnemental"
                 >
                   {{
                     food.sustainability === "high"
-                      ? "🌱"
+                      ? "Impact faible"
                       : food.sustainability === "medium"
-                      ? "🟡"
-                      : "🟠"
+                      ? "Impact moyen"
+                      : "Impact élevé"
                   }}
                 </span>
               </div>
@@ -894,7 +900,7 @@
             <div class="tip-action">
               <strong>{{ tip.actionable }}</strong>
             </div>
-            <small class="tip-science">💡 {{ tip.scientificBasis }}</small>
+            <small class="tip-science"><app-icon name="bulb" [size]="14"></app-icon>{{ tip.scientificBasis }}</small>
           </div>
         </div>
       </div>
@@ -1163,9 +1169,11 @@
 
         <div class="hydration-visual">
           <div class="water-container">
+            <!-- La jauge est horizontale (voir la feuille de style) : c'est
+                 donc la largeur qui porte le remplissage, plus la hauteur. -->
             <div
               class="water-level"
-              [style.height.%]="
+              [style.width.%]="
                 getProgressPercentage(dailyNutrition.water, dailyGoals.water)
               "
             >
@@ -1822,7 +1830,7 @@
           >
             <div class="template-header">
               <div class="template-icon">
-                {{ getMealTypeIcon(template.type) }}
+                <app-icon [name]="getMealTypeIcon(template.type)"></app-icon>
               </div>
               <div class="template-info">
                 <h3>{{ template.name }}</h3>
@@ -1905,7 +1913,7 @@
               </div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon">⏱️</div>
+              <div class="stat-icon"><app-icon name="clock"></app-icon></div>
               <div class="stat-content">
                 <span class="stat-value">{{
                   selectedDiet.duration || "∞"
@@ -2041,7 +2049,7 @@
           class="current-tracking"
           *ngIf="currentlyFollowedDiet?.id === selectedDiet.id"
         >
-          <h4>🎯 Suivi Actuel</h4>
+          <h4>Suivi actuel</h4>
           <div class="tracking-stats">
             <div class="tracking-item">
               <span class="label">Jour:</span>
@@ -2125,7 +2133,7 @@
           <div class="title-content">
             <h2>{{ selectedFoodForInfo?.name }}</h2>
             <p class="food-category">
-              {{ getFoodCategoryIcon(selectedFoodForInfo?.category!) }}
+              <app-icon [name]="getFoodCategoryIcon(selectedFoodForInfo?.category!)" [size]="24"></app-icon>
               {{ getFoodCategoryLabel(selectedFoodForInfo?.category) }}
             </p>
           </div>
@@ -2177,7 +2185,7 @@
 
           <!-- Description et bénéfices -->
           <div class="food-description" *ngIf="selectedFoodForInfo.description">
-            <h3>📝 Description</h3>
+            <h3>Description</h3>
             <p>{{ selectedFoodForInfo.description }}</p>
           </div>
 
@@ -2188,7 +2196,7 @@
               selectedFoodForInfo.healthBenefits.length > 0
             "
           >
-            <h3>✨ Bienfaits Santé</h3>
+            <h3>Bienfaits santé</h3>
             <div class="benefits-list">
               <span
                 class="benefit-tag"
@@ -2202,7 +2210,7 @@
 
         <!-- Tableau nutritionnel complet -->
         <div class="complete-nutrition">
-          <h3>📊 Valeurs Nutritionnelles Complètes</h3>
+          <h3>Valeurs nutritionnelles complètes</h3>
 
           <div class="nutrients-grid">
             <div
@@ -2249,7 +2257,7 @@
 
         <!-- Restrictions et allergènes -->
         <div class="food-restrictions" *ngIf="hasAllergens()">
-          <h3>⚠️ Allergènes et Restrictions</h3>
+          <h3>Allergènes et restrictions</h3>
           <div class="allergens-list">
             <span
               class="allergen-tag warning"
@@ -2300,7 +2308,7 @@
 
         <!-- Conseils de préparation -->
         <div class="preparation-tips" *ngIf="hasPreparationTips()">
-          <h3>👨‍Conseils de Préparation</h3>
+          <h3>Conseils de préparation</h3>
           <ul class="tips-list">
             <li *ngFor="let tip of getPreparationTips()">
               {{ tip }}

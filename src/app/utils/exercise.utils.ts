@@ -5,32 +5,34 @@ export class ExerciseUtils {
   
   // Configuration des parties du corps
   static readonly BODY_PARTS = {
-    chest: { label: 'Poitrine', icon: '💪', color: '#ff6384' },
-    back: { label: 'Dos', icon: '🏔️', color: '#36a2eb' },
-    arms: { label: 'Bras', icon: '💪', color: '#ffce56' },
-    legs: { label: 'Jambes', icon: '🦵', color: '#4bc0c0' },
-    shoulders: { label: 'Épaules', icon: '🤲', color: '#9966ff' },
-    abs: { label: 'Abdominaux', icon: '🔥', color: '#ff9f40' },
-    cardio: { label: 'Cardio', icon: '❤️', color: '#ff6384' },
-    mobility: { label: 'Mobilité', icon: '🤸', color: '#c9cbcf' },
-    flexibility: { label: 'Flexibilité', icon: '🧘', color: '#4bc0c0' }
+    chest: { label: 'Poitrine', icon: 'dumbbell', color: '#ff6384' },
+    back: { label: 'Dos', icon: 'dumbbell', color: '#36a2eb' },
+    arms: { label: 'Bras', icon: 'dumbbell', color: '#ffce56' },
+    legs: { label: 'Jambes', icon: 'dumbbell', color: '#4bc0c0' },
+    shoulders: { label: 'Épaules', icon: 'dumbbell', color: '#9966ff' },
+    abs: { label: 'Abdominaux', icon: 'flame', color: '#ff9f40' },
+    // `core` est l'autre nom employe par le catalogue pour la meme zone.
+    core: { label: 'Abdominaux', icon: 'flame', color: '#ff9f40' },
+    cardio: { label: 'Cardio', icon: 'flame', color: '#ff6384' },
+    mobility: { label: 'Mobilité', icon: 'refresh', color: '#c9cbcf' },
+    flexibility: { label: 'Flexibilité', icon: 'refresh', color: '#4bc0c0' }
   };
 
   // Configuration des niveaux de difficulté
   static readonly DIFFICULTIES = {
-    beginner: { label: 'Débutant', icon: '🟢', color: '#4caf50' },
-    intermediate: { label: 'Intermédiaire', icon: '🟡', color: '#ff9800' },
-    advanced: { label: 'Avancé', icon: '🔴', color: '#f44336' }
+    beginner: { label: 'Débutant', icon: 'circle', color: '#4caf50' },
+    intermediate: { label: 'Intermédiaire', icon: 'bolt', color: '#ff9800' },
+    advanced: { label: 'Avancé', icon: 'flame', color: '#f44336' }
   };
 
   // Configuration des catégories
   static readonly CATEGORIES = {
-    strength: { label: 'Force', icon: '💪', color: '#ff6384' },
-    cardio: { label: 'Cardio', icon: '❤️', color: '#36a2eb' },
-    flexibility: { label: 'Flexibilité', icon: '🧘', color: '#ffce56' },
-    hiit: { label: 'HIIT', icon: '⚡', color: '#9966ff' },
-    yoga: { label: 'Yoga', icon: '🧘‍♀️', color: '#4bc0c0' },
-    mobility: { label: 'Mobilité', icon: '🤸', color: '#c9cbcf' }
+    strength: { label: 'Force', icon: 'dumbbell', color: '#ff6384' },
+    cardio: { label: 'Cardio', icon: 'flame', color: '#36a2eb' },
+    flexibility: { label: 'Flexibilité', icon: 'refresh', color: '#ffce56' },
+    hiit: { label: 'HIIT', icon: 'bolt', color: '#9966ff' },
+    yoga: { label: 'Yoga', icon: 'moon', color: '#4bc0c0' },
+    mobility: { label: 'Mobilité', icon: 'refresh', color: '#c9cbcf' }
   };
 
   /**
@@ -38,7 +40,7 @@ export class ExerciseUtils {
    */
   static getBodyPartInfo(bodyPart: string): { label: string; icon: string; color: string } {
     return this.BODY_PARTS[bodyPart as keyof typeof this.BODY_PARTS] || 
-           { label: bodyPart, icon: '💪', color: '#gray' };
+           { label: bodyPart, icon: 'dumbbell', color: '#71717a' };
   }
 
   /**
@@ -46,7 +48,7 @@ export class ExerciseUtils {
    */
   static getDifficultyInfo(difficulty: string): { label: string; icon: string; color: string } {
     return this.DIFFICULTIES[difficulty as keyof typeof this.DIFFICULTIES] || 
-           { label: difficulty, icon: '⚪', color: '#gray' };
+           { label: difficulty, icon: 'circle', color: '#71717a' };
   }
 
   /**
@@ -54,7 +56,7 @@ export class ExerciseUtils {
    */
   static getCategoryInfo(category: string): { label: string; icon: string; color: string } {
     return this.CATEGORIES[category as keyof typeof this.CATEGORIES] || 
-           { label: category, icon: '🏋️‍♀️', color: '#gray' };
+           { label: category, icon: 'dumbbell', color: '#71717a' };
   }
 
   /**

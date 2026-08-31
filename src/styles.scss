@@ -11,7 +11,8 @@
 @use './variables.scss' as *;
 @use './design-system' as *;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+// La police est declarée dans index.html : un @import ici retarde sa
+// decouverte d'une vague de requetes complete (voir le commentaire du <head>).
 
 // =============================================
 // GLOBAL RESET & BASE STYLES
@@ -766,6 +767,44 @@ a {
   }
 }
 
+// =============================================
+// RANGEES D'ACTIONS SUR TELEPHONE
+// =============================================
+//
+// La regle ci-dessus met TOUS les boutons en pleine largeur sous 768px. Elle
+// est juste pour un bouton d'envoi de formulaire, mais elle empilait aussi
+// les paires d'actions : « Démarrer » et « Détails » occupaient deux rangees
+// completes sur chacune des six cartes de programme, et l'en-tete de page
+// alignait verticalement « Créer un programme », « Historique » et
+// « Statistiques » — soit 300 px avant d'atteindre le premier contenu.
+//
+// Dans une rangee d'actions declaree comme telle, les boutons se partagent la
+// largeur ; ils gardent leur hauteur tactile de 44px.
+@include respond-below(md) {
+  .action-buttons,
+  .card-actions,
+  .quick-actions,
+  .form-actions,
+  .modal-footer,
+  .modal-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 0.5rem;
+
+    > .btn,
+    > button,
+    > .action-btn {
+      width: auto;
+      flex: 1 1 auto;
+      // `min-width: 0` : sans lui, un enfant flex refuse de retrecir sous la
+      // largeur de son libelle et la rangee deborde au lieu de se repartir.
+      min-width: 0;
+    }
+  }
+}
+
 @include respond-below(xs) {
   .modal .modal-header,
   .modal .modal-body,
@@ -1372,4 +1411,261 @@ option {
   .form-row {
     margin-bottom: 0;
   }
+}
+
+
+// =============================================
+// CONTROLES NATIFS DU NAVIGATEUR
+// =============================================
+//
+// Les <select>, cases a cocher, curseurs et champs de date etaient laisses au
+// rendu par defaut de Chrome : chevron systeme, case blanche a coins carres,
+// piste de curseur BLEUE. Sur une interface sombre et sobre, ces quelques
+// elements etaient les seuls a ne pas suivre le systeme visuel — et le bleu
+// du curseur d'hydratation etait la couleur la plus voyante de la page
+// Nutrition, alors qu'il ne porte aucune information.
+//
+// Un `appearance: none` global ne suffit pas : il faut redessiner ce que le
+// navigateur cesse alors d'afficher (le chevron, la coche, le pouce).
+
+// --- Menus deroulants -------------------------------------------------------
+//
+// Le chevron est encode en data-URI plutot qu'en pseudo-element : un <select>
+// ne peut pas en porter. Sa couleur est celle du texte secondaire.
+select,
+select.form-control {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a8a8b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 16px 16px !important;
+  padding-right: 2.25rem !important;
+  cursor: pointer;
+  text-overflow: ellipsis;
+
+  &:hover:not(:disabled) {
+    border-color: $border-strong;
+  }
+}
+
+// --- Cases a cocher ---------------------------------------------------------
+//
+// Reserve aux cases REELLEMENT visibles : les composants qui masquent leur
+// input pour dessiner leur propre pastille gardent la main.
+input[type='checkbox']:not([hidden]),
+input[type='radio']:not([hidden]) {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  display: inline-grid;
+  place-content: center;
+  border: $border-width solid $border-strong;
+  background: $surface-tertiary;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+input[type='checkbox']:not([hidden]) { border-radius: 5px; }
+input[type='radio']:not([hidden])    { border-radius: 50%; }
+
+input[type='checkbox']:not([hidden])::before {
+  content: '';
+  width: 11px;
+  height: 11px;
+  // Une coche dessinee par clip-path : pas d'image a charger, elle prend la
+  // couleur d'encre posee sur l'aplat de marque.
+  clip-path: polygon(14% 44%, 0 60%, 39% 100%, 100% 22%, 85% 8%, 39% 71%);
+  background: $on-primary;
+  transform: scale(0);
+}
+
+input[type='radio']:not([hidden])::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $on-primary;
+  transform: scale(0);
+}
+
+input[type='checkbox']:not([hidden]):checked,
+input[type='radio']:not([hidden]):checked {
+  background: $primary-color;
+  border-color: $primary-color;
+
+  &::before { transform: scale(1); }
+}
+
+input[type='checkbox']:not([hidden]):focus-visible,
+input[type='radio']:not([hidden]):focus-visible {
+  outline: 2px solid $primary-color;
+  outline-offset: 2px;
+}
+
+input[type='checkbox']:not([hidden]):disabled,
+input[type='radio']:not([hidden]):disabled {
+  background: $surface-primary !important;
+  border-color: $border-color !important;
+  cursor: not-allowed;
+}
+
+// --- Curseurs ---------------------------------------------------------------
+input[type='range'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+
+  &::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: $radius-pill;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &::-moz-range-track {
+    height: 4px;
+    border-radius: $radius-pill;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    // -6px : (16 - 4) / 2, pour centrer le pouce sur la piste.
+    margin-top: -6px;
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 50%;
+    background: $primary-color;
+  }
+
+  &::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 0;
+    border-radius: 50%;
+    background: $primary-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary-color;
+    outline-offset: 4px;
+  }
+}
+
+// --- Dates, heures et compteurs --------------------------------------------
+//
+// L'icone du selecteur de date est un pictogramme NOIR fourni par le
+// navigateur : sur un champ sombre elle disparaissait. `invert` la retourne
+// en blanc, l'opacite l'aligne sur le texte secondaire.
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator,
+input[type='datetime-local']::-webkit-calendar-picker-indicator,
+input[type='month']::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.55;
+  cursor: pointer;
+
+  &:hover { opacity: 1; }
+}
+
+// Les fleches d'un champ numerique n'apportent rien sur une saisie de poids
+// ou de repetitions, et deforment la hauteur du champ.
+input[type='number'] {
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+// La couleur d'accent des controles restants (barre de progression native,
+// selection de texte dans un champ) suit la marque plutot que le bleu systeme.
+:root {
+  accent-color: $primary-color;
+}
+
+
+// =============================================
+// CHIFFRES : ALIGNEMENT ET LISIBILITE
+// =============================================
+//
+// Les valeurs chiffrees (poids, calories, series, pourcentages) etaient
+// rendues avec les chiffres proportionnels de la police : dans une colonne de
+// statistiques, « 128 » et « 1517 » ne s'alignaient pas, et un compteur qui
+// s'incremente faisait sauter la mise en page a chaque changement.
+//
+// `tabular-nums` donne a tous les chiffres la meme chasse.
+.stat-value,
+.stat-number,
+.metric-value,
+.summary-value,
+.value,
+.count,
+.score-value,
+.progress-percentage,
+.percentage,
+[class*='-value'],
+[class*='-count'],
+[class*='-percent'] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+
+// =============================================
+// PANNEAUX DE FILTRES
+// =============================================
+//
+// Le meme motif — carte contenant un champ de recherche, une rangee de menus
+// deroulants et une rangee d'actions — est repris a l'identique par quatre
+// ecrans (programmes, exercices, objectifs, defis). Chacun le rembourrait a
+// 2rem en haut et en bas, avec 2rem de marge sous la grille de menus : le
+// panneau mesurait environ 310 px de haut pour trois controles de 44 px, et
+// la premiere carte de resultat n'apparaissait qu'a 570 px du haut de page.
+//
+// Regle unique : un panneau de filtres est un outil, pas une section.
+.filters-card,
+.filters-container,
+.search-filters-card {
+  padding: 1rem !important;
+}
+
+.filter-controls-grid,
+.filters-row,
+.filters-grid {
+  margin-bottom: 0.75rem !important;
+  gap: 0.75rem !important;
+
+  &:last-child { margin-bottom: 0 !important; }
+}
+
+.search-container,
+.search-section {
+  margin-bottom: 0.75rem;
+}
+
+
+// =============================================
+// ZONES DE TEXTE
+// =============================================
+//
+// Un <textarea> n'herite PAS de la police du document : sans declaration, le
+// navigateur lui applique sa police a chasse fixe. Le champ « Description »
+// de la creation de programme, la biographie du profil et les notes de seance
+// s'affichaient donc en Courier — la seule police a chasse fixe de
+// l'interface, sur les trois seuls champs de texte libre de l'application.
+textarea {
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  resize: vertical;
 }

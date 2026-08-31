@@ -16,7 +16,7 @@
       <!-- Title Section -->
       <div class="title-section">
         <div class="title-wrapper">
-          <h1 class="page-title">📅 Calendrier d'entraînement</h1>
+          <h1 class="page-title">Calendrier d'entraînement</h1>
           <p class="page-subtitle">Planifiez et suivez vos séances d'entraînement</p>
         </div>
         <div class="title-actions">
@@ -218,7 +218,7 @@
                        [class.completed]="event.is_completed">
                     
                     <div class="event-header">
-                      <span class="event-icon">{{getEventIcon(event.task_type)}}</span>
+                      <app-icon class="event-icon" [name]="getEventIcon(event.task_type)" [size]="14"></app-icon>
                       <span class="event-title">{{event.title}}</span>
                       <div class="event-actions">
                         <button class="action-btn" (click)="editEvent(event)">
@@ -251,7 +251,7 @@
         <!-- Quick Stats Card -->
         <div class="stats-card">
           <div class="stats-header">
-            <h3>📊 Statistiques du mois</h3>
+            <h3>Statistiques du mois</h3>
           </div>
           <div class="stats-grid">
             <div class="stat-item workout">
@@ -262,7 +262,7 @@
               </div>
             </div>
             <div class="stat-item time">
-              <div class="stat-icon">⏱️</div>
+              <div class="stat-icon"><app-icon name="clock"></app-icon></div>
               <div class="stat-content">
                 <div class="stat-number">{{monthStats.totalHours}}h</div>
                 <div class="stat-label">Heures</div>
@@ -311,7 +311,7 @@
                 
                 <div class="event-info">
                   <div class="event-header">
-                    <span class="event-icon">{{getEventIcon(event.task_type)}}</span>
+                    <app-icon class="event-icon" [name]="getEventIcon(event.task_type)" [size]="14"></app-icon>
                     <span class="event-title">{{event.title}}</span>
                     <div class="event-actions">
                       <button class="action-btn" 
@@ -336,8 +336,8 @@
                         <circle cx="12" cy="12" r="10"/>
                         <polyline points="12 6 12 12 16 14"/>
                       </svg>
-                      {{formatTime(event.reminder_time)}}
-                      <span *ngIf="event.duration"> ({{event.duration}} min)</span>
+                      <span>{{formatTime(event.reminder_time)}}</span>
+                      <span *ngIf="event.duration">· {{event.duration}} min</span>
                     </div>
                     <div class="event-description" *ngIf="event.description">
                       {{event.description}}
@@ -412,13 +412,13 @@
             <div class="form-group">
               <label for="task_type" class="form-label">Type d'événement</label>
               <select id="task_type" class="form-control" formControlName="task_type">
-                <option value="workout">💪 Entraînement</option>
-                <option value="goal">🎯 Objectif</option>
-                <option value="rest">😴 Repos</option>
-                <option value="nutrition">🍎 Nutrition</option>
-                <option value="meal">🍽️ Repas</option>
-                <option value="reminder">⏰ Rappel</option>
-                <option value="other">📝 Autre</option>
+                <option value="workout">Entraînement</option>
+                <option value="goal">Objectif</option>
+                <option value="rest">Repos</option>
+                <option value="nutrition">Nutrition</option>
+                <option value="meal">Repas</option>
+                <option value="reminder">Rappel</option>
+                <option value="other">Autre</option>
               </select>
             </div>
             

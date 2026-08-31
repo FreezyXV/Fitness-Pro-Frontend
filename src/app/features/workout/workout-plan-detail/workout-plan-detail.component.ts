@@ -45,22 +45,23 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   // Configuration
+  // `icon` designe une entree du jeu d'icones de l'application (IconName).
   readonly difficultyLevels = [
-    { value: 'beginner', label: 'Débutant', icon: '🟢', color: '#4CAF50' },
+    { value: 'beginner', label: 'Débutant', icon: 'circle', color: '#4CAF50' },
     {
       value: 'intermediate',
       label: 'Intermédiaire',
-      icon: '🟡',
+      icon: 'bolt',
       color: '#fdba74',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
+    { value: 'advanced', label: 'Avancé', icon: 'flame', color: '#fc8181' },
   ];
 
   readonly categories = [
-    { value: 'strength', label: 'Force', icon: '💪' },
-    { value: 'cardio', label: 'Cardio', icon: '❤️' },
-    { value: 'hiit', label: 'HIIT', icon: '🔥' },
-    { value: 'flexibility', label: 'Flexibilité', icon: '🧘' },
+    { value: 'strength', label: 'Force', icon: 'dumbbell' },
+    { value: 'cardio', label: 'Cardio', icon: 'flame' },
+    { value: 'hiit', label: 'HIIT', icon: 'bolt' },
+    { value: 'flexibility', label: 'Flexibilité', icon: 'refresh' },
   ];
 
   constructor(

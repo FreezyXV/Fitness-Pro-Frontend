@@ -600,13 +600,16 @@
         >
           <div class="session-header">
             <h4 class="session-title">{{ session.name }}</h4>
+            <!-- Le statut etait rendu par un emoji seul (✅ / ⏳ / 📋) : trois
+                 pictogrammes systeme sans libelle, dont deux se ressemblent a
+                 petite taille. Une pastille de statut porte son texte. -->
             <span class="session-status" [class]="session.status">
               {{
                 session.status === "completed"
-                  ? "✅"
+                  ? "Terminée"
                   : session.status === "in_progress"
-                  ? "⏳"
-                  : "📋"
+                  ? "En cours"
+                  : "Planifiée"
               }}
             </span>
           </div>

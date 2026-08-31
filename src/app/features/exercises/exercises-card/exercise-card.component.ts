@@ -8,11 +8,12 @@ import { catchError, retry, delay } from 'rxjs/operators';
 
 import { Exercise, APP_CONFIG } from '@shared';
 import { ExercisesService } from '@app/services/exercises.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-exercise-card-enhanced',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, IconComponent],
   templateUrl: './exercise-card.component.html',
   styleUrls: ['./exercise-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -668,7 +669,7 @@ export class ExerciseCardComponent implements OnInit, OnDestroy {
     const difficultyInfo = APP_CONFIG.EXERCISE_CONFIG.DIFFICULTIES.find(
       (d: { value: string; icon: string; label: string; color?: string }) => d.value === difficulty
     );
-    return difficultyInfo?.icon || '⚪';
+    return difficultyInfo?.icon || 'circle';
   }
 
   getDifficultyLabel(difficulty: string): string {
@@ -682,7 +683,7 @@ export class ExerciseCardComponent implements OnInit, OnDestroy {
     const bodyPartInfo = APP_CONFIG.EXERCISE_CONFIG.BODY_PARTS.find(
       (bp: { value: string; icon: string }) => bp.value === bodyPart
     );
-    return bodyPartInfo?.icon || '💪';
+    return bodyPartInfo?.icon || 'dumbbell';
   }
 
   getBodyPartLabel(bodyPart: string): string {

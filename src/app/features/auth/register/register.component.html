@@ -8,7 +8,14 @@
   <div class="register-card">
     <!-- Enhanced logo section -->
     <div class="logo-section">
-      <div class="logo-icon">F</div>
+      <div class="logo-icon">
+        <!-- Meme marque que la barre laterale et la page de connexion : le
+             trace de pouls, plutot que la lettre « F ». -->
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+        </svg>
+      </div>
       <h2>Créer un compte</h2>
       <p class="subtitle">Rejoignez la communauté FitnessPro</p>
     </div>
@@ -107,10 +114,19 @@
              class="password-requirements">
           <div class="requirement" 
                *ngFor="let requirement of passwordRequirements; let i = index">
+            <!-- Le repere « non satisfait » etait le caractere ○, dont le
+                 dessin et la chasse varient d'une police a l'autre : la liste
+                 de criteres n'etait donc pas alignee. Il est desormais dessine
+                 en CSS (voir .check-icon), comme le reste du systeme. -->
             <span class="check-icon" 
                   [class.valid]="requirement.isValid"
-                  [class.invalid]="!requirement.isValid">
-              {{ requirement.isValid ? '✓' : '○' }}
+                  [class.invalid]="!requirement.isValid"
+                  aria-hidden="true">
+              <svg *ngIf="requirement.isValid" width="10" height="10" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="3"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12.5l5 5 11-11" />
+              </svg>
             </span>
             {{ requirement.label }}
           </div>

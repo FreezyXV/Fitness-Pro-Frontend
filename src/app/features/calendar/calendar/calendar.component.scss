@@ -334,8 +334,10 @@ padding: 0.25rem;
       height: 48px;
       border: none;
       border-radius: 50%;
-      background: $light-gradient;
-      color: $gray-700;
+      // $light-gradient retombe sur $surface-tertiary depuis l'aplatissement
+      // des degrades ; ecrit en clair pour que l'intention soit lisible.
+      background: $surface-tertiary;
+      color: $text-secondary;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -357,7 +359,7 @@ padding: 0.25rem;
 
       .period-title {
         font-size: 2rem;
-        font-weight: 900;
+        font-weight: 800;
         @include text-gradient($primary-dark);
         margin: 0 0 $space-4 0;
       }
@@ -399,7 +401,7 @@ padding: 0.25rem;
 
           .stat-value {
             font-size: 1.25rem;
-            font-weight: 900;
+            font-weight: 800;
           }
 
           .stat-label {
@@ -565,7 +567,10 @@ padding: 0.25rem;
 
           @include respond-below(xs) {
             padding: 0.5rem;
-            border-radius: 2.5rem;
+            // 2,5rem de rayon sur une case de 45x84 px : la grille du mois
+            // se transformait en colonnes de gelules, chaque jour dessine
+            // comme une pilule au lieu d'une case.
+            border-radius: $radius-sm;
           }
 
           &:hover {
@@ -587,11 +592,7 @@ padding: 0.25rem;
           }
 
           &.today {
-            background: linear-gradient(
-              135deg,
-              rgba($primary-500, 0.1),
-              rgba($primary-500, 0.05)
-            );
+            background: rgba($primary-500, 0.07);
             border: $border-width solid $border-color;
 
             .day-number {
@@ -608,12 +609,17 @@ padding: 0.25rem;
             }
           }
 
+          // $accent-500 est un JAUNE (#fff066) : a 10 % sur la surface sombre
+          // des cases, il donnait un brun olive terne — la seule couleur de
+          // ce genre dans l'application, et sur la case la plus regardee.
+          // La selection se marque par une bordure de la couleur de marque,
+          // pas par un aplat.
           &.selected {
-            background: rgba($accent-500, 0.1);
-            border: $border-width solid $border-color;
-            transform: scale(1.02);
+            background: rgba($primary-color, 0.06);
+            border: $border-width solid rgba($primary-color, 0.45);
+            transform: none;
             z-index: 5;
-            box-shadow: $shadow-lg;
+            box-shadow: none;
           }
 
           &.has-events {
@@ -1092,7 +1098,7 @@ padding: 0.25rem;
         .stat-content {
           .stat-number {
             font-size: 1.25rem;
-            font-weight: 900;
+            font-weight: 800;
             @include text-gradient($primary-dark);
             line-height: 1;
             margin-bottom: $space-1;
@@ -2173,5 +2179,192 @@ padding: 0.25rem;
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
+  }
+}
+
+
+// =============================================
+// CALENDRIER — GRILLE ET REPERES
+// =============================================
+
+// --- Les deux pastilles de l'en-tete ---------------------------------------
+//
+// « 1 Entraînements » et « 50 % Complétés » etaient rendues en degrade vert et
+// en degrade bleu, encadrant le nom du mois. C'etaient les deux seuls aplats
+// colores de la page, poses sur une information de second plan que la carte
+// « Statistiques du mois » repete deja mot pour mot dans la colonne de droite.
+.calendar-container .period-stats .stat-badge {
+  background: rgba(255, 255, 255, 0.05) !important;
+  background-image: none !important;
+  border: $border-width solid $border-color !important;
+  border-radius: $radius-md !important;
+  padding: 0.375rem 0.75rem !important;
+  color: $text-secondary !important;
+
+  .stat-value {
+    color: $text-primary;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: $text-muted;
+  }
+}
+
+// --- La grille du mois ------------------------------------------------------
+//
+// Chaque case mesurait 120 px de haut au minimum, pour n'accueillir qu'un
+// numero de jour et quelques pastilles de 6 px : une grille de six semaines
+// occupait 800 px, presque tous vides. Le mois entier tient desormais dans un
+// ecran, ce qui est le seul interet d'une vue mensuelle — voir le mois d'un
+// coup d'oeil.
+.calendar-container {
+  // La grille est posee dans une colonne dont la hauteur est dictee par la
+  // colonne VOISINE (statistiques du mois + evenements du jour, ~1 000 px).
+  // `display: grid` reparti alors l'excedent entre les six rangees : chaque
+  // case du mois faisait 165 px de haut pour un numero de jour et trois
+  // pastilles de 5 px. `align-content: start` rend a chaque rangee sa hauteur
+  // propre et laisse l'espace restant en bas, la ou il ne gene personne.
+  .calendar-section { align-self: start; }
+
+  // `min-height: 600px` sur la vue du mois : combinee a des rangees de 84 px
+  // (6 x 84 = 504), elle forcait a nouveau l'etirement des cases pour combler
+  // la difference.
+  .calendar-view.month-view {
+    height: auto;
+    min-height: 0;
+  }
+
+  .calendar-grid {
+    align-content: start;
+    grid-auto-rows: minmax(84px, auto);
+  }
+
+  // Selecteur volontairement long : la regle d'origine est imbriquee jusqu'a
+  // `.content-grid .calendar-section .calendar-view .calendar-grid
+  //  .calendar-day` et impose `min-height: 120px`.
+  .content-grid .calendar-section .calendar-view .calendar-grid .calendar-day,
+  .calendar-grid .calendar-day {
+    min-height: 84px;
+    height: auto;
+    padding: 0.5rem !important;
+
+    // Le survol agrandissait la case de 2 % et la faisait passer au-dessus
+    // de ses voisines : la grille entiere tremblait au passage de la souris.
+    &:hover {
+      background: rgba(255, 255, 255, 0.04);
+      transform: none;
+      box-shadow: none;
+    }
+
+    .day-number {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: $text-secondary;
+      font-variant-numeric: tabular-nums;
+    }
+
+    &.today .day-number { color: $on-primary; }
+
+    &.other-month .day-number { color: $text-muted; opacity: 0.55; }
+
+    .day-content { gap: 0.25rem; }
+
+    // L'anneau de progression : 20 px de diametre pour un pourcentage, sur
+    // une case qui porte deja des pastilles d'evenement. Deux representations
+    // de la meme information dans 84 px de haut.
+    .day-progress { display: none; }
+
+    .day-events {
+      align-content: flex-start;
+      gap: 3px;
+    }
+
+    .event-dot {
+      width: 5px;
+      height: 5px;
+      border: 0;
+    }
+  }
+
+  // En-tete des jours de la semaine : un simple repere de lecture, il n'a pas
+  // besoin du poids typographique d'un titre.
+  .calendar-header .day-header {
+    padding: 0.5rem 0;
+
+    .day-name {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: $text-muted;
+    }
+  }
+}
+
+
+// L'heure et la duree d'un evenement : « 07:00 » et « · 45 min » sont deux
+// elements distincts, sans espace entre eux dans le flux. La puce d'heure les
+// aligne avec un ecart explicite.
+.calendar-container .event-details .event-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+}
+
+
+// =============================================
+// CALENDRIER SUR TELEPHONE
+// =============================================
+//
+// L'en-tete de navigation passait en colonne : la fleche « mois precedent »
+// se retrouvait AU-DESSUS du nom du mois et la fleche « suivant » EN DESSOUS,
+// separees par les deux compteurs. On ne pouvait plus lire la rangee comme
+// une navigation.
+@include respond-below(sm) {
+  .calendar-container .nav-controls {
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem !important;
+
+    .current-period {
+      order: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .nav-btn {
+      order: 0;
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+    }
+
+    .period-stats {
+      order: 1;
+      flex: 1 1 100%;
+      justify-content: center;
+    }
+  }
+
+  // « Aujourd'hui » etait tronque en « Aujourd'hu » : le bouton partageait sa
+  // ligne avec les trois onglets Mois / Semaine / Jour sans pouvoir retrecir
+  // ni passer a la ligne.
+  .calendar-container .nav-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    .btn-outline {
+      flex: 1 1 100%;
+      white-space: nowrap;
+    }
+
+    .view-toggle { flex: 1 1 100%; justify-content: center; }
   }
 }

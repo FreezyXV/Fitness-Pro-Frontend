@@ -57,11 +57,10 @@
         <div class="plan-meta-section">
           <div class="meta-badges">
             <div class="difficulty-badge" [attr.data-level]="workoutPlan.difficultyLevel">
-              <div class="badge-icon">{{ getDifficultyIcon(workoutPlan.difficultyLevel) }}</div>
-              <span class="badge-text">{{ getDifficultyLabel(workoutPlan.difficultyLevel) }}</span>
+                            <span class="badge-text">{{ getDifficultyLabel(workoutPlan.difficultyLevel) }}</span>
             </div>
             <div class="category-badge" [attr.data-category]="workoutPlan.category">
-              <div class="badge-icon">{{ getCategoryIcon(workoutPlan.category) }}</div>
+              <app-icon class="badge-icon" [name]="getCategoryIcon(workoutPlan.category)" [size]="13"></app-icon>
               <span class="badge-text">{{ getCategoryLabel(workoutPlan.category) }}</span>
             </div>
             <div class="status-badge" *ngIf="workoutPlan.isCustom">
@@ -90,7 +89,7 @@
         <!-- Enhanced Quick Stats -->
         <div class="quick-stats-grid">
           <div class="stat-card" *ngIf="workoutPlan.estimatedDuration">
-            <div class="stat-icon">⏱️</div>
+            <div class="stat-icon"><app-icon name="clock"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ formatDuration(workoutPlan.estimatedDuration) }}</span>
               <span class="stat-label">durée</span>
@@ -196,9 +195,9 @@
                     <div class="exercise-title-row">
                       <h4 class="exercise-name">{{ exercise.name }}</h4>
                       <div class="exercise-status-badge" [class]="'status-' + getExerciseStatus(i)">
-                        <span *ngIf="getExerciseStatus(i) === 'completed'">✓ Terminé</span>
-                        <span *ngIf="getExerciseStatus(i) === 'in_progress'">⏵ En cours</span>
-                        <span *ngIf="getExerciseStatus(i) === 'not_started'">⏸ À faire</span>
+                        <span *ngIf="getExerciseStatus(i) === 'completed'">Terminé</span>
+                        <span *ngIf="getExerciseStatus(i) === 'in_progress'">En cours</span>
+                        <span *ngIf="getExerciseStatus(i) === 'not_started'">À faire</span>
                       </div>
                     </div>
                     
@@ -224,7 +223,6 @@
                         <span>{{ formatSeconds(exercise.durationSeconds) }}</span>
                       </div>
                       <div class="difficulty-indicator" [attr.data-level]="exercise.difficulty">
-                        <span>{{ getDifficultyIcon(exercise.difficulty) }}</span>
                         <span>{{ getDifficultyLabel(exercise.difficulty) }}</span>
                       </div>
                     </div>
@@ -271,7 +269,7 @@
                         </div>
                       </div>
                       <div class="config-item" *ngIf="exercise.durationSeconds">
-                        <div class="config-icon">⏱️</div>
+                        <div class="config-icon"><app-icon name="clock"></app-icon></div>
                         <div class="config-info">
                           <span class="config-label">Durée</span>
                           <span class="config-value">{{ formatSeconds(exercise.durationSeconds) }}</span>
@@ -440,7 +438,7 @@
           
           <div class="info-items">
             <div class="info-item">
-              <div class="info-icon">⏱️</div>
+              <div class="info-icon"><app-icon name="clock"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Durée estimée</span>
                 <span class="info-value">{{ formatDuration(workoutPlan.estimatedDuration) || "Non spécifiée" }}</span>

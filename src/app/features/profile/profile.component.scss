@@ -282,11 +282,14 @@
 
   // Profile Overview Stats
   .profile-overview-stats {
+    // Deux colonnes — carte d'identite a gauche, grille 2x2 de mesures a
+    // droite — laissaient 250 px de vide sous la carte d'identite, qui ne
+    // porte qu'un nom et deux lignes. Les deux blocs s'empilent : l'identite
+    // sur toute la largeur, puis les quatre mesures sur une rangee.
     display: grid;
-    flex-direction: column;
-    grid-template-columns: 400px minmax(0, 1fr);
-    gap: $spacing-4xl;
-    margin-bottom: 2rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
 
     .user-info-card {
       @include glass-card(0.92, 20px);
@@ -2359,4 +2362,193 @@
 .profile-container .bmi-stat .stat-value,
 :host .bmi-stat .stat-value {
   color: $text-primary !important;
+}
+
+
+// =============================================
+// PROFIL — DERNIERES IMPERFECTIONS
+// =============================================
+
+// --- La pastille d'etat d'IMC ----------------------------------------------
+//
+// « Poids normal » s'affichait sur DEUX lignes dans une pastille de 60 px,
+// coupe au milieu, sous une valeur d'IMC de 1,75rem. Une pastille d'etat tient
+// sur une ligne, sinon ce n'est plus une pastille.
+.profile-container .stat-card .status-badge {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0.1875rem 0.5rem;
+  border-radius: $radius-xs;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+// --- La carte d'identite ----------------------------------------------------
+//
+// L'avatar portait une etoile en pastille, posee sur un cercle lime : un
+// decor, sans etat ni information derriere. Le reste de la carte occupait une
+// hauteur de 300 px pour un nom et deux lignes de texte, la faute a un avatar
+// de 120 px centre au-dessus.
+// Selecteur prefixe par `.profile-overview-stats` : la regle d'origine est
+// imbriquee a ce niveau (specificite 0-2-0) et impose la colonne centree avec
+// 4rem de rembourrage vertical.
+.profile-container {
+  .profile-overview-stats .user-info-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    padding: 1.25rem !important;
+    // La carte s'etirait a la hauteur de la grille de statistiques voisine
+    // (2 x 2 tuiles) : 200 px de vide sous le nom de l'utilisateur.
+    align-self: start;
+  }
+
+  .user-avatar {
+    margin: 0 !important;
+    flex-shrink: 0;
+
+    .default-avatar {
+      width: 56px !important;
+      height: 56px !important;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06) !important;
+      color: $text-secondary !important;
+      display: grid;
+      place-items: center;
+
+      svg { width: 26px; height: 26px; }
+    }
+
+    .avatar-badge { display: none !important; }
+  }
+
+  .user-details {
+    min-width: 0;
+
+    .user-name {
+      margin: 0 0 0.375rem !important;
+      font-size: 1.0625rem !important;
+      font-weight: 700 !important;
+      color: $text-primary !important;
+    }
+
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start !important;
+      gap: 0.25rem !important;
+    }
+
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: $text-secondary;
+
+      svg { width: 13px; height: 13px; opacity: 0.7; flex-shrink: 0; }
+    }
+  }
+
+  // --- Les onglets ----------------------------------------------------------
+  //
+  // Quatre onglets etaient poses dans une grille `auto-fit minmax(280px)`
+  // avec 2rem de gouttiere et 2rem de rembourrage vertical : sur un ecran de
+  // 1440 px cela donnait une barre de navigation de 180 px de haut, et sur
+  // 1200 px un seul onglet par ligne. Une barre d'onglets est une ligne.
+  .nav-card {
+    padding: 0.375rem !important;
+    border-radius: $radius-lg !important;
+  }
+
+  .nav-tabs {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 0.25rem !important;
+
+    .nav-tab {
+      flex: 1 1 auto;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 0.875rem !important;
+      gap: 0.5rem !important;
+      border-radius: $radius-md !important;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: $text-secondary;
+
+      &::before,
+      &::after { display: none !important; }
+
+      .tab-icon {
+        width: auto !important;
+        height: auto !important;
+        background: none !important;
+        color: inherit !important;
+
+        svg { width: 16px; height: 16px; }
+      }
+
+      // Le sous-titre ne survit pas au passage en ligne : « Identité et
+      // profil » sous « Informations personnelles » double la hauteur de la
+      // barre pour une precision que l'onglet lui-meme donne deja.
+      .tab-subtitle { display: none !important; }
+
+      .tab-content {
+        display: block;
+        font-size: 0.875rem;
+      }
+
+      .tab-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      &:hover { background: rgba(255, 255, 255, 0.04); color: $text-primary; }
+
+      &.active {
+        background: rgba(255, 255, 255, 0.08);
+        color: $text-primary;
+      }
+    }
+  }
+
+  // --- Cases a cocher des reglages -------------------------------------------
+  .reminder-toggle,
+  .settings-section {
+    label { cursor: pointer; }
+  }
+}
+
+
+// Les quatre mesures (poids, taille, IMC, completion du profil) tenaient dans
+// une grille 2x2 haute de 300 px. Sur une rangee, elles se lisent d'un coup.
+// `!important` : la regle d'origine impose `repeat(2, 1fr)` depuis une media
+// query, plus specifique que ce selecteur.
+.profile-container .profile-overview-stats .health-stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)) !important;
+  gap: 0.75rem !important;
+
+  .stat-card {
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem !important;
+    min-height: 0;
+
+    .stat-icon {
+      width: 36px !important;
+      height: 36px !important;
+      flex-shrink: 0;
+    }
+
+    .stat-content { min-width: 0; }
+  }
 }

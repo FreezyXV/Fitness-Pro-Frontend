@@ -283,10 +283,16 @@ gap: $spacing-3xl;
               color: $on-primary;
             }
 
+            // Critere non satisfait : un anneau vide plutot qu'un disque
+            // plein, pour qu'il se distingue au premier coup d'oeil du critere
+            // valide sans reposer sur la seule couleur.
             &.invalid {
-              background-color: $gray-300;
+              background-color: transparent;
+              border: $border-width solid $border-strong;
               color: $text-muted;
             }
+
+            svg { display: block; }
           }
         }
       }
@@ -784,4 +790,24 @@ gap: $spacing-3xl;
       font-size: 0.65rem;
     }
   }
+}
+
+
+// =============================================
+// MARQUE
+// =============================================
+//
+// La pastille faisait 88 px pour porter une seule lettre, en $primary-dark
+// (#a1d428, un lime FONCE) avec une encre presque noire dessus : le contraste
+// tombait a 3,1:1, et l'ensemble se lisait comme un aplat olive terne.
+// Elle porte desormais la marque de l'application, sur le lime plein.
+.logo-icon {
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: $radius-lg !important;
+  background: $primary-color !important;
+  color: $on-primary !important;
+  box-shadow: none !important;
+
+  svg { display: block; }
 }

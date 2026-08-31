@@ -166,99 +166,100 @@ const GOAL_CATEGORIES: CategoryInfo[] = [
   {
     value: 'fitness',
     label: 'Fitness',
-    icon: '💪',
+    icon: 'dumbbell',
     color: '#d4ff3d',
     gradient: '#d4ff3d',
   },
   {
     value: 'nutrition',
     label: 'Nutrition',
-    icon: '🥗',
+    icon: 'utensils',
     color: '#7ecbff',
     gradient: '#7ecbff',
   },
   {
     value: 'wellness',
     label: 'Bien-être',
-    icon: '🧘‍♀️',
+    icon: 'moon',
     color: '#c4b5fd',
     gradient: '#c4b5fd',
   },
   {
     value: 'cardio',
     label: 'Cardio',
-    icon: '🏃‍♂️',
+    icon: 'flame',
     color: '#fc8181',
     gradient: '#fc8181',
   },
   {
     value: 'strength',
     label: 'Force',
-    icon: '⚡',
+    icon: 'bolt',
     color: '#fdba74',
     gradient: '#fdba74',
   },
   {
     value: 'flexibility',
     label: 'Flexibilité',
-    icon: '🌿',
+    icon: 'leaf',
     color: '#6ee7b7',
     gradient: '#6ee7b7',
   },
   {
     value: 'mental',
     label: 'Mental',
-    icon: '🧠',
+    icon: 'bulb',
     color: '#67e8f9',
     gradient: '#67e8f9',
   },
   {
     value: 'weight',
     label: 'Poids',
-    icon: '⚖️',
+    icon: 'chart',
     color: '#86efac',
     gradient: '#86efac',
   },
 ];
 
+// `icon` designe une entree du jeu d'icones de l'application (IconName).
 const PRIORITY_LEVELS: PriorityInfo[] = [
-  { value: 'low', label: 'Basse', color: '#6ee7b7', icon: '😌' },
-  { value: 'medium', label: 'Moyenne', color: '#fdba74', icon: '🎯' },
-  { value: 'high', label: 'Haute', color: '#fc8181', icon: '🔥' },
+  { value: 'low', label: 'Basse', color: '#6ee7b7', icon: 'circle' },
+  { value: 'medium', label: 'Moyenne', color: '#fdba74', icon: 'target' },
+  { value: 'high', label: 'Haute', color: '#fc8181', icon: 'flame' },
 ];
 
 const STATUS_FILTERS: StatusFilter[] = [
-  { value: 'all', label: 'Tous', icon: '📋' },
-  { value: 'not-started', label: 'Non commencé', icon: '⏳' },
-  { value: 'active', label: 'Actifs', icon: '▶️' },
-  { value: 'completed', label: 'Terminés', icon: '✅' },
-  { value: 'paused', label: 'En pause', icon: '⏸️' },
+  { value: 'all', label: 'Tous', icon: 'clipboard' },
+  { value: 'not-started', label: 'Non commencé', icon: 'circle' },
+  { value: 'active', label: 'Actifs', icon: 'bolt' },
+  { value: 'completed', label: 'Terminés', icon: 'check-circle' },
+  { value: 'paused', label: 'En pause', icon: 'clock' },
 ];
 
+// `icon` designe une entree du jeu d'icones de l'application (IconName).
+// Le champ `emoji` a disparu : il servait de valeur de repli a
+// getStatusIcon(), qui rendait donc un pictogramme systeme la ou tout le
+// reste de l'interface trace ses icones.
 const STATUS_CONFIG = {
   'not-started': {
     label: 'Non commencé',
-    emoji: '⏳',
     color: '#a8a8b0',
-    icon: '',
+    icon: 'circle',
   },
   active: {
     label: 'Actif',
-    emoji: '▶️',
     color: '#d4ff3d',
-    icon: '',
+    icon: 'bolt',
   },
   paused: {
     label: 'En pause',
-    emoji: '⏸️',
     color: '#fdba74',
-    icon: '',
+    icon: 'clock',
   },
   completed: {
     label: 'Terminé',
-    emoji: '✅',
     color: '#7ecbff',
-    icon: '',
+    icon: 'check-circle',
   },
 };
 
@@ -267,8 +268,16 @@ const STATUS_CONFIG = {
    ============================================= */
 
 class DateUtils {
-  static formatDate(date: string | Date): string {
+  /**
+   * Un objectif sans echeance est un cas NORMAL : le champ est facultatif a la
+   * creation. `new Date(undefined).toLocaleDateString()` renvoie pourtant la
+   * chaine « Invalid Date », affichee telle quelle dans la puce d'echeance de
+   * la carte. On rend un tiret cadratin, qui se lit comme « non renseigne ».
+   */
+  static formatDate(date: string | Date | null | undefined): string {
+    if (!date) return '—';
     const d = new Date(date);
+    if (isNaN(d.getTime())) return '—';
     return d.toLocaleDateString('fr-FR', {
       day: '2-digit',
       month: '2-digit',
@@ -856,11 +865,18 @@ export class GoalsComponent implements OnInit, OnDestroy {
     }
     const targetDate = new Date(goal.target_date);
     const now = new Date();
-    const daysRemaining = Math.ceil(
-      (targetDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
-    );
+    // Sans echeance, la soustraction donne NaN et la carte affichait
+    // « NaN jour(s) restant(s) ». `undefined` fait disparaitre la puce, que
+    // le gabarit affiche desormais sous condition.
+    const hasDeadline = !!goal.target_date && !isNaN(targetDate.getTime());
+    const daysRemaining = hasDeadline
+      ? Math.ceil((targetDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+      : undefined;
     const isEndingSoon =
-      daysRemaining <= 7 && daysRemaining > 0 && goal.status !== 'completed'; // Define 'ending soon' threshold, e.g., 7 days
+      daysRemaining !== undefined &&
+      daysRemaining <= 7 &&
+      daysRemaining > 0 &&
+      goal.status !== 'completed'; // Define 'ending soon' threshold, e.g., 7 days
 
     // Calculate these values within enhanceGoal
     const progressPercentage = this.calculateProgressPercentage(goal);
@@ -880,8 +896,8 @@ export class GoalsComponent implements OnInit, OnDestroy {
 
     return {
       ...goal,
-      daysRemaining: Math.max(0, daysRemaining),
-      isOverdue: daysRemaining < 0 && goal.status !== 'completed',
+      daysRemaining: daysRemaining === undefined ? undefined : Math.max(0, daysRemaining),
+      isOverdue: daysRemaining !== undefined && daysRemaining < 0 && goal.status !== 'completed',
       isEndingSoon: isEndingSoon, // Added
       progressPercentage,
       categoryInfo,
@@ -904,14 +920,19 @@ export class GoalsComponent implements OnInit, OnDestroy {
      ============================================= */
 
   private calculateProgressPercentage(goal: Goal): number {
-    if (goal.progress_percentage !== undefined) {
-      return goal.progress_percentage;
+    if (Number.isFinite(goal.progress_percentage)) {
+      return goal.progress_percentage as number;
     }
-    if (goal.target_value <= 0) return 0;
-    return Math.min(
-      100,
-      Math.round((goal.current_value / goal.target_value) * 100)
-    );
+    // `current_value` et `target_value` sont facultatifs a la creation d'un
+    // objectif. La division rendait alors NaN, et la carte affichait un
+    // pourcentage vide — un « % » solitaire a droite du mot « Progression »,
+    // avec une barre remplie a une largeur indeterminee.
+    const current = Number(goal.current_value);
+    const target = Number(goal.target_value);
+    if (!Number.isFinite(current) || !Number.isFinite(target) || target <= 0) {
+      return 0;
+    }
+    return Math.min(100, Math.max(0, Math.round((current / target) * 100)));
   }
 
   /**
@@ -2029,13 +2050,10 @@ export class GoalsComponent implements OnInit, OnDestroy {
     );
   }
 
-  // STATUS_CONFIG ne renseigne que `emoji`, jamais `icon` (toujours '') :
-  // cette methode retournait donc systematiquement le repli '❓', quel que
-  // soit le statut — d'ou le point d'interrogation rouge affiche a la place
-  // d'une coche pour un objectif termine.
+  /** Nom d'icone du jeu de l'application (voir IconName). */
   getStatusIcon(status: string): string {
     const cfg = this.statusConfig[status as keyof typeof this.statusConfig];
-    return cfg?.emoji || cfg?.icon || '';
+    return cfg?.icon || 'circle';
   }
 
   formatDate(date: string | Date): string {

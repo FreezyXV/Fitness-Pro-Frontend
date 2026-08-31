@@ -448,7 +448,7 @@ padding: 0.25rem;
 
     .exercise-title {
       font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 900;
+      font-weight: 800;
       line-height: 1.1;
       color: $gray-900;
       margin: 0 0 1.5rem 0;
@@ -527,7 +527,7 @@ padding: 0.25rem;
         .stat-value {
           display: block;
           font-size: clamp(1.75rem, 4vw, 2rem);
-          font-weight: 900;
+          font-weight: 800;
           color: $gray-900;
           line-height: 1;
           margin-bottom: 0.75rem;
@@ -1025,7 +1025,7 @@ padding: 0.25rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 900;
+          font-weight: 800;
           font-size: 1.125rem;
           flex-shrink: 0;
           background: $secondary-gradient;
@@ -2226,6 +2226,130 @@ width: 100%;
       .exercise-info .exercise-name {
         font-size: 0.9375rem !important;
       }
+    }
+  }
+}
+
+
+// =============================================
+// DERNIERS APLATS HORS PALETTE
+// =============================================
+//
+// Trois elements de cet ecran etaient encore peints en $secondary-color
+// (#79ffc0, une menthe) ou en lime translucide : les pastilles numerotees des
+// instructions, la carte de l'etape courante, et les puces de muscle. Aucune
+// de ces trois couleurs ne porte d'information — ce sont un numero d'ordre,
+// une position de lecture et deux noms de muscles.
+.exercise-detail-container,
+:host {
+  .instruction-step {
+    .step-indicator {
+      background: rgba(255, 255, 255, 0.08) !important;
+      background-image: none !important;
+      color: $text-secondary !important;
+      box-shadow: none !important;
+      font-weight: 700;
+    }
+
+    // L'etape courante : elle se signale par une bordure, comme partout
+    // ailleurs dans l'application, plutot que par un aplat teinte.
+    &.active,
+    &.current {
+      background: rgba(255, 255, 255, 0.04) !important;
+      background-image: none !important;
+      border-color: rgba($primary-color, 0.45) !important;
+
+      .step-indicator {
+        background: $primary-color !important;
+        color: $on-primary !important;
+      }
+    }
+  }
+
+  .muscle-tags .muscle-tag {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: $border-width solid $border-color !important;
+    color: $text-secondary !important;
+  }
+
+  // La pastille des informations laterales : meme menthe, meme absence de
+  // sens porte.
+  .info-item .info-icon {
+    background: rgba(255, 255, 255, 0.06) !important;
+    background-image: none !important;
+    color: $text-secondary !important;
+    box-shadow: none !important;
+  }
+
+  // La tuile « etapes » de l'en-tete portait une icone de CRAYON — le
+  // pictogramme de l'edition — pour compter des etapes d'exercice.
+  .header-stats .stat-icon,
+  .quick-stats .stat-icon {
+    background: transparent !important;
+    color: $text-muted !important;
+  }
+}
+
+
+// =============================================
+// EN-TETE ET ZONE MEDIA
+// =============================================
+//
+// `.title-section` heritait d'une regle `display: flex; align-items: center`
+// pensee pour un en-tete « pictogramme + titre » : appliquee ici, elle posait
+// la DESCRIPTION a droite du titre, sur la meme ligne. Le titre se retrouvait
+// donc coince dans une colonne etroite (« Développé / couché » sur deux
+// lignes) tandis que le texte courant s'etalait a cote.
+.exercise-detail-container .title-section {
+  display: block;
+  margin-bottom: 1.25rem !important;
+
+  .exercise-title { display: block; }
+
+  .exercise-description {
+    display: block;
+    max-width: 78ch;
+    margin: 0;
+  }
+}
+
+// Les tuiles de l'en-tete centraient leur contenu alors que tout le reste de
+// la page s'aligne a gauche : deux tuiles pleine largeur avec une valeur au
+// milieu, sans bord commun avec le titre au-dessus ni les cartes en dessous.
+.exercise-detail-container .quick-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.5rem;
+
+  .stat-card {
+    align-items: flex-start;
+    text-align: left;
+    padding: 0.625rem 0.75rem !important;
+  }
+}
+
+// Le cadre « demonstration non disponible » etait une carte de 300 px posee
+// AU CENTRE d'une autre carte, avec 150 px de vide de chaque cote : une boite
+// dans une boite, pour annoncer une absence.
+.exercise-detail-container .video-section-card {
+  .no-video-placeholder,
+  .video-placeholder {
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+    padding: 2rem 1.5rem;
+    border-radius: $radius-lg;
+
+    svg { width: 32px; height: 32px; }
+
+    h3, h4 {
+      font-size: 1rem;
+      font-weight: 650;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: $text-secondary;
     }
   }
 }

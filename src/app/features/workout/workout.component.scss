@@ -523,31 +523,35 @@ padding: 0.25rem;
         }
       }
 
+      // Ce bouton etait le SEUL element vert d'eau de l'application
+      // ($secondary-color, #79ffc0) : pose entre trois menus deroulants
+      // neutres, il attirait l'oeil plus que le bouton d'action principal de
+      // la page. Un bouton qui deplie un panneau de filtres est une commande
+      // secondaire ; il prend l'apparence des autres commandes secondaires.
       .advanced-filters-toggle {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 0.5rem;
-        background: rgba($secondary-color, 0.1);
-        color: $c-indigo-400;
+        background: $surface-tertiary;
+        color: $text-primary;
         border: $border-width solid $border-color;
         padding: 0.875rem 1.5rem;
         border-radius: $border-radius-xl;
-        font-weight: 700;
+        font-weight: 600;
         font-size: 0.9rem;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
         &:hover {
-          background: rgba($secondary-color, 0.15);
-          border: $border-width solid $border-color;
-          transform: translateY(-2px);
+          background: $surface-raised;
+          border-color: $border-strong;
         }
 
+        // Deplie : la commande reste neutre, seul l'etat change.
         &.active {
-          background: $secondary-gradient;
-          color: $on-primary;
-          border-color: transparent;
+          background: $surface-raised;
+          color: $text-primary;
+          border-color: $border-strong;
         }
       }
     }
@@ -626,12 +630,19 @@ padding: 0.25rem;
   }
 
   // Filter Actions
+  // La rangee contient a gauche les filtres actifs, a droite le choix
+  // d'affichage. Elle etait centree : sans filtre actif — l'etat par defaut —
+  // le seul selecteur grille/liste se retrouvait donc seul au milieu d'une
+  // bande vide de 1 000 px, comme un element oublie la.
   .filter-actions {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 1rem;
+
+    // Pousse le selecteur a droite meme quand rien ne le precede.
+    .view-controls { margin-left: auto; }
 
     .active-filters {
       display: flex;
@@ -1192,12 +1203,20 @@ padding: 0.25rem;
         }
       }
 
+      // La rangee passait en colonne : « Créer un programme », « Historique »
+      // et « Statistiques » empilaient trois boutons pleine largeur, soit
+      // 200 px consommes avant le premier programme. L'action principale garde
+      // sa ligne, les deux commandes secondaires se partagent la suivante.
       .quick-actions {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
 
         .action-btn {
-          width: 100%;
+          flex: 1 1 auto;
+          min-width: 0;
           justify-content: center;
+
+          &.primary { flex-basis: 100%; }
         }
       }
     }
@@ -1466,3 +1485,4 @@ padding: 0.25rem;
     grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)) !important;
   }
 }
+

@@ -20,6 +20,18 @@
 
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 
+  <!-- Police de l'interface.
+       Elle etait chargee par un `@import url(...)` en tete de styles.scss.
+       Un @import CSS n'est decouvert qu'APRES le telechargement et l'analyse
+       de la feuille de style : la requete de police partait donc en deuxieme
+       vague, et le texte s'affichait d'abord dans la police systeme avant de
+       sauter. Declaree ici, elle est trouvee des l'analyse du <head>, en
+       parallele du CSS. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
   <!-- Reveil anticipe du backend.
        Le serveur est heberge sur un plan gratuit qui se met en veille : la
        premiere requete met 30 a 50 s. Ce ping part AVANT le telechargement des

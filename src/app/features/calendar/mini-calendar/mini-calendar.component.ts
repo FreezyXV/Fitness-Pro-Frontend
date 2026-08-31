@@ -268,7 +268,7 @@ export class MiniCalendarComponent implements OnInit, OnDestroy {
       if (DateUtils.isSameDay(sessionDate, date)) {
         activities.push({
           id: session.id,
-          icon: '💪',
+          icon: 'dumbbell',
           title: session.name || 'Workout Session', // Use name property
           duration: session.durationMinutes,
           type: 'workout',
@@ -285,7 +285,7 @@ export class MiniCalendarComponent implements OnInit, OnDestroy {
       if (DateUtils.isSameDay(targetDate, date)) {
         activities.push({
           id: goal.id,
-          icon: '🎯',
+          icon: 'target',
           title: `Objectif: ${goal.title}`,
           type: 'goal',
           completed: goal.status === 'completed',
@@ -302,15 +302,16 @@ export class MiniCalendarComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Nom d'icone du jeu de l'application (voir IconName), plus un emoji. */
   private getTaskIcon(taskType: string): string {
     const icons = {
-      workout: '💪',
-      goal: '🎯',
-      rest: '😴',
-      nutrition: '🍎',
-      reminder: '⏰'
+      workout: 'dumbbell',
+      goal: 'target',
+      rest: 'moon',
+      nutrition: 'utensils',
+      reminder: 'clock'
     };
-    return icons[taskType as keyof typeof icons] || '📅';
+    return icons[taskType as keyof typeof icons] || 'calendar';
   }
 
   private calculateCompletionRate(activities: CalendarActivity[]): number {

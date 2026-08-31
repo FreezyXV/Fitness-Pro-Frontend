@@ -315,7 +315,11 @@
     position: relative;
     width: 100%;
     padding-top: 56.25%; // 16:9 Aspect Ratio
-    background-color: $gray-900;
+    // $gray-900 vaut #e4e4e7 : la zone media etait un aplat QUASI BLANC au
+    // milieu de chaque carte. Sur une grille de douze exercices sans video,
+    // cela faisait douze rectangles clairs — l'element le plus voyant de la
+    // page, pour une absence de contenu.
+    background-color: $surface-tertiary;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -485,7 +489,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: $gray-800;
+      // Meme correction que .video-container ci-dessus : $gray-800 est une
+      // couleur de TEXTE clair, pas une surface.
+      background: rgba(255, 255, 255, 0.04);
       color: $text-muted;
       display: flex;
       align-items: center;
@@ -1005,11 +1011,16 @@
         }
       }
 
+      // La carte n'a qu'une action : elle occupe la ligne, mais reste dans
+      // une rangee — c'est le meme conteneur que sur les autres cartes, ou il
+      // en porte deux.
       .action-buttons {
-        flex-direction: column;
+        flex-direction: row;
 
         .btn {
-          width: 100%;
+          flex: 1 1 0;
+          width: auto;
+          min-width: 0;
         }
       }
     }
@@ -1274,10 +1285,43 @@
       &::before { display: none !important; }
     }
 
+    // « Voir details » n'est pas l'action principale de la PAGE : c'est
+    // l'action de chaque carte, repetee autant de fois qu'il y a d'exercices.
+    // En aplat de marque, une grille de douze cartes affichait donc douze
+    // pastilles lime pleine largeur — l'accent ne designait plus rien, et le
+    // seul bouton reellement primaire de l'ecran (« Creer un programme ») s'y
+    // noyait. L'accent reste, mais dans le contour et le libelle.
+    // « Voir details » est une NAVIGATION, pas un engagement : elle reste le
+    // cran en dessous du contour d'accent employe par « Démarrer » et
+    // « Rejoindre » sur les deux autres grilles.
     .btn-primary {
-      background: $primary-color !important;
-      border-color: transparent !important;
-      color: $on-primary !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: $border-width solid $border-color !important;
+      color: $text-primary !important;
+
+      &:hover:not(:disabled) {
+        background: rgba($primary-color, 0.10) !important;
+        border-color: rgba($primary-color, 0.45) !important;
+        color: $text-primary !important;
+      }
     }
   }
+}
+
+
+// =============================================
+// CARTE SANS DEMONSTRATION
+// =============================================
+//
+// La zone media occupait un rectangle 16:10 — 214 px de haut sur telephone —
+// meme quand aucune video n'existe, ce qui est le cas de la quasi-totalite du
+// catalogue. La grille affichait donc douze cadres vides portant la mention
+// « Démonstration bientôt disponible » et le nom de la zone musculaire, deja
+// present dans la puce juste en dessous.
+//
+// Une absence de contenu ne merite pas la moitie de la carte : le cadre ne
+// s'affiche que lorsqu'il y a reellement quelque chose a montrer. La classe
+// `has-video` est deja posee par le gabarit sur la racine de la carte.
+.exercise-card-enhanced:not(.has-video) .video-container {
+  display: none !important;
 }
