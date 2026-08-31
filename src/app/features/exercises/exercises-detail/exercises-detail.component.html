@@ -69,7 +69,7 @@
           </div>
           
           <div class="stat-card">
-            <div class="stat-icon">🎯</div>
+            <div class="stat-icon"><app-icon name="target"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ getDifficultyLabel(exercise.difficulty) }}</span>
               <span class="stat-label">niveau</span>
@@ -77,7 +77,7 @@
           </div>
           
           <div class="stat-card" *ngIf="exercise.instructions && exercise.instructions.length">
-            <div class="stat-icon">📝</div>
+            <div class="stat-icon"><app-icon name="edit"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ exercise.instructions.length }}</span>
               <span class="stat-label">étapes</span>
@@ -85,7 +85,7 @@
           </div>
           
           <div class="stat-card" *ngIf="hasVideo">
-            <div class="stat-icon">🎥</div>
+            <div class="stat-icon"><app-icon name="video"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">HD</span>
               <span class="stat-label">vidéo</span>
@@ -93,7 +93,7 @@
           </div>
 
           <div class="stat-card" *ngIf="exercise.estimatedCaloriesPerMinute">
-            <div class="stat-icon">🔥</div>
+            <div class="stat-icon"><app-icon name="flame"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ exercise.estimatedCaloriesPerMinute }}</span>
               <span class="stat-label">cal/min</span>
@@ -113,7 +113,7 @@
         <div class="video-section-card">
           <div class="card-header">
             <h2 class="section-title">
-              <span class="title-icon">🎥</span>
+              <span class="title-icon"><app-icon name="video"></app-icon></span>
               <span>Démonstration vidéo</span>
             </h2>
             <div class="video-status" *ngIf="exercise.videoUrl">
@@ -255,7 +255,7 @@
         <div class="instructions-section-card">
           <div class="card-header">
             <h2 class="section-title">
-              <span class="title-icon">📋</span>
+              <span class="title-icon"><app-icon name="clipboard"></app-icon></span>
               <span>Instructions détaillées</span>
             </h2>
             <div class="instruction-controls" *ngIf="getTotalInstructions() > 1">
@@ -290,7 +290,7 @@
                    [class.completed]="i < currentInstructionStep"
                    (click)="setCurrentInstructionStep(i)">
                 <div class="step-indicator">
-                  <span *ngIf="i < currentInstructionStep" class="completed-icon">✓</span>
+                  <span *ngIf="i < currentInstructionStep" class="completed-icon"><app-icon name="check"></app-icon></span>
                   <span *ngIf="i >= currentInstructionStep" class="step-number">{{ i + 1 }}</span>
                 </div>
                 <div class="step-content">
@@ -312,7 +312,7 @@
                      [class.completed]="i < currentInstructionStep"
                      (click)="setCurrentInstructionStep(i)">
                   <div class="step-indicator">
-                    <span *ngIf="i < currentInstructionStep" class="completed-icon">✓</span>
+                    <span *ngIf="i < currentInstructionStep" class="completed-icon"><app-icon name="check"></app-icon></span>
                     <span *ngIf="i >= currentInstructionStep" class="step-number">{{ i + 1 }}</span>
                   </div>
                   <div class="step-content">
@@ -356,7 +356,7 @@
         <div class="info-card">
           <div class="card-header">
             <h3 class="section-title">
-              <span class="title-icon">📊</span>
+              <span class="title-icon"><app-icon name="chart"></app-icon></span>
               <span>Informations</span>
             </h3>
           </div>
@@ -371,7 +371,7 @@
             </div>
             
             <div class="info-item">
-              <div class="info-icon">🎯</div>
+              <div class="info-icon"><app-icon name="target"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Zone ciblée</span>
                 <span class="info-value">{{ getBodyPartLabel(exercise.bodyPart) }}</span>
@@ -379,7 +379,7 @@
             </div>
             
             <div class="info-item">
-              <div class="info-icon">🔥</div>
+              <div class="info-icon"><app-icon name="flame"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Niveau</span>
                 <span class="info-value">{{ getDifficultyLabel(exercise.difficulty) }}</span>
@@ -387,7 +387,7 @@
             </div>
             
             <div class="info-item" *ngIf="exercise.equipmentNeeded && exercise.equipmentNeeded !== 'none'">
-              <div class="info-icon">🏋️</div>
+              <div class="info-icon"><app-icon name="dumbbell"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Équipement</span>
                 <span class="info-value">{{ exercise.equipmentNeeded }}</span>
@@ -395,7 +395,7 @@
             </div>
 
             <div class="info-item" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
-              <div class="info-icon">💪</div>
+              <div class="info-icon"><app-icon name="dumbbell"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Muscles</span>
                 <span class="info-value">{{ exercise.muscleGroups.length }} groupe{{ exercise.muscleGroups.length > 1 ? 's' : '' }}</span>
@@ -408,7 +408,7 @@
         <div class="tips-card" *ngIf="exercise.tips && exercise.tips.length > 0">
           <div class="card-header">
             <h3 class="section-title">
-              <span class="title-icon">💡</span>
+              <span class="title-icon"><app-icon name="bulb"></app-icon></span>
               <span>Conseils d'expert</span>
             </h3>
           </div>
@@ -427,7 +427,7 @@
         <div class="muscle-groups-card" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
           <div class="card-header">
             <h3 class="section-title">
-              <span class="title-icon">🎯</span>
+              <span class="title-icon"><app-icon name="target"></app-icon></span>
               <span>Muscles ciblés</span>
             </h3>
           </div>
@@ -445,7 +445,7 @@
     <div class="related-exercises-section" *ngIf="relatedExercises.length > 0">
       <div class="section-header">
         <h2 class="section-title">
-          <span class="title-icon">🔗</span>
+          <span class="title-icon"><app-icon name="link"></app-icon></span>
           <span>Exercices similaires</span>
         </h2>
       </div>
@@ -500,7 +500,7 @@
 <!-- Error State -->
 <div class="error-container" *ngIf="error">
   <div class="error-content">
-    <div class="error-icon">⚠️</div>
+    <div class="error-icon"><app-icon name="alert"></app-icon></div>
     <h3 class="error-title">Erreur de chargement</h3>
     <p class="error-message">{{ error }}</p>
     <div class="error-actions">

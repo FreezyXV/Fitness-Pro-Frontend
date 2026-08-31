@@ -25,6 +25,7 @@ import { UserService } from '@app/services/user.service';
 import { ExerciseFilters, Exercise, Workout } from '@shared';
 import { ExerciseCardComponent } from '../exercises-card/exercise-card.component';
 import { APP_CONFIG, WorkoutUtils, StorageUtils } from '@shared';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 interface UIState {
   isLoading: boolean;
@@ -36,7 +37,7 @@ interface UIState {
 @Component({
   selector: 'app-exercises',
   standalone: true,
-  imports: [CommonModule, FormsModule, ExerciseCardComponent],
+  imports: [CommonModule, FormsModule, ExerciseCardComponent, IconComponent],
   templateUrl: './exercises.component.html',
   styleUrls: ['./exercises.component.scss'],
 })

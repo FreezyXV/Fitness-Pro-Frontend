@@ -47,7 +47,6 @@
   max-width: 520px;
   position: relative;
   z-index: $z-normal;
-  animation: slide-up 0.8s $transition-smooth;
   overflow: hidden;
   @include shimmer-effect;
 
@@ -85,7 +84,7 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: linear-gradient(45deg, transparent, rgba($surface-secondary, 0.3), transparent);
+        background: rgba($surface-secondary, 0.3);
         animation: logoShine 3s ease-in-out infinite;
         transform: rotate(45deg);
       }
@@ -190,7 +189,7 @@ gap: $spacing-3xl;
           z-index: 4;
 
           &.valid {
-            color: $primary-color;
+            color: $text-primary;
             animation: checkBounce 0.6s ease-out;
           }
         }
@@ -213,7 +212,7 @@ gap: $spacing-3xl;
           }
 
           &.strong {
-            color: $primary-color;
+            color: $text-primary;
           }
         }
 
@@ -323,7 +322,7 @@ gap: $spacing-3xl;
           cursor: pointer;
 
           a {
-            color: $primary-color;
+            color: $text-secondary;
             text-decoration: none;
             font-weight: $font-weight-medium;
             position: relative;
@@ -410,7 +409,7 @@ gap: $spacing-3xl;
     font-size: $font-size-sm;
 
     a {
-      color: $primary-color;
+      color: $text-primary;
       text-decoration: none;
       font-weight: $font-weight-semibold;
       transition: $transition-fast;

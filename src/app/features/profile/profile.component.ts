@@ -26,10 +26,10 @@ class BMIUtils {
   }
 
   static getColor(bmi: number): string {
-    if (bmi < 18.5) return '#3b82f6'; // underweight - blue
-    if (bmi < 25) return '#10b981';   // normal - green
-    if (bmi < 30) return '#f59e0b';   // overweight - orange
-    return '#ef4444';                  // obese - red
+    if (bmi < 18.5) return '#7ecbff'; // underweight - blue
+    if (bmi < 25) return '#6ee7b7';   // normal - green
+    if (bmi < 30) return '#fdba74';   // overweight - orange
+    return '#fc8181';                  // obese - red
   }
 
   static getRecommendation(bmi: number): string {
@@ -77,11 +77,12 @@ class FormUtils {
 }
 
 import { ReminderService, ReminderSettings } from '@core/services/reminder.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, IconComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   animations: [
@@ -404,14 +405,14 @@ getBMIPosition(): number {
 
   getBMIColor(): string {
     if (!this.user || !this.user.height || !this.user.weight) {
-      return '#cbd0c2'; // = $text-secondary, lisible sur fond sombre
+      return '#a1a1aa'; // = $text-secondary, lisible sur fond sombre
     }
     
     try {
       const bmi = BMIUtils.calculate(this.user.height, this.user.weight);
       return BMIUtils.getColor(bmi);
     } catch (error) {
-      return '#cbd0c2'; // = $text-secondary, lisible sur fond sombre
+      return '#a1a1aa'; // = $text-secondary, lisible sur fond sombre
     }
   }
 
@@ -733,15 +734,15 @@ getBMIPosition(): number {
     switch (score) {
       case 5:
         label = 'Excellent';
-        color = '#059669';
+        color = '#6ee7b7';
         break;
       case 4:
         label = 'Très fort';
-        color = '#16a34a';
+        color = '#6ee7b7';
         break;
       case 3:
         label = 'Fort';
-        color = '#22c55e';
+        color = '#6ee7b7';
         break;
       case 2:
         label = 'Moyen';
@@ -749,11 +750,11 @@ getBMIPosition(): number {
         break;
       case 1:
         label = 'Faible';
-        color = '#f59e0b';
+        color = '#fdba74';
         break;
       default:
         label = 'Très faible';
-        color = '#ef4444';
+        color = '#fc8181';
     }
 
     const requirements = [

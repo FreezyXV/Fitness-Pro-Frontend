@@ -78,22 +78,43 @@ $gray-700: #7d7d85;
 $gray-800: #a4a4ab;
 $gray-900: #e4e4e7;
 
-// Background & surface colors
-$bg-primary: #050505;
-$bg-secondary: #08080c;
-$bg-tertiary: #101016;
-$bg-dark: #010101;
+// =============================================
+// SURFACES
+// =============================================
+//
+// Neutres franches, legerement chaudes. Le noir pur (#050505) sur un ecran
+// OLED cree des bords trop durs entre les cartes et le fond ; quelques points
+// de luminosite suffisent a poser une hierarchie lisible sans halo ni ombre.
+//
+// Trois niveaux, pas plus : fond de page, carte, element sureleve.
+$bg-primary: #0a0a0b;
+$bg-secondary: #0a0a0b;
+$bg-tertiary: #141416;
+$bg-dark: #060607;
 $bg-color: $bg-primary;
-$surface-primary: #08080d;
-$surface-secondary: #0f0f16;
-$surface-tertiary: #16161f;
+$surface-primary: #141416;
+$surface-secondary: #141416;
+$surface-tertiary: #1c1c20;
+// Quatrieme cran, uniquement pour les etats de survol : sans lui, survoler un
+// bouton pose sur $surface-tertiary ne produisait aucun retour visuel une fois
+// les deplacements et les halos supprimes.
+$surface-raised: #26262b;
 
-// Text Colors - neon + neutral balance
-$text-primary: #f6f6f2;
-$text-secondary: #cbd0c2;
-$text-muted: #9ea294;
-$text-light: #f6f6f2;
-$text-inverse: #050505;
+// =============================================
+// TEXTE
+// =============================================
+//
+// Trois niveaux : principal, secondaire, tertiaire. Les teintes verdatres
+// precedentes ($text-secondary valait #cbd0c2) donnaient un voile colore a
+// tout le texte de l'interface.
+$text-primary: #f4f4f5;
+$text-secondary: #a1a1aa;
+// #71717a tombait a 3,8:1 sur la surface des cartes (#141416), sous le seuil
+// AA de 4,5:1. Valeur relevee a 5,7:1 tout en restant distincte de
+// $text-secondary.
+$text-muted: #8f8f98;
+$text-light: #f4f4f5;
+$text-inverse: #0a0a0b;
 
 // Couleur du texte POSE SUR un aplat de la couleur de marque. Token dedie
 // parce que l'erreur est facile : $primary-dark ressemble a un neutre sombre
@@ -192,7 +213,12 @@ $card-spacing: $spacing-3xl; // 64px between cards
 $border-width: 1px;
 $border-width-thick: 1px;
 
-$border-color: rgba(212, 255, 61, 0.35);
+// La bordure valait rgba(212, 255, 61, 0.35) : un lime a 35 %, applique par
+// defaut a CHAQUE carte, champ et pastille de l'application. C'est ce qui
+// donnait cet aspect de maquette fluo. Une bordure sert a separer, pas a
+// decorer : elle redevient neutre et discrete.
+$border-color: rgba(255, 255, 255, 0.10);
+$border-strong: rgba(255, 255, 255, 0.16);
 $border-color-focus: rgba(212, 255, 61, 0.65);
 
 // Border radius system
@@ -200,29 +226,28 @@ $border-color-focus: rgba(212, 255, 61, 0.65);
 // largeur recevaient le meme rayon de 48px, ce qui transformait les petits
 // elements en pilules et les grands en galets. L'echelle ci-dessous restaure
 // une hierarchie tout en gardant le parti pris genereux du design.
-$radius-xs:   0.375rem;  // puces, badges
-$radius-sm:   0.625rem;  // champs, petits boutons
-$radius-md:   0.875rem;  // boutons, tuiles
-$radius-lg:   1.125rem;  // valeur par defaut
-$radius-xl:   1.5rem;    // cartes
-$radius-2xl:  2rem;      // grandes cartes
-$radius-3xl:  2.5rem;    // sections
-$radius-4xl:  3rem;      // heros
-// Deux tokens distincts, volontairement : `full` fait un cercle (element
-// carre), `pill` fait un bouton allonge. Les confondre deformait les avatars.
-$radius-full: 50%;
-$radius-pill: 999px;
+// Echelle resserree. Les valeurs precedentes (jusqu'a 3rem) transformaient
+// les boutons en gelules et les cartes en galets. Trois valeurs suffisent a
+// une interface : petit, moyen, grand — plus la pilule pour les puces.
+$radius-xs:   6px;    // puces, petits badges
+$radius-sm:   8px;    // champs, boutons compacts
+$radius-md:   10px;   // boutons
+$radius-lg:   12px;   // valeur par defaut, cartes internes
+$radius-xl:   14px;   // cartes
+$radius-2xl:  18px;   // feuilles, modales
+$radius-3xl:  22px;
+$radius-4xl:  26px;
+$radius-full: 50%;    // cercle (element carre)
+$radius-pill: 999px;  // pilule
 
-// Alias historiques. Conserves parce qu'ils sont utilises 510 fois ; ils
-// pointent desormais sur l'echelle plutot que sur une valeur unique.
 $border-radius-sm:   $radius-sm;
 $border-radius:      $radius-lg;
 $border-radius-md:   $radius-md;
 $border-radius-lg:   $radius-xl;
-$border-radius-xl:   $radius-2xl;
-$border-radius-2xl:  $radius-3xl;
-$border-radius-3xl:  $radius-4xl;
-$border-radius-4xl:  $radius-4xl;
+$border-radius-xl:   $radius-xl;
+$border-radius-2xl:  $radius-2xl;
+$border-radius-3xl:  $radius-2xl;
+$border-radius-4xl:  $radius-3xl;
 $border-radius-full: $radius-pill;
 
 // =============================================
@@ -236,15 +261,18 @@ $border-radius-full: $radius-pill;
 //
 // Sur un fond #050505 une ombre noire est presque invisible : les opacites
 // sont donc elevees, c'est volontaire.
-$shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.40);
-$shadow-sm:  0 2px 6px rgba(0, 0, 0, 0.45);
-$shadow-md:  0 4px 12px rgba(0, 0, 0, 0.50);
-$shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.55);
-$shadow-xl:  0 16px 40px rgba(0, 0, 0, 0.60);
-$shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.65);
-$shadow-3xl: 0 32px 80px rgba(0, 0, 0, 0.70);
+// Une interface plate n'a pas besoin d'ombres pour hierarchiser : les
+// surfaces et les bordures le font. On ne conserve qu'une elevation, pour ce
+// qui flotte reellement au-dessus du contenu (modales, feuilles, menus).
+$shadow-xs:  none;
+$shadow-sm:  none;
+$shadow-md:  none;
+$shadow-lg:  0 8px 24px rgba(0, 0, 0, 0.5);
+$shadow-xl:  0 16px 40px rgba(0, 0, 0, 0.55);
+$shadow-2xl: 0 16px 40px rgba(0, 0, 0, 0.55);
+$shadow-3xl: 0 16px 40px rgba(0, 0, 0, 0.55);
 
-$shadow: $shadow-md;
+$shadow: none;
 
 // =============================================
 // BREAKPOINTS
@@ -296,31 +324,33 @@ $z-dev-tools: 10000;
 // TRANSITIONS
 // =============================================
 
-$transition-base: 0.2s ease-in-out;
-$transition-fast: 0.15s ease-in-out;
-$transition-normal: 0.3s ease-in-out;
-$transition-slow: 0.5s ease-in-out;
+$transition-base: none;
+$transition-fast: none;
+$transition-normal: none;
+$transition-slow: none;
 
-// Enhanced Transitions with premium curves
-$transition-premium: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-$transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-$transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-$transition-slower: all 0.8s ease-in-out;
-$transition-elastic: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+// Les courbes « premium » ne servaient qu'a animer des survols. Conservees
+// comme tokens pour ne pas casser leurs ~200 appelants, mais neutralisees :
+// une interface professionnelle n'a pas besoin de bouger pour etre comprise.
+$transition-premium: none;
+$transition-bounce: none;
+$transition-smooth: none;
+$transition-slower: none;
+$transition-elastic: none;
 
-// Animation Durations
-$animation-fast: 0.2s;
-$animation-normal: 0.3s;
-$animation-slow: 0.5s;
-$animation-slower: 0.8s;
-$animation-slowest: 1.2s;
+$animation-fast: 0s;
+$animation-normal: 0s;
+$animation-slow: 0s;
+$animation-slower: 0s;
+$animation-slowest: 0s;
 
-// Transform Presets
-$transform-hover: translateY(-2px);
-$transform-hover-lg: translateY(-4px) scale(1.02);
-$transform-hover-xl: translateY(-6px) scale(1.05);
-$transform-active: translateY(-1px) scale(0.98);
-$transform-focus: translateY(-1px);
+// Les elements ne se soulevent plus au survol. Le changement d'etat passe
+// desormais par la couleur de fond et la bordure, jamais par un deplacement.
+$transform-hover: none;
+$transform-hover-lg: none;
+$transform-hover-xl: none;
+$transform-active: none;
+$transform-focus: none;
 
 // =============================================
 // FITNESS SPECIFIC COLORS - Enhanced
@@ -499,10 +529,13 @@ $gradient-info-enhanced: $info-color;
 // Premium Shadow System
 // Halos derives de la couleur de marque. Definis APRES $primary-color pour
 // que tout changement de marque se propage sans rien reecrire.
-$glow-primary-sm: 0 2px 12px rgba($primary-color, 0.18);
-$glow-primary-md: 0 6px 22px rgba($primary-color, 0.26);
-$glow-primary-lg: 0 12px 36px rgba($primary-color, 0.32);
-$glow-danger-md:  0 6px 22px rgba($danger-color, 0.26);
+// Les halos colores sont supprimes : un bouton n'a pas besoin de rayonner
+// pour se faire remarquer, sa couleur y suffit. Seul l'anneau de focus reste,
+// parce qu'il porte une information d'accessibilite.
+$glow-primary-sm: none;
+$glow-primary-md: none;
+$glow-primary-lg: none;
+$glow-danger-md:  none;
 $focus-ring:      0 0 0 3px rgba($primary-color, 0.35);
 
 

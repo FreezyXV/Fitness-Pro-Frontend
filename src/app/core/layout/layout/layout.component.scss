@@ -4,46 +4,54 @@
 .app-container {
   display: flex;
   min-height: 100vh;
-  position: relative;
   width: 100%;
+  position: relative;
 
   @include respond-below(md) {
     flex-direction: column;
   }
 }
 
+// =============================================
+// ZONE DE CONTENU
+// =============================================
+//
+// Elle combinait `margin-left: 350px` et `width: 100%`, ce qui donnait une
+// largeur de « 100 % de la fenetre, decalee de 350px » : tout le contenu
+// depassait donc de 350px a droite, et `overflow-x: hidden` se contentait de
+// masquer la partie perdue. C'est ce qui coupait la troisieme colonne de la
+// grille des programmes, le bord droit des cartes d'objectifs et les champs
+// du profil, sur TOUTES les pages.
+//
+// Le conteneur etant deja `display: flex`, `flex: 1` avec `min-width: 0`
+// suffit : la zone occupe exactement la place restante. Le `min-width: 0` est
+// indispensable, un enfant flex ayant par defaut `min-width: auto`, ce qui
+// l'empeche de retrecir sous la largeur de son contenu — une grille large
+// repousserait sinon a nouveau la mise en page.
 .main-content {
   flex: 1;
+  min-width: 0;
   min-height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
+  color: $text-primary;
   background: $bg-primary;
-  z-index: 1; // Ensure content appears above background but below sidebar
 
-  // Desktop: add margin for fixed sidebar (320px + 2rem + 1rem spacing)
+  // La bordure et le rayon dessinaient un cadre autour de la zone de contenu,
+  // visible comme un rectangle arrondi flottant a droite de la barre laterale.
+  // Le contenu d'une page n'est pas une carte.
+
   @include respond-above(md) {
-    margin-top: 15px;
-    margin-left: 350px; // Accounts for sidebar width + positioning
-    width: 100%;
-    margin-bottom: 15px;
+    // Largeur de la barre laterale (320px) + ses marges laterales de 1rem.
+    padding-left: calc(var(--sidebar-width) + 2rem);
+    padding-right: 2rem;
+    padding-top: 1.75rem;
+    padding-bottom: 3rem;
   }
 
-  // Mobile: pleine largeur. Le padding bas reserve la place de la barre
-  // d'onglets (56px) + l'encoche gestuelle, sinon le dernier bloc de chaque
-  // page passe sous la barre et devient inatteignable.
   @include respond-below(md) {
     width: 100%;
-    margin-left: 0;
-    padding-top: 0.5rem;
-    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 0.5rem);
-    display: block;
+    padding: 1rem 1rem 0;
+    // Reserve la hauteur de la barre d'onglets (56px) et l'encoche gestuelle :
+    // sans cela le dernier bloc de chaque page passe dessous.
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 1rem);
   }
-}
-
-.main-content {
-  color: $text-primary;
-  border-radius: $border-radius;
-  border: $border-width solid $border-color;
-  background: $bg-primary;
 }

@@ -10,11 +10,12 @@ import { UserService } from '@app/services/user.service';
 import { WorkoutService } from '@app/services/workout.service';
 import { User, Workout, Goal, BMIUtils, DateUtils, WorkoutUtils, WorkoutIntensity } from '@shared';
 import { MiniCalendarComponent } from '@features/calendar/mini-calendar/mini-calendar.component';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MiniCalendarComponent],
+  imports: [CommonModule, MiniCalendarComponent, IconComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -374,7 +375,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         bmi: 22.2,
         status: 'normal',
         category: 'Poids normal',
-        color: '#22c55e',
+        color: '#6ee7b7',
         recommendation: 'Votre IMC est dans la normale. Maintenez vos bonnes habitudes !'
       },
       createdAt: new Date().toISOString(),
@@ -637,7 +638,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getBMIColor(): string {
     if (!this.user?.height || !this.user?.weight) {
-      return '#6b7280';
+      return '#8f8f98';
     }
     
     try {
@@ -645,7 +646,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return BMIUtils.getColor(bmi);
     } catch (error) {
       console.error('❌ BMI color error:', error);
-      return '#6b7280';
+      return '#8f8f98';
     }
   }
 

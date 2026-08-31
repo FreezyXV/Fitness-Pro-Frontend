@@ -6,14 +6,12 @@
 @mixin glass-card($opacity: 0.95) {
   background: rgba($surface-secondary, $opacity);
   border: $border-width solid $border-color;
-  backdrop-filter: none;
   box-shadow: none;
 }
 
 @mixin glass-card-dark($opacity: 0.1) {
   background: rgba($surface-tertiary, $opacity + 0.2);
   border: $border-width solid $border-color;
-  backdrop-filter: none;
 }
 
 // Animations (same as dashboard)
@@ -138,7 +136,6 @@
   border-radius: $border-radius-3xl;
   padding: 2.5rem;
   margin-bottom: 2rem;
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 
@@ -163,7 +160,6 @@
         transparent 70%
       );
       border-radius: 50%;
-      animation: float 6s ease-in-out infinite;
     }
   }
 
@@ -182,7 +178,6 @@
 
     .title-icon {
       font-size: 4rem;
-      animation: pulse 3s ease-in-out infinite;
     }
 
     .title-content {
@@ -191,12 +186,7 @@
         font-weight: 800;
         color: $gray-900;
         margin: 0 0 0.5rem 0;
-        background: $primary-dark;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         background-size: 200% 200%;
-        animation: gradientShift 3s ease infinite;
       }
 
       .page-subtitle {
@@ -210,7 +200,7 @@
 
   .quick-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
     gap: 1.5rem;
 
     .stat-item {
@@ -218,7 +208,6 @@
       align-items: center;
       gap: 1rem;
       background: rgba($surface-secondary, 0.6);
-      backdrop-filter: blur(10px);
       border: $border-width solid $border-color;
       border-radius: $border-radius-xl;
       padding: 1.5rem;
@@ -300,10 +289,9 @@
       }
 
       &.secondary {
-        background: rgba($surface-secondary, 0.9);
-        color: $primary-color;
-        border: $border-width solid $border-color;
-        backdrop-filter: blur(10px);
+        background: transparent;
+        border: $border-width solid $border-strong;
+        color: $text-primary;
 
         &:hover {
           background: rgba($primary-color, 0.1);
@@ -332,14 +320,11 @@
     @include glass-card(0.95);
     border-radius: $border-radius-2xl;
     padding: 2rem;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    animation-delay: 0.1s;
-    animation-fill-mode: both;
   }
 
   .filter-controls-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
     gap: 1.5rem;
 
     .filter-group {
@@ -356,7 +341,7 @@
         font-size: 0.875rem;
 
         svg {
-          color: $primary-color;
+          color: $text-secondary;
           flex-shrink: 0;
         }
       }
@@ -366,7 +351,6 @@
         border: $border-width solid $border-color;
         border-radius: $border-radius;
         background: rgba($surface-secondary, 0.9);
-        backdrop-filter: blur(10px);
         font-size: 0.875rem;
         font-family: inherit;
         transition: all 0.3s ease;
@@ -391,9 +375,8 @@
 
   .challenges-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 2rem;
-    animation: fadeIn 0.6s ease;
 
     .challenge-card-enhanced {
       @include glass-card(0.95);
@@ -405,7 +388,6 @@
       height: 100%;
       display: flex;
       flex-direction: column;
-      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: auto;
 
       // Background pattern overlay
@@ -467,7 +449,6 @@
 
         .challenge-title {
           background-size: 400% 400%;
-          animation: gradientShift 2s ease infinite;
         }
       }
 
@@ -529,11 +510,9 @@
           gap: 0.5rem;
           padding: 0.75rem 1.25rem;
           background: rgba($surface-secondary, 0.95);
-          backdrop-filter: blur(20px);
           border-radius: 25px;
           font-size: 0.9rem;
           font-weight: 800;
-          text-transform: uppercase;
           letter-spacing: 0.05em;
           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
           transition: all 0.3s ease;
@@ -602,9 +581,7 @@
             border-radius: 15px;
             font-size: 0.75rem;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
-            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
 
             svg {
@@ -636,14 +613,12 @@
               background: rgba(34, 197, 94, 0.9);
               color: $on-primary;
               box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
-              animation: pulse 2s infinite;
             }
 
             &.warning {
               background: rgba(245, 158, 11, 0.9);
               color: $on-primary;
               box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-              animation: pulse 2s infinite;
             }
 
             &:hover {
@@ -671,17 +646,12 @@
             color: $gray-900;
             margin: 2rem 0 1rem 0;
             line-height: 1.2;
-            background: $primary-dark;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-size: 200% 200%;
             transition: all 0.3s ease;
             cursor: pointer;
 
             &:hover {
               background-size: 400% 400%;
-              animation: gradientShift 2s ease infinite;
             }
           }
 
@@ -706,7 +676,8 @@
           gap: 1.5rem;
           flex-wrap: wrap;
 
-          .stat-item {
+          .stat-item,
+        .stat-card {
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -736,7 +707,7 @@
             }
 
             svg {
-              color: $primary-color;
+              color: $text-primary;
               flex-shrink: 0;
               filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
             }
@@ -765,7 +736,7 @@
             z-index: 1;
 
             .progress-label {
-              color: $primary-color;
+              color: $text-secondary;
               font-weight: 700;
             }
 
@@ -804,7 +775,6 @@
                   rgba($surface-secondary, 0.3),
                   transparent
                 );
-                animation: shimmer 2s infinite;
               }
             }
           }
@@ -841,7 +811,6 @@
             border: none;
             position: relative;
             overflow: hidden;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
 
             &::before {
@@ -874,7 +843,6 @@
               background: rgba($secondary-color, 0.1);
               color: $c-indigo-400;
               border: $border-width solid $border-color;
-              backdrop-filter: blur(10px);
 
               &:hover {
                 background: rgba($secondary-color, 0.15);
@@ -921,9 +889,8 @@
       // Card Actions Overlay (Enhanced)
       .card-actions-overlay {
         position: absolute;
-        top: 50%;
-        right: -80px;
-        transform: translateY(-50%) translateX(30px);
+        top: 0.75rem;
+        right: 0.75rem;
         display: flex;
         flex-direction: column;
         gap: 1rem;
@@ -935,7 +902,6 @@
           width: 60px;
           height: 60px;
           background: rgba($surface-secondary, 0.95);
-          backdrop-filter: blur(20px);
           border: $border-width solid $border-color;
           border-radius: 50%;
           display: flex;
@@ -980,7 +946,6 @@
           gap: 0.375rem;
           padding: 0.5rem 0.75rem;
           background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(10px);
           color: $on-primary;
           border-radius: 15px;
           font-size: 0.75rem;
@@ -1005,13 +970,11 @@
     border-radius: $border-radius-2xl;
     padding: 4rem 2rem;
     text-align: center;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     max-width: 600px;
 
     .empty-icon {
       font-size: 4rem;
       margin-bottom: 1.5rem;
-      animation: pulse 3s ease-in-out infinite;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
     }
 
@@ -1087,13 +1050,11 @@
   width: 100vw !important;
   height: 100vh !important;
   background: rgba(0, 0, 0, 0.8) !important;
-  backdrop-filter: blur(10px);
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   z-index: 9999 !important;
   padding: 0rem;
-  animation: fadeIn 0.3s ease;
 
   .modal {
     @include glass-card(0.98);
@@ -1103,7 +1064,6 @@
     max-height: 90vh;
     overflow: hidden;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
     &.modal-md {
       max-width: 500px;
@@ -1130,7 +1090,7 @@
         gap: 0.75rem;
 
         svg {
-          color: $primary-color;
+          color: $text-primary;
         }
       }
 
@@ -1213,7 +1173,7 @@
               color: $gray-700;
 
               svg {
-                color: $primary-color;
+                color: $text-primary;
                 flex-shrink: 0;
               }
             }
@@ -1233,7 +1193,7 @@
           .progress-section {
             .progress-stats {
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+              grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
               gap: 1rem;
               margin-bottom: 1rem;
 
@@ -1247,13 +1207,12 @@
                   display: block;
                   font-size: 1.5rem;
                   font-weight: 800;
-                  color: $primary-color;
+                  color: $text-primary;
                 }
 
                 .stat-label {
                   font-size: 0.75rem;
                   color: $text-primary;
-                  text-transform: uppercase;
                   letter-spacing: 0.05em;
                 }
               }
@@ -1307,7 +1266,7 @@
                 padding-top: 0.25rem;
 
                 svg {
-                  color: $primary-color;
+                  color: $text-primary;
                 }
               }
 
@@ -1335,7 +1294,7 @@
                   font-size: 0.8rem;
 
                   .task-points {
-                    color: $primary-color;
+                    color: $text-primary;
                     font-weight: 600;
                   }
                 }
@@ -1375,17 +1334,17 @@
             font-size: 0.875rem;
 
             &.rank-1 {
-              background: linear-gradient(135deg, #ffd700, #ffed4e);
+              background: #ffd700;
               color: $gray-900;
             }
 
             &.rank-2 {
-              background: linear-gradient(135deg, #c0c0c0, #e5e5e5);
+              background: #c0c0c0;
               color: $gray-900;
             }
 
             &.rank-3 {
-              background: linear-gradient(135deg, #cd7f32, #daa520);
+              background: #cd7f32;
               color: white;
             }
           }
@@ -1515,7 +1474,6 @@
     background: rgba($surface-secondary, 0.9);
     color: $gray-700;
     border: $border-width solid $border-color;
-    backdrop-filter: blur(10px);
 
     &:hover {
       background: rgba($surface-secondary, 0.95);
@@ -1548,7 +1506,7 @@
   }
 
   .challenges-content .challenges-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   }
 }
 
@@ -1580,10 +1538,11 @@
       }
 
       .quick-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
 
-        .stat-item {
+        .stat-item,
+        .stat-card {
           padding: 1rem;
           flex-direction: column;
           text-align: center;
@@ -1610,13 +1569,13 @@
       padding: 1.5rem;
 
       .filter-controls-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 1rem;
       }
     }
 
     .challenges-content .challenges-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
 
       .challenge-card-enhanced {
         .card-content {
@@ -1626,7 +1585,8 @@
           .challenge-stats {
             gap: 1rem;
 
-            .stat-item {
+            .stat-item,
+        .stat-card {
               flex: 1 1 calc(50% - 0.5rem);
               min-width: 120px;
               justify-content: center;
@@ -1675,7 +1635,7 @@ gap: 1rem;
       padding: 1rem;
 
       .quick-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
@@ -1690,7 +1650,8 @@ gap: 1rem;
         .challenge-stats {
           gap: 0.75rem;
 
-          .stat-item {
+          .stat-item,
+        .stat-card {
             font-size: 0.8rem;
             padding: 0.75rem 1rem;
             flex: 1 1 100%;
@@ -1777,11 +1738,11 @@ gap: 1rem;
 
   .form-row {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
 
     @include respond-above(md) {
-      grid-template-columns: 1fr 1fr; // Two columns on larger screens
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); // Two columns on larger screens
     }
   }
 
@@ -1831,7 +1792,7 @@ gap: 1rem;
 }
 
 .challenges-container .stats-value {
-  color: $primary-color;
+  color: $text-primary;
 }
 
 .challenges-container .progress-bar {
@@ -1864,4 +1825,420 @@ gap: 1rem;
 .leaderboard-empty-icon {
   font-size: 2.25rem;
   opacity: 0.7;
+}
+
+
+// =============================================
+// EN-TETE D'ECRAN — TRAITEMENT COMPACT
+// =============================================
+//
+// L'ecran s'ouvrait sur un bloc centre : pictogramme, titre sur deux lignes,
+// phrase d'accroche, puis des cartes de statistiques de 150 px de haut. Sur
+// telephone l'ensemble remplissait le premier ecran et repoussait le contenu
+// reel — liste, recherche, filtres — sous la ligne de flottaison.
+//
+// Les selecteurs ci-dessous reprennent la profondeur des regles d'origine,
+// qui descendent jusqu'a cinq niveaux et vivent en partie dans des media
+// queries. Une media query n'ajoute pas de specificite : a egalite, la
+// derniere regle du fichier l'emporte.
+
+.challenges-container {
+  .hero-section {
+    padding: 1.25rem 0 0.5rem;
+    margin: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+
+    .hero-background { display: none; }
+
+    .hero-content {
+      display: block;
+      padding: 0;
+      gap: 0;
+      text-align: left;
+
+      .title-section {
+        display: flex;
+        // row explicite : plusieurs ecrans forcaient la colonne, ce qui
+        // laissait le pictogramme seul et centre au-dessus du titre.
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0 0 1rem;
+        text-align: left;
+
+        .title-icon {
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          min-width: 34px;
+          min-height: 34px;
+          flex-shrink: 0;
+          margin: 0;
+          padding: 0;
+          border-radius: $radius-md;
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
+          font-size: 1rem;
+
+          app-icon { width: 18px; height: 18px; }
+        }
+
+        .title-content {
+          flex: 1;
+          min-width: 0;
+          text-align: left;
+
+          .page-title {
+            margin: 0;
+            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: $text-primary;
+            text-align: left;
+          }
+
+          .page-subtitle {
+            margin: 0.125rem 0 0;
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.45;
+            color: $text-secondary;
+            text-align: left;
+          }
+        }
+      }
+
+      // --- Statistiques : une ligne dense, pas des cartes ---
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+        gap: 0.5rem;
+        margin: 0 0 1.25rem;
+        padding: 0;
+
+        .stat-item,
+        .stat-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 0;
+
+          min-height: 0;
+          height: auto;
+          padding: 0.625rem 0.75rem;
+
+          border: $border-width solid $border-color;
+          border-radius: $radius-lg;
+          background: $surface-secondary;
+          text-align: left;
+
+          &::before, &::after { display: none; }
+          &:hover { transform: none; background: $surface-secondary; }
+
+          // Une icone n'apporte rien a cote d'un chiffre et de son libelle.
+          .stat-icon { display: none; }
+
+          .stat-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            text-align: left;
+
+            .stat-value {
+              font-size: 1.0625rem;
+              font-weight: 700;
+              line-height: 1.2;
+              color: $text-primary;
+              font-variant-numeric: tabular-nums;
+            }
+
+            .stat-label {
+              font-size: 0.6875rem;
+              font-weight: 500;
+              line-height: 1.3;
+              text-transform: none;
+              letter-spacing: 0;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    // Variante sans .hero-content, presente sur certains ecrans.
+    > .title-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0 0 1rem;
+      text-align: left;
+    }
+  }
+}
+
+/* =============================================
+ * CARTE DE DEFI — MISE EN PAGE FAISANT AUTORITE
+ * =============================================
+ *
+ * Meme structure et memes defauts que la carte d'objectif : `.card-header`
+ * detourne du mixin card-header, `.card-content` avec une marge haute qui
+ * reservait la place d'un en-tete absolu disparu, et des puces d'etat en
+ * aplats pleins tres satures. Resultat : ~100 px de vide entre la rangee de
+ * puces et le titre de chaque defi.
+ */
+
+.challenge-card-enhanced {
+  padding: 1.25rem !important;
+  border-radius: $radius-xl !important;
+  gap: 0.875rem;
+
+  &::before,
+  &::after { display: none !important; }
+
+  .card-header {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+  }
+
+  .status-indicators {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    margin-left: auto;
+  }
+
+  // Puces : fond teinte discret, texte dans la teinte claire. Les niveaux
+  // « Facile / Moyen / Difficile » etaient des aplats vert, ambre et rouge
+  // pleins, plus voyants que le titre du defi.
+  .category-badge,
+  .status-badge {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 0.25rem !important;
+    padding: 0.1875rem 0.5rem !important;
+    border-radius: $radius-xs !important;
+    font-size: 0.6875rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.4;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: $border-width solid $border-color !important;
+    color: $text-secondary !important;
+    box-shadow: none !important;
+
+    svg { width: 11px; height: 11px; }
+  }
+
+  .status-badge {
+    &.difficulty[data-level='easy'],
+    &.success {
+      background: rgba($success-color, 0.12) !important;
+      border-color: rgba($success-color, 0.28) !important;
+      color: $success-light !important;
+    }
+
+    &.difficulty[data-level='medium'],
+    &.warning {
+      background: rgba($warning-color, 0.12) !important;
+      border-color: rgba($warning-color, 0.28) !important;
+      color: $warning-light !important;
+    }
+
+    &.difficulty[data-level='hard'],
+    &.danger {
+      background: rgba($danger-color, 0.12) !important;
+      border-color: rgba($danger-color, 0.28) !important;
+      color: $error-light !important;
+    }
+
+    &.active {
+      background: rgba($primary-color, 0.14) !important;
+      border-color: rgba($primary-color, 0.3) !important;
+      color: $primary-light !important;
+    }
+  }
+
+  .card-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0.875rem !important;
+  }
+
+  .challenge-header {
+    .challenge-title {
+      margin: 0 0 0.25rem !important;
+      font-size: 1.0625rem !important;
+      font-weight: 650 !important;
+      line-height: 1.3;
+      color: $text-primary !important;
+    }
+
+    .challenge-description {
+      margin: 0 !important;
+      font-size: 0.875rem !important;
+      line-height: 1.5;
+      color: $text-secondary !important;
+    }
+  }
+
+  // Quatre puces de statistiques en grille 2x2 : elles tiennent sur une
+  // ligne qui se replie.
+  .challenge-stats {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 0.375rem !important;
+    margin: 0 !important;
+
+    .stat-item {
+      flex: 0 0 auto !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.25rem 0.5rem !important;
+      min-height: 0 !important;
+      border-radius: $radius-xs !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 0 !important;
+      color: $text-secondary !important;
+      font-size: 0.75rem !important;
+      font-weight: 500 !important;
+      box-shadow: none !important;
+
+      svg { width: 12px; height: 12px; opacity: 0.7; }
+    }
+  }
+
+  // Bloc de progression : carte dans la carte, comme sur les objectifs.
+  .challenge-progress {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: 0 !important;
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.375rem !important;
+      font-size: 0.75rem !important;
+
+      .progress-label { color: $text-secondary !important; font-weight: 500 !important; }
+      .progress-value {
+        color: $text-primary !important;
+        font-weight: 600 !important;
+        font-variant-numeric: tabular-nums;
+      }
+    }
+
+    .progress-bar {
+      height: 4px !important;
+      border-radius: $radius-pill !important;
+      background: rgba(255, 255, 255, 0.09) !important;
+      overflow: hidden;
+
+      .progress-fill {
+        border-radius: $radius-pill !important;
+        background: $primary-color !important;
+      }
+    }
+
+    .progress-detail {
+      margin-top: 0.375rem !important;
+      font-size: 0.75rem !important;
+      color: $text-muted !important;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem !important;
+    margin-top: auto !important;
+    padding-top: 0.25rem;
+
+    .btn {
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 36px !important;
+      padding: 0 0.75rem !important;
+      gap: 0.375rem !important;
+      border-radius: $radius-sm !important;
+      font-size: 0.8125rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0 !important;
+      white-space: nowrap;
+      box-shadow: none !important;
+
+      svg { width: 14px; height: 14px; }
+      &::before { display: none !important; }
+    }
+
+    .btn-primary,
+    .btn-join {
+      background: $primary-color !important;
+      border-color: transparent !important;
+      color: $on-primary !important;
+    }
+
+    // « Abandonner » etait un aplat rouge pleine largeur : l'element le plus
+    // voyant de la carte pour l'action qu'on souhaite le moins declencher.
+    .btn-danger,
+    .btn-leave,
+    .btn-abandon {
+      background: transparent !important;
+      border: $border-width solid rgba($danger-color, 0.4) !important;
+      color: $error-light !important;
+
+      &:hover:not(:disabled) {
+        background: rgba($danger-color, 0.12) !important;
+        border-color: rgba($danger-color, 0.65) !important;
+      }
+    }
+
+    .btn-completed,
+    .btn:disabled {
+      background: transparent !important;
+      border: $border-width solid $border-color !important;
+      color: $text-muted !important;
+    }
+  }
+
+  .card-actions-overlay {
+    flex-direction: row !important;
+    gap: 0.375rem !important;
+
+    .quick-action {
+      width: 30px !important;
+      height: 30px !important;
+      box-shadow: none !important;
+
+      svg { width: 15px; height: 15px; }
+      &::before { display: none !important; }
+    }
+  }
+}
+
+.challenges-grid {
+  gap: 1rem !important;
+
+  @include respond-above(lg) {
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)) !important;
+  }
 }

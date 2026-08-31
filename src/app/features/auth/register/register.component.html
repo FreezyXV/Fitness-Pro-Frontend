@@ -28,8 +28,7 @@
               [class.error]="isFieldInvalid('firstName')"
               [class.valid]="isFieldValid('firstName')"
             />
-            <i *ngIf="isFieldValid('firstName')" 
-               class="validation-icon fas fa-check valid"></i>
+            <app-icon *ngIf="isFieldValid('firstName')" name="check" class="validation-icon valid"></app-icon>
           </div>
           <div *ngIf="isFieldInvalid('firstName')" 
                class="error-message">
@@ -48,8 +47,7 @@
               [class.error]="isFieldInvalid('lastName')"
               [class.valid]="isFieldValid('lastName')"
             />
-            <i *ngIf="isFieldValid('lastName')" 
-               class="validation-icon fas fa-check valid"></i>
+            <app-icon *ngIf="isFieldValid('lastName')" name="check" class="validation-icon valid"></app-icon>
           </div>
           <div *ngIf="isFieldInvalid('lastName')" 
                class="error-message">
@@ -70,10 +68,8 @@
             [class.error]="isFieldInvalid('email')"
             [class.valid]="isFieldValid('email')"
           />
-          <i *ngIf="isFieldValid('email')" 
-             class="validation-icon fas fa-check valid"></i>
-          <i *ngIf="isFieldInvalid('email')" 
-             class="validation-icon fas fa-times invalid"></i>
+          <app-icon *ngIf="isFieldValid('email')" name="check" class="validation-icon valid"></app-icon>
+          <app-icon *ngIf="isFieldInvalid('email')" name="close" class="validation-icon invalid"></app-icon>
         </div>
         <div *ngIf="isFieldInvalid('email')" 
              class="error-message">
@@ -99,12 +95,11 @@
                [class]="passwordStrength">
             {{ getPasswordStrengthIcon() }}
           </div>
-          <i class="input-icon fas" 
-             [class.fa-eye]="!showPassword"
-             [class.fa-eye-slash]="showPassword"
-             (click)="togglePasswordVisibility()"
-             [style.right.rem]="passwordStrength ? 3.5 : 1"
-             style="cursor: pointer;"></i>
+          <app-icon class="input-icon"
+                    [name]="showPassword ? 'eye-off' : 'eye'"
+                    (click)="togglePasswordVisibility()"
+                    [style.right.rem]="passwordStrength ? 3.5 : 1"
+                    style="cursor: pointer;"></app-icon>
         </div>
         
         <!-- Indicateurs de force du mot de passe -->
@@ -139,10 +134,8 @@
             [class.error]="isFieldInvalid('passwordConfirmation')"
             [class.valid]="isFieldValid('passwordConfirmation')"
           />
-          <i *ngIf="isFieldValid('passwordConfirmation')" 
-             class="validation-icon fas fa-check valid"></i>
-          <i *ngIf="isFieldInvalid('passwordConfirmation')" 
-             class="validation-icon fas fa-times invalid"></i>
+          <app-icon *ngIf="isFieldValid('passwordConfirmation')" name="check" class="validation-icon valid"></app-icon>
+          <app-icon *ngIf="isFieldInvalid('passwordConfirmation')" name="close" class="validation-icon invalid"></app-icon>
         </div>
         <div *ngIf="isFieldInvalid('passwordConfirmation')" 
              class="error-message">

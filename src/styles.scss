@@ -60,56 +60,63 @@ html {
   --sidebar-collapsed-width: 80px;
   --sidebar-mobile-width: 100vw;
 
-  --color-bg: #050505;
-  --color-surface: #08080d;
-  --color-surface-strong: #101016;
-  --color-surface-soft: #16161f;
-  --color-text: #f6f6f2;
-  --color-text-muted: #a3a6a0;
+  --color-bg: #0a0a0b;
+  --color-surface: #141416;
+  --color-surface-strong: #1c1c20;
+  --color-surface-soft: #1c1c20;
+  --color-surface-raised: #26262b;
+  --color-text: #f4f4f5;
+  --color-text-secondary: #a1a1aa;
+  --color-text-muted: #8f8f98;
   --color-primary: #d4ff3d;
   --color-primary-contrast: #050505;
-  --color-secondary: #79ffc0;
-  --color-accent: #fff066;
+  // --color-secondary et --color-accent valaient le meme lime que la couleur
+  // primaire : tout ce qui s'en servait pour se distinguer de l'action
+  // principale rendait en fait exactement la meme teinte. Elles designent
+  // desormais des NEUTRES, ce qu'elles etaient en pratique.
+  --color-secondary: #a1a1aa;
+  --color-accent: #f4f4f5;
 
-  // Echelle de gris monotone. Elle etait cassee : --gray-600 valait #f6f6f2,
-  // soit un quasi-blanc coince entre --gray-500 et --gray-700.
-  --gray-50: #0b0b0f;
-  --gray-100: #111118;
-  --gray-200: #181820;
-  --gray-300: #21212a;
-  --gray-400: #2c2c36;
-  --gray-500: #42424c;
-  --gray-600: #5a5a64;
-  --gray-700: #7d7d85;
-  --gray-800: #a4a4ab;
-  --gray-900: #e4e4e7;
+  // Neutres. Aucune teinte coloree : le lime est reserve a l'accent.
+  --gray-50: #0f0f10;
+  --gray-100: #141416;
+  --gray-200: #1c1c20;
+  --gray-300: #26262b;
+  --gray-400: #3f3f46;
+  --gray-500: #52525b;
+  --gray-600: #8f8f98;
+  --gray-700: #a1a1aa;
+  --gray-800: #d4d4d8;
+  --gray-900: #f4f4f5;
 
-  --success-color: #7cffb0;
-  --warning-color: #ffd860;
-  --danger-color: #ff6b6b;
-  --info-color: #7ecbff;
+  // Couleurs de statut, volontairement desaturees : elles portent un sens,
+  // elles ne decorent pas.
+  --success-color: #4ade80;
+  --warning-color: #fbbf24;
+  --danger-color: #f87171;
+  --info-color: #60a5fa;
 
-  // Echelle de rayons : les quatre tokens valaient 3rem, donc aucune
-  // hierarchie n'etait exprimable.
-  --border-radius-sm: 0.625rem;
-  --border-radius: 1.125rem;
-  --border-radius-lg: 1.5rem;
-  --border-radius-xl: 2rem;
-  --border-radius-2xl: 2.5rem;
+  --border-radius-sm: 8px;
+  --border-radius: 12px;
+  --border-radius-lg: 14px;
+  --border-radius-xl: 18px;
+  --border-radius-2xl: 18px;
   --border-radius-pill: 999px;
-  --border-color: rgba(212, 255, 61, 0.35);
 
-  // Echelle d'elevation : les quatre tokens valaient `none` pendant que 120
-  // box-shadow ecrits en dur les contournaient.
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45);
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.50);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.55);
-  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.60);
-  --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.65);
-  --glow-primary: 0 6px 22px rgba(212, 255, 61, 0.26);
+  // Bordure NEUTRE. Elle valait rgba(212, 255, 61, .35) : toutes les cartes
+  // de l'app etaient cerclees de lime.
+  --border-color: rgba(255, 255, 255, 0.10);
 
-  --transition-base: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-fast: all 0.2s ease;
+  // Une seule elevation, pour ce qui flotte au-dessus du contenu.
+  --shadow-sm: none;
+  --shadow: none;
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-2xl: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+  // Conservees comme tokens (une centaine d'appelants) mais neutralisees.
+  --transition-base: none;
+  --transition-fast: none;
 }
 
 // Global Reset
@@ -156,20 +163,27 @@ html {
 }
 
 // Typography System
+// Les six niveaux de titre etaient peints en $primary-color : sur un ecran
+// comme le tableau de bord, cela faisait six intitules en lime fluo pour un
+// seul bouton d'action. Un titre structure la lecture, il n'attire pas l'oeil
+// vers une action — il reprend donc la couleur de texte principale.
 h1, h2, h3, h4, h5, h6 {
-  color: $primary-color;
-  font-weight: 700;
+  color: $text-primary;
+  font-weight: 650;
   line-height: 1.25;
   margin: 0 0 0.5rem 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
-h1 { font-size: clamp(1.75rem, 5vw, 2.5rem); font-weight: 800; }
-h2 { font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; }
-h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); font-weight: 700; }
-h4 { font-size: clamp(1.125rem, 2.5vw, 1.25rem); font-weight: 600; }
-h5 { font-size: clamp(1rem, 2vw, 1.125rem); font-weight: 600; }
-h6 { font-size: clamp(0.875rem, 1.5vw, 1rem); font-weight: 600; }
+// Echelle resserree. Les ecarts precedents (2,5rem pour h1, 2rem pour h2)
+// donnaient a chaque en-tete de carte la taille d'un titre de page.
+h1 { font-size: clamp(1.5rem, 3.2vw, 1.875rem); font-weight: 700; }
+h2 { font-size: clamp(1.25rem, 2.4vw, 1.375rem); font-weight: 650; }
+h3 { font-size: clamp(1rem, 1.8vw, 1.125rem); font-weight: 650; }
+h4 { font-size: 1rem;      font-weight: 600; }
+h5 { font-size: 0.9375rem; font-weight: 600; }
+h6 { font-size: 0.875rem;  font-weight: 600; }
 
 p {
   margin-bottom: 1rem;
@@ -182,14 +196,15 @@ p {
 a {
   color: $text-primary;
   text-decoration: none;
-  transition: var(--transition-fast);
   font-weight: 500;
   border-bottom: $border-width solid transparent;
 
+  // Le survol posait $text-inverse (#0a0a0b, quasi noir) sur un lime a 35 %
+  // pose lui-meme sur un fond noir : le texte survole disparaissait purement
+  // et simplement. Le survol se signale desormais par un soulignement.
   &:hover {
-    color: $text-inverse;
-    background: rgba($primary-color, 0.35);
-    border-color: $border-color;
+    color: $text-primary;
+    border-bottom-color: $border-strong;
   }
 
   &:focus-visible {
@@ -218,45 +233,68 @@ a {
     font-size: clamp(0.8rem, 3vw, 0.9rem);
   }
 
-  // Button Variants
+  // Variantes.
+  //
+  // Trois d'entre elles posaient $text-inverse (#0a0a0b) sur un fond
+  // TRANSLUCIDE de 10 a 20 % pose sur un fond noir : le libelle du bouton
+  // etait litteralement invisible. La regle est desormais explicite —
+  // texte sombre UNIQUEMENT sur un aplat opaque et clair.
   &.btn-primary {
     background: $primary-color;
-    color: $text-inverse;
-    border-color: $border-color;
+    color: $on-primary;
+    border-color: transparent;
 
-    &:hover {
-      background: lighten($primary-color, 3%);
-      color: $text-inverse;
+    &:hover:not(:disabled) {
+      background: $primary-light;
+      color: $on-primary;
+      border-color: transparent;
     }
   }
 
   &.btn-secondary {
-    background: rgba($primary-color, 0.1);
+    background: $surface-tertiary;
     color: $text-primary;
     border-color: $border-color;
 
-    &:hover {
-      background: rgba($primary-color, 0.2);
-      color: $text-inverse;
+    &:hover:not(:disabled) {
+      background: $surface-raised;
+      color: $text-primary;
+      border-color: $border-strong;
     }
   }
 
   &.btn-success {
     background: $success-color;
-    color: $text-inverse;
-    border-color: $border-color;
+    color: $on-primary;
+    border-color: transparent;
   }
 
   &.btn-warning {
     background: $warning-color;
-    color: $text-inverse;
-    border-color: $border-color;
+    color: $on-primary;
+    border-color: transparent;
   }
 
+  // Le rouge en aplat plein etait reserve a « Deconnexion », qui n'est pas une
+  // action destructive. Le danger se signale par la couleur du texte et de la
+  // bordure ; l'aplat plein reste possible via .btn-danger.is-solid pour une
+  // vraie suppression.
   &.btn-danger {
-    background: $danger-color;
-    color: $text-inverse;
-    border-color: $border-color;
+    background: transparent;
+    color: $error-light;
+    border-color: rgba($danger-color, 0.45);
+
+    &:hover:not(:disabled) {
+      background: rgba($danger-color, 0.12);
+      color: $error-light;
+      border-color: rgba($danger-color, 0.7);
+    }
+
+    &.is-solid {
+      background: $danger-color;
+      color: $on-primary;
+      border-color: transparent;
+    }
   }
 
   &.btn-outline {
@@ -264,20 +302,35 @@ a {
     color: $text-primary;
     border: $border-width solid $border-color;
 
-    &:hover {
-      background: rgba($primary-color, 0.2);
-      color: $text-inverse;
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.05);
+      color: $text-primary;
+      border-color: $border-strong;
     }
   }
 
   &.btn-outline-primary {
     background: transparent;
-    color: $primary-color;
-    border: $border-width solid $border-color;
+    color: $text-primary;
+    border: $border-width solid $border-strong;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background: $primary-color;
-      color: $text-inverse;
+      color: $on-primary;
+      border-color: transparent;
+    }
+  }
+
+  // Action tertiaire : aucun fond, aucune bordure.
+  &.btn-ghost {
+    background: transparent;
+    color: $text-secondary;
+    border-color: transparent;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.05);
+      color: $text-primary;
+      border-color: transparent;
     }
   }
 
@@ -319,8 +372,8 @@ a {
 
   .form-label {
     display: block;
-    margin-bottom: 0.5rem;
-    font-weight: $form-label-font-weight;
+    margin-bottom: 0.375rem;
+    font-weight: 500;
     color: $text-secondary;
     font-size: 0.875rem;
   }
@@ -337,7 +390,6 @@ a {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    animation: error-slide 0.3s ease-out;
 
     &::before {
       content: '⚠';
@@ -346,7 +398,7 @@ a {
       height: 16px;
       border-radius: 50%;
       background: $form-error-color;
-      color: white;
+      color: $on-primary;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -370,7 +422,7 @@ a {
       height: 16px;
       border-radius: 50%;
       background: $form-success-color;
-      color: white;
+      color: $on-primary;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -385,18 +437,17 @@ a {
 
 .card {
   @include card-base;
-  @include shimmer-effect;
 
   .card-header {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.875rem;
     border-bottom: $border-width solid $border-color;
 
     h1, h2, h3, h4, h5, h6 {
       margin: 0;
-      font-size: 1.25rem;
-      font-weight: 700;
-      @include text-gradient($gradient-secondary);
+      font-size: 1rem;
+      font-weight: 650;
+      color: $text-primary;
     }
   }
 
@@ -441,72 +492,60 @@ a {
   }
 }
 
-// Modern Badge System
+// =============================================
+// PASTILLES
+// =============================================
+//
+// Chaque variante posait $text-inverse (#0a0a0b) sur un fond a 20 % d'opacite
+// au-dessus d'une surface sombre : soit du noir sur du noir. Les six
+// variantes etaient donc illisibles. Le principe correct sur fond sombre est
+// l'inverse : fond teinte tres discret, TEXTE dans la teinte claire.
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.375rem 0.75rem;
-  border-radius: 12px;
+  gap: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: $radius-xs;
   font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
   border: $border-width solid $border-color;
-  background: $surface-primary;
-  color: $text-primary;
+  background: rgba(255, 255, 255, 0.05);
+  color: $text-secondary;
 
-  &.badge-primary {
-    background: rgba($primary-color, 0.2);
-    color: $text-inverse;
-    border-color: $border-color;
+  @mixin badge-tone($hue, $ink) {
+    background: rgba($hue, 0.14);
+    border-color: rgba($hue, 0.32);
+    color: $ink;
   }
 
-  &.badge-success {
-    background: rgba($success-color, 0.2);
-    color: $text-inverse;
-    border-color: $border-color;
-  }
-
-  &.badge-warning {
-    background: rgba($warning-color, 0.2);
-    color: $text-inverse;
-    border-color: $border-color;
-  }
-
-  &.badge-danger {
-    background: rgba($danger-color, 0.2);
-    color: $text-inverse;
-    border-color: $border-color;
-  }
-
-  &.badge-info {
-    background: rgba($info-color, 0.2);
-    color: $text-inverse;
-    border-color: $border-color;
-  }
-
+  &.badge-primary   { @include badge-tone($primary-color, $primary-light); }
+  &.badge-success   { @include badge-tone($success-color, $success-light); }
+  &.badge-warning   { @include badge-tone($warning-color, $warning-light); }
+  &.badge-danger    { @include badge-tone($danger-color,  $error-light);   }
+  &.badge-info      { @include badge-tone($info-color,    $info-light);    }
   &.badge-secondary {
-    background: rgba($secondary-color, 0.15);
-    color: $text-primary;
+    background: rgba(255, 255, 255, 0.06);
     border-color: $border-color;
+    color: $text-secondary;
   }
 }
 
 // Progress System
 .progress {
   width: 100%;
-  height: 12px;
-  background: rgba($primary-color, 0.15);
-  border-radius: 6px;
+  // 12px de haut avec un fond lime a 15 % : la barre paraissait a moitie
+  // pleine meme a 0 %. Piste neutre et fine, remplissage lime.
+  height: 6px;
+  background: rgba(255, 255, 255, 0.09);
+  border-radius: $radius-pill;
   overflow: hidden;
-  box-shadow: none;
 
   .progress-bar {
     height: 100%;
     background: $primary-color;
-    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    border-radius: 6px;
-    position: relative;
+    border-radius: $radius-pill;
   }
 }
 
@@ -518,25 +557,22 @@ a {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: none;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
   z-index: 1050;
-  animation: fadeIn 0.3s ease-out;
 }
 
 .modal {
   background: $surface-secondary;
   border: $border-width solid $border-color;
-  border-radius: var(--border-radius-2xl);
+  border-radius: var(--border-radius-xl);
   max-width: 600px;
   width: 100%;
   max-height: 90vh;
   overflow: hidden;
-  box-shadow: none;
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-xl);
 
   &.modal-sm { max-width: 400px; }
   &.modal-lg { max-width: 800px; }
@@ -546,39 +582,39 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 2rem 1rem;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
     border-bottom: $border-width solid $border-color;
 
     h2, h3 {
       margin: 0;
-      font-size: 1.5rem;
-      font-weight: 700;
+      font-size: 1.0625rem;
+      font-weight: 650;
     }
 
     .btn-close {
       background: transparent;
       border: $border-width solid $border-color;
       padding: 0.5rem;
-      border-radius: 999px;
-      color: $text-primary;
+      border-radius: $radius-sm;
+      color: $text-secondary;
       cursor: pointer;
-      transition: var(--transition-fast);
 
       &:hover {
-        background: $primary-color;
-        color: $text-inverse;
+        background: rgba(255, 255, 255, 0.06);
+        color: $text-primary;
       }
     }
   }
 
   .modal-body {
-    padding: 2rem;
-    max-height: 60vh;
+    padding: 1.5rem;
+    max-height: 65vh;
     overflow-y: auto;
   }
 
   .modal-footer {
-    padding: 1rem 2rem 2rem;
+    padding: 1.25rem 1.5rem;
     border-top: $border-width solid $border-color;
     display: flex;
     gap: 0.75rem;
@@ -597,136 +633,37 @@ a {
 .m-0 { margin: 0; }
 
 
-// Color Classes
-.text-primary { color: var(--primary-color) !important; }
-.text-secondary { color: var(--secondary-color) !important; }
-.text-muted { color: var(--gray-500) !important; }
+// Utilitaires de couleur de texte.
+//
+// Ils pointaient sur --primary-color (le lime), --secondary-color (le meme
+// lime) et --gray-500 (#52525b, soit 2,4:1 sur le fond de page — sous le
+// seuil de lisibilite). Ils designent desormais les trois niveaux de texte
+// du systeme, ce a quoi leurs noms font reference.
+.text-primary   { color: var(--color-text) !important; }
+.text-secondary { color: var(--color-text-secondary) !important; }
+.text-muted     { color: var(--color-text-muted) !important; }
+.text-accent    { color: var(--color-primary) !important; }
 
-// Loading Spinner
+// =============================================
+// INDICATEUR DE CHARGEMENT
+// =============================================
+//
+// Seule animation conservee dans toute l'application. Elle n'est pas
+// decorative : un indicateur de chargement fige est indistinguable d'une
+// interface plantee. Tout le reste — flottements, pulsations, degrades
+// mouvants, bandeaux lumineux, apparitions en fondu — a ete supprime.
 .loading-spinner {
   display: inline-block;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 2px solid rgba($primary-color, 0.15);
-  border-top-color: $primary-color;
-  animation: spin 0.65s linear infinite;
-}
-
-// Animations
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { 
-    opacity: 0; 
-    transform: translateY(30px) scale(0.95); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0) scale(1); 
-  }
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  border-top-color: $text-secondary;
+  animation: spin 0.7s linear infinite;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-// =============================================
-// COMPREHENSIVE ANIMATION SYSTEM
-// =============================================
-
-@keyframes gentle-float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33% { transform: translateY(-8px) rotate(1deg); }
-  66% { transform: translateY(-4px) rotate(-1deg); }
-}
-
-@keyframes gradient-flow {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes slide-up {
-  from { 
-    opacity: 0; 
-    transform: translateY(40px) scale(0.95); 
-  } 
-  to { 
-    opacity: 1; 
-    transform: translateY(0) scale(1); 
-  }
-}
-
-@keyframes fade-in-scale {
-  from { 
-    opacity: 0; 
-    transform: scale(0.9); 
-  }
-  to { 
-    opacity: 1; 
-    transform: scale(1); 
-  }
-}
-
-@keyframes smooth-pulse {
-  0%, 100% { 
-    transform: scale(1); 
-    opacity: 1; 
-  }
-  50% { 
-    transform: scale(1.02); 
-    opacity: 0.9; 
-  }
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%) skewX(-15deg); }
-  100% { transform: translateX(200%) skewX(-15deg); }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-3px) scale(1.05); }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-8px); }
-  75% { transform: translateX(8px); }
-}
-
-@keyframes error-slide {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
 }
 
 // Custom Scrollbar
@@ -736,23 +673,23 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba($surface-tertiary, 0.8);
-  border-radius: 4px;
+  background: transparent;
 }
 
+// Le curseur etait lime : chaque zone defilante ajoutait une barre fluo a
+// l'ecran. Neutre.
 ::-webkit-scrollbar-thumb {
-  background: rgba($primary-color, 0.5);
-  border-radius: 4px;
-  
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: $radius-pill;
+
   &:hover {
-    background: rgba($primary-color, 0.8);
+    background: rgba(255, 255, 255, 0.24);
   }
 }
 
-// Selection Styles
 ::selection {
-  background: rgba($primary-color, 0.5);
-  color: $text-inverse;
+  background: rgba($primary-color, 0.85);
+  color: $on-primary;
 }
 
 // Focus Styles for Accessibility
@@ -807,16 +744,13 @@ a {
   }
 }
 
-// Dark Mode Support (Future Enhancement)
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --border-color: rgba(212, 255, 61, 0.35);
-  }
-}
+// Aucun bloc `prefers-color-scheme` ici.
+//
+// Celui qui s'y trouvait redefinissait --border-color en lime a 35 % des que
+// le systeme etait en mode sombre — soit en permanence, l'application n'ayant
+// pas de theme clair. Il reintroduisait a lui seul les bordures fluo que le
+// reste du systeme venait de retirer, et fixait en plus --bg-primary a un
+// bleu ardoise (#0f172a) sans rapport avec la palette.
 
 // Print Styles
 @media print {
@@ -839,16 +773,9 @@ a {
   }
 }
 
-// Accessibility - Reduced Motion
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+// Le bloc `prefers-reduced-motion` a ete retire : l'interface ne comporte
+// plus de mouvement a reduire. Voir la couche « SUPPRESSION DU MOUVEMENT »
+// en fin de fichier.
 
 // =============================================
 // COMPREHENSIVE UTILITY CLASSES SYSTEM
@@ -901,10 +828,10 @@ a {
 
 // Animation Utilities
 
-// Hover Effects
-.hover-lift { 
-  transition: $transition-smooth;
-  &:hover { transform: $transform-hover; }
+// .hover-lift n'ajoute plus de deplacement : les elements ne se soulevent
+// plus au passage de la souris. Conservee pour ses appelants.
+.hover-lift {
+  &:hover { background: rgba(255, 255, 255, 0.04); }
 }
 
 // Loading States
@@ -923,7 +850,8 @@ a {
     border: $border-width solid $border-color;
     border-top: $border-width solid $border-color;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    border-top-color: $text-secondary;
+    animation: spin 0.7s linear infinite;
     transform: translate(-50%, -50%);
   }
 }
@@ -950,14 +878,9 @@ a {
 .clickable {
   cursor: pointer;
   user-select: none;
-  transition: $transition-fast;
-  
+
   &:hover {
     opacity: $opacity-hover;
-  }
-  
-  &:active {
-    transform: scale(0.98);
   }
 }
 
@@ -999,3 +922,401 @@ router-outlet + * {
   background: transparent !important;
 }
 
+
+// =============================================
+// SUPPRESSION DU MOUVEMENT ET DES EFFETS
+// =============================================
+//
+// Cette couche est volontairement placee en DERNIER, et volontairement en
+// `!important`.
+//
+// Les 29 feuilles de composants totalisent 36 000 lignes et contenaient
+// 144 blocs `@keyframes`, 424 declarations `transition`, 100 `animation` et
+// une centaine de halos colores. Les styles de composant Angular sont
+// encapsules par un attribut (`[_ngcontent-xxx]`), donc plus specifiques que
+// n'importe quel selecteur ecrit ici : `!important` est le seul moyen de les
+// neutraliser depuis la feuille globale.
+//
+// L'alternative — reecrire les 29 fichiers a la main — produirait le meme
+// rendu pour un risque de regression bien superieur, et la moindre regle
+// ajoutee plus tard reintroduirait le mouvement sans que rien ne l'arrete.
+//
+// EXCEPTION : `.loading-spinner` et `.loading::after`, dont la rotation
+// signale un travail en cours.
+
+*,
+*::before,
+*::after {
+  animation: none !important;
+  transition: none !important;
+
+  // Verre depoli : coute cher au rendu et brouille le texte pose dessus.
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.loading-spinner,
+.loading::after {
+  animation: spin 0.7s linear infinite !important;
+}
+
+// Les elements ne se deplacent plus, ne grossissent plus et ne pivotent plus
+// au survol ni au clic. `transform` reste autorise hors de ces etats : il y
+// sert au centrage (`translate(-50%, -50%)`) et aux tiroirs mobiles
+// (`translateX(-100%)`), qui sont de la mise en page, pas de l'effet.
+a:hover,
+button:hover,
+.btn:hover,
+.card:hover,
+[class*='card']:hover,
+[class*='btn']:hover,
+[class*='tile']:hover,
+[class*='item']:hover,
+[class*='chip']:hover,
+[class*='tab']:hover,
+[class*='badge']:hover,
+[class*='icon']:hover,
+[class*='link']:hover,
+a:active,
+button:active,
+.btn:active,
+[class*='card']:active,
+[class*='btn']:active {
+  transform: none !important;
+}
+
+// =============================================
+// HALOS COLORES
+// =============================================
+//
+// 494 `box-shadow` etaient ecrits en dur dans les composants, la plupart sous
+// la forme `0 Npx Npx rgba($primary-color, 0.4)` : chaque bouton, pastille et
+// carte rayonnait. Sur un fond quasi noir, ces halos produisent une brume
+// coloree autour de tout ce qui est interactif.
+//
+// Ce qui reste autorise : l'anneau de focus (accessibilite) et l'elevation
+// des elements qui flottent reellement au-dessus du contenu (modales, menus,
+// feuilles).
+.btn,
+button,
+[class*='btn'],
+[class*='badge'],
+[class*='chip'],
+[class*='pill'],
+[class*='tag'],
+[class*='icon'],
+[class*='avatar'],
+[class*='stat'],
+[class*='card'],
+[class*='tile'],
+[class*='progress'],
+[class*='bar'],
+input,
+select,
+textarea {
+  &:not(:focus):not(:focus-visible):not(:focus-within) {
+    box-shadow: none !important;
+  }
+}
+
+// =============================================
+// DEGRADES
+// =============================================
+//
+// 138 `linear-gradient` / `radial-gradient` subsistaient dans les composants
+// alors que les tokens de degrade avaient deja ete aplatis. Le resultat etait
+// incoherent : deux cartes voisines, l'une plate, l'autre degradee.
+//
+// Les degrades restent permis a l'interieur des `<svg>`, ou ils servent au
+// trace des courbes de donnees.
+[class*='card']:not(svg *),
+[class*='header']:not(svg *),
+[class*='section']:not(svg *),
+[class*='panel']:not(svg *),
+[class*='hero']:not(svg *),
+[class*='container']:not(svg *) {
+  &[style*='gradient'] {
+    background-image: none !important;
+  }
+}
+
+// =============================================
+// ELEMENTS PUREMENT DECORATIFS
+// =============================================
+//
+// Formes flottantes, blobs, orbes et particules : du decor anime, sans
+// contenu ni role. Le tableau de bord en posait trois derriere sa carte de
+// citation, la page de connexion deux cercles gris derriere le formulaire.
+.floating-shapes,
+.floating-orb,
+.floating-orbs,
+.hero-background,
+.bg-decoration,
+.decoration,
+.decorative,
+.particles,
+.blob,
+.orb,
+.glow,
+.shape.circle,
+.shape.triangle,
+.shape.square {
+  display: none !important;
+}
+
+
+// =============================================
+// PASTILLES D'ICONE
+// =============================================
+//
+// Le motif « carre colore contenant une icone » etait redefini dans presque
+// chaque composant, avec deux defauts recurrents :
+//
+//  1. un aplat de la couleur de marque — le tableau de bord alignait ainsi
+//     huit carres lime sur un seul ecran, pour de simples reperes visuels ;
+//  2. `color: $on-primary` (#050505) conserve alors que l'aplat clair avait
+//     disparu, ce qui donnait une icone quasi noire sur une carte sombre :
+//     les quatre icones de « Resume d'entrainement » etaient invisibles.
+//
+// Une icone accompagne un libelle, elle ne le remplace pas : elle prend donc
+// une surface neutre et la couleur du texte secondaire. Les rares icones
+// porteuses de sens (statut, categorie) gardent leur couleur, definie plus
+// specifiquement dans leur composant.
+.stat-icon,
+.summary-icon,
+.title-icon,
+.section-icon,
+.overview-icon,
+.category-icon,
+.nutrient-icon,
+.preference-icon,
+.goal-icon,
+.diet-icon,
+.action-icon,
+.header-icon,
+.card-icon,
+.metric-icon,
+.feature-icon,
+.info-icon,
+.meta-icon {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: transparent !important;
+  color: $text-secondary !important;
+  box-shadow: none !important;
+
+  svg { stroke: currentColor; }
+}
+
+// Icones d'etat vide et d'erreur : elles n'ont pas de pastille, seulement une
+// couleur.
+.empty-icon,
+.state-icon,
+.no-results-icon,
+.empty-chart-icon {
+  background: transparent !important;
+  color: $text-muted !important;
+}
+
+.error-icon {
+  background: transparent !important;
+  color: $error-light !important;
+}
+
+
+// =============================================
+// ETAT DESACTIVE
+// =============================================
+//
+// Le motif dominant dans les composants etait `opacity: 0.5` ou `0.6` sur un
+// bouton reste lime : l'aplat virait a l'olive et le libelle noir dessus
+// devenait illisible, sans que l'indisponibilite soit pour autant claire.
+// Un element desactive change de COULEUR, il ne se dilue pas.
+button:disabled,
+.btn:disabled,
+[class*='btn']:disabled,
+button[disabled],
+[aria-disabled='true'] {
+  background: $surface-tertiary !important;
+  border-color: $border-color !important;
+  color: $text-muted !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+
+  svg { color: $text-muted !important; }
+}
+
+// Champs desactives : meme principe.
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background: $surface-primary !important;
+  color: $text-muted !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
+}
+
+
+// =============================================
+// DERNIERS EMPLOIS DE L'ACCENT COMME COULEUR DE TEXTE
+// =============================================
+//
+// La passe de neutralisation a volontairement epargne les blocs dont le
+// selecteur porte un etat (`.active`, `.is-active`, `:hover`) : c'est la que
+// l'accent a sa place. Deux cas y ont echappe par homonymie — ils portent la
+// classe `active` sans etre pour autant des elements interactifs actifs.
+//
+// Un fil d'Ariane indique OU l'on se trouve ; la page courante y est la
+// derniere etape, non cliquable. La peindre en lime lui donne l'apparence
+// d'un lien alors que c'est le seul element du fil qui n'en est pas un.
+.breadcrumb-item.active,
+.breadcrumb .active {
+  color: $text-primary !important;
+  font-weight: 600;
+}
+
+// « Aujourd'hui » sous la date : c'est une precision de lecture, pas une
+// action.
+.date-subtitle {
+  color: $text-secondary !important;
+}
+
+// Compteurs de la navigation : un nombre n'a pas besoin de couleur pour etre
+// lu, et trois pastilles teintees dans une colonne de 320px reintroduisaient
+// exactement le bruit qu'on vient de retirer.
+.nav-indicator,
+.nav-indicator.new,
+.nav-indicator.active {
+  background: rgba(255, 255, 255, 0.09) !important;
+  color: $text-secondary !important;
+  border-color: transparent !important;
+}
+
+
+// =============================================
+// MODALES : VOILE ET PANNEAU
+// =============================================
+//
+// Les modales etaient baties sur un empilement de translucidite :
+//
+//   .modal-overlay { background: linear-gradient(rgba(0,0,0,.85),
+//                    rgba($primary-color,.15), rgba($secondary-color,.15))
+//                    !important; }
+//
+// soit un voile passant de 85 % de noir a 15 % de vert, double d'un
+// `::before` en degrade lime pose PAR-DESSUS le panneau, et d'un
+// `backdrop-filter`. Le flou supprime avec les autres effets, il ne restait
+// que la transparence : le contenu de la page defilait derriere le
+// formulaire et le teintait en vert.
+//
+// Un voile sert a EFFACER l'arriere-plan, pas a le teinter.
+//
+// Selecteurs repetes (`.modal-overlay.modal-overlay.modal-overlay`) : les
+// regles d'origine sont ecrites en `!important`, et l'encapsulation Angular
+// leur ajoute un attribut — elles pesent donc 0-2-0 et sont injectees APRES
+// cette feuille. A egalite de specificite ET d'importance, c'est l'ordre qui
+// tranche : il faut passer devant en specificite, d'ou la repetition.
+//
+// C'est le seul endroit du fichier qui en a besoin. Partout ailleurs le
+// simple `!important` suffit, les regles de composant n'etant pas elles-memes
+// marquees importantes.
+.modal-overlay.modal-overlay.modal-overlay,
+.modal-backdrop.modal-backdrop.modal-backdrop,
+[class*='-scrim'] {
+  background: rgba(0, 0, 0, 0.72) !important;
+  background-image: none !important;
+}
+
+.modal.modal.modal,
+.modal-content.modal-content.modal-content,
+.modal-container.modal-container.modal-container,
+.modal-panel.modal-panel.modal-panel,
+.modal-dialog.modal-dialog.modal-dialog {
+  background: $surface-secondary !important;
+  background-image: none !important;
+  border: $border-width solid $border-color;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+// Les pseudo-elements decoratifs des modales : motifs, trames et degrades
+// poses au-dessus du contenu. Sur une modale ils ne peuvent rien porter
+// d'utile — le contenu est dans le DOM.
+.modal-overlay.modal-overlay::before,
+.modal-overlay.modal-overlay::after,
+.modal.modal::before,
+.modal.modal::after,
+[class*='modal-content']::before,
+[class*='modal-content']::after,
+[class*='modal-container']::before,
+[class*='modal-container']::after {
+  display: none !important;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer,
+.modal-actions {
+  background-color: transparent;
+}
+
+
+// Ascenseurs des zones defilantes internes (modales, listes).
+//
+// Quatre composants redefinissaient `::-webkit-scrollbar-thumb` en lime :
+// dans la modale « Nouvel objectif », le curseur formait une barre fluo de
+// 200px le long du formulaire, l'element le plus voyant de la fenetre.
+::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-radius: $radius-pill;
+}
+
+::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24) !important;
+}
+
+::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+// Texte indicatif des champs.
+//
+// Il etait redefini dans huit composants, dont deux avec une couleur plus
+// sombre que le fond du champ : `$on-primary` (#050505) sur la page Profil,
+// `rgba($surface-secondary, .7)` sur Nutrition. Les indications de saisie
+// etaient donc invisibles. Valeur unique, a 4,6:1 sur la surface des champs.
+input::placeholder,
+textarea::placeholder {
+  color: $text-muted;
+  opacity: 1;
+}
+
+// =============================================
+// CHAMPS DE FORMULAIRE : COULEUR DU TEXTE SAISI
+// =============================================
+//
+// Les controles de formulaire n'heritent PAS de `color` : sans declaration
+// explicite, ils prennent la valeur par defaut du navigateur, c'est-a-dire du
+// NOIR. Sur les surfaces sombres de l'application cela donne un rapport de
+// 1,1:1 — le texte tape dans la recherche des programmes ou des exercices
+// etait purement et simplement invisible, de meme que la valeur choisie dans
+// chaque menu deroulant de filtre.
+//
+// Le defaut ne se voyait pas au premier coup d'oeil : un champ vide n'affiche
+// que son texte indicatif, lui correctement colore. Il fallait taper quelque
+// chose pour s'en apercevoir.
+input,
+select,
+textarea,
+option {
+  color: $text-primary;
+}
+
+// `color-scheme` indique au navigateur de dessiner ses propres widgets en
+// sombre : liste deroulante d'un <select>, calendrier d'un <input type=date>,
+// ascenseurs internes. Sans elle, ouvrir un filtre faisait apparaitre un
+// panneau blanc au milieu de l'interface.
+:root {
+  color-scheme: dark;
+}

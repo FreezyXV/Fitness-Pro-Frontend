@@ -7,8 +7,6 @@
 // Enhanced Mixins
 @mixin enhanced-glass-card($opacity: 0.98, $blur: 28px) {
   background: rgba($surface-secondary, $opacity);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -30,7 +28,6 @@
   border-radius: 16px;
   font-weight: 700;
   font-size: 0.9rem;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -288,7 +285,6 @@ padding: 0.25rem;
         .status-text {
           font-weight: 700;
           color: $success-color;
-          text-transform: uppercase;
           letter-spacing: 0.05em;
           font-size: 1rem;
         }
@@ -322,7 +318,7 @@ padding: 0.25rem;
 
       .progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, $success-color, $success-light);
+        background: $success-color;
         border-radius: 6px;
         transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         position: relative;
@@ -334,8 +330,7 @@ padding: 0.25rem;
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba($surface-secondary, 0.4), transparent);
-          animation: shimmer 2s infinite;
+          background: rgba($surface-secondary, 0.4);
         }
       }
     }
@@ -370,7 +365,6 @@ padding: 0.25rem;
       border-radius: 20px;
       border: none;
       background: rgba($surface-secondary, 0.95);
-      backdrop-filter: blur(16px);
       color: $gray-700;
       font-weight: 700;
       text-decoration: none;
@@ -402,7 +396,6 @@ padding: 0.25rem;
         border-radius: 50%;
         border: none;
         background: rgba($surface-secondary, 0.95);
-        backdrop-filter: blur(16px);
         color: $text-primary;
         display: flex;
         align-items: center;
@@ -438,7 +431,7 @@ padding: 0.25rem;
 
     .meta-badges {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 1.5rem;
       flex-wrap: wrap;
       justify-content: center;
@@ -446,7 +439,7 @@ padding: 0.25rem;
       @include respond-above(md) {
         justify-content: flex-start;
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       }
 
       .difficulty-badge,
@@ -460,10 +453,8 @@ padding: 0.25rem;
         padding: 1.25rem 2.5rem;
         border-radius: 20px;
         font-weight: 800;
-        text-transform: uppercase;
         letter-spacing: 0.05em;
         background: rgba($surface-secondary, 0.95);
-        backdrop-filter: blur(16px);
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         border: $border-width solid $border-color;
 
@@ -517,7 +508,7 @@ padding: 0.25rem;
       }
 
       .category-badge {
-        color: $primary-color;
+        color: $text-secondary;
         border: $border-width solid $border-color;
         background: rgba($primary-color, 0.05);
       }
@@ -546,12 +537,7 @@ padding: 0.25rem;
       color: $gray-900;
       margin: 0 0 1.5rem 0;
       text-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      background: $gradient-secondary;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-size: 200% 200%;
-      animation: gradient-animation 4s ease infinite;
     }
 
     .plan-description {
@@ -571,11 +557,11 @@ padding: 0.25rem;
   // Enhanced Quick Stats
   .quick-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
     gap: 2rem;
 
     @include respond-below(md) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.5rem;
     }
 
@@ -607,7 +593,7 @@ padding: 0.25rem;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba($primary-color, 0.1), transparent);
+        background: rgba($primary-color, 0.1);
         transition: left 0.8s ease;
       }
 
@@ -639,7 +625,6 @@ padding: 0.25rem;
         .stat-label {
           font-size: clamp(0.8rem, 2vw, 0.9rem);
           color: $text-primary;
-          text-transform: uppercase;
           letter-spacing: 0.1em;
           font-weight: 700;
         }
@@ -665,7 +650,7 @@ padding: 0.25rem;
   }
 
   @include respond-below(md) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
   }
 }
@@ -676,7 +661,6 @@ padding: 0.25rem;
     @include enhanced-glass-card(0.97, 24px);
     border-radius: 28px;
     padding: 3rem;
-    animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 
     @include respond-below(md) {
       padding: 1rem;
@@ -765,14 +749,14 @@ padding: 0.25rem;
 
           &.exercise-in-progress {
             border-color: $warning-color;
-            background: linear-gradient(135deg, rgba($warning-color, 0.08), rgba($warning-color, 0.03));
+            background: rgba($warning-color, 0.08);
             box-shadow: 0 0 30px rgba($warning-color, 0.2);
             animation: exercise-progress-pulse 2s ease-in-out infinite;
           }
 
           &.exercise-completed {
             border-color: $success-color;
-            background: linear-gradient(135deg, rgba($success-color, 0.08), rgba($success-color, 0.03));
+            background: rgba($success-color, 0.08);
             box-shadow: 0 0 30px rgba($success-color, 0.2);
             animation: completed-glow 3s ease-in-out infinite;
           }
@@ -878,7 +862,6 @@ padding: 0.25rem;
                   border-radius: 12px;
                   font-size: 0.8rem;
                   font-weight: 700;
-                  text-transform: uppercase;
                   letter-spacing: 0.05em;
                   white-space: nowrap;
 
@@ -918,7 +901,7 @@ padding: 0.25rem;
                   font-weight: 600;
 
                   svg {
-                    color: $primary-color;
+                    color: $text-primary;
                     flex-shrink: 0;
                   }
                 }
@@ -1016,7 +999,7 @@ padding: 0.25rem;
             .exercise-configuration {
               .config-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr));
                 gap: 1.5rem;
 
                 .config-item {
@@ -1055,7 +1038,6 @@ padding: 0.25rem;
                       color: $text-primary;
                       font-size: 0.8rem;
                       font-weight: 600;
-                      text-transform: uppercase;
                       letter-spacing: 0.05em;
                       margin-bottom: 0.25rem;
                     }
@@ -1074,7 +1056,7 @@ padding: 0.25rem;
             .exercise-meta-details {
               .meta-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
                 gap: 1.5rem;
                 margin-bottom: 1.5rem;
 
@@ -1126,7 +1108,6 @@ padding: 0.25rem;
                     color: $text-primary;
                     font-size: 0.9rem;
                     font-weight: 600;
-                    text-transform: uppercase;
                     letter-spacing: 0.05em;
                   }
                 }
@@ -1139,7 +1120,7 @@ padding: 0.25rem;
                   .muscle-tag {
                     padding: 0.5rem 1rem;
                     background: rgba($primary-color, 0.1);
-                    color: $primary-color;
+                    color: $text-secondary;
                     border-radius: 12px;
                     font-size: 0.8rem;
                     font-weight: 600;
@@ -1269,7 +1250,6 @@ padding: 0.25rem;
   @include enhanced-glass-card(0.95, 20px);
   border-radius: 24px;
   padding: 2.5rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
   @include enhanced-hover-lift;
 
   @include respond-below(md) {
@@ -1337,7 +1317,6 @@ padding: 0.25rem;
           color: $text-primary;
           font-size: 0.8rem;
           font-weight: 700;
-          text-transform: uppercase;
           letter-spacing: 0.05em;
           margin-bottom: 0.5rem;
         }
@@ -1358,7 +1337,6 @@ padding: 0.25rem;
   @include enhanced-glass-card(0.95, 20px);
   border-radius: 24px;
   padding: 2.5rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
   @include enhanced-hover-lift;
 
   @include respond-below(md) {
@@ -1412,7 +1390,10 @@ padding: 0.25rem;
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
-        background: $primary-gradient;
+        // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
+        // elle ne rivalise pas avec la donnee qu'elle accompagne.
+        background: rgba($primary-color, 0.12);
+        color: $text-primary;
         color: $on-primary;
         box-shadow: 0 6px 20px rgba($primary-color, 0.3);
         flex-shrink: 0;
@@ -1426,7 +1407,6 @@ padding: 0.25rem;
           color: $text-primary;
           font-size: 0.8rem;
           font-weight: 700;
-          text-transform: uppercase;
           letter-spacing: 0.05em;
           margin-bottom: 0.5rem;
         }
@@ -1442,27 +1422,27 @@ padding: 0.25rem;
 
       // Specific styling for different overview types
       &:nth-child(1) .overview-icon {
-        background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+        background: #FF6B6B;
       }
       
       &:nth-child(2) .overview-icon {
-        background: linear-gradient(135deg, #4ECDC4, #44E6DC);
+        background: #4ECDC4;
       }
       
       &:nth-child(3) .overview-icon {
-        background: linear-gradient(135deg, #45B7D1, #66D9EF);
+        background: #45B7D1;
       }
       
       &:nth-child(4) .overview-icon {
-        background: linear-gradient(135deg, #96CEB4, #85E6A3);
+        background: #96CEB4;
       }
       
       &:nth-child(5) .overview-icon {
-        background: linear-gradient(135deg, #FFEAA7, $c-amber-soft);
+        background: #FFEAA7;
       }
       
       &:nth-child(6) .overview-icon {
-        background: linear-gradient(135deg, #DDA0DD, #E6B8E6);
+        background: #DDA0DD;
       }
     }
   }
@@ -1473,7 +1453,6 @@ padding: 0.25rem;
   @include enhanced-glass-card(0.95, 20px);
   border-radius: 24px;
   padding: 2.5rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
   @include enhanced-hover-lift;
 
   @include respond-below(md) {
@@ -1500,7 +1479,7 @@ padding: 0.25rem;
 
   .progress-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 
@@ -1531,14 +1510,13 @@ padding: 0.25rem;
           font-size: 0.8rem;
           color: $text-primary;
           font-weight: 600;
-          text-transform: uppercase;
           letter-spacing: 0.05em;
         }
       }
     }
 
     @include respond-below(xs) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 1rem;
     }
   }
@@ -1612,7 +1590,6 @@ padding: 0.25rem;
   left: 0;
   right: 0;
   background: rgba($surface-secondary, 0.98);
-  backdrop-filter: blur(32px);
   border-top: $border-width solid $border-color;
   border-radius: 32px 32px 32px 32px;
   padding: 2.5rem;
@@ -1633,13 +1610,13 @@ padding: 0.25rem;
     @include respond-below(md) {
       gap: 1rem;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
     @include respond-below(xs) {
 
       display: grid;
-      grid-template-columns: 1fr ;
+      grid-template-columns: minmax(0, 1fr) ;
     }
 
     // Enhanced Primary Session Button
@@ -1654,7 +1631,6 @@ padding: 0.25rem;
 
       &:not(.success.active) {
         background-size: 200% 200%;
-        animation: gradient-animation 10s ease infinite;
       }
 
       &:hover {
@@ -1785,7 +1761,6 @@ padding: 0.25rem;
   justify-content: center;
   background: $primary-dark;
   background-size: 400% 400%;
-  animation: gradient-animation 20s ease infinite;
   padding: 3rem;
 
   .loading-content {
@@ -1867,7 +1842,6 @@ padding: 0.25rem;
   justify-content: center;
   background: $primary-dark;
   background-size: 400% 400%;
-  animation: gradient-animation 20s ease infinite;
   padding: 3rem;
 
   .error-content {
@@ -2073,4 +2047,162 @@ padding: 0.25rem;
 .workout-detail-container .plan-action.secondary {
   background: rgba($primary-color, 0.15);
   color: $text-primary;
+}
+
+
+// =============================================
+// EN-TETE D'ECRAN — TRAITEMENT COMPACT
+// =============================================
+//
+// L'ecran s'ouvrait sur un bloc centre : pictogramme, titre sur deux lignes,
+// phrase d'accroche, puis des cartes de statistiques de 150 px de haut. Sur
+// telephone l'ensemble remplissait le premier ecran et repoussait le contenu
+// reel — liste, recherche, filtres — sous la ligne de flottaison.
+//
+// Les selecteurs ci-dessous reprennent la profondeur des regles d'origine,
+// qui descendent jusqu'a cinq niveaux et vivent en partie dans des media
+// queries. Une media query n'ajoute pas de specificite : a egalite, la
+// derniere regle du fichier l'emporte.
+
+.workout-detail-container {
+  .hero-section {
+    padding: 1.25rem 0 0.5rem;
+    margin: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+
+    .hero-background { display: none; }
+
+    .hero-content {
+      display: block;
+      padding: 0;
+      gap: 0;
+      text-align: left;
+
+      .title-section {
+        display: flex;
+        // row explicite : plusieurs ecrans forcaient la colonne, ce qui
+        // laissait le pictogramme seul et centre au-dessus du titre.
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0 0 1rem;
+        text-align: left;
+
+        .title-icon {
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          min-width: 34px;
+          min-height: 34px;
+          flex-shrink: 0;
+          margin: 0;
+          padding: 0;
+          border-radius: $radius-md;
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
+          font-size: 1rem;
+
+          app-icon { width: 18px; height: 18px; }
+        }
+
+        .title-content {
+          flex: 1;
+          min-width: 0;
+          text-align: left;
+
+          .page-title {
+            margin: 0;
+            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: $text-primary;
+            text-align: left;
+          }
+
+          .page-subtitle {
+            margin: 0.125rem 0 0;
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.45;
+            color: $text-secondary;
+            text-align: left;
+          }
+        }
+      }
+
+      // --- Statistiques : une ligne dense, pas des cartes ---
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+        gap: 0.5rem;
+        margin: 0 0 1.25rem;
+        padding: 0;
+
+        .stat-item,
+        .stat-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 0;
+
+          min-height: 0;
+          height: auto;
+          padding: 0.625rem 0.75rem;
+
+          border: $border-width solid $border-color;
+          border-radius: $radius-lg;
+          background: $surface-secondary;
+          text-align: left;
+
+          &::before, &::after { display: none; }
+          &:hover { transform: none; background: $surface-secondary; }
+
+          // Une icone n'apporte rien a cote d'un chiffre et de son libelle.
+          .stat-icon { display: none; }
+
+          .stat-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            text-align: left;
+
+            .stat-value {
+              font-size: 1.0625rem;
+              font-weight: 700;
+              line-height: 1.2;
+              color: $text-primary;
+              font-variant-numeric: tabular-nums;
+            }
+
+            .stat-label {
+              font-size: 0.6875rem;
+              font-weight: 500;
+              line-height: 1.3;
+              text-transform: none;
+              letter-spacing: 0;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    // Variante sans .hero-content, presente sur certains ecrans.
+    > .title-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0 0 1rem;
+      text-align: left;
+    }
+  }
 }

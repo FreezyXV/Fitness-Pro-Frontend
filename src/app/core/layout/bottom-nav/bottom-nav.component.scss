@@ -23,7 +23,7 @@
   z-index: $z-sidebar;
 
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: stretch;
 
   // env(safe-area-inset-bottom) : sans ca la barre passe sous la barre
@@ -31,8 +31,6 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
 
   background: rgba($surface-secondary, 0.92);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
   border-top: $border-width solid $border-color;
 }
 

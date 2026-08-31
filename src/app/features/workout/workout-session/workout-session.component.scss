@@ -45,7 +45,7 @@
   margin-left: auto;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  color: $primary-color;
+  color: $text-primary;
 }
 
 .top-progress {
@@ -106,7 +106,7 @@
   font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  color: $primary-color;
+  color: $text-primary;
 }
 
 .stage-unit {
@@ -330,7 +330,10 @@
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background: $primary-color;
+  // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
+  // elle ne rivalise pas avec la donnee qu'elle accompagne.
+  background: rgba($primary-color, 0.12);
+  color: $text-primary;
   color: $bg-primary;
   font-size: 2.5rem;
   font-weight: 800;

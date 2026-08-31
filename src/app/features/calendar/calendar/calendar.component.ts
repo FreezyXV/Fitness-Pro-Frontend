@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { Subject, takeUntil, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 // Mock interfaces for standalone functionality
 interface CalendarTask {
@@ -54,20 +55,20 @@ const EVENT_META: Record<CalendarTask['task_type'], {
   color: string;
   icon: string;
 }> = {
-  workout: { color: '#21BF73', icon: '💪' },
-  goal: { color: '#667eea', icon: '🎯' },
-  rest: { color: '#f093fb', icon: '😴' },
-  nutrition: { color: '#ff6b35', icon: '🍎' },
-  meal: { color: '#FFD700', icon: '🍽️' },
-  reminder: { color: '#8A2BE2', icon: '⏰' },
-  other: { color: '#64748b', icon: '📝' }
+  workout: { color: '#d4ff3d', icon: '💪' },
+  goal: { color: '#7ecbff', icon: '🎯' },
+  rest: { color: '#a1a1aa', icon: '😴' },
+  nutrition: { color: '#ffd860', icon: '🍎' },
+  meal: { color: '#ffd860', icon: '🍽️' },
+  reminder: { color: '#c4b5fd', icon: '⏰' },
+  other: { color: '#8f8f98', icon: '📝' }
 };
 
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   animations: [
@@ -675,7 +676,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getEventTypeColor(type: CalendarTask['task_type']): string {
-    return EVENT_META[type]?.color || '#64748b';
+    return EVENT_META[type]?.color || '#8f8f98';
   }
 
   getEventIcon(type: CalendarTask['task_type']): string {

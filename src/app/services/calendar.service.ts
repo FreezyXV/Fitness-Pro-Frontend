@@ -429,11 +429,11 @@ export class CalendarService {
     color: string;
   }> {
     return [
-      { value: 'workout', label: 'Entraînement', icon: '💪', color: '#21BF73' },
-      { value: 'goal', label: 'Objectif', icon: '🎯', color: '#667eea' },
-      { value: 'rest', label: 'Repos', icon: '😴', color: '#f093fb' },
-      { value: 'nutrition', label: 'Nutrition', icon: '🍎', color: '#ff6b35' },
-      { value: 'other', label: 'Autre', icon: '📝', color: '#64748b' },
+      { value: 'workout', label: 'Entraînement', icon: '💪', color: '#d4ff3d' },
+      { value: 'goal', label: 'Objectif', icon: '🎯', color: '#7ecbff' },
+      { value: 'rest', label: 'Repos', icon: '😴', color: '#a1a1aa' },
+      { value: 'nutrition', label: 'Nutrition', icon: '🍎', color: '#ffd860' },
+      { value: 'other', label: 'Autre', icon: '📝', color: '#8f8f98' },
     ];
   }
 
@@ -442,9 +442,9 @@ export class CalendarService {
    */
   getPriorityLevels(): Array<{ value: string; label: string; color: string }> {
     return [
-      { value: 'high', label: 'Haute', color: '#ef4444' },
-      { value: 'medium', label: 'Moyenne', color: '#f59e0b' },
-      { value: 'low', label: 'Basse', color: '#10b981' },
+      { value: 'high', label: 'Haute', color: '#fc8181' },
+      { value: 'medium', label: 'Moyenne', color: '#fdba74' },
+      { value: 'low', label: 'Basse', color: '#6ee7b7' },
     ];
   }
 
@@ -469,13 +469,13 @@ export class CalendarService {
         '📝',
       typeColor:
         this.getTaskTypes().find((t) => t.value === task.taskType)?.color ||
-        '#64748b',
+        '#8f8f98',
       priorityLabel:
         this.getPriorityLevels().find((p) => p.value === task.priority)
           ?.label || 'Moyenne',
       priorityColor:
         this.getPriorityLevels().find((p) => p.value === task.priority)
-          ?.color || '#f59e0b',
+          ?.color || '#fdba74',
     };
   }
 

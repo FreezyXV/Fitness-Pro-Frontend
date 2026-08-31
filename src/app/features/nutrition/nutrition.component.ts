@@ -14,6 +14,7 @@ import { BarcodeScannerComponent } from '@app/shared/components/barcode-scanner/
 import { Subject, BehaviorSubject, timer } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NutritionService, UserProfile, DietPreferencesPayload } from '@app/services/nutrition.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 import {
   Food,
   FoodDatabaseService,
@@ -158,7 +159,7 @@ interface SearchFilters {
 @Component({
   selector: 'app-nutrition',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe, BarcodeScannerComponent],
+  imports: [CommonModule, FormsModule, FilterPipe, BarcodeScannerComponent, IconComponent],
   templateUrl: './nutrition.component.html',
   styleUrls: ['./nutrition.component.scss'],
 })
@@ -1325,11 +1326,11 @@ export class NutritionComponent implements OnInit, OnDestroy {
   getProgressColor(current: number, goal: number): string {
     const percentage = this.getProgressPercentage(current, goal);
 
-    if (percentage < 25) return '#ef4444';
-    if (percentage < 50) return '#f59e0b';
+    if (percentage < 25) return '#fc8181';
+    if (percentage < 50) return '#fdba74';
     if (percentage < 75) return '#eab308';
-    if (percentage < 100) return '#22c55e';
-    return '#06b6d4';
+    if (percentage < 100) return '#6ee7b7';
+    return '#67e8f9';
   }
 
   getRemainingNutrient(current: number, goal: number): number {

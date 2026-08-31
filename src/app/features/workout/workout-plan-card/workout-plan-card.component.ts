@@ -29,20 +29,20 @@ export class WorkoutPlanCardComponent {
       value: 'intermediate',
       label: 'Intermédiaire',
       icon: '🟡',
-      color: '#FF9800',
+      color: '#fdba74',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#F44336' },
+    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
   ];
 
   readonly categories = [
     { value: 'strength', label: 'Force', icon: '💪', color: '#4CAF50' },
     { value: 'cardio', label: 'Cardio', icon: '❤️', color: '#FF5722' },
-    { value: 'hiit', label: 'HIIT', icon: '🔥', color: '#FF9800' },
+    { value: 'hiit', label: 'HIIT', icon: '🔥', color: '#fdba74' },
     {
       value: 'flexibility',
       label: 'Flexibilité',
       icon: '🧘',
-      color: '#9C27B0',
+      color: '#c4b5fd',
     },
   ];
 

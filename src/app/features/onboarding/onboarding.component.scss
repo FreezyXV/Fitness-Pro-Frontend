@@ -169,11 +169,11 @@
 
 .ob-fields {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
 
   @include respond-below(xs) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -185,7 +185,6 @@
   label {
     font-size: 0.6875rem;
     font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: 0.06em;
     color: $text-secondary;
   }
@@ -250,7 +249,6 @@
     padding: 0 0 0.5rem;
     font-size: 0.6875rem;
     font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: 0.06em;
     color: $text-secondary;
   }
@@ -357,7 +355,7 @@
 
   border-radius: 999px;
   background: rgba($primary-color, 0.15);
-  color: $primary-color;
+  color: $text-primary;
   font-size: 1.75rem;
   font-weight: 800;
 }
@@ -395,7 +393,7 @@
     padding: 0.25rem 0.625rem;
     border-radius: 999px;
     background: rgba($primary-color, 0.15);
-    color: $primary-color;
+    color: $text-secondary;
     font-size: 0.75rem;
     font-weight: 700;
   }

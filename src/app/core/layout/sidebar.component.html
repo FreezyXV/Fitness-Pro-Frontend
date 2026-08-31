@@ -6,12 +6,12 @@
   <ul>
     <li *ngFor="let nav of navLinks">
       <a [routerLink]="nav.path" routerLinkActive="active">
-        <span class="icon">{{ nav.icon }}</span>
+        <span class="icon"><app-icon [name]="nav.icon"></app-icon></span>
         <span>{{ nav.label }}</span>
       </a>
     </li>
   </ul>
   <button (click)="logout()" class="logout-btn">
-    <span class="icon">🚪</span> Déconnexion
+    <span class="icon"><app-icon name="logout"></app-icon></span> Déconnexion
   </button>
 </nav>

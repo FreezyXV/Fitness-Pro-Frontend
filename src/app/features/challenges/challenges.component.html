@@ -6,7 +6,7 @@
     <div class="hero-background"></div>
     <div class="hero-content">
       <div class="title-section">
-        <div class="title-icon">🏆</div>
+        <div class="title-icon"><app-icon name="trophy"></app-icon></div>
         <div class="title-content">
           <h1 class="page-title">Défis et Challenges</h1>
           <p class="page-subtitle">Relevez des défis et battez vos records !</p>
@@ -16,28 +16,28 @@
       <!-- Enhanced Quick Stats -->
       <div class="quick-stats">
         <div class="stat-item">
-          <div class="stat-icon">🎯</div>
+          <div class="stat-icon"><app-icon name="target"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{getActiveChallengesCount()}}</span>
             <span class="stat-label">En cours</span>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-icon">🏆</div>
+          <div class="stat-icon"><app-icon name="trophy"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{getCompletedChallengesCount()}}</span>
             <span class="stat-label">Terminés</span>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-icon">⭐</div>
+          <div class="stat-icon"><app-icon name="star"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{getTotalPoints()}}</span>
             <span class="stat-label">Points</span>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-icon">🥇</div>
+          <div class="stat-icon"><app-icon name="trophy"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">#{{getCurrentUserRank()}}</span>
             <span class="stat-label">Rang</span>
@@ -102,7 +102,7 @@
             aria-label="Filtre : Toutes les catégories">
             <option value="all">Toutes les catégories</option>
             <option *ngFor="let category of challengeCategories" [value]="category.value">
-              {{ category.icon }} {{ category.label }}
+              <app-icon [name]="category.icon"></app-icon> {{ category.label }}
             </option>
           </select>
         </div>
@@ -159,7 +159,7 @@
         <div class="card-header">
           <!-- Category Badge -->
           <div class="category-badge" [attr.data-category]="challenge.category">
-            <span class="category-icon">{{ getCategoryInfo(challenge.category).icon }}</span>
+            <span class="category-icon"><app-icon [name]="getCategoryInfo(challenge.category).icon"></app-icon></span>
             <span class="category-text">{{ getCategoryInfo(challenge.category).label }}</span>
           </div>
 
@@ -325,7 +325,7 @@
       <!-- Enhanced Empty State -->
       <div class="empty-state" *ngIf="filteredChallenges.length === 0">
         <div class="empty-card">
-          <div class="empty-icon">🏆</div>
+          <div class="empty-icon"><app-icon name="trophy"></app-icon></div>
           <h3 class="empty-title">Aucun défi trouvé</h3>
           <p class="empty-message">
             Essayez de modifier vos filtres ou créez votre premier défi personnalisé !
@@ -366,7 +366,7 @@
               <div class="detail-badges">
                 <span class="badge category" 
                       [style.background-color]="getCategoryInfo(selectedChallenge.category).color">
-                  <span>{{getCategoryInfo(selectedChallenge.category).icon}}</span>
+                  <span><app-icon [name]="getCategoryInfo(selectedChallenge.category).icon"></app-icon></span>
                   {{getCategoryInfo(selectedChallenge.category).label}}
                 </span>
                 <span class="badge difficulty" 
@@ -663,7 +663,7 @@
              inventes, dont un marque comme etant l'utilisateur courant. Tant
              qu'il n'y a pas de vrais autres pratiquants a classer, on le dit. -->
         <div class="leaderboard-empty" *ngIf="!leaderboardData.length">
-          <div class="leaderboard-empty-icon" aria-hidden="true">🏅</div>
+          <div class="leaderboard-empty-icon" aria-hidden="true"><app-icon name="trophy"></app-icon></div>
           <h3>Pas encore de classement</h3>
           <p>
             Le classement s'ouvrira quand la communauté existera. Nous
@@ -679,9 +679,9 @@
             
             <div class="rank-badge" [class]="'rank-' + user.rank">
               <span *ngIf="user.rank <= 3">
-                <span *ngIf="user.rank === 1">🥇</span>
-                <span *ngIf="user.rank === 2">🥈</span>
-                <span *ngIf="user.rank === 3">🥉</span>
+                <span *ngIf="user.rank === 1"><app-icon name="trophy"></app-icon></span>
+                <span *ngIf="user.rank === 2"><app-icon name="trophy"></app-icon></span>
+                <span *ngIf="user.rank === 3"><app-icon name="trophy"></app-icon></span>
               </span>
               <span *ngIf="user.rank > 3">#{{user.rank}}</span>
             </div>

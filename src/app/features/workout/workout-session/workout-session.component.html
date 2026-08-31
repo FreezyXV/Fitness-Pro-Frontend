@@ -7,7 +7,7 @@
   </div>
 
   <div class="state-screen" *ngIf="phase() === 'error'">
-    <div class="state-icon">⚠️</div>
+    <div class="state-icon"><app-icon name="alert"></app-icon></div>
     <h2>Séance indisponible</h2>
     <p>{{ errorMessage() }}</p>
     <button class="btn-ghost" (click)="backToWorkouts()">Retour aux programmes</button>
@@ -16,7 +16,7 @@
   <!-- ============ ÉCRAN DE DÉPART ============ -->
   <ng-container *ngIf="phase() === 'ready'">
     <header class="session-top">
-      <button class="icon-btn" (click)="quit()" aria-label="Quitter">✕</button>
+      <button class="icon-btn" (click)="quit()" aria-label="Quitter"><app-icon name="close"></app-icon></button>
       <span class="top-title">{{ workoutName() }}</span>
     </header>
 
@@ -44,7 +44,7 @@
   <!-- ============ SÉRIE EN COURS ============ -->
   <ng-container *ngIf="phase() === 'working'">
     <header class="session-top">
-      <button class="icon-btn" (click)="quit()" aria-label="Quitter">✕</button>
+      <button class="icon-btn" (click)="quit()" aria-label="Quitter"><app-icon name="close"></app-icon></button>
       <span class="top-clock">{{ formatClock(elapsedSeconds()) }}</span>
       <span class="top-progress">{{ done().length }}/{{ totalSets() }}</span>
     </header>
@@ -107,7 +107,7 @@
   <!-- ============ REPOS ============ -->
   <ng-container *ngIf="phase() === 'resting'">
     <header class="session-top">
-      <button class="icon-btn" (click)="quit()" aria-label="Quitter">✕</button>
+      <button class="icon-btn" (click)="quit()" aria-label="Quitter"><app-icon name="close"></app-icon></button>
       <span class="top-clock">{{ formatClock(elapsedSeconds()) }}</span>
       <span class="top-progress">{{ done().length }}/{{ totalSets() }}</span>
     </header>
@@ -135,7 +135,7 @@
   <!-- ============ RÉCAPITULATIF ============ -->
   <ng-container *ngIf="phase() === 'finished'">
     <main class="stage summary">
-      <div class="summary-badge">✓</div>
+      <div class="summary-badge"><app-icon name="check"></app-icon></div>
       <h1 class="summary-title">Séance terminée</h1>
       <p class="summary-name">{{ workoutName() }}</p>
 

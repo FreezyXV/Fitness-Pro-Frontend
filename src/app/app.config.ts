@@ -3,7 +3,19 @@ import { ApplicationConfig, provideZoneChangeDetection, ErrorHandler, Injectable
 import { provideRouter, withPreloading, PreloadAllModules, withRouterConfig } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// NoopAnimationsModule et non BrowserAnimationsModule.
+//
+// Les feuilles de style n'ont plus aucune animation, mais huit composants
+// declarent encore des animations ANGULAR (`trigger('modalAnimation')`,
+// `slideInOut`, `staggerAnimation`, `cardAnimation`…). Celles-ci passent par
+// la Web Animations API et non par des regles CSS : la couche de suppression
+// de styles.scss ne les atteint pas, elles continueraient a faire glisser les
+// modales et apparaitre les cartes en cascade.
+//
+// Le module Noop fournit la meme API — les `@trigger` des gabarits restent
+// valides et aucun composant n'est a modifier — mais applique l'etat final
+// immediatement, sans transition.
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { routes } from './app.routes';
@@ -154,7 +166,7 @@ export const appConfig: ApplicationConfig = {
 
     // Essential modules with error handling
     importProvidersFrom(
-      BrowserAnimationsModule,
+      NoopAnimationsModule,
       FormsModule,
       ReactiveFormsModule
     )

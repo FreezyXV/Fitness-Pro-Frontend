@@ -7,6 +7,7 @@ import { Subject, BehaviorSubject, timer, of } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { ChallengesService } from '@app/services/challenges.service';
 import { Task } from '@shared';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 // Enhanced interfaces
 interface EnhancedChallenge {
@@ -85,27 +86,27 @@ interface ChallengeStats {
 
 // Configuration constants
 const CHALLENGE_CATEGORIES = [
-  { value: 'fitness', label: 'Fitness', icon: '💪', color: '#f28b82' },
-  { value: 'wellness', label: 'Bien-être', icon: '🧘', color: '#a3d9a5' },
-  { value: 'cardio', label: 'Cardio', icon: '❤️', color: '#fbbc04' },
-  { value: 'strength', label: 'Force', icon: '🏋️', color: '#34a853' },
-  { value: 'nutrition', label: 'Nutrition', icon: '🍎', color: '#4285f4' },
-  { value: 'mindfulness', label: 'Méditation', icon: '🧠', color: '#9c27b0' },
-  { value: 'social', label: 'Social', icon: '👥', color: '#ff9800' }
+  { value: 'fitness', label: 'Fitness', icon: '💪', color: '#fc8181' },
+  { value: 'wellness', label: 'Bien-être', icon: '🧘', color: '#86efac' },
+  { value: 'cardio', label: 'Cardio', icon: '❤️', color: '#fdba74' },
+  { value: 'strength', label: 'Force', icon: '🏋️', color: '#6ee7b7' },
+  { value: 'nutrition', label: 'Nutrition', icon: '🍎', color: '#7ecbff' },
+  { value: 'mindfulness', label: 'Méditation', icon: '🧠', color: '#c4b5fd' },
+  { value: 'social', label: 'Social', icon: '👥', color: '#fdba74' }
 ];
 
 const DIFFICULTY_LEVELS = [
-  { value: 'all', label: 'Toutes', emoji: '🌟', color: '#6366f1' },
-  { value: 'easy', label: 'Facile', emoji: '🟢', color: '#8bc34a' },
-  { value: 'medium', label: 'Moyen', emoji: '🟡', color: '#ffc107' },
-  { value: 'hard', label: 'Difficile', emoji: '🔴', color: '#f44336' }
+  { value: 'all', label: 'Toutes', emoji: '🌟', color: '#7ecbff' },
+  { value: 'easy', label: 'Facile', emoji: '🟢', color: '#86efac' },
+  { value: 'medium', label: 'Moyen', emoji: '🟡', color: '#fdba74' },
+  { value: 'hard', label: 'Difficile', emoji: '🔴', color: '#fc8181' }
 ];
 
 const STATUS_CONFIG = {
-  available: { label: 'Disponible', emoji: '🚀', color: '#4285f4', icon: 'fas fa-play-circle' },
-  active: { label: 'En cours', emoji: '⚡', color: '#fbbc04', icon: 'fas fa-clock' },
-  completed: { label: 'Terminé', emoji: '✅', color: '#34a853', icon: 'fas fa-check-circle' },
-  expired: { label: 'Expiré', emoji: '⏰', color: '#9ca3af', icon: 'fas fa-times-circle' }
+  available: { label: 'Disponible', emoji: '🚀', color: '#7ecbff', icon: 'fas fa-play-circle' },
+  active: { label: 'En cours', emoji: '⚡', color: '#fdba74', icon: 'fas fa-clock' },
+  completed: { label: 'Terminé', emoji: '✅', color: '#6ee7b7', icon: 'fas fa-check-circle' },
+  expired: { label: 'Expiré', emoji: '⏰', color: '#8f8f98', icon: 'fas fa-times-circle' }
 };
 
 // Utility classes (simplified for standalone component)
@@ -143,7 +144,7 @@ class StorageUtils {
 @Component({
   selector: 'app-challenges',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
   templateUrl: './challenges.component.html',
   styleUrls: ['./challenges.component.scss']
 })
@@ -1267,12 +1268,12 @@ export class ChallengesComponent implements OnInit, OnDestroy {
 
   getStatusColor(status: string): string {
     const statusColors: { [key: string]: string } = {
-      'available': '#3b82f6',
-      'active': '#10b981',
-      'completed': '#6b7280',
-      'expired': '#ef4444',
-      'pending': '#f59e0b'
+      'available': '#7ecbff',
+      'active': '#6ee7b7',
+      'completed': '#8f8f98',
+      'expired': '#fc8181',
+      'pending': '#fdba74'
     };
-    return statusColors[status] || '#6b7280';
+    return statusColors[status] || '#8f8f98';
   }
 }

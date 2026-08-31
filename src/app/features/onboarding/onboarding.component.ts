@@ -18,6 +18,7 @@ import {
 } from '@app/services/onboarding.service';
 import { UserService } from '@app/services/user.service';
 import { Workout } from '@shared';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 interface Choice<T> {
   value: T;
@@ -28,7 +29,7 @@ interface Choice<T> {
 @Component({
   selector: 'app-onboarding',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss'],
 })

@@ -5,7 +5,7 @@
     <div class="hero-background"></div>
     <div class="hero-content">
       <div class="title-section">
-        <div class="title-icon">🏋️‍♂️</div>
+        <div class="title-icon"><app-icon name="dumbbell"></app-icon></div>
         <div class="title-content">
           <h1 class="page-title">Mes Programmes d'Entraînement</h1>
           <p class="page-subtitle">{{ motivationalQuote }}</p>
@@ -15,28 +15,28 @@
       <!-- Quick Stats - Enhanced Dashboard Style -->
       <div class="quick-stats">
         <div class="stat-item">
-          <div class="stat-icon">📋</div>
+          <div class="stat-icon"><app-icon name="clipboard"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ getTotalCount() }}</span>
             <span class="stat-label">Programmes</span>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-icon">🎯</div>
+          <div class="stat-icon"><app-icon name="target"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ getFilteredCount() }}</span>
             <span class="stat-label">Affichés</span>
           </div>
         </div>
         <div class="stat-item" *ngIf="workoutStats">
-          <div class="stat-icon">📊</div>
+          <div class="stat-icon"><app-icon name="chart"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ workoutStats.totalWorkouts }}</span>
             <span class="stat-label">Séances</span>
           </div>
         </div>
         <div class="stat-item" *ngIf="workoutStats">
-          <div class="stat-icon">🔥</div>
+          <div class="stat-icon"><app-icon name="flame"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ workoutStats.currentStreak }}</span>
             <span class="stat-label">Série</span>
@@ -172,7 +172,7 @@
               *ngFor="let category of categories"
               [value]="category.value"
             >
-              {{ category.icon }} {{ category.label }}
+              <app-icon [name]="category.icon"></app-icon> {{ category.label }}
             </option>
           </select>
         </div>
@@ -202,7 +202,7 @@
               *ngFor="let difficulty of difficultyLevels"
               [value]="difficulty.value"
             >
-              {{ difficulty.icon }} {{ difficulty.label }}
+              <app-icon [name]="difficulty.icon"></app-icon> {{ difficulty.label }}
             </option>
           </select>
         </div>
@@ -501,7 +501,7 @@
     class="empty-section"
   >
     <div class="empty-card">
-      <div class="empty-icon">🏋️‍♂️</div>
+      <div class="empty-icon"><app-icon name="dumbbell"></app-icon></div>
       <h3 class="empty-title">Aucun programme d'entraînement</h3>
       <p class="empty-message">
         Commencez par créer votre premier programme d'entraînement personnalisé
@@ -574,7 +574,7 @@
     <div class="section-card">
       <div class="section-header">
         <h2 class="section-title">
-          <span class="title-icon">📅</span>
+          <span class="title-icon"><app-icon name="calendar"></app-icon></span>
           <span>Dernières sessions</span>
         </h2>
         <button (click)="viewWorkoutHistory()" class="btn btn-link">

@@ -34,7 +34,7 @@
 .floating-orb {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent 70%);
+  background: rgba(255, 255, 255, 0.15);
   animation: floatOrb 8s ease-in-out infinite;
   pointer-events: none;
 
@@ -43,7 +43,6 @@
     height: 200px;
     top: 10%;
     left: 5%;
-    animation-delay: -2s;
   }
 
   &:nth-child(2) {
@@ -51,7 +50,6 @@
     height: 150px;
     bottom: 15%;
     right: 20%;
-    animation-delay: -4s;
   }
 
   &:nth-child(3) {
@@ -59,7 +57,6 @@
     height: 100px;
     top: 60%;
     left: 15%;
-    animation-delay: -6s;
   }
 }
 
@@ -71,7 +68,6 @@
   max-width: 460px;
   position: relative;
   z-index: $z-normal;
-  animation: slide-up 0.8s $transition-smooth;
   overflow: hidden;
   @include shimmer-effect;
 
@@ -109,7 +105,7 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        background: rgba(255, 255, 255, 0.3);
         animation: logoShine 3s ease-in-out infinite;
         transform: rotate(45deg);
       }
@@ -203,7 +199,7 @@
           z-index: 4;
 
           &.valid {
-            color: $primary-color;
+            color: $text-primary;
             animation: checkBounce 0.6s ease-out;
           }
         }
@@ -269,7 +265,7 @@
       }
 
       .forgot-password {
-        color: $primary-color;
+        color: $text-primary;
         text-decoration: none;
         font-weight: $font-weight-medium;
         transition: $transition-fast;
@@ -436,7 +432,7 @@
     font-size: $font-size-sm;
 
     a {
-      color: $primary-color;
+      color: $text-primary;
       text-decoration: none;
       font-weight: $font-weight-semibold;
       transition: $transition-fast;

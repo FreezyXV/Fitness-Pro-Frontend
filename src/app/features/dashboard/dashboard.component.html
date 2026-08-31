@@ -65,17 +65,6 @@
           </div>
         </div>
   
-        <!-- Calendar Section -->
-        <div class="calendar-section">
-          <app-mini-calendar 
-            [showQuickActions]="true"
-            [showActivityDetails]="true"
-            [highlightToday]="true"
-            (daySelected)="onCalendarDaySelected($event)"
-            (activityClicked)="onCalendarActivityClicked($event)"
-            (scheduleRequested)="onCalendarScheduleRequested($event)">
-          </app-mini-calendar>
-        </div>
       </div>
     </div>
   
@@ -87,7 +76,7 @@
   
     <!-- Error State -->
     <div class="error-state" *ngIf="error && !isLoading">
-      <div class="error-icon">⚠️</div>
+      <div class="error-icon"><app-icon name="alert"></app-icon></div>
       <h3>Erreur de chargement</h3>
       <p>{{ error }}</p>
       <button class="retry-btn" (click)="retryLoad()">
@@ -97,6 +86,18 @@
   
     <!-- Stats Grid -->
     <div class="stats-grid" *ngIf="!isLoading && !error">
+      <!-- Calendrier du jour -->
+      <div class="stat-card calendar-section">
+        <app-mini-calendar
+          [showQuickActions]="true"
+          [showActivityDetails]="true"
+          [highlightToday]="true"
+          (daySelected)="onCalendarDaySelected($event)"
+          (activityClicked)="onCalendarActivityClicked($event)"
+          (scheduleRequested)="onCalendarScheduleRequested($event)">
+        </app-mini-calendar>
+      </div>
+
       <!-- Physical Stats Card -->
       <div class="stat-card physical-stats">
         <div class="card-header">
@@ -155,7 +156,7 @@
             <div class="stat-icon">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
-                <circle cx="12" cy="12" r="6"/>
+                <circle cx="12" cy="12" r="4"/>
                 <circle cx="12" cy="12" r="2"/>
               </svg>
             </div>
@@ -224,12 +225,6 @@
         <div class="calories-content">
           <div class="calories-circle">
             <svg viewBox="0 0 100 100" class="calories-svg">
-              <defs>
-                <linearGradient id="caloriesGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
-                </linearGradient>
-              </defs>
               <circle cx="50" cy="50" r="40" class="calories-bg"/>
               <circle 
                 cx="50" 
@@ -274,7 +269,7 @@
             </div>
             <div class="summary-content">
               <span class="summary-number">{{ totalWorkouts }}</span>
-              <span class="summary-label">Total<br>Entraînements</span>
+              <span class="summary-label">Total entraînements</span>
             </div>
           </div>
           
@@ -287,7 +282,7 @@
             </div>
             <div class="summary-content">
               <span class="summary-number">{{ totalMinutes }}</span>
-              <span class="summary-label">Minutes<br>d'Exercice</span>
+              <span class="summary-label">Minutes d'exercice</span>
             </div>
           </div>
           
@@ -299,7 +294,7 @@
             </div>
             <div class="summary-content">
               <span class="summary-number">{{ currentStreak }}</span>
-              <span class="summary-label">Jours<br>Consécutifs</span>
+              <span class="summary-label">Jours consécutifs</span>
             </div>
           </div>
           
@@ -315,7 +310,7 @@
             </div>
             <div class="summary-content">
               <span class="summary-number">{{ weeklyWorkouts }}</span>
-              <span class="summary-label">Cette<br>Semaine</span>
+              <span class="summary-label">Cette semaine</span>
             </div>
           </div>
         </div>
@@ -350,20 +345,19 @@
   
           <!-- Chart with Data -->
           <div class="chart-placeholder" *ngIf="totalWorkouts > 0">
-            <svg width="100%" height="280" viewBox="0 0 500 280">
+            <svg width="100%" height="280" viewBox="0 0 500 280" preserveAspectRatio="none">
               <!-- Enhanced grid -->
               <defs>
                 <pattern id="modernGrid" width="50" height="28" patternUnits="userSpaceOnUse">
-                  <path d="M 50 0 L 0 0 0 28" fill="none" stroke="rgba(148, 163, 184, 0.3)" stroke-width="1"/>
+                  <path d="M 50 0 L 0 0 0 28" fill="none" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1"/>
                 </pattern>
                 <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style="stop-color:#21BF73;stop-opacity:1" />
-                  <stop offset="50%" style="stop-color:#00B5AD;stop-opacity:1" />
-                  <stop offset="100%" style="stop-color:#667eea;stop-opacity:1" />
+                  <stop offset="0%" style="stop-color:#d4ff3d;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#d4ff3d;stop-opacity:1" />
                 </linearGradient>
                 <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" style="stop-color:#21BF73;stop-opacity:0.3" />
-                  <stop offset="100%" style="stop-color:#21BF73;stop-opacity:0.05" />
+                  <stop offset="0%" style="stop-color:#d4ff3d;stop-opacity:0.3" />
+                  <stop offset="100%" style="stop-color:#d4ff3d;stop-opacity:0.05" />
                 </linearGradient>
               </defs>
               
@@ -379,41 +373,41 @@
               <path
                 fill="none"
                 stroke="url(#chartGradient)"
-                stroke-width="4"
+                stroke-width="2.5"
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 d="M 30,220 L 80,200 L 130,180 L 180,160 L 230,140 L 280,130 L 330,125 L 380,115 L 430,110 L 470,100"
               />
               
               <!-- Enhanced data points with tooltips -->
-              <circle cx="30" cy="220" r="6" fill="#21BF73" stroke="white" stroke-width="3">
+              <circle cx="30" cy="220" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 1: 45 min, 280 cal</title>
               </circle>
-              <circle cx="80" cy="200" r="6" fill="#21BF73" stroke="white" stroke-width="3">
+              <circle cx="80" cy="200" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 5: 50 min, 320 cal</title>
               </circle>
-              <circle cx="130" cy="180" r="6" fill="#00B5AD" stroke="white" stroke-width="3">
+              <circle cx="130" cy="180" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 10: 55 min, 350 cal</title>
               </circle>
-              <circle cx="180" cy="160" r="6" fill="#00B5AD" stroke="white" stroke-width="3">
+              <circle cx="180" cy="160" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 15: 60 min, 380 cal</title>
               </circle>
-              <circle cx="230" cy="140" r="6" fill="#00B5AD" stroke="white" stroke-width="3">
+              <circle cx="230" cy="140" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 20: 65 min, 410 cal</title>
               </circle>
-              <circle cx="280" cy="130" r="6" fill="#667eea" stroke="white" stroke-width="3">
+              <circle cx="280" cy="130" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 22: 70 min, 425 cal</title>
               </circle>
-              <circle cx="330" cy="125" r="6" fill="#667eea" stroke="white" stroke-width="3">
+              <circle cx="330" cy="125" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 25: 72 min, 440 cal</title>
               </circle>
-              <circle cx="380" cy="115" r="6" fill="#667eea" stroke="white" stroke-width="3">
+              <circle cx="380" cy="115" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 27: 75 min, 460 cal</title>
               </circle>
-              <circle cx="430" cy="110" r="6" fill="#667eea" stroke="white" stroke-width="3">
+              <circle cx="430" cy="110" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Jour 29: 78 min, 475 cal</title>
               </circle>
-              <circle cx="470" cy="100" r="8" fill="#667eea" stroke="white" stroke-width="4">
+              <circle cx="470" cy="100" r="5" fill="#d4ff3d" stroke="#141416" stroke-width="3">
                 <title>Aujourd'hui: 80 min, 490 cal</title>
               </circle>
             </svg>

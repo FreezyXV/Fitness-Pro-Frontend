@@ -23,6 +23,7 @@ import {
 
 import { WorkoutService } from '@app/services/workout.service';
 import { UserService } from '@app/services/user.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 import {
   APP_CONFIG,
   StorageUtils,
@@ -42,7 +43,7 @@ interface WorkoutFilters {
 @Component({
   selector: 'app-workout',
   standalone: true,
-  imports: [CommonModule, FormsModule, WorkoutPlanCardComponent],
+  imports: [CommonModule, FormsModule, WorkoutPlanCardComponent, IconComponent],
   templateUrl: './workout.component.html',
   styleUrls: ['./workout.component.scss'],
 })
@@ -81,12 +82,12 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   readonly categories = [
     { value: 'strength', label: 'Force', icon: '💪', color: '#4CAF50' },
     { value: 'cardio', label: 'Cardio', icon: '❤️', color: '#FF5722' },
-    { value: 'hiit', label: 'HIIT', icon: '🔥', color: '#FF9800' },
+    { value: 'hiit', label: 'HIIT', icon: '🔥', color: '#fdba74' },
     {
       value: 'flexibility',
       label: 'Flexibilité',
       icon: '🧘',
-      color: '#9C27B0',
+      color: '#c4b5fd',
     },
   ];
 
@@ -96,9 +97,9 @@ export class WorkoutComponent implements OnInit, OnDestroy {
       value: 'intermediate',
       label: 'Intermédiaire',
       icon: '🟡',
-      color: '#FF9800',
+      color: '#fdba74',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#F44336' },
+    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
   ];
 
   readonly sortOptions = [

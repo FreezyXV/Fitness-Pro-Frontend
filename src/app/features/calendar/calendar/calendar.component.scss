@@ -5,16 +5,12 @@
 @mixin glass-morphism($opacity: 0.95) {
   background: rgba($surface-secondary, $opacity);
   border: $border-width solid $border-color;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   box-shadow: none;
 }
 
 @mixin dark-glass-morphism($opacity: 0.9) {
   background: rgba($surface-tertiary, $opacity);
   border: $border-width solid $border-color;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   box-shadow: none;
 }
 
@@ -29,7 +25,7 @@
 }
 
 @mixin text-gradient($gradient) {
-  color: $primary-color;
+  color: $text-primary;
 }
 
 // =============================================
@@ -242,19 +238,21 @@ padding: 0.25rem;
     flex-wrap: wrap;
 
     .title-wrapper {
+      // 3,5rem / 900 : la taille d'une accroche de page d'accueil pour un
+      // titre d'ecran interne. Alignee sur l'echelle typographique globale.
       .page-title {
-        font-size: 3.5rem;
-        font-weight: 900;
-        @include text-gradient($accent-gradient);
-        margin: 0 0 $space-3 0;
-        line-height: 1.1;
+        font-size: clamp(1.5rem, 3.2vw, 1.875rem);
+        font-weight: 700;
+        color: $text-primary;
+        margin: 0 0 0.25rem 0;
+        line-height: 1.2;
         letter-spacing: -0.02em;
       }
 
       .page-subtitle {
-        color: $text-primary;
-        font-size: 1.25rem;
-        font-weight: 500;
+        color: $text-secondary;
+        font-size: 0.9375rem;
+        font-weight: 400;
         margin: 0;
       }
     }
@@ -456,17 +454,17 @@ padding: 0.25rem;
 
 .content-grid {
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: minmax(0, 1fr) 400px;
   gap: $space-8;
   align-items: start;
 
   @include respond-below(xl) {
-    grid-template-columns: 1fr 350px;
+    grid-template-columns: minmax(0, 1fr) 350px;
     gap: $space-6;
   }
 
   @include respond-below(lg) {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: $space-5;
   }
 
@@ -525,7 +523,7 @@ padding: 0.25rem;
       .calendar-header {
         background: $dark-gradient;
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(7, minmax(0, 1fr));
 
         .day-header {
           padding: $space-5;
@@ -545,7 +543,6 @@ padding: 0.25rem;
             color: $text-primary;
             font-weight: 700;
             font-size: 0.875rem;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
           }
         }
@@ -553,7 +550,7 @@ padding: 0.25rem;
 
       .calendar-grid {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(7, minmax(0, 1fr));
         background: $surface-secondary;
 
         .calendar-day {
@@ -726,7 +723,7 @@ padding: 0.25rem;
     &.week-view {
       .week-header {
         display: grid;
-        grid-template-columns: repeat(7, 1fr);
+        grid-template-columns: repeat(7, minmax(0, 1fr));
         background: $dark-gradient;
         padding: $space-4 $space-6;
         color: $on-primary;
@@ -788,7 +785,7 @@ padding: 0.25rem;
 
         .week-events-grid {
           display: grid;
-          grid-template-columns: repeat(7, 1fr);
+          grid-template-columns: repeat(7, minmax(0, 1fr));
           gap: $space-4;
           height: 100%;
 
@@ -903,7 +900,7 @@ padding: 0.25rem;
 
           .time-slot {
             display: grid;
-            grid-template-columns: 100px 1fr;
+            grid-template-columns: 100px minmax(0, 1fr);
             border-bottom: $border-width solid $border-color;
             min-height: 80px;
             transition: all 0.2s ease;
@@ -1060,7 +1057,7 @@ padding: 0.25rem;
 
     .stats-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: $space-4;
       justify-content: center;
 
@@ -1105,7 +1102,6 @@ padding: 0.25rem;
             font-size: 0.75rem;
             color: $text-primary;
             font-weight: 600;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
           }
         }
@@ -1390,7 +1386,7 @@ padding: 0.25rem;
       gap: $space-6;
 
       .title-wrapper .page-title {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
       }
     }
   }
@@ -1442,10 +1438,11 @@ padding: 0.25rem;
       padding: $space-6;
 
       .stats-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: $space-3;
 
-        .stat-item {
+        .stat-item,
+        .stat-card {
           padding: $space-3;
           flex-direction: column;
           text-align: center;
@@ -1806,7 +1803,7 @@ padding: 0.25rem;
           border-radius: $radius-lg;
 
           .time-slot {
-            grid-template-columns: 70px 1fr;
+            grid-template-columns: 70px minmax(0, 1fr);
             min-height: 60px;
 
             .time-label {
@@ -1963,5 +1960,218 @@ padding: 0.25rem;
   &.current-hour {
     background: rgba($primary-color, 0.15);
     border-left-color: $primary-color;
+  }
+}
+
+
+// =============================================
+// EN-TETE D'ECRAN — TRAITEMENT COMPACT
+// =============================================
+//
+// L'ecran s'ouvrait sur un bloc centre : pictogramme, titre sur deux lignes,
+// phrase d'accroche, puis des cartes de statistiques de 150 px de haut. Sur
+// telephone l'ensemble remplissait le premier ecran et repoussait le contenu
+// reel — liste, recherche, filtres — sous la ligne de flottaison.
+//
+// Les selecteurs ci-dessous reprennent la profondeur des regles d'origine,
+// qui descendent jusqu'a cinq niveaux et vivent en partie dans des media
+// queries. Une media query n'ajoute pas de specificite : a egalite, la
+// derniere regle du fichier l'emporte.
+
+.calendar-container {
+  .hero-section {
+    padding: 1.25rem 0 0.5rem;
+    margin: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+
+    .hero-background { display: none; }
+
+    .hero-content {
+      display: block;
+      padding: 0;
+      gap: 0;
+      text-align: left;
+
+      .title-section {
+        display: flex;
+        // row explicite : plusieurs ecrans forcaient la colonne, ce qui
+        // laissait le pictogramme seul et centre au-dessus du titre.
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        // Le titre occupe la place restante, les actions restent a droite.
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0;
+        margin: 0 0 1rem;
+        text-align: left;
+
+        // `nowrap` maintenait « Nouvel evenement » sur la meme ligne que le
+        // titre quelle que soit la largeur : sur telephone le bouton sortait
+        // de l'ecran de 203px. Cette chaine de selecteurs etant plus
+        // specifique (0-4-0) que les regles responsive ecrites plus bas,
+        // c'est ici qu'il faut basculer en colonne.
+        @include respond-below(md) {
+          flex-direction: column;
+          flex-wrap: wrap;
+          align-items: stretch;
+          gap: 1rem;
+        }
+
+        .title-wrapper {
+          min-width: 0;
+        }
+
+        .title-icon {
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          min-width: 34px;
+          min-height: 34px;
+          flex-shrink: 0;
+          margin: 0;
+          padding: 0;
+          border-radius: $radius-md;
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
+          font-size: 1rem;
+
+          app-icon { width: 18px; height: 18px; }
+        }
+
+        .title-content {
+          flex: 1;
+          min-width: 0;
+          text-align: left;
+
+          .page-title {
+            margin: 0;
+            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: $text-primary;
+            text-align: left;
+          }
+
+          .page-subtitle {
+            margin: 0.125rem 0 0;
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.45;
+            color: $text-secondary;
+            text-align: left;
+          }
+        }
+      }
+
+      // --- Statistiques : une ligne dense, pas des cartes ---
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+        gap: 0.5rem;
+        margin: 0 0 1.25rem;
+        padding: 0;
+
+        .stat-item,
+        .stat-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 0;
+
+          min-height: 0;
+          height: auto;
+          padding: 0.625rem 0.75rem;
+
+          border: $border-width solid $border-color;
+          border-radius: $radius-lg;
+          background: $surface-secondary;
+          text-align: left;
+
+          &::before, &::after { display: none; }
+          &:hover { transform: none; background: $surface-secondary; }
+
+          // Une icone n'apporte rien a cote d'un chiffre et de son libelle.
+          .stat-icon { display: none; }
+
+          .stat-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            text-align: left;
+
+            .stat-value {
+              font-size: 1.0625rem;
+              font-weight: 700;
+              line-height: 1.2;
+              color: $text-primary;
+              font-variant-numeric: tabular-nums;
+            }
+
+            .stat-label {
+              font-size: 0.6875rem;
+              font-weight: 500;
+              line-height: 1.3;
+              text-transform: none;
+              letter-spacing: 0;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    // Variante sans .hero-content, presente sur certains ecrans.
+    > .title-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0 0 1rem;
+      text-align: left;
+    }
+  }
+}
+
+
+// L'en-tete du calendrier alignait titre et actions sur une seule ligne sans
+// autoriser le retour : sur un ecran de 390 px le bouton depassait de 34 px
+// et se retrouvait rogne par le conteneur.
+//
+// Le correctif apporte alors (`width: 100%` sur .title-actions, `flex: 1 1
+// auto` sur le bouton) n'etait borne par AUCUNE media query : sur grand ecran
+// « Nouvel evenement » s'etirait donc sur toute la largeur de l'en-tete et
+// passait par-dessus le titre. Il ne s'applique plus que la ou le probleme
+// existait.
+.calendar-container .hero-section .title-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  @include respond-below(md) {
+    width: 100%;
+    max-width: 100%;
+
+    .btn {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+}
+
+// Sous le point de rupture md, l'en-tete passe en colonne : le titre puis
+// l'action. La regle `flex-wrap: wrap` posee plus haut ne suffisait pas —
+// `.title-actions` reclamant 100 % de la ligne, il partait a droite du titre
+// au lieu de passer dessous, et sortait de l'ecran de 203px.
+@include respond-below(md) {
+  .calendar-container .hero-section .title-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
   }
 }

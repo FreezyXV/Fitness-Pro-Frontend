@@ -65,15 +65,15 @@
               <span class="badge-text">{{ getCategoryLabel(workoutPlan.category) }}</span>
             </div>
             <div class="status-badge" *ngIf="workoutPlan.isCustom">
-              <div class="badge-icon">✏️</div>
+              <div class="badge-icon"><app-icon name="edit"></app-icon></div>
               <span class="badge-text">Personnalisé</span>
             </div>
             <div class="status-badge" *ngIf="workoutPlan.isPublic">
-              <div class="badge-icon">🌍</div>
+              <div class="badge-icon"><app-icon name="globe"></app-icon></div>
               <span class="badge-text">Public</span>
             </div>
             <div class="status-badge session-active" *ngIf="workoutSessionStarted">
-              <div class="badge-icon">⚡</div>
+              <div class="badge-icon"><app-icon name="bolt"></app-icon></div>
               <span class="badge-text">En cours</span>
             </div>
           </div>
@@ -98,7 +98,7 @@
           </div>
 
           <div class="stat-card" *ngIf="workoutPlan.estimatedCalories">
-            <div class="stat-icon">🔥</div>
+            <div class="stat-icon"><app-icon name="flame"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ formatCalories(workoutPlan.estimatedCalories) }}</span>
               <span class="stat-label">calories</span>
@@ -106,7 +106,7 @@
           </div>
 
           <div class="stat-card" *ngIf="workoutPlan.exercises?.length">
-            <div class="stat-icon">💪</div>
+            <div class="stat-icon"><app-icon name="dumbbell"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ workoutPlan.exercises?.length }}</span>
               <span class="stat-label">exercices</span>
@@ -114,7 +114,7 @@
           </div>
 
           <div class="stat-card" *ngIf="getTotalSets() > 0">
-            <div class="stat-icon">📈</div>
+            <div class="stat-icon"><app-icon name="trending"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ getTotalSets() }}</span>
               <span class="stat-label">séries</span>
@@ -122,7 +122,7 @@
           </div>
 
           <div class="stat-card" *ngIf="getTargetMuscles().length">
-            <div class="stat-icon">🎯</div>
+            <div class="stat-icon"><app-icon name="target"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ getTargetMuscles().length }}</span>
               <span class="stat-label">zones</span>
@@ -130,7 +130,7 @@
           </div>
 
           <div class="stat-card session-progress" *ngIf="workoutSessionStarted">
-            <div class="stat-icon">⚡</div>
+            <div class="stat-icon"><app-icon name="bolt"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ getProgressPercentage() }}%</span>
               <span class="stat-label">progression</span>
@@ -148,7 +148,7 @@
         <div class="exercises-card">
           <div class="card-header">
             <h2 class="section-title">
-              <span class="title-icon">💪</span>
+              <span class="title-icon"><app-icon name="dumbbell"></app-icon></span>
               <span class="title-text">Exercices du programme</span>
               <span class="exercise-counter">({{ workoutPlan.exercises?.length || 0 }})</span>
             </h2>
@@ -243,7 +243,7 @@
                   <!-- Exercise Description -->
                   <div class="exercise-description" *ngIf="exercise.description">
                     <h5 class="detail-section-title">
-                      <span class="section-icon">📋</span>
+                      <span class="section-icon"><app-icon name="clipboard"></app-icon></span>
                       <span>Description</span>
                     </h5>
                     <p class="description-text">{{ exercise.description }}</p>
@@ -252,19 +252,19 @@
                   <!-- Exercise Configuration -->
                   <div class="exercise-configuration">
                     <h5 class="detail-section-title">
-                      <span class="section-icon">⚙️</span>
+                      <span class="section-icon"><app-icon name="settings"></app-icon></span>
                       <span>Configuration</span>
                     </h5>
                     <div class="config-grid">
                       <div class="config-item" *ngIf="exercise.sets">
-                        <div class="config-icon">📊</div>
+                        <div class="config-icon"><app-icon name="chart"></app-icon></div>
                         <div class="config-info">
                           <span class="config-label">Séries</span>
                           <span class="config-value">{{ exercise.sets }}</span>
                         </div>
                       </div>
                       <div class="config-item" *ngIf="exercise.reps">
-                        <div class="config-icon">🔄</div>
+                        <div class="config-icon"><app-icon name="refresh"></app-icon></div>
                         <div class="config-info">
                           <span class="config-label">Répétitions</span>
                           <span class="config-value">{{ exercise.reps }}</span>
@@ -278,14 +278,14 @@
                         </div>
                       </div>
                       <div class="config-item" *ngIf="exercise.restTimeSeconds">
-                        <div class="config-icon">😴</div>
+                        <div class="config-icon"><app-icon name="moon"></app-icon></div>
                         <div class="config-info">
                           <span class="config-label">Repos</span>
                           <span class="config-value">{{ formatSeconds(exercise.restTimeSeconds) }}</span>
                         </div>
                       </div>
                       <div class="config-item" *ngIf="exercise.targetWeight">
-                        <div class="config-icon">🏋️</div>
+                        <div class="config-icon"><app-icon name="dumbbell"></app-icon></div>
                         <div class="config-info">
                           <span class="config-label">Poids cible</span>
                           <span class="config-value">{{ exercise.targetWeight }} kg</span>
@@ -298,14 +298,14 @@
                   <div class="exercise-meta-details">
                     <div class="meta-grid">
                       <div class="meta-item">
-                        <div class="meta-icon">🎯</div>
+                        <div class="meta-icon"><app-icon name="target"></app-icon></div>
                         <div class="meta-content">
                           <span class="meta-label">Partie du corps</span>
                           <span class="meta-value">{{ getBodyPartLabel(exercise.bodyPart) }}</span>
                         </div>
                       </div>
                       <div class="meta-item">
-                        <div class="meta-icon">📊</div>
+                        <div class="meta-icon"><app-icon name="chart"></app-icon></div>
                         <div class="meta-content">
                           <span class="meta-label">Difficulté</span>
                           <span class="meta-value">{{ getDifficultyLabel(exercise.difficulty) }}</span>
@@ -316,7 +316,7 @@
                     <!-- Muscle Groups -->
                     <div class="muscle-groups" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
                       <div class="muscle-groups-header">
-                        <div class="meta-icon">💪</div>
+                        <div class="meta-icon"><app-icon name="dumbbell"></app-icon></div>
                         <span class="meta-label">Muscles ciblés</span>
                       </div>
                       <div class="muscle-tags">
@@ -330,7 +330,7 @@
                   <!-- Exercise Notes -->
                   <div class="exercise-notes" *ngIf="exercise.notes">
                     <h5 class="detail-section-title">
-                      <span class="section-icon">📝</span>
+                      <span class="section-icon"><app-icon name="edit"></app-icon></span>
                       <span>Notes</span>
                     </h5>
                     <p class="notes-text">{{ exercise.notes }}</p>
@@ -408,7 +408,7 @@
             <ng-template #noExercises>
               <div class="no-exercises-placeholder">
                 <div class="no-exercises-content">
-                  <div class="no-exercises-icon">💪</div>
+                  <div class="no-exercises-icon"><app-icon name="dumbbell"></app-icon></div>
                   <h3 class="no-exercises-title">Aucun exercice configuré</h3>
                   <p class="no-exercises-description">Ce programme ne contient pas encore d'exercices.</p>
                   <button class="btn btn-primary" 
@@ -433,7 +433,7 @@
         <div class="info-card">
           <div class="card-header">
             <h3 class="section-title">
-              <span class="title-icon">📊</span>
+              <span class="title-icon"><app-icon name="chart"></app-icon></span>
               <span>Informations</span>
             </h3>
           </div>
@@ -448,7 +448,7 @@
             </div>
             
             <div class="info-item">
-              <div class="info-icon">🔥</div>
+              <div class="info-icon"><app-icon name="flame"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Calories estimées</span>
                 <span class="info-value">{{ formatCalories(workoutPlan.estimatedCalories) }}</span>
@@ -456,7 +456,7 @@
             </div>
             
             <div class="info-item">
-              <div class="info-icon">🎯</div>
+              <div class="info-icon"><app-icon name="target"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Catégorie</span>
                 <span class="info-value">{{ getCategoryLabel(workoutPlan.category) }}</span>
@@ -464,7 +464,7 @@
             </div>
             
             <div class="info-item">
-              <div class="info-icon">📈</div>
+              <div class="info-icon"><app-icon name="trending"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Niveau</span>
                 <span class="info-value">{{ getDifficultyLabel(workoutPlan.difficultyLevel) }}</span>
@@ -472,7 +472,7 @@
             </div>
 
             <div class="info-item" *ngIf="workoutPlan.creatorName">
-              <div class="info-icon">👤</div>
+              <div class="info-icon"><app-icon name="user"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Créateur</span>
                 <span class="info-value">{{ workoutPlan.creatorName }}</span>
@@ -480,7 +480,7 @@
             </div>
 
             <div class="info-item" *ngIf="workoutPlan.usageCount">
-              <div class="info-icon">📊</div>
+              <div class="info-icon"><app-icon name="chart"></app-icon></div>
               <div class="info-text">
                 <span class="info-label">Utilisations</span>
                 <span class="info-value">{{ workoutPlan.usageCount }} fois</span>
@@ -493,14 +493,14 @@
         <div class="workout-overview-card">
           <div class="card-header">
             <h3 class="section-title">
-              <span class="title-icon">🏋️</span>
+              <span class="title-icon"><app-icon name="dumbbell"></app-icon></span>
               <span>Vue d'ensemble</span>
             </h3>
           </div>
           
           <div class="overview-items">
             <div class="overview-item">
-              <div class="overview-icon">👥</div>
+              <div class="overview-icon"><app-icon name="users"></app-icon></div>
               <div class="overview-content">
                 <span class="overview-label">Partie du corps</span>
                 <span class="overview-value">{{ getWorkoutBodyFocus() }}</span>
@@ -508,7 +508,7 @@
             </div>
             
             <div class="overview-item">
-              <div class="overview-icon">⚡</div>
+              <div class="overview-icon"><app-icon name="bolt"></app-icon></div>
               <div class="overview-content">
                 <span class="overview-label">Type d'entraînement</span>
                 <span class="overview-value">{{ getWorkoutTypeLabel() }}</span>
@@ -516,7 +516,7 @@
             </div>
             
             <div class="overview-item">
-              <div class="overview-icon">📊</div>
+              <div class="overview-icon"><app-icon name="chart"></app-icon></div>
               <div class="overview-content">
                 <span class="overview-label">Intensité</span>
                 <span class="overview-value">{{ getWorkoutIntensity() }}</span>
@@ -524,7 +524,7 @@
             </div>
             
             <div class="overview-item" *ngIf="getRequiredEquipment() !== 'Aucun'">
-              <div class="overview-icon">🏋️</div>
+              <div class="overview-icon"><app-icon name="dumbbell"></app-icon></div>
               <div class="overview-content">
                 <span class="overview-label">Équipement</span>
                 <span class="overview-value">{{ getRequiredEquipment() }}</span>
@@ -532,7 +532,7 @@
             </div>
             
             <div class="overview-item">
-              <div class="overview-icon">🎯</div>
+              <div class="overview-icon"><app-icon name="target"></app-icon></div>
               <div class="overview-content">
                 <span class="overview-label">Objectif principal</span>
                 <span class="overview-value">{{ getWorkoutGoal() }}</span>
@@ -540,7 +540,7 @@
             </div>
             
             <div class="overview-item" *ngIf="getWorkoutFrequency()">
-              <div class="overview-icon">📅</div>
+              <div class="overview-icon"><app-icon name="calendar"></app-icon></div>
               <div class="overview-content">
                 <span class="overview-label">Fréquence recommandée</span>
                 <span class="overview-value">{{ getWorkoutFrequency() }}</span>
@@ -645,7 +645,7 @@
 <!-- Enhanced Error State -->
 <div class="error-container" *ngIf="error">
   <div class="error-content">
-    <div class="error-icon">⚠️</div>
+    <div class="error-icon"><app-icon name="alert"></app-icon></div>
     <h3 class="error-title">Erreur de chargement</h3>
     <p class="error-message">{{ error }}</p>
     <div class="error-actions">

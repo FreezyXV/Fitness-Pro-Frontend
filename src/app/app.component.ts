@@ -99,21 +99,24 @@ import { ExercisesService } from './services/exercises.service';
       z-index: 9999;
     }
 
+    /* La carte de chargement etait BLANCHE, au milieu d'une application
+       entierement sombre : un rectangle eclatant a chaque demarrage. */
     .loading-spinner {
-      background: white;
+      background: #141416;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      color: #f4f4f5;
       padding: 2rem;
-      border-radius: 8px;
+      border-radius: 12px;
       text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     }
 
     .spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #21BF73;
+      width: 28px;
+      height: 28px;
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-top-color: #a1a1aa;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 0.7s linear infinite;
       margin: 0 auto 1rem;
     }
 
@@ -122,26 +125,28 @@ import { ExercisesService } from './services/exercises.service';
       100% { transform: rotate(360deg); }
     }
 
+    /* Bandeau ambre plein avec du texte BLANC dessus, soit 2,1:1 — et pose
+       a 20px du bas, donc par-dessus la barre d'onglets mobile. Il devient une
+       pastille sombre a texte colore, placee au-dessus de la barre. */
     .connection-status {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #f59e0b;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      font-size: 14px;
+      right: 1rem;
+      bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 12px);
       z-index: 1000;
-      animation: slideInRight 0.3s ease;
+
+      max-width: calc(100vw - 2rem);
+      padding: 0.5rem 0.875rem;
+
+      background: #141416;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 10px;
+      color: #a1a1aa;
+      font-size: 0.8125rem;
     }
 
     .connection-status.offline {
-      background: #ef4444;
-    }
-
-    @keyframes slideInRight {
-      from { transform: translateX(100%); }
-      to { transform: translateX(0); }
+      border-color: rgba(255, 107, 107, 0.4);
+      color: #ff9f9f;
     }
 
     .app-banner {
@@ -159,11 +164,13 @@ import { ExercisesService } from './services/exercises.service';
       width: min(520px, calc(100vw - 2rem));
       padding: 0.75rem 0.75rem 0.75rem 1rem;
 
-      background: #0f0f16;
-      border: 1px solid rgba(212, 255, 61, 0.35);
-      border-radius: 1rem;
-      color: #f6f6f2;
+      background: #141416;
+      /* La bordure lime a 35 % etait le dernier cerclage fluo de l'app. */
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      color: #f4f4f5;
       font-size: 0.875rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
     }
 
     .app-banner span { flex: 1; }
@@ -173,11 +180,11 @@ import { ExercisesService } from './services/exercises.service';
       min-height: 40px;
       padding: 0 0.875rem;
       border: 0;
-      border-radius: 999px;
+      border-radius: 8px;
       background: #d4ff3d;
       color: #050505;
       font: inherit;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
     }
 
@@ -186,9 +193,9 @@ import { ExercisesService } from './services/exercises.service';
       width: 36px;
       height: 36px;
       border: 0;
-      border-radius: 999px;
+      border-radius: 8px;
       background: none;
-      color: #a3a6a0;
+      color: #a1a1aa;
       font-size: 1rem;
       cursor: pointer;
     }
@@ -212,18 +219,18 @@ import { ExercisesService } from './services/exercises.service';
     .wake-card {
       width: min(420px, 100%);
       text-align: center;
-      color: #f6f6f2;
+      color: #f4f4f5;
     }
 
     .wake-card h2 {
       margin: 1.25rem 0 0.5rem;
-      font-size: 1.25rem;
-      font-weight: 800;
+      font-size: 1.125rem;
+      font-weight: 650;
     }
 
     .wake-card p {
       margin: 0;
-      color: #a3a6a0;
+      color: #a1a1aa;
       font-size: 0.9375rem;
       line-height: 1.6;
     }
@@ -231,7 +238,7 @@ import { ExercisesService } from './services/exercises.service';
     .wake-bar {
       height: 4px;
       border-radius: 2px;
-      background: rgba(212, 255, 61, 0.15);
+      background: rgba(255, 255, 255, 0.09);
       overflow: hidden;
     }
 
@@ -262,8 +269,10 @@ import { ExercisesService } from './services/exercises.service';
     .wake-timer {
       margin-top: 1rem !important;
       font-size: 1.75rem !important;
-      font-weight: 800;
-      color: #d4ff3d !important;
+      font-weight: 700;
+      /* Un compte a rebours est une valeur, pas une action : il ne prend pas
+         la couleur d'accent. */
+      color: #f4f4f5 !important;
       font-variant-numeric: tabular-nums;
     }
   `]

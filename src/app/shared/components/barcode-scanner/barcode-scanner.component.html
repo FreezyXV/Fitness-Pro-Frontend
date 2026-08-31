@@ -84,7 +84,7 @@
 
   <!-- ============ INTROUVABLE ============ -->
   <div class="scanner-body scanner-centered" *ngIf="state() === 'not-found'">
-    <div class="state-icon" aria-hidden="true">🔍</div>
+    <div class="state-icon" aria-hidden="true"><app-icon name="search"></app-icon></div>
     <h3>Produit inconnu</h3>
     <p>
       Le code {{ lastCode() }} n'est pas référencé dans OpenFoodFacts. Tu peux
@@ -95,7 +95,7 @@
 
   <!-- ============ REFUS / INDISPONIBLE ============ -->
   <div class="scanner-body scanner-centered" *ngIf="state() === 'denied' || state() === 'unsupported'">
-    <div class="state-icon" aria-hidden="true">📷</div>
+    <div class="state-icon" aria-hidden="true"><app-icon name="video"></app-icon></div>
     <h3>Caméra indisponible</h3>
     <p *ngIf="state() === 'denied'">
       L'accès à la caméra a été refusé. Tu peux l'autoriser dans les réglages du

@@ -8,11 +8,12 @@ import { takeUntil, switchMap, catchError } from 'rxjs/operators';
 import { WorkoutService } from '@app/services/workout.service';
 import { Workout,  WorkoutType, WorkoutGoal, WorkoutFrequency, WorkoutIntensity, BodyFocus, Equipment } from '@shared';
 import { WorkoutUtils } from '@shared';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-workout-plan-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './workout-plan-detail.component.html',
   styleUrls: ['./workout-plan-detail.component.scss'],
 })
@@ -50,9 +51,9 @@ export class WorkoutPlanDetailComponent implements OnInit, OnDestroy {
       value: 'intermediate',
       label: 'Intermédiaire',
       icon: '🟡',
-      color: '#FF9800',
+      color: '#fdba74',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#F44336' },
+    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
   ];
 
   readonly categories = [

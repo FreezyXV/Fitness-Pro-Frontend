@@ -9,24 +9,18 @@
 // Glass Effects with Better Contrast
 @mixin glass-premium($opacity: 0.98, $blur: 32px) {
   background: rgba($surface-secondary, $opacity);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin glass-card($opacity: 0.95, $blur: 24px) {
   background: rgba($surface-secondary, $opacity);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin glass-subtle($opacity: 0.92, $blur: 20px) {
   background: rgba($surface-secondary, $opacity);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   box-shadow: none;
 }
 
@@ -169,7 +163,6 @@
   border-radius: $radius-4xl;
   padding: $spacing-4xl;
   margin-bottom: 2rem;
-  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 
@@ -199,7 +192,6 @@
         transparent 70%
       );
       border-radius: 50%;
-      animation: float 6s ease-in-out infinite;
     }
   }
 
@@ -263,7 +255,6 @@
 
     .title-icon {
       font-size: 4rem;
-      animation: pulse 3s ease-in-out infinite;
       filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
     }
 
@@ -271,12 +262,7 @@
       .page-title {
         font-size: $text-5xl;
         font-weight: $font-black;
-        background: $accent-gradient;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         background-size: 300% 300%;
-        animation: gradientFlow 4s ease infinite;
         margin: 0 0 $spacing-lg 0;
         line-height: 1.1;
         letter-spacing: -0.02em;
@@ -295,7 +281,7 @@
   .profile-overview-stats {
     display: grid;
     flex-direction: column;
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: 400px minmax(0, 1fr);
     gap: $spacing-4xl;
     margin-bottom: 2rem;
 
@@ -329,7 +315,7 @@
           right: -6px;
           width: 28px;
           height: 28px;
-          background: linear-gradient(135deg, #ffd700, #ffa500);
+          background: #ffd700;
           border-radius: $radius-full;
           display: flex;
           align-items: center;
@@ -390,12 +376,7 @@
         .user-name {
           font-size: 3rem;
           font-weight: $font-black;
-          background: $accent-gradient;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
           background-size: 200% 200%;
-          animation: gradientFlow 6s ease infinite;
           margin: 0 0 $spacing-lg 0;
           line-height: 1.1;
         }
@@ -414,7 +395,7 @@
             color: $text-secondary;
 
             svg {
-              color: $primary-color;
+              color: $text-secondary;
               flex-shrink: 0;
             }
           }
@@ -424,7 +405,7 @@
 
     .health-stats-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 2rem;
 
       .stat-card {
@@ -464,19 +445,19 @@
 
         // Specific stat card styles
         &.weight-stat .stat-icon {
-          background: linear-gradient(135deg, #8b5cf6, #a855f7);
+          background: #8b5cf6;
         }
 
         &.height-stat .stat-icon {
-          background: linear-gradient(135deg, #06b6d4, $c-cyan-600);
+          background: #06b6d4;
         }
 
         &.bmi-stat .stat-icon {
-          background: linear-gradient(135deg, $c-amber-500, $c-amber-600);
+          background: $c-amber-500;
         }
 
         &.completion-stat .stat-icon {
-          background: linear-gradient(135deg, $c-emerald-500, $c-emerald-600);
+          background: $c-emerald-500;
         }
 
         .stat-icon {
@@ -516,7 +497,6 @@
             font-size: $text-xs;
             color: $text-muted;
             font-weight: $font-bold;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: $spacing-sm;
           }
@@ -590,9 +570,10 @@
       }
 
       &.secondary {
-        @include glass-subtle(0.92, 16px);
+        background: transparent;
+        border: $border-width solid $border-strong;
         color: $text-primary;
-        border: $border-width solid $border-color;
+        @include glass-subtle(0.92, 16px);
 
         &:hover:not(:disabled) {
           background: rgba($primary-color, 0.12);
@@ -617,9 +598,6 @@
 // =============================================
 .navigation-section {
   margin-bottom: 2rem;
-  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
-  animation-delay: 0.2s;
-  animation-fill-mode: both;
 
   .nav-card {
     @include glass-premium(0.96, 28px);
@@ -629,7 +607,7 @@
 
     .nav-tabs {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
       gap: $spacing-xl;
 
       .nav-tab {
@@ -736,7 +714,6 @@
     border-radius: $radius-2xl;
     padding: $spacing-4xl $spacing-2xl;
     text-align: center;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
     .loading-spinner {
       width: 50px;
@@ -761,16 +738,12 @@
 // TAB CONTENT CONTAINER
 // =============================================
 .tab-content-container {
-  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
-  animation-delay: 0.4s;
-  animation-fill-mode: both;
 
   .tab-pane {
     padding: 2rem;
     background: $surface-secondary;
     display: none;
     border-radius: $radius-2xl;
-    animation: fadeIn 0.6s ease;
 
     &.active {
       display: block;
@@ -792,12 +765,7 @@
     .section-title {
       font-size: $text-4xl;
       font-weight: $font-black;
-      background: $accent-gradient;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-size: 300% 300%;
-      animation: gradientFlow 4s ease infinite;
       margin: 0 0 $spacing-xl 0;
       line-height: 1.1;
     }
@@ -879,7 +847,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          color: $primary-color;
+          color: $text-primary;
           font-size: $text-xl;
           flex-shrink: 0;
           box-shadow: $shadow-md;
@@ -889,10 +857,11 @@
           flex: 1;
 
           .section-heading {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: $c-green-brand;
-            margin: 0 0 $spacing-md 0;
+            font-size: 1.0625rem;
+            font-weight: 650;
+            letter-spacing: -0.01em;
+            color: $text-primary;
+            margin: 0 0 0.25rem 0;
           }
 
           .section-subtext {
@@ -909,7 +878,7 @@
 
         .form-row {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
           gap: $spacing-3xl;
           margin-bottom: $spacing-3xl;
 
@@ -1000,7 +969,7 @@
               }
 
               &::placeholder {
-                color: $on-primary;
+                color: $text-muted;
                 font-weight: $font-normal;
               }
 
@@ -1109,12 +1078,7 @@
       .bmi-value {
         font-size: $text-3xl;
         font-weight: $font-black;
-        background: $success-gradient;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         background-size: 200% 200%;
-        animation: gradientFlow 3s ease infinite;
       }
     }
 
@@ -1146,7 +1110,6 @@
         border-radius: 50%;
         transform: translateX(-50%);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        animation: pulse 2s ease-in-out infinite;
         transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 2;
 
@@ -1171,7 +1134,6 @@
       color: $text-muted;
       margin-bottom: $spacing-xl;
       font-weight: $font-semibold;
-      text-transform: uppercase;
       letter-spacing: 0.05em;
 
       span {
@@ -1245,7 +1207,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: $primary-color;
+      color: $text-primary;
       flex-shrink: 0;
       transition: all 0.3s ease;
 
@@ -1348,12 +1310,7 @@
   .enhanced-preferences {
     .section-header-card {
       .section-heading {
-        background: $accent-gradient;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         background-size: 200% 200%;
-        animation: gradientFlow 3s ease infinite;
       }
     }
   }
@@ -1509,7 +1466,6 @@
   top: $spacing-xl;
   right: $spacing-xl;
   z-index: 1000;
-  animation: slideUp 0.5s ease;
 
   .success-content {
     @include glass-card(0.98, 20px);
@@ -1538,7 +1494,6 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2000;
-  animation: slideUp 0.5s ease;
 
   .progress-card {
     @include glass-card(0.98, 20px);
@@ -1625,7 +1580,7 @@
 
   .hero-section {
     .profile-overview-stats {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: $spacing-3xl;
 
       .user-info-card {
@@ -1633,7 +1588,7 @@
       }
 
       .health-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -1643,7 +1598,7 @@
   }
 
   .nav-card .nav-tabs {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1682,7 +1637,7 @@
       }
 
       .health-stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: $spacing-xl;
 
         .stat-card {
@@ -1702,7 +1657,7 @@
   }
 
   .nav-card .nav-tabs {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: $spacing-md;
 
     .nav-tab {
@@ -1722,7 +1677,7 @@
       padding: $spacing-3xl;
 
       .form-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: $spacing-2xl;
       }
     }
@@ -1739,7 +1694,7 @@
 
   .bmi-gauge-container {
     .bmi-legend {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: $spacing-md;
     }
   }
@@ -1786,8 +1741,6 @@
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
@@ -1825,7 +1778,7 @@
 
 .profile-container .stat-value,
 .profile-container .metric-value {
-  color: $primary-color;
+  color: $text-primary;
 }
 
 .profile-container .cta-button,
@@ -1905,7 +1858,6 @@
     padding: 0 0 0.375rem;
     font-size: 0.6875rem;
     font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: 0.06em;
     color: $text-secondary;
   }
@@ -1957,7 +1909,6 @@
   label {
     font-size: 0.6875rem;
     font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: 0.06em;
     color: $text-secondary;
   }
@@ -2005,4 +1956,374 @@
 // sombre pour que la teinte reste lisible quelle que soit la valeur d'IMC.
 .bmi-stat .status-badge {
   background: rgba(0, 0, 0, 0.35);
+}
+
+
+// =============================================
+// EN-TETE D'ECRAN — TRAITEMENT COMPACT
+// =============================================
+//
+// L'ecran s'ouvrait sur un bloc centre : pictogramme, titre sur deux lignes,
+// phrase d'accroche, puis des cartes de statistiques de 150 px de haut. Sur
+// telephone l'ensemble remplissait le premier ecran et repoussait le contenu
+// reel — liste, recherche, filtres — sous la ligne de flottaison.
+//
+// Les selecteurs ci-dessous reprennent la profondeur des regles d'origine,
+// qui descendent jusqu'a cinq niveaux et vivent en partie dans des media
+// queries. Une media query n'ajoute pas de specificite : a egalite, la
+// derniere regle du fichier l'emporte.
+
+.profile-container {
+  .hero-section {
+    padding: 1.25rem 0 0.5rem;
+    margin: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+
+    .hero-background { display: none; }
+
+    .hero-content {
+      display: block;
+      padding: 0;
+      gap: 0;
+      text-align: left;
+
+      .title-section {
+        display: flex;
+        // row explicite : plusieurs ecrans forcaient la colonne, ce qui
+        // laissait le pictogramme seul et centre au-dessus du titre.
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0 0 1rem;
+        text-align: left;
+
+        .title-icon {
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          min-width: 34px;
+          min-height: 34px;
+          flex-shrink: 0;
+          margin: 0;
+          padding: 0;
+          border-radius: $radius-md;
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
+          font-size: 1rem;
+
+          app-icon { width: 18px; height: 18px; }
+        }
+
+        .title-content {
+          flex: 1;
+          min-width: 0;
+          text-align: left;
+
+          .page-title {
+            margin: 0;
+            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: $text-primary;
+            text-align: left;
+          }
+
+          .page-subtitle {
+            margin: 0.125rem 0 0;
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.45;
+            color: $text-secondary;
+            text-align: left;
+          }
+        }
+      }
+
+      // --- Statistiques : une ligne dense, pas des cartes ---
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+        gap: 0.5rem;
+        margin: 0 0 1.25rem;
+        padding: 0;
+
+        .stat-item,
+        .stat-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 0;
+
+          min-height: 0;
+          height: auto;
+          padding: 0.625rem 0.75rem;
+
+          border: $border-width solid $border-color;
+          border-radius: $radius-lg;
+          background: $surface-secondary;
+          text-align: left;
+
+          &::before, &::after { display: none; }
+          &:hover { transform: none; background: $surface-secondary; }
+
+          // Une icone n'apporte rien a cote d'un chiffre et de son libelle.
+          .stat-icon { display: none; }
+
+          .stat-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            text-align: left;
+
+            .stat-value {
+              font-size: 1.0625rem;
+              font-weight: 700;
+              line-height: 1.2;
+              color: $text-primary;
+              font-variant-numeric: tabular-nums;
+            }
+
+            .stat-label {
+              font-size: 0.6875rem;
+              font-weight: 500;
+              line-height: 1.3;
+              text-transform: none;
+              letter-spacing: 0;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    // Variante sans .hero-content, presente sur certains ecrans.
+    > .title-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0 0 1rem;
+      text-align: left;
+    }
+  }
+}
+
+/* =============================================
+ * PROFIL — MISE EN PAGE FAISANT AUTORITE
+ * ============================================= */
+
+.profile-container,
+:host {
+
+  // --------------------------------------------------------------- en-tete
+  //
+  // Le nom occupait 2,5rem en graisse 800 — la taille d'un titre de page
+  // d'accueil — au-dessus d'un pictogramme emoji. C'est une carte d'identite,
+  // pas une accroche.
+  .user-name {
+    font-size: 1.25rem !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.02em;
+    color: $text-primary !important;
+    margin: 0 0 0.25rem !important;
+  }
+
+  // ------------------------------------------------------- intitules de section
+  //
+  // La hierarchie etait inversee : `.section-heading` (le titre) rendait plus
+  // petit que `.section-subtext` (sa legende), qui montait a 1,25rem. On lit
+  // donc la legende avant le titre.
+  .section-heading {
+    font-size: 1.0625rem !important;
+    font-weight: 650 !important;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: $text-primary !important;
+    margin: 0 0 0.125rem !important;
+  }
+
+  .section-subtext {
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+    line-height: 1.5;
+    color: $text-secondary !important;
+    margin: 0 !important;
+  }
+
+  // ------------------------------------------------------------- onglets
+  //
+  // Quatre onglets dans une grille a trois colonnes : « Securite » se
+  // retrouvait seul sur une deuxieme rangee, avec les deux tiers vides.
+  // Une barre d'onglets se lit sur une ligne.
+  .nav-tabs {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 0.375rem !important;
+    padding: 0.25rem !important;
+  }
+
+  .nav-tab {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.5rem !important;
+    min-height: 40px !important;
+    padding: 0 0.75rem !important;
+    border-radius: $radius-sm !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: $text-secondary !important;
+    box-shadow: none !important;
+    text-align: left !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.04) !important;
+      color: $text-primary !important;
+    }
+
+    &.active {
+      background: rgba(255, 255, 255, 0.07) !important;
+      color: $text-primary !important;
+    }
+
+    // Chaque onglet portait une pastille d'icone de 40 px et un sous-titre
+    // (« Identite et profil », « Metriques corporelles ») : quatre cartes
+    // empilees plutot qu'une barre.
+    .tab-icon,
+    [class*='icon'] {
+      width: 18px !important;
+      height: 18px !important;
+      background: none !important;
+      border-radius: 0 !important;
+      flex-shrink: 0;
+
+      svg { width: 18px; height: 18px; }
+    }
+
+    .tab-subtitle,
+    .tab-description,
+    small,
+    p {
+      display: none !important;
+    }
+
+    .tab-title,
+    span {
+      font-size: 0.875rem !important;
+      font-weight: 500 !important;
+      @include text-ellipsis(1);
+    }
+  }
+
+  // --------------------------------------------------------------- actions
+  //
+  // « Modifier » etait vert menthe, les deux autres neutres : trois actions
+  // de meme rang dans deux langages differents.
+  .quick-actions .action-btn {
+    min-height: 38px !important;
+    padding: 0 0.875rem !important;
+    border-radius: $radius-sm !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+
+    &.primary {
+      background: $primary-color !important;
+      border-color: transparent !important;
+      color: $on-primary !important;
+    }
+
+    &:not(.primary) {
+      background: transparent !important;
+      border: $border-width solid $border-color !important;
+      color: $text-secondary !important;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: $text-primary !important;
+      }
+    }
+  }
+
+  // La pastille « Poids normal » recevait sa couleur en style inline depuis
+  // getBMIStatus(), sans fond : du vert sur du vert.
+  .bmi-stat .status-badge {
+    display: inline-flex;
+    padding: 0.125rem 0.375rem !important;
+    border-radius: $radius-xs !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    font-size: 0.6875rem !important;
+    font-weight: 600 !important;
+  }
+
+  // ------------------------------------------------------------ formulaires
+  //
+  // Les rangees etaient espacees de 2,5rem : quatre champs occupaient un
+  // ecran entier.
+  .form-row {
+    gap: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .form-group { margin-bottom: 0 !important; }
+
+  .form-section,
+  .settings-section {
+    padding: 1.25rem !important;
+  }
+
+  // Le bandeau reprenait mot pour mot l'intitule de la premiere section juste
+  // en dessous — « Informations personnelles » affiche deux fois de suite.
+  .tab-header,
+  .section-banner {
+    display: none !important;
+  }
+}
+
+// ---------------------------------------------------- libelles de formulaire
+//
+// `.form-label` valait 1,5rem en graisse 700, avec 1,5rem de marge basse : un
+// intitule de champ etait donc plus gros que le titre de la section qui le
+// contient (1,0625rem), et l'asterisque « requis » se retrouvait pousse a
+// l'autre bout de la ligne par `.label-text { flex: 1 }`.
+.profile-container .form-label,
+:host .form-label {
+  gap: 0.25rem !important;
+  margin-bottom: 0.375rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  color: $text-secondary !important;
+
+  .label-text { flex: 0 0 auto !important; }
+
+  .label-required {
+    font-size: 0.8125rem !important;
+    color: $error-light !important;
+  }
+}
+
+// Le bandeau de section reprenait mot pour mot l'intitule de la premiere
+// carte juste en dessous : « Informations personnelles » s'affichait deux
+// fois de suite, la premiere en 1,875rem centre.
+.profile-container .section-header,
+:host .section-header {
+  display: none !important;
+}
+
+// La valeur d'IMC recevait sa couleur en style inline depuis getBMIColor().
+// C'est une mesure, pas un verdict a mettre en couleur : seul le libelle
+// d'etat en dessous porte l'interpretation.
+.profile-container .bmi-stat .stat-value,
+:host .bmi-stat .stat-value {
+  color: $text-primary !important;
 }

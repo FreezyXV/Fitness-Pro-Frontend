@@ -43,6 +43,7 @@ import {
 } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth.service';
 import { GoalsService } from '@app/services/goals.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 /* =============================================
    ENHANCED INTERFACES
@@ -145,69 +146,85 @@ interface GoalStats {
    CONFIGURATION CONSTANTS
    ============================================= */
 
+/*
+ * Couleurs de categorie et de priorite.
+ *
+ * Les valeurs precedentes etaient les teintes 500 de Tailwind (#7ecbff,
+ * #c4b5fd, #fc8181, #fdba74…), calibrees pour un fond BLANC. Employees ici
+ * comme couleur de TEXTE sur la surface sombre des cartes (#141416), elles
+ * tombaient entre 3,4:1 et 4,1:1 — sous le seuil AA de 4,5:1. C'est ce qui
+ * rendait les pastilles « Force », « Cardio » ou « Poids » penibles a lire.
+ *
+ * Chaque teinte est remplacee par sa variante claire, deja definie dans
+ * variables.scss sous le nom $c-*-300-on-dark. Meme famille chromatique, meme
+ * lecture, mais au-dessus de 7:1.
+ *
+ * Les degrades sont aplatis : ils ne servaient qu'a remplir les barres de
+ * progression, ou un degrade violet -> indigo n'apportait aucune information.
+ */
 const GOAL_CATEGORIES: CategoryInfo[] = [
   {
     value: 'fitness',
     label: 'Fitness',
     icon: '💪',
-    color: '#21BF73',
-    gradient: 'linear-gradient(135deg, #21BF73, #1da460)',
+    color: '#d4ff3d',
+    gradient: '#d4ff3d',
   },
   {
     value: 'nutrition',
     label: 'Nutrition',
     icon: '🥗',
-    color: '#3b82f6',
-    gradient: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+    color: '#7ecbff',
+    gradient: '#7ecbff',
   },
   {
     value: 'wellness',
     label: 'Bien-être',
     icon: '🧘‍♀️',
-    color: '#8b5cf6',
-    gradient: 'linear-gradient(135deg, #8b5cf6, #7c3aed)',
+    color: '#c4b5fd',
+    gradient: '#c4b5fd',
   },
   {
     value: 'cardio',
     label: 'Cardio',
     icon: '🏃‍♂️',
-    color: '#ef4444',
-    gradient: 'linear-gradient(135deg, #ef4444, #dc2626)',
+    color: '#fc8181',
+    gradient: '#fc8181',
   },
   {
     value: 'strength',
     label: 'Force',
     icon: '⚡',
-    color: '#f59e0b',
-    gradient: 'linear-gradient(135deg, #f59e0b, #d97706)',
+    color: '#fdba74',
+    gradient: '#fdba74',
   },
   {
     value: 'flexibility',
     label: 'Flexibilité',
     icon: '🌿',
-    color: '#10b981',
-    gradient: 'linear-gradient(135deg, #10b981, #059669)',
+    color: '#6ee7b7',
+    gradient: '#6ee7b7',
   },
   {
     value: 'mental',
     label: 'Mental',
     icon: '🧠',
-    color: '#06b6d4',
-    gradient: 'linear-gradient(135deg, #06b6d4, #0891b2)',
+    color: '#67e8f9',
+    gradient: '#67e8f9',
   },
   {
     value: 'weight',
     label: 'Poids',
     icon: '⚖️',
-    color: '#84cc16',
-    gradient: 'linear-gradient(135deg, #84cc16, #65a30d)',
+    color: '#86efac',
+    gradient: '#86efac',
   },
 ];
 
 const PRIORITY_LEVELS: PriorityInfo[] = [
-  { value: 'low', label: 'Basse', color: '#10b981', icon: '😌' },
-  { value: 'medium', label: 'Moyenne', color: '#f59e0b', icon: '🎯' },
-  { value: 'high', label: 'Haute', color: '#ef4444', icon: '🔥' },
+  { value: 'low', label: 'Basse', color: '#6ee7b7', icon: '😌' },
+  { value: 'medium', label: 'Moyenne', color: '#fdba74', icon: '🎯' },
+  { value: 'high', label: 'Haute', color: '#fc8181', icon: '🔥' },
 ];
 
 const STATUS_FILTERS: StatusFilter[] = [
@@ -222,25 +239,25 @@ const STATUS_CONFIG = {
   'not-started': {
     label: 'Non commencé',
     emoji: '⏳',
-    color: '#6b7280',
+    color: '#8f8f98',
     icon: '',
   },
   active: {
     label: 'Actif',
     emoji: '▶️',
-    color: '#21BF73',
+    color: '#d4ff3d',
     icon: '',
   },
   paused: {
     label: 'En pause',
     emoji: '⏸️',
-    color: '#f59e0b',
+    color: '#fdba74',
     icon: '',
   },
   completed: {
     label: 'Terminé',
     emoji: '✅',
-    color: '#3b82f6',
+    color: '#7ecbff',
     icon: '',
   },
 };
@@ -316,7 +333,7 @@ class StorageUtils {
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
   templateUrl: './goals.component.html',
   styleUrls: ['./goals.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -872,7 +889,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
       progressColor: this.getProgressColor(progressPercentage, goal.status),
       statusColor:
         this.statusConfig[goal.status as keyof typeof this.statusConfig]
-          ?.color || '#6b7280',
+          ?.color || '#8f8f98',
       isOnFire: progressPercentage >= 80 && daysSinceCreated >= 7,
       progressTrend,
       velocityScore,
@@ -897,15 +914,21 @@ export class GoalsComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Couleur de la barre de progression.
+   *
+   * Elle traversait cinq teintes selon l'avancement : rouge, ambre, violet,
+   * bleu, puis lime. Cinq couleurs pour une seule grandeur continue — deux
+   * objectifs a 49 % et 51 % apparaissaient dans des couleurs differentes, ce
+   * qui suggerait une difference de nature qui n'existe pas.
+   *
+   * La barre garde donc une seule couleur : la longueur porte deja
+   * l'information. Seuls deux etats la modifient, parce qu'ils ne sont pas de
+   * la progression : atteint, et en pause.
+   */
   private getProgressColor(progress: number, status: string): string {
-    if (status === 'completed') return '#21BF73';
-    if (status === 'paused') return '#f59e0b';
-
-    if (progress >= 90) return '#21BF73';
-    if (progress >= 70) return '#3b82f6';
-    if (progress >= 50) return '#8b5cf6';
-    if (progress >= 30) return '#f59e0b';
-    return '#ef4444';
+    if (status === 'paused') return '#8f8f98';
+    return '#d4ff3d';
   }
 
   private calculateStats(): void {
@@ -1995,7 +2018,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
   getStatusColor(status: string): string {
     return (
       this.statusConfig[status as keyof typeof this.statusConfig]?.color ||
-      '#6b7280'
+      '#8f8f98'
     );
   }
 

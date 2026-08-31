@@ -5,7 +5,7 @@
     <div class="hero-background"></div>
     <div class="hero-content">
       <div class="title-section">
-        <div class="title-icon">🍎</div>
+        <div class="title-icon"><app-icon name="leaf"></app-icon></div>
         <div class="title-content">
           <h1 class="page-title">Nutrition Pro</h1>
           <p class="page-subtitle">
@@ -17,28 +17,28 @@
       <!-- Stats nutritionnelles rapides -->
       <div class="quick-stats">
         <div class="stat-item">
-          <div class="stat-icon">🔥</div>
+          <div class="stat-icon"><app-icon name="flame"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ dailyNutrition.calories }}</span>
             <span class="stat-label">Calories</span>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-icon">💪</div>
+          <div class="stat-icon"><app-icon name="dumbbell"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ dailyNutrition.protein }}g</span>
             <span class="stat-label">Protéines</span>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-icon">💧</div>
+          <div class="stat-icon"><app-icon name="droplet"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ dailyNutrition.water }}L</span>
             <span class="stat-label">Hydratation</span>
           </div>
         </div>
         <div class="stat-item">
-          <div class="stat-icon">🍽️</div>
+          <div class="stat-icon"><app-icon name="utensils"></app-icon></div>
           <div class="stat-content">
             <span class="stat-value">{{ foodDatabase.length }}</span>
             <span class="stat-label">Aliments</span>
@@ -104,7 +104,7 @@
     <div class="gamification-section">
       <div class="level-progress">
         <div class="level-badge">
-          <span class="level-icon">⭐</span>
+          <span class="level-icon"><app-icon name="star"></app-icon></span>
           <span class="level-text">Niveau {{ userLevel }}</span>
         </div>
         <div class="xp-progress">
@@ -118,8 +118,8 @@
         </div>
       </div>
       <div class="achievements-preview">
-        <span class="points">🏆 {{ totalPoints }} pts</span>
-        <span class="streak">🔥 {{ weeklyStreak }} jours</span>
+        <span class="points"><app-icon name="trophy" [size]="16"></app-icon>{{ totalPoints }} pts</span>
+        <span class="streak"><app-icon name="flame" [size]="16"></app-icon>{{ weeklyStreak }} jours</span>
         <span class="database">📚 {{ foodDatabase.length }} aliments</span>
       </div>
     </div>
@@ -288,7 +288,7 @@
       <!-- En-tête de la base de données -->
       <div class="database-header-card">
         <div class="card-header">
-          <div class="header-icon">📚</div>
+          <div class="header-icon"><app-icon name="book"></app-icon></div>
           <div class="header-content">
             <h2>Base de Données Nutritionnelle</h2>
             <p>
@@ -437,7 +437,7 @@
       <!-- Catégories d'aliments -->
       <div class="food-categories-card">
         <div class="card-header">
-          <div class="header-icon">🏷️</div>
+          <div class="header-icon"><app-icon name="tag"></app-icon></div>
           <div class="header-content">
             <h3>Explorer par Catégorie</h3>
             <p>Parcourez notre base de données organisée</p>
@@ -466,7 +466,7 @@
       <!-- Résultats de recherche/navigation -->
       <div class="search-results-card" *ngIf="searchResults.length > 0">
         <div class="card-header">
-          <div class="header-icon">🔍</div>
+          <div class="header-icon"><app-icon name="search"></app-icon></div>
           <div class="header-content">
             <h3>Résultats</h3>
             <p>{{ searchResults.length }} aliment(s) trouvé(s)</p>
@@ -492,7 +492,7 @@
                 loading="lazy"
               />
               <div class="food-badges">
-                <span class="verified-badge" *ngIf="food.verified">✓</span>
+                <span class="verified-badge" *ngIf="food.verified"><app-icon name="check"></app-icon></span>
                 <!-- Donnee contributive : on l'annonce plutot que de la
                      presenter au meme niveau que la base curatee. -->
                 <span
@@ -615,7 +615,7 @@
       <!-- Actions régimes -->
       <div class="diet-actions-card">
         <div class="card-header">
-          <div class="header-icon">🎯</div>
+          <div class="header-icon"><app-icon name="target"></app-icon></div>
           <div class="header-content">
             <h2>Gestion des Régimes</h2>
             <p>Régimes professionnels et créations personnalisées</p>
@@ -627,7 +627,7 @@
             class="action-card create-diet"
             (click)="openCreateDietModal()"
           >
-            <div class="action-icon">➕</div>
+            <div class="action-icon"><app-icon name="plus"></app-icon></div>
             <div class="action-content">
               <h3>Créer un Régime</h3>
               <p>Personnalisez votre plan nutritionnel</p>
@@ -638,7 +638,7 @@
             class="action-card templates"
             (click)="openMealTemplatesModal()"
           >
-            <div class="action-icon">📋</div>
+            <div class="action-icon"><app-icon name="clipboard"></app-icon></div>
             <div class="action-content">
               <h3>Templates Repas</h3>
               <p>Modèles pré-configurés</p>
@@ -650,7 +650,7 @@
       <!-- Régimes professionnels -->
       <div class="professional-diets-card">
         <div class="card-header">
-          <div class="header-icon">🏆</div>
+          <div class="header-icon"><app-icon name="trophy"></app-icon></div>
           <div class="header-content">
             <h3>Régimes Professionnels</h3>
             <p>Conçus par des nutritionnistes sportifs</p>
@@ -664,7 +664,7 @@
             [class.currently-followed]="currentlyFollowedDiet?.id === diet.id"
           >
             <div class="diet-header">
-              <div class="diet-icon">🏆</div>
+              <div class="diet-icon"><app-icon name="trophy"></app-icon></div>
               <div class="diet-title">
                 <h4>{{ diet.name }}</h4>
                 <span
@@ -740,32 +740,24 @@
                 class="btn-action preview"
                 (click)="$event.stopPropagation(); previewDiet(diet)"
                 title="Aperçu rapide"
-              >
-                👁️
-              </button>
+              ><app-icon name="eye"></app-icon></button>
               <button
                 class="btn-action details"
                 (click)="selectDiet(diet)"
                 title="Voir les détails"
-              >
-                📋
-              </button>
+              ><app-icon name="clipboard"></app-icon></button>
               <button
                 *ngIf="currentlyFollowedDiet?.id !== diet.id"
                 class="btn-action adopt"
                 (click)="$event.stopPropagation(); adoptDiet(diet)"
                 title="Adopter ce régime"
-              >
-                ✅
-              </button>
+              ><app-icon name="check-circle"></app-icon></button>
               <button
                 *ngIf="currentlyFollowedDiet?.id === diet.id"
                 class="btn-action stop"
                 (click)="$event.stopPropagation(); stopDiet()"
                 title="Arrêter le régime"
-              >
-                🛑
-              </button>
+              ><app-icon name="alert"></app-icon></button>
             </div>
 
             <!-- Badge si suivi actuellement -->
@@ -773,7 +765,7 @@
               class="active-badge"
               *ngIf="currentlyFollowedDiet?.id === diet.id"
             >
-              🎯 En cours - Jour {{ dietDayCount }}
+              En cours - Jour {{ dietDayCount }}
             </div>
           </div>
         </div>
@@ -782,7 +774,7 @@
       <!-- Mes régimes personnalisés -->
       <div class="custom-diets-card" *ngIf="customDiets.length > 0">
         <div class="card-header">
-          <div class="header-icon">👨‍🍳</div>
+          <div class="header-icon"><app-icon name="utensils"></app-icon></div>
           <div class="header-content">
             <h3>Mes Régimes Personnalisés</h3>
             <p>{{ customDiets.length }} régime(s) créé(s)</p>
@@ -796,7 +788,7 @@
             (click)="selectDiet(diet)"
           >
             <div class="diet-header">
-              <div class="diet-icon">👨‍🍳</div>
+              <div class="diet-icon"><app-icon name="utensils"></app-icon></div>
               <div class="diet-title">
                 <h4>{{ diet.name }}</h4>
                 <span class="custom-badge">Personnalisé</span>
@@ -856,7 +848,7 @@
       <!-- Contexte d'entraînement -->
       <div class="workout-context-card" *ngIf="workoutContext.hasWorkoutToday">
         <div class="card-header">
-          <div class="header-icon">💪</div>
+          <div class="header-icon"><app-icon name="dumbbell"></app-icon></div>
           <div class="header-content">
             <h3>{{ workoutContext.workoutType }} prévu</h3>
             <p>
@@ -865,20 +857,24 @@
             </p>
           </div>
         </div>
-        <div class="context-tags">
+        <div
+          class="context-tags"
+          *ngIf="workoutContext.isPreWorkout || workoutContext.isPostWorkout"
+        >
           <span class="tag pre-workout" *ngIf="workoutContext.isPreWorkout">
-            ⚡ Pré-entraînement
+            Pré-entraînement
           </span>
           <span class="tag post-workout" *ngIf="workoutContext.isPostWorkout">
-            🔋 Post-entraînement
+            Post-entraînement
           </span>
         </div>
       </div>
 
-      <!-- Conseils personnalisés -->
-      <div class="personalized-tips-card">
+      <!-- Conseils personnalisés. Masques tant qu'il n'y en a aucun :
+           l'en-tete seul laissait une carte vide de 130 px. -->
+      <div class="personalized-tips-card" *ngIf="personalizedTips.length > 0">
         <div class="card-header">
-          <div class="header-icon">💡</div>
+          <div class="header-icon"><app-icon name="bulb"></app-icon></div>
           <div class="header-content">
             <h3>Conseils personnalisés</h3>
             <p>Recommandations basées sur vos données</p>
@@ -891,7 +887,7 @@
             [ngClass]="'priority-' + tip.priority"
           >
             <div class="tip-header">
-              <span class="tip-icon">{{ tip.icon }}</span>
+              <span class="tip-icon"><app-icon [name]="tip.icon"></app-icon></span>
               <h4>{{ tip.title }}</h4>
             </div>
             <p class="tip-description">{{ tip.description }}</p>
@@ -906,7 +902,7 @@
       <!-- Macronutriments principaux -->
       <div class="macros-overview-card">
         <div class="card-header">
-          <div class="header-icon">📊</div>
+          <div class="header-icon"><app-icon name="chart"></app-icon></div>
           <div class="header-content">
             <h3>Macronutriments</h3>
             <p>Suivi quotidien de vos apports</p>
@@ -916,7 +912,7 @@
           <!-- Calories -->
           <div class="macro-card calories">
             <div class="macro-header">
-              <div class="macro-icon">🔥</div>
+              <div class="macro-icon"><app-icon name="flame"></app-icon></div>
               <div class="macro-info">
                 <h4>Calories</h4>
                 <div class="macro-values">
@@ -968,7 +964,7 @@
           <!-- Protéines -->
           <div class="macro-card protein">
             <div class="macro-header">
-              <div class="macro-icon">💪</div>
+              <div class="macro-icon"><app-icon name="dumbbell"></app-icon></div>
               <div class="macro-info">
                 <h4>Protéines</h4>
                 <div class="macro-values">
@@ -1015,7 +1011,7 @@
           <!-- Glucides -->
           <div class="macro-card carbs">
             <div class="macro-header">
-              <div class="macro-icon">⚡</div>
+              <div class="macro-icon"><app-icon name="bolt"></app-icon></div>
               <div class="macro-info">
                 <h4>Glucides</h4>
                 <div class="macro-values">
@@ -1059,7 +1055,7 @@
           <!-- Lipides -->
           <div class="macro-card fat">
             <div class="macro-header">
-              <div class="macro-icon">🥑</div>
+              <div class="macro-icon"><app-icon name="leaf"></app-icon></div>
               <div class="macro-info">
                 <h4>Lipides</h4>
                 <div class="macro-values">
@@ -1099,7 +1095,7 @@
       <!-- Suivi du régime actuel -->
       <div class="current-diet-card" *ngIf="currentlyFollowedDiet">
         <div class="card-header">
-          <div class="header-icon">🎯</div>
+          <div class="header-icon"><app-icon name="target"></app-icon></div>
           <div class="header-content">
             <h3>Régime Actuel : {{ currentlyFollowedDiet.name }}</h3>
             <p>
@@ -1140,10 +1136,10 @@
             class="btn small secondary"
             (click)="selectDiet(currentlyFollowedDiet)"
           >
-            📊 Détails
+            Détails
           </button>
           <button class="btn small warning" (click)="stopDiet()">
-            🛑 Arrêter
+            Arrêter
           </button>
         </div>
       </div>
@@ -1151,7 +1147,7 @@
       <!-- Hydratation interactive -->
       <div class="hydration-card">
         <div class="card-header">
-          <div class="header-icon">💧</div>
+          <div class="header-icon"><app-icon name="droplet"></app-icon></div>
           <div class="header-content">
             <h3>Hydratation</h3>
             <p>{{ dailyNutrition.water }}L / {{ dailyGoals.water }}L</p>
@@ -1223,14 +1219,14 @@
       <div class="meal-actions-card">
         <div class="actions-grid">
           <button class="action-card primary" (click)="openAddFoodModal()">
-            <div class="action-icon">➕</div>
+            <div class="action-icon"><app-icon name="plus"></app-icon></div>
             <div class="action-content">
               <h3>Ajouter un aliment</h3>
               <p>Recherchez et ajoutez des aliments</p>
             </div>
           </button>
           <button class="action-card secondary" (click)="openGoalsModal()">
-            <div class="action-icon">🎯</div>
+            <div class="action-icon"><app-icon name="target"></app-icon></div>
             <div class="action-content">
               <h3>Mes objectifs</h3>
               <p>Personnalisez vos besoins nutritionnels</p>
@@ -1244,7 +1240,7 @@
         <div class="meal-card" *ngFor="let mealType of mealTypes">
           <div class="meal-header">
             <div class="meal-info">
-              <div class="meal-icon">{{ mealType.icon }}</div>
+              <div class="meal-icon"><app-icon [name]="mealType.icon"></app-icon></div>
               <div class="meal-details">
                 <h3>{{ mealType.label }}</h3>
                 <p class="meal-description">{{ mealType.description }}</p>
@@ -1330,7 +1326,7 @@
 
             <ng-template #emptyMeal>
               <div class="empty-meal">
-                <div class="empty-icon">🍽️</div>
+                <div class="empty-icon"><app-icon name="utensils"></app-icon></div>
                 <p>Aucun aliment ajouté</p>
                 <button
                   class="add-first-btn"
@@ -1350,7 +1346,7 @@
       <!-- Analytics nutritionnels -->
       <div class="insights-overview-card">
         <div class="card-header">
-          <div class="header-icon">📈</div>
+          <div class="header-icon"><app-icon name="trending"></app-icon></div>
           <div class="header-content">
             <h2>Analyses Nutritionnelles</h2>
             <p>Insights personnalisés basés sur vos données</p>
@@ -1365,7 +1361,7 @@
             [ngClass]="'priority-' + tip.priority"
           >
             <div class="insight-header">
-              <span class="insight-icon">{{ tip.icon }}</span>
+              <span class="insight-icon"><app-icon [name]="tip.icon"></app-icon></span>
               <h3>{{ tip.title }}</h3>
               <span
                 class="insight-priority"
@@ -1394,7 +1390,7 @@
       <!-- Statistiques hebdomadaires -->
       <div class="weekly-stats-card">
         <div class="card-header">
-          <div class="header-icon">📊</div>
+          <div class="header-icon"><app-icon name="chart"></app-icon></div>
           <div class="header-content">
             <h3>Statistiques Hebdomadaires</h3>
             <p>Analyse de vos 7 derniers jours</p>
@@ -1403,28 +1399,28 @@
 
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-icon">🎯</div>
+            <div class="stat-icon"><app-icon name="target"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ weeklyStats.goalsAchieved }}%</span>
               <span class="stat-label">Objectifs atteints</span>
             </div>
           </div>
           <div class="stat-item">
-            <div class="stat-icon">💧</div>
+            <div class="stat-icon"><app-icon name="droplet"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ weeklyStats.waterConsumed }}L</span>
               <span class="stat-label">Eau consommée</span>
             </div>
           </div>
           <div class="stat-item">
-            <div class="stat-icon">💪</div>
+            <div class="stat-icon"><app-icon name="dumbbell"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ weeklyStats.avgProtein }}g</span>
               <span class="stat-label">Protéines/jour</span>
             </div>
           </div>
           <div class="stat-item">
-            <div class="stat-icon">🔥</div>
+            <div class="stat-icon"><app-icon name="flame"></app-icon></div>
             <div class="stat-content">
               <span class="stat-value">{{ weeklyStats.avgCalories }}</span>
               <span class="stat-label">Calories/jour</span>
@@ -1436,7 +1432,7 @@
       <!-- Achievements -->
       <div class="achievements-card">
         <div class="card-header">
-          <div class="header-icon">🏆</div>
+          <div class="header-icon"><app-icon name="trophy"></app-icon></div>
           <div class="header-content">
             <h3>Achievements</h3>
             <p>Vos accomplissements nutritionnels</p>
@@ -1449,7 +1445,7 @@
             *ngFor="let achievement of achievements"
             [ngClass]="'rarity-' + achievement.rarity"
           >
-            <div class="achievement-icon">{{ achievement.icon }}</div>
+            <div class="achievement-icon"><app-icon [name]="achievement.icon"></app-icon></div>
             <div class="achievement-info">
               <h4>{{ achievement.name }}</h4>
               <p>{{ achievement.description }}</p>
@@ -1478,7 +1474,7 @@
       <!-- Défis actifs -->
       <div class="challenges-card">
         <div class="card-header">
-          <div class="header-icon">⚡</div>
+          <div class="header-icon"><app-icon name="bolt"></app-icon></div>
           <div class="header-content">
             <h3>Défis Actifs</h3>
             <p>Vos challenges en cours</p>
@@ -1568,7 +1564,7 @@
             <select [(ngModel)]="selectedMealType" class="meal-type-select"
             aria-label="Type de repas">
               <option *ngFor="let mealType of mealTypes" [value]="mealType.key">
-                {{ mealType.icon }} {{ mealType.label }}
+                <app-icon [name]="mealType.icon"></app-icon> {{ mealType.label }}
               </option>
             </select>
           </div>
@@ -1902,7 +1898,7 @@
         <div class="diet-overview">
           <div class="diet-stats">
             <div class="stat-card">
-              <div class="stat-icon">🔥</div>
+              <div class="stat-icon"><app-icon name="flame"></app-icon></div>
               <div class="stat-content">
                 <span class="stat-value">{{ selectedDiet.calorieTarget }}</span>
                 <span class="stat-label">Calories/jour</span>
@@ -1918,7 +1914,7 @@
               </div>
             </div>
             <div class="stat-card">
-              <div class="stat-icon">📈</div>
+              <div class="stat-icon"><app-icon name="trending"></app-icon></div>
               <div class="stat-content">
                 <span class="stat-value">{{ selectedDiet.difficulty }}</span>
                 <span class="stat-label">Difficulté</span>
@@ -2080,28 +2076,28 @@
           Fermer
         </button>
         <button class="btn tertiary" (click)="previewDiet(selectedDiet!)">
-          👁️ Aperçu
+          Aperçu
         </button>
         <button
           class="btn primary"
           *ngIf="currentlyFollowedDiet?.id !== selectedDiet?.id"
           (click)="adoptDiet(selectedDiet!)"
         >
-          ✅ Adopter ce Régime
+          Adopter ce Régime
         </button>
         <button
           class="btn warning"
           *ngIf="currentlyFollowedDiet?.id === selectedDiet?.id"
           (click)="stopDiet()"
         >
-          🛑 Arrêter le Régime
+          Arrêter le Régime
         </button>
         <button
           class="btn secondary"
           *ngIf="selectedDiet && !selectedDiet?.id?.startsWith('professional_')"
           (click)="customizeDiet(selectedDiet)"
         >
-          🔧 Personnaliser
+          Personnaliser
         </button>
       </div>
     </div>
@@ -2142,7 +2138,7 @@
         <div class="food-overview">
           <div class="main-nutrients">
             <div class="nutrient-highlight calories">
-              <div class="nutrient-icon">🔥</div>
+              <div class="nutrient-icon"><app-icon name="flame"></app-icon></div>
               <div class="nutrient-content">
                 <span class="nutrient-value">{{
                   selectedFoodForInfo.calories
@@ -2151,7 +2147,7 @@
               </div>
             </div>
             <div class="nutrient-highlight protein">
-              <div class="nutrient-icon">💪</div>
+              <div class="nutrient-icon"><app-icon name="dumbbell"></app-icon></div>
               <div class="nutrient-content">
                 <span class="nutrient-value">{{
                   selectedFoodForInfo.protein
@@ -2160,7 +2156,7 @@
               </div>
             </div>
             <div class="nutrient-highlight carbs">
-              <div class="nutrient-icon">🌾</div>
+              <div class="nutrient-icon"><app-icon name="leaf"></app-icon></div>
               <div class="nutrient-content">
                 <span class="nutrient-value">{{
                   selectedFoodForInfo.carbs
@@ -2169,7 +2165,7 @@
               </div>
             </div>
             <div class="nutrient-highlight fat">
-              <div class="nutrient-icon">🥑</div>
+              <div class="nutrient-icon"><app-icon name="leaf"></app-icon></div>
               <div class="nutrient-content">
                 <span class="nutrient-value">{{
                   selectedFoodForInfo.fat
@@ -2271,7 +2267,7 @@
               class="indicator-card"
               *ngIf="selectedFoodForInfo?.glycemicIndex"
             >
-              <div class="indicator-icon">📈</div>
+              <div class="indicator-icon"><app-icon name="trending"></app-icon></div>
               <div class="indicator-content">
                 <span class="indicator-label">Index Glycémique</span>
                 <span class="indicator-value">{{
@@ -2281,7 +2277,7 @@
             </div>
 
             <div class="indicator-card" *ngIf="selectedFoodForInfo?.fiber">
-              <div class="indicator-icon">🌿</div>
+              <div class="indicator-icon"><app-icon name="leaf"></app-icon></div>
               <div class="indicator-content">
                 <span class="indicator-label">Fibres</span>
                 <span class="indicator-value"
@@ -2291,7 +2287,7 @@
             </div>
 
             <div class="indicator-card" *ngIf="selectedFoodForInfo?.category">
-              <div class="indicator-icon">📂</div>
+              <div class="indicator-icon"><app-icon name="book"></app-icon></div>
               <div class="indicator-content">
                 <span class="indicator-label">Catégorie</span>
                 <span class="indicator-value">{{
@@ -2304,7 +2300,7 @@
 
         <!-- Conseils de préparation -->
         <div class="preparation-tips" *ngIf="hasPreparationTips()">
-          <h3>👨‍🍳 Conseils de Préparation</h3>
+          <h3>👨‍Conseils de Préparation</h3>
           <ul class="tips-list">
             <li *ngFor="let tip of getPreparationTips()">
               {{ tip }}
@@ -2320,14 +2316,14 @@
           (click)="suggestAlternatives(selectedFoodForInfo)"
           *ngIf="selectedFoodForInfo"
         >
-          🔄 Alternatives Similaires
+          Alternatives Similaires
         </button>
         <button
           class="btn primary"
           (click)="addFoodFromInfoModal(selectedFoodForInfo)"
           *ngIf="selectedFoodForInfo"
         >
-          ➕ Ajouter à mon Repas
+          Ajouter à mon Repas
         </button>
       </div>
     </div>
@@ -2343,7 +2339,7 @@
       [ngClass]="'notification-' + notification.type"
     >
       <div class="notification-icon" *ngIf="notification.icon">
-        {{ notification.icon }}
+        <app-icon [name]="notification.icon"></app-icon>
       </div>
       <div class="notification-content">
         <span class="notification-message">{{ notification.message }}</span>

@@ -13,6 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // FIXED: Correct import paths
 import { WorkoutService } from '@app/services/workout.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 import {
   WorkoutTemplate,
   WorkoutExercise,
@@ -45,7 +46,7 @@ interface WorkoutDraft {
 @Component({
   selector: 'app-create-workout',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IconComponent],
   templateUrl: './create-workout.component.html',
   styleUrls: ['./create-workout.component.scss'],
 })
@@ -96,9 +97,9 @@ export class CreateWorkoutComponent
       value: 'intermediate',
       label: 'Intermédiaire',
       icon: '🟡',
-      color: '#FF9800',
+      color: '#fdba74',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#F44336' },
+    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
   ];
 
   readonly bodyParts = [

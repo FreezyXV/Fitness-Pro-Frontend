@@ -7,6 +7,7 @@ import { takeUntil, catchError, debounceTime } from 'rxjs/operators';
 
 // Import interfaces from shared
 import { CalendarTask, Workout, Goal, DateUtils } from '@shared';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 interface CalendarActivity {
   id?: number;
@@ -44,7 +45,7 @@ interface DayStats {
 @Component({
   selector: 'app-mini-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './mini-calendar.component.html',
   styleUrls: ['./mini-calendar.component.scss']
 })

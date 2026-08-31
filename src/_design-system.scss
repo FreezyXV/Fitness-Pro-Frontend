@@ -28,8 +28,6 @@
   background-color: rgba($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 
 // Layout Mixins - Most Common Patterns
@@ -86,9 +84,12 @@
   border: $border-width solid $border-color;
 }
 
-// Text Gradient Mixin
-@mixin text-gradient($gradient) {
-  color: if($gradient == null, $primary-color, $primary-color);
+/// Ancien degrade de texte, aplati.
+/// Ses ~40 appelants sont des TITRES : renvoyer $primary-color peignait en
+/// lime fluo la quasi-totalite des intitules de l'application. Un titre se
+/// lit, il ne signale rien — il repasse donc en couleur de texte principale.
+@mixin text-gradient($gradient: null) {
+  color: $text-primary;
   background: none;
   -webkit-text-fill-color: currentColor;
 }
@@ -105,18 +106,11 @@
 /// seul endroit — ce qui compte d'autant plus que shimmer-effect ci-dessus a
 /// ete volontairement vide pour supprimer les effets de halo, sans que les
 /// copies manuelles suivent.
-@mixin shimmer-overlay($color, $transition: left 0.6s, $skew: -15deg) {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, $color, transparent);
-  transition: $transition;
-  @if $skew {
-    transform: skewX($skew);
-  }
+@mixin shimmer-overlay($color: null, $transition: null, $skew: null) {
+  // Volontairement vide. Le bandeau lumineux qui traversait cartes et boutons
+  // au survol a ete retire avec le reste des effets decoratifs. Le mixin
+  // subsiste pour ses 59 appelants : le supprimer casserait la compilation
+  // sans rien apporter de plus.
 }
 
 // Button Base Mixin
@@ -131,24 +125,24 @@
   font-family: inherit;
   font-weight: $btn-font-weight;
   cursor: pointer;
-  transition: $btn-transition;
   text-decoration: none;
   position: relative;
-  overflow: hidden;
   user-select: none;
   min-height: $btn-min-height;
-  background: $surface-primary;
+  background: $surface-tertiary;
   color: $text-primary;
 
-  &:hover {
-    transform: $transform-hover;
-    background: $primary-color;
-    color: $text-inverse;
+  // Le survol de base virait TOUS les boutons de l'app au lime avec un texte
+  // noir — y compris les actions secondaires et destructives. L'etat de survol
+  // se signale desormais par un simple eclaircissement de la surface : c'est
+  // suffisant, et ca laisse le lime au seul bouton d'action principale.
+  &:hover:not(:disabled) {
+    background: $surface-raised;
+    border-color: $border-strong;
   }
 
-  &:active {
-    transform: $transform-active;
-    background: darken($primary-color, 5%);
+  &:active:not(:disabled) {
+    background: $surface-tertiary;
   }
 
   &:focus-visible {
@@ -156,10 +150,16 @@
     outline-offset: 2px;
   }
 
+  // Un bouton desactive etait rendu par `opacity: 0.6` sur son aplat lime :
+  // le lime virait a l'olive et l'encre noire dessus devenait boueuse, sans
+  // que rien n'indique clairement l'indisponibilite. On remplace la couleur
+  // plutot que de la diluer.
   &:disabled {
-    opacity: $opacity-disabled;
+    background: $surface-tertiary !important;
+    border-color: $border-color !important;
+    color: $text-muted !important;
     cursor: not-allowed;
-    transform: none !important;
+    opacity: 1;
   }
 }
 
@@ -168,14 +168,7 @@
   @include glass-effect;
   border-radius: $border-radius;
   padding: $padding;
-  transition: $card-transition;
   position: relative;
-  overflow: hidden;
-
-  &:hover {
-    transform: $transform-hover-lg;
-    background: rgba($surface-tertiary, 0.95);
-  }
 }
 
 // Form Input Base Mixin
@@ -184,9 +177,8 @@
   padding: $form-input-padding;
   border: $form-input-border;
   border-radius: $form-input-border-radius;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-family: inherit;
-  transition: $form-input-transition;
   background: $form-input-bg;
   color: $text-primary;
   appearance: none;
@@ -234,25 +226,24 @@
   padding: $nav-link-padding;
   color: $nav-link-color;
   text-decoration: none;
-  transition: $nav-link-transition;
   position: relative;
   border-radius: $nav-link-border-radius;
   font-weight: 600;
   min-height: 44px;
   border: $border-width solid transparent;
 
+  // Le lien ne se decale plus lateralement au survol : un glissement de 6px
+  // sur chaque entree faisait « respirer » toute la navigation au passage de
+  // la souris. Seule la surface change.
   &:hover {
-    color: $nav-link-active-color;
-    transform: translateX(6px);
-    border-color: $border-color;
-    background: rgba($primary-color, 0.1);
+    color: $text-primary;
+    background: rgba(255, 255, 255, 0.04);
   }
 
   &.active {
-    background: $nav-link-active-bg;
-    color: $nav-link-active-color;
-    border-color: $border-color;
-    transform: translateX(4px);
+    background: rgba(255, 255, 255, 0.06);
+    color: $text-primary;
+    font-weight: 600;
   }
 }
 
@@ -260,10 +251,12 @@
 /// Anneau de focus des champs de formulaire.
 /// Le meme quadruplet etait recopie dans 10 endroits, avec la couleur du halo
 /// ecrite en dur alors qu'elle derive de la couleur primaire.
-@mixin focus-ring($color: $primary-color, $ring: rgba($primary-color, 0.1)) {
-  background: $surface-secondary;
+@mixin focus-ring($color: $primary-color, $ring: rgba($primary-color, 0.22)) {
+  background: $surface-raised;
   border-color: $color;
-  box-shadow: 0 0 0 4px $ring;
+  // Seul « halo » conserve dans toute l'interface : il porte une information
+  // d'accessibilite, il ne decore pas.
+  box-shadow: 0 0 0 3px $ring;
   outline: none;
 }
 
@@ -277,12 +270,9 @@
   font-size: $size;
   font-weight: 600;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
 }
 
 @mixin floating-animation($duration: 8s, $delay: 0s) {
-  animation: gentle-float $duration ease-in-out infinite;
-  animation-delay: $delay;
 }
 
 // =============================================
@@ -362,8 +352,10 @@ $breakpoints: (
     width: $icon-size;
     height: $icon-size;
     border-radius: $radius-md;
-    background: rgba($primary-color, 0.12);
-    color: $primary-color;
+    // Pastille neutre. Une icone lime par en-tete de carte faisait 27 aplats
+    // fluo sur un meme ecran.
+    background: rgba(255, 255, 255, 0.06);
+    color: $text-secondary;
     font-size: $icon-size * 0.42;
   }
 
@@ -398,7 +390,6 @@ $breakpoints: (
 
     &:hover:not(:disabled) {
       background: $primary-light;
-      box-shadow: $glow-primary-md;
     }
   } @else if $tone == secondary {
     border: $border-width solid $border-color;
@@ -414,7 +405,7 @@ $breakpoints: (
     background: $danger-color;
     color: $text-inverse;
 
-    &:hover:not(:disabled) { box-shadow: $glow-danger-md; }
+    &:hover:not(:disabled) { background: $error-light; }
   } @else if $tone == ghost {
     border-color: transparent;
     background: none;
@@ -457,7 +448,10 @@ $breakpoints: (
   white-space: nowrap;
   cursor: pointer;
 
-  transition: background 0.18s ease, color 0.18s ease;
+  &:hover:not(.active):not([aria-selected='true']) {
+    color: $text-primary;
+    background: rgba(255, 255, 255, 0.04);
+  }
 
   &.active,
   &[aria-selected='true'] {
@@ -479,7 +473,7 @@ $breakpoints: (
 
   padding: 1rem;
   border: $border-width solid $border-color;
-  border-radius: $radius-xl;
+  border-radius: $radius-lg;
   background: $surface-secondary;
 
   .stat-value {
@@ -509,10 +503,9 @@ $breakpoints: (
   text-align: center;
 
   .empty-icon {
-    width: 44px;
-    height: 44px;
-    color: $primary-color;
-    opacity: 0.55;
+    width: 40px;
+    height: 40px;
+    color: $text-muted;
   }
 
   h3 {

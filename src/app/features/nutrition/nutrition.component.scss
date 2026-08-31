@@ -8,14 +8,12 @@
 // ==========================================
 @mixin glass-card($opacity: 0.95) {
   background: rgba($surface-secondary, $opacity);
-  backdrop-filter: none;
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin glass-card-dark($opacity: 0.1) {
   background: rgba($surface-tertiary, $opacity + 0.2);
-  backdrop-filter: none;
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -224,7 +222,6 @@ padding: 0.25rem;
   @include glass-card(0.95);
   border-radius: 2.5rem;
   padding: 2.5rem;
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
   @include respond-below(lg) {
     padding: 2rem;
@@ -262,7 +259,6 @@ padding: 0.25rem;
         transparent 70%
       );
       border-radius: 50%;
-      animation: float 6s ease-in-out infinite;
     }
   }
 
@@ -281,21 +277,15 @@ padding: 0.25rem;
 
     .title-icon {
       font-size: 4rem;
-      animation: pulse 3s ease-in-out infinite;
     }
 
     .title-content {
       .page-title {
         background-size: 200% 200%;
-        animation: gradientShift 3s ease infinite;
         font-size: clamp(1.75rem, 4vw, 2.5rem);
         font-weight: 800;
         color: $gray-900;
         margin: 0 0 0.5rem 0;
-        background: $primary-gradient;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         text-align: center;
 
         @include respond-below(sm) {
@@ -319,7 +309,7 @@ padding: 0.25rem;
 
   .quick-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
     gap: 1.5rem;
 
     .stat-item {
@@ -327,7 +317,6 @@ padding: 0.25rem;
       align-items: center;
       gap: 1rem;
       background: rgba($surface-secondary, 0.6);
-      backdrop-filter: blur(10px);
       border: $border-width solid $border-color;
       border-radius: $border-radius-xl;
       padding: 1.5rem;
@@ -344,7 +333,10 @@ padding: 0.25rem;
         width: 56px;
         height: 56px;
         border-radius: $border-radius-xl;
-        background: $primary-gradient;
+        // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
+        // elle ne rivalise pas avec la donnee qu'elle accompagne.
+        background: rgba($primary-color, 0.12);
+        color: $text-primary;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -409,9 +401,9 @@ padding: 0.25rem;
       }
 
       &.secondary {
-        background: $secondary-gradient;
-        color: $on-primary;
-        box-shadow: 0 8px 30px rgba($secondary-color, 0.4);
+        background: transparent;
+        border: $border-width solid $border-strong;
+        color: $text-primary;
 
         &:hover {
           transform: translateY(-3px);
@@ -424,9 +416,9 @@ padding: 0.25rem;
       }
 
       &.tertiary {
-        background: $info-gradient;
-        color: $on-primary;
-        box-shadow: 0 8px 30px rgba(116, 185, 255, 0.4);
+        background: transparent;
+        border: 0;
+        color: $text-secondary;
 
         &:hover {
           transform: translateY(-3px);
@@ -468,7 +460,6 @@ padding: 0.25rem;
     justify-content: space-between;
     align-items: center;
     background: rgba($surface-secondary, 0.4);
-    backdrop-filter: blur(10px);
 
     border-radius: $border-radius-xl;
     padding: 1.5rem 0rem;
@@ -482,7 +473,7 @@ padding: 0.25rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
+        background: $c-amber-soft;
         color: $on-primary;
         padding: 0.75rem 1rem;
         border-radius: $border-radius-xl;
@@ -514,7 +505,7 @@ padding: 0.25rem;
 
           .xp-fill {
             height: 100%;
-            background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
+            background: $c-amber-soft;
             transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             border-radius: 5px;
             position: relative;
@@ -532,7 +523,6 @@ padding: 0.25rem;
                 rgba($surface-secondary, 0.3),
                 transparent
               );
-              animation: shimmer 2s infinite;
             }
           }
         }
@@ -553,7 +543,6 @@ padding: 0.25rem;
       .streak,
       .database {
         background: rgba($surface-secondary, 0.6);
-        backdrop-filter: blur(10px);
         padding: 0.75rem 1rem;
         border-radius: $border-radius-lg;
         font-size: 1.25rem;
@@ -591,9 +580,6 @@ padding: 0.25rem;
     align-items: center;
     padding: clamp(0.875rem, 2vw, 1.5rem);
     border-radius: clamp($border-radius-xl, 3vw, $border-radius-3xl);
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    animation-delay: 0.1s;
-    animation-fill-mode: both;
 
     .nav-btn {
       @include modern-button($accent-gradient, translateY(-2px) scale(1.05));
@@ -611,10 +597,6 @@ padding: 0.25rem;
         color: $gray-900;
         font-size: 1.5rem;
         font-weight: 800;
-        background: $secondary-gradient;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
       }
 
       .date-subtitle {
@@ -623,7 +605,6 @@ padding: 0.25rem;
         font-size: 0.875rem;
         font-weight: 600;
         margin-top: 0.25rem;
-        text-transform: uppercase;
         letter-spacing: 0.05em;
       }
     }
@@ -646,9 +627,6 @@ padding: 0.25rem;
     padding: 0.75rem;
     display: flex;
     gap: 0.5rem;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    animation-delay: 0.2s;
-    animation-fill-mode: both;
 
     @include respond-below(lg) {
       border-radius: 2.5rem;
@@ -686,7 +664,6 @@ padding: 0.25rem;
   z-index: 1;
 
   .tab-content {
-    animation: fadeIn 0.5s ease-out;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -708,7 +685,6 @@ padding: 0.25rem;
   @include glass-card(0.95);
   border-radius: $border-radius-2xl;
   padding: 2rem;
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
@@ -792,7 +768,6 @@ padding: 0.25rem;
         font-family: inherit;
         transition: all 0.3s ease;
         background: rgba($surface-secondary, 0.9);
-        backdrop-filter: blur(10px);
 
         &.advanced {
           background: rgba($surface-secondary, 0.95);
@@ -838,7 +813,7 @@ padding: 0.25rem;
 
       .filters-row {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
         gap: 1rem;
         margin-bottom: 1rem;
 
@@ -912,7 +887,7 @@ padding: 0.25rem;
 
   .categories-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
 gap: 2rem;
 
     .category-card {
@@ -977,7 +952,7 @@ gap: 2rem;
 
   .foods-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
     gap: 1.5rem;
 
     .food-card {
@@ -1066,7 +1041,7 @@ gap: 2rem;
         }
 
         .food-category {
-          color: $primary-color;
+          color: $text-primary;
           font-size: 1rem;
           font-weight: 600;
           margin-bottom: 0.5rem;
@@ -1082,7 +1057,7 @@ gap: 2rem;
 
         .nutrition-preview {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
           gap: 1rem;
           margin-bottom: 1rem;
 
@@ -1119,7 +1094,7 @@ gap: 2rem;
           .dietary-tag {
             padding: 0.25rem 0.5rem;
             background: rgba($primary-color, 0.1);
-            color: $primary-color;
+            color: $text-primary;
             border-radius: $border-radius;
             font-size: 0.75rem;
             font-weight: 600;
@@ -1145,7 +1120,7 @@ gap: 2rem;
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          color: $primary-color;
+          color: $text-primary;
           border: $border-width solid $border-color;
 
           &:hover {
@@ -1166,7 +1141,7 @@ gap: 2rem;
 
   .diet-actions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
     gap: 1.5rem;
 
     .action-card {
@@ -1248,7 +1223,7 @@ gap: 2rem;
 
   .diets-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
     gap: 1.5rem;
 
     .diet-card {
@@ -1284,7 +1259,10 @@ gap: 2rem;
           width: 50px;
           height: 50px;
           border-radius: $border-radius-xl;
-          background: $primary-gradient;
+          // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
+          // elle ne rivalise pas avec la donnee qu'elle accompagne.
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1308,7 +1286,6 @@ gap: 2rem;
             border-radius: $border-radius;
             font-size: 0.75rem;
             font-weight: 600;
-            text-transform: uppercase;
 
             &.difficulty-facile {
               background: rgba(40, 167, 69, 0.2);
@@ -1391,7 +1368,7 @@ gap: 2rem;
         .objective-tag {
           padding: 0.25rem 0.5rem;
           background: rgba($primary-color, 0.1);
-          color: $primary-color;
+          color: $text-primary;
           border-radius: $border-radius;
           font-size: 0.75rem;
           font-weight: 600;
@@ -1439,7 +1416,7 @@ gap: 2rem;
           border: $border-width solid $border-color;
 
           &.edit {
-            color: $primary-color;
+            color: $text-primary;
             border: $border-width solid $border-color;
           }
 
@@ -1508,7 +1485,7 @@ gap: 2rem;
 
   .tips-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 1.5rem;
 
     .tip-card {
@@ -1610,12 +1587,11 @@ gap: 2rem;
 
   .macros-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 1.5rem;
 
     .macro-card {
       background: rgba($surface-secondary, 0.8);
-      backdrop-filter: blur(10px);
       border-radius: $border-radius-2xl;
       padding: 1.5rem;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1687,7 +1663,6 @@ gap: 2rem;
             color: $gray-900;
             font-size: 0.875rem;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
           }
 
@@ -1718,7 +1693,7 @@ gap: 2rem;
         .macro-percentage {
           font-size: 1.25rem;
           font-weight: 800;
-          color: $primary-color;
+          color: $text-primary;
           min-width: 60px;
           text-align: right;
         }
@@ -1758,7 +1733,7 @@ gap: 2rem;
 
 .hydration-card {
   @extend %card-base;
-  background: linear-gradient(135deg, $water-color 0%, #0984e3 100%);
+  background: $water-color;
   color: white;
   box-shadow: 0 25px 50px rgba(116, 185, 255, 0.3);
 
@@ -1825,7 +1800,6 @@ gap: 2rem;
           padding: 0.75rem 1rem;
           color: rgb(71, 130, 247);
           border: $border-width solid $border-color;
-          backdrop-filter: blur(10px);
           font-weight: 600;
 
           &:hover {
@@ -1849,10 +1823,9 @@ gap: 2rem;
           color: rgb(71, 130, 247);
           border-radius: $border-radius-lg;
           font-weight: 600;
-          backdrop-filter: blur(10px);
 
           &::placeholder {
-            color: rgba($surface-secondary, 0.7);
+            color: $text-muted;
           }
 
           &:focus {
@@ -1883,7 +1856,7 @@ gap: 2rem;
 
   .actions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
     gap: 1.5rem;
 
     .action-card {
@@ -1910,9 +1883,9 @@ gap: 2rem;
       }
 
       &.secondary {
-        background: $secondary-gradient;
-        color: $on-primary;
-        box-shadow: 0 8px 20px rgba($secondary-color, 0.3);
+        background: transparent;
+        border: $border-width solid $border-strong;
+        color: $text-primary;
       }
 
       &:hover {
@@ -1989,9 +1962,11 @@ gap: 2rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: $primary-gradient;
+          // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
+          // elle ne rivalise pas avec la donnee qu'elle accompagne.
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
           border-radius: $border-radius-2xl;
-          animation: float 6s ease-in-out infinite;
         }
 
         .meal-details {
@@ -2157,7 +2132,7 @@ gap: 2rem;
 
   .main-insights {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
     gap: 1.5rem;
 
     .insight-card {
@@ -2227,7 +2202,6 @@ gap: 2rem;
           border-radius: $border-radius;
           font-size: 0.75rem;
           font-weight: 600;
-          text-transform: uppercase;
 
           &.priority-high {
             background: rgba(220, 53, 69, 0.2);
@@ -2259,7 +2233,7 @@ gap: 2rem;
         margin-bottom: 1rem;
 
         strong {
-          color: $primary-color;
+          color: $text-primary;
           font-weight: 700;
         }
       }
@@ -2278,7 +2252,7 @@ gap: 2rem;
 
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
     gap: 1.5rem;
 
     .stat-item {
@@ -2320,7 +2294,7 @@ gap: 2rem;
 
   .achievements-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 1.5rem;
 
     .achievement-item {
@@ -2402,12 +2376,11 @@ gap: 2rem;
 
   .challenges-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 1.5rem;
 
     .challenge-item {
       background: rgba($surface-secondary, 0.8);
-      backdrop-filter: blur(10px);
       border: $border-width solid $border-color;
       border-radius: $border-radius-2xl;
       padding: 1.5rem;
@@ -2437,7 +2410,7 @@ gap: 2rem;
         }
 
         .challenge-reward {
-          background: linear-gradient(135deg, $c-amber-soft 0%, $c-terracotta 100%);
+          background: $c-amber-soft;
           color: $on-primary;
           padding: 0.5rem 1rem;
           border-radius: $border-radius-xl;
@@ -2524,13 +2497,11 @@ gap: 2rem;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: 2rem;
-  animation: fadeIn 0.3s ease-out;
 
   .modal-content {
     @include glass-card(0.95);
@@ -2538,7 +2509,6 @@ gap: 2rem;
     max-width: 900px;
 
     overflow: hidden;
-    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: $shadow-2xl;
 
     &.large {
@@ -2718,9 +2688,9 @@ gap: 2rem;
           box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
 
           &.secondary {
-            background: rgba($primary-color, 0.12);
+            background: transparent;
+            border: $border-width solid $border-strong;
             color: $text-primary;
-            border: 1px solid rgba($primary-color, 0.3);
           }
         }
       }
@@ -2794,7 +2764,6 @@ gap: 2rem;
             font-family: inherit;
             transition: all 0.3s ease;
             background: rgba($surface-secondary, 0.9);
-            backdrop-filter: blur(10px);
 
             &:focus {
               @include focus-ring;
@@ -2858,10 +2827,6 @@ gap: 2rem;
           color: $gray-900;
           font-size: 1.25rem;
           font-weight: 700;
-          background: $primary-gradient;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
         }
 
         .quantity-section {
@@ -2893,7 +2858,7 @@ gap: 2rem;
 
         .nutrition-preview {
           .nutrition-item {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             display: grid;
             justify-content: space-between;
             align-items: center;
@@ -2935,7 +2900,7 @@ gap: 2rem;
 
           .form-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
             gap: 1rem;
             margin-bottom: 1rem;
 
@@ -3052,7 +3017,7 @@ gap: 2rem;
           // Restrictions Grid
           .restrictions-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
             gap: 0.75rem;
 
             .restriction-btn {
@@ -3081,7 +3046,7 @@ gap: 2rem;
           // Objectives Grid
           .objectives-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
             gap: 0.75rem;
 
             .objective-btn {
@@ -3112,7 +3077,7 @@ gap: 2rem;
       // Templates Grid
       .templates-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
         gap: 1.5rem;
 
         .template-card {
@@ -3156,7 +3121,7 @@ gap: 2rem;
               }
 
               .template-type {
-                color: $primary-color;
+                color: $text-primary;
                 font-size: 0.875rem;
                 font-weight: 600;
               }
@@ -3228,7 +3193,8 @@ gap: 2rem;
               transition: all 0.3s ease;
 
               &.secondary {
-                background: rgba(0, 0, 0, 0.1);
+                background: transparent;
+                border: $border-width solid $border-strong;
                 color: $text-primary;
 
                 &:hover {
@@ -3267,7 +3233,8 @@ gap: 2rem;
         transition: all 0.3s ease;
 
         &.secondary {
-          background: rgba(0, 0, 0, 0.1);
+          background: transparent;
+          border: $border-width solid $border-strong;
           color: $text-primary;
 
           &:hover {
@@ -3311,7 +3278,6 @@ gap: 2rem;
     align-items: center;
     gap: 1rem;
     box-shadow: $shadow-xl;
-    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     border-left: 4px solid;
     position: relative;
     overflow: hidden;
@@ -3329,7 +3295,6 @@ gap: 2rem;
         rgba($surface-secondary, 0.1),
         transparent
       );
-      animation: shimmer 3s infinite;
     }
 
     &.notification-success {
@@ -3395,12 +3360,10 @@ gap: 2rem;
   width: 100%;
   height: 100%;
   background: rgba($surface-secondary, 0.9);
-  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1200;
-  animation: fadeIn 0.3s ease-out;
 
   .loading-spinner {
     text-align: center;
@@ -3436,7 +3399,7 @@ gap: 2rem;
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 
     &:not(.expanded) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
 
       .nutrient-item:not(:first-child) {
         display: none;
@@ -3444,7 +3407,7 @@ gap: 2rem;
     }
 
     &.expanded {
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
     }
 
     .nutrient-item {
@@ -3509,7 +3472,7 @@ gap: 2rem;
 
   .comparison-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 1.5rem;
 
     .diet-comparison-item {
@@ -3622,7 +3585,6 @@ gap: 2rem;
           border-radius: $border-radius-xl;
           font-size: 0.875rem;
           font-weight: 700;
-          text-transform: uppercase;
           margin-top: 0.5rem;
 
           &.facile {
@@ -3717,7 +3679,7 @@ gap: 2rem;
               content: "•";
               position: absolute;
               left: 0;
-              color: $primary-color;
+              color: $text-primary;
               font-weight: bold;
             }
           }
@@ -3726,7 +3688,7 @@ gap: 2rem;
 
       .diet-foods-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
         gap: 1.5rem;
 
         .foods-section {
@@ -3789,10 +3751,6 @@ gap: 2rem;
       font-size: 2rem;
       font-weight: 800;
       margin: 0 0 0.5rem 0;
-      background: $primary-gradient;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     p {
@@ -3844,7 +3802,7 @@ gap: 2rem;
 
     .hero-section {
       .quick-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .gamification-section {
@@ -3859,11 +3817,11 @@ gap: 2rem;
     .foods-grid,
     .diets-grid,
     .diet-actions-grid {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     }
 
     .templates-grid {
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     }
   }
 }
@@ -3901,10 +3859,11 @@ gap: 2rem;
       }
 
       .quick-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
 
-        .stat-item {
+        .stat-item,
+        .stat-card {
           padding: 1rem;
           flex-direction: column;
           text-align: center;
@@ -3970,11 +3929,11 @@ align-items: end;
     .diets-grid,
     .diet-actions-grid,
     .templates-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .categories-grid {
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
     }
 
     .meal-header {
@@ -4004,7 +3963,7 @@ align-items: end;
 
     .advanced-filters {
       .filters-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
@@ -4087,7 +4046,7 @@ align-items: end;
       padding: 1rem;
 
       .quick-stats {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       }
 
       .quick-actions {
@@ -4115,7 +4074,7 @@ align-items: end;
     }
 
     .categories-grid {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
       .category-card {
         .category-icon {
@@ -4254,8 +4213,6 @@ align-items: end;
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -4373,7 +4330,7 @@ textarea:focus {
 // Current Diet Tracking Card
 .current-diet-card {
   @extend %card-base;
-  background: linear-gradient(135deg, $primary-color 0%, #00b5ad 100%);
+  background: $primary-color;
   color: $on-primary;
   box-shadow: 0 25px 50px rgba($primary-color, 0.3);
   position: relative;
@@ -4392,7 +4349,6 @@ textarea:focus {
       rgba($surface-secondary, 0.1),
       transparent
     );
-    animation: shimmer 4s infinite;
   }
 
   .card-header {
@@ -4405,7 +4361,6 @@ textarea:focus {
       padding: 0.5rem 1rem;
       border-radius: $border-radius-xl;
       background: rgba($surface-secondary, 0.2);
-      backdrop-filter: blur(10px);
 
       &.score-excellent {
         background: rgba(34, 197, 94, 0.3);
@@ -4441,7 +4396,7 @@ textarea:focus {
       background: rgba($surface-secondary, 0.3);
 
       .progress-fill {
-        background: linear-gradient(90deg, rgba($surface-secondary, 0.8), white);
+        background: rgba($surface-secondary, 0.8);
         position: relative;
 
         &::after {
@@ -4457,7 +4412,6 @@ textarea:focus {
             rgba($surface-secondary, 0.5),
             transparent
           );
-          animation: shimmer 2s infinite;
         }
       }
     }
@@ -4469,12 +4423,12 @@ textarea:focus {
     justify-content: flex-end;
 
     .btn {
-      backdrop-filter: blur(10px);
       border: $border-width solid $border-color;
 
       &.secondary {
-        background: rgba($surface-secondary, 0.2);
-        color: $on-primary;
+        background: transparent;
+        border: $border-width solid $border-strong;
+        color: $text-primary;
 
         &:hover {
           background: rgba($surface-secondary, 0.3);
@@ -4543,7 +4497,7 @@ textarea:focus {
 
     &.details {
       background: rgba($primary-color, 0.2);
-      color: $primary-color;
+      color: $text-primary;
       border: $border-width solid $border-color;
 
       &:hover {
@@ -4584,22 +4538,20 @@ textarea:focus {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: linear-gradient(135deg, $c-green-500 0%, $c-green-600 100%);
+  background: $c-green-500;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: $border-radius-xl;
   font-size: 0.75rem;
   font-weight: 700;
-  animation: pulse 2s infinite;
   box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
-  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 // Currently Followed Diet Styling
 .diet-card.currently-followed {
   border: $border-width solid $border-color;
-  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($secondary-color, 0.1) 100%);
+  background: rgba($primary-color, 0.1);
   position: relative;
   overflow: hidden;
 
@@ -4616,7 +4568,6 @@ textarea:focus {
       rgba($primary-color, 0.1),
       transparent
     );
-    animation: shimmer 3s infinite;
   }
 
   &:hover {
@@ -4642,7 +4593,7 @@ textarea:focus {
 
   .diet-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
 
@@ -4736,7 +4687,7 @@ textarea:focus {
 
         .macro-percentage {
           font-weight: 800;
-          color: $primary-color;
+          color: $text-primary;
         }
       }
 
@@ -4765,7 +4716,6 @@ textarea:focus {
               rgba($surface-secondary, 0.3),
               transparent
             );
-            animation: shimmer 2s infinite;
           }
 
           &.carbs {
@@ -4794,7 +4744,7 @@ textarea:focus {
 // Diet Details Grid
 .diet-details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 
@@ -4829,7 +4779,7 @@ textarea:focus {
 
       .objective-tag {
         background: rgba($primary-color, 0.2);
-        color: $primary-color;
+        color: $text-primary;
         padding: 0.5rem 1rem;
         border-radius: $border-radius-lg;
         font-size: 0.875rem;
@@ -4862,7 +4812,7 @@ textarea:focus {
 
 // Current Tracking Section
 .current-tracking {
-  background: linear-gradient(135deg, rgba($primary-color, 0.1) 0%, rgba($secondary-color, 0.1) 100%);
+  background: rgba($primary-color, 0.1);
   padding: 1.5rem;
   border-radius: $border-radius-xl;
   border: $border-width solid $border-color;
@@ -4876,7 +4826,7 @@ textarea:focus {
 
   .tracking-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
 
@@ -4925,9 +4875,9 @@ textarea:focus {
 .modal-footer {
   .btn {
     &.tertiary {
-      background: rgba(59, 130, 246, 0.1);
-      color: $c-blue-500;
-      border: $border-width solid $border-color;
+      background: transparent;
+      border: 0;
+      color: $text-secondary;
 
       &:hover {
         background: rgba(59, 130, 246, 0.2);
@@ -5000,7 +4950,7 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba($primary-color, 0.35), rgba($secondary-color, 0.4));
+    background: rgba($primary-color, 0.35);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 
     .food-modal-image {
@@ -5032,7 +4982,7 @@ textarea:focus {
 .food-overview {
   .main-nutrients {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
     gap: 1rem;
     margin-bottom: 2rem;
 
@@ -5055,28 +5005,28 @@ textarea:focus {
       &.calories {
         border-color: $c-red-100;
         .nutrient-icon {
-          background: linear-gradient(135deg, $c-red-300 0%, #f56565 100%);
+          background: $c-red-300;
         }
       }
 
       &.protein {
         border-color: #c6f6d5;
         .nutrient-icon {
-          background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+          background: #68d391;
         }
       }
 
       &.carbs {
         border-color: #feebc8;
         .nutrient-icon {
-          background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+          background: #f6ad55;
         }
       }
 
       &.fat {
         border-color: #e9d8fd;
         .nutrient-icon {
-          background: linear-gradient(135deg, #b794f6 0%, #9f7aea 100%);
+          background: #b794f6;
         }
       }
 
@@ -5107,7 +5057,6 @@ textarea:focus {
           font-size: 0.8rem;
           color: $c-slate-500;
           font-weight: 500;
-          text-transform: uppercase;
           letter-spacing: 0.05em;
         }
       }
@@ -5140,7 +5089,7 @@ textarea:focus {
     gap: 0.5rem;
 
     .benefit-tag {
-      background: linear-gradient(135deg, $c-indigo-400 0%, $c-purple-500 100%);
+      background: $c-indigo-400;
       color: white;
       padding: 0.4rem 0.8rem;
       border-radius: 20px;
@@ -5167,7 +5116,7 @@ textarea:focus {
 
   .nutrients-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 2rem;
 
     .nutrient-category {
@@ -5244,19 +5193,19 @@ textarea:focus {
               transition: width 0.6s ease;
 
               &.calories {
-                background: linear-gradient(90deg, $c-red-300 0%, #f56565 100%);
+                background: $c-red-300;
               }
 
               &.protéines {
-                background: linear-gradient(90deg, #68d391 0%, #48bb78 100%);
+                background: #68d391;
               }
 
               &.glucides {
-                background: linear-gradient(90deg, #f6ad55 0%, #ed8936 100%);
+                background: #f6ad55;
               }
 
               &.lipides {
-                background: linear-gradient(90deg, #b794f6 0%, #9f7aea 100%);
+                background: #b794f6;
               }
             }
           }
@@ -5306,7 +5255,7 @@ textarea:focus {
 .food-indicators {
   .indicator-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
 
@@ -5328,7 +5277,7 @@ textarea:focus {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: linear-gradient(135deg, $c-indigo-400 0%, $c-purple-500 100%);
+        background: $c-indigo-400;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -5408,7 +5357,7 @@ textarea:focus {
 
 .nutrition-container .macro-value,
 .nutrition-container .highlight-value {
-  color: $primary-color;
+  color: $text-primary;
 }
 
 .nutrition-container .nutrition-progress,
@@ -5435,7 +5384,7 @@ textarea:focus {
 .scan-toggle {
   // Meme gabarit que .filters-toggle, mais accentue : le scan est l'action
   // la plus rapide pour ajouter un produit du commerce, elle doit se voir.
-  color: $primary-color;
+  color: $text-primary;
 }
 
 .community-badge {
@@ -5472,5 +5421,496 @@ textarea:focus {
   &:focus-visible {
     outline: 2px solid $primary-color;
     outline-offset: 3px;
+  }
+}
+
+
+// =============================================
+// EN-TETE D'ECRAN — TRAITEMENT COMPACT
+// =============================================
+//
+// L'ecran s'ouvrait sur un bloc centre : pictogramme, titre sur deux lignes,
+// phrase d'accroche, puis des cartes de statistiques de 150 px de haut. Sur
+// telephone l'ensemble remplissait le premier ecran et repoussait le contenu
+// reel — liste, recherche, filtres — sous la ligne de flottaison.
+//
+// Les selecteurs ci-dessous reprennent la profondeur des regles d'origine,
+// qui descendent jusqu'a cinq niveaux et vivent en partie dans des media
+// queries. Une media query n'ajoute pas de specificite : a egalite, la
+// derniere regle du fichier l'emporte.
+
+.nutrition-container {
+  .hero-section {
+    padding: 1.25rem 0 0.5rem;
+    margin: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+
+    .hero-background { display: none; }
+
+    .hero-content {
+      display: block;
+      padding: 0;
+      gap: 0;
+      text-align: left;
+
+      .title-section {
+        display: flex;
+        // row explicite : plusieurs ecrans forcaient la colonne, ce qui
+        // laissait le pictogramme seul et centre au-dessus du titre.
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0 0 1rem;
+        text-align: left;
+
+        .title-icon {
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          min-width: 34px;
+          min-height: 34px;
+          flex-shrink: 0;
+          margin: 0;
+          padding: 0;
+          border-radius: $radius-md;
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
+          font-size: 1rem;
+
+          app-icon { width: 18px; height: 18px; }
+        }
+
+        .title-content {
+          flex: 1;
+          min-width: 0;
+          text-align: left;
+
+          .page-title {
+            margin: 0;
+            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: $text-primary;
+            text-align: left;
+          }
+
+          .page-subtitle {
+            margin: 0.125rem 0 0;
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.45;
+            color: $text-secondary;
+            text-align: left;
+          }
+        }
+      }
+
+      // --- Statistiques : une ligne dense, pas des cartes ---
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+        gap: 0.5rem;
+        margin: 0 0 1.25rem;
+        padding: 0;
+
+        .stat-item,
+        .stat-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 0;
+
+          min-height: 0;
+          height: auto;
+          padding: 0.625rem 0.75rem;
+
+          border: $border-width solid $border-color;
+          border-radius: $radius-lg;
+          background: $surface-secondary;
+          text-align: left;
+
+          &::before, &::after { display: none; }
+          &:hover { transform: none; background: $surface-secondary; }
+
+          // Une icone n'apporte rien a cote d'un chiffre et de son libelle.
+          .stat-icon { display: none; }
+
+          .stat-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            text-align: left;
+
+            .stat-value {
+              font-size: 1.0625rem;
+              font-weight: 700;
+              line-height: 1.2;
+              color: $text-primary;
+              font-variant-numeric: tabular-nums;
+            }
+
+            .stat-label {
+              font-size: 0.6875rem;
+              font-weight: 500;
+              line-height: 1.3;
+              text-transform: none;
+              letter-spacing: 0;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    // Variante sans .hero-content, presente sur certains ecrans.
+    > .title-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0 0 1rem;
+      text-align: left;
+    }
+  }
+}
+
+
+// =============================================
+// BLOC DE PROGRESSION — ALIGNE SUR LA PALETTE
+// =============================================
+//
+// Ce bloc utilisait un ambre qui n'appartient a aucune des couleurs de l'app,
+// une pilule pleine pour le niveau et deux aplats pour les compteurs : quatre
+// elements se disputant l'attention pour une information secondaire.
+
+.nutrition-container .hero-section .gamification-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+
+  padding: 0.875rem 1rem;
+  border: $border-width solid $border-color;
+  border-radius: $radius-xl;
+  background: $surface-secondary;
+
+  .level-progress .level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    border: 0;
+    border-radius: $radius-pill;
+    background: rgba($primary-color, 0.14);
+    color: $text-primary;
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    .level-text { font-size: inherit; color: inherit; }
+    app-icon { width: 14px; height: 14px; }
+  }
+
+  .level-progress .xp-progress,
+  .xp-progress {
+    flex: 1 1 140px;
+    min-width: 120px;
+
+    .xp-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+
+      .xp-fill {
+        height: 100%;
+        border-radius: 2px;
+        background: $primary-color;
+      }
+    }
+
+    .xp-text {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.6875rem;
+      color: $text-secondary;
+    }
+  }
+
+  .points,
+  .streak {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3125rem;
+
+    padding: 0;
+    border: 0;
+    background: none;
+
+    color: $text-secondary;
+    font-size: 0.8125rem;
+    font-weight: 600;
+
+    app-icon { color: $text-muted; }
+  }
+}
+
+// Fleches de navigation de date : deux disques jaunes de 48 px pour changer
+// de jour. Elles redeviennent des boutons discrets.
+.nutrition-container .date-navigation-section {
+  .nav-btn,
+  .date-nav-btn,
+  button[class*='nav'] {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    padding: 0;
+    border: $border-width solid $border-color;
+    border-radius: $radius-md;
+    background: transparent;
+    color: $text-secondary;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: $text-primary;
+    }
+  }
+}
+
+/* =============================================
+ * NUTRITION — MISE EN PAGE FAISANT AUTORITE
+ * ============================================= */
+
+// ------------------------------------------------------------ macronutriments
+//
+// Quatre cartes dans une grille `auto-fit` a 280 px minimum : dans les 950 px
+// utiles il n'en passait que trois, et « Lipides » se retrouvait seul sur une
+// deuxieme rangee avec les deux tiers de la largeur vides. 220 px les fait
+// tenir sur une seule ligne.
+.macros-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)) !important;
+  gap: 0.75rem !important;
+
+  .macro-card {
+    padding: 1rem !important;
+    border-radius: $radius-xl !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: $border-width solid $border-color;
+
+    // Filet colore de 4 px en haut de chaque carte — rouge, vert, bleu,
+    // orange. Quatre couleurs vives alignees pour decorer quatre cartes qui
+    // portent deja leur intitule.
+    &::before,
+    &::after {
+      display: none !important;
+    }
+
+    // Trois enfants sur une ligne : icone, valeurs, pourcentage. Sans
+    // `min-width: 0` sur le bloc central, la carte ne peut pas retrecir sous
+    // la largeur de « 156.5g / 330g » et le pourcentage sortait du cadre —
+    // « 69% » s'affichait « 69 », « 46% » s'affichait « 4 ».
+    .macro-header {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: flex-start !important;
+      flex-wrap: nowrap;
+      gap: 0.5rem !important;
+      margin-bottom: 0.75rem;
+      text-align: left !important;
+    }
+
+    .macro-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .macro-values {
+      display: flex;
+      align-items: baseline;
+      gap: 0.1875rem;
+      flex-wrap: wrap;
+    }
+
+    .macro-percentage {
+      flex-shrink: 0;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .macro-icon {
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: $radius-sm !important;
+
+      svg { width: 15px; height: 15px; }
+    }
+
+    h4 {
+      margin: 0 0 0.125rem !important;
+      font-size: 0.8125rem !important;
+      font-weight: 500 !important;
+      color: $text-secondary !important;
+    }
+
+    .macro-values {
+      font-variant-numeric: tabular-nums;
+
+      .current  { font-size: 1.125rem; font-weight: 650; color: $text-primary; }
+      .separator,
+      .goal     { font-size: 0.8125rem; color: $text-muted; }
+    }
+
+    // Le pourcentage etait en lime, en graisse 800, plus gros que la valeur
+    // qu'il resume.
+    .macro-percentage,
+    .percentage {
+      font-size: 0.8125rem !important;
+      font-weight: 600 !important;
+      color: $text-secondary !important;
+    }
+
+    .macro-progress,
+    .progress-bar {
+      height: 4px !important;
+      border-radius: $radius-pill !important;
+      background: rgba(255, 255, 255, 0.09) !important;
+      overflow: hidden;
+
+      .progress-fill,
+      .macro-fill {
+        border-radius: $radius-pill !important;
+        background: $primary-color !important;
+      }
+    }
+
+    .macro-remaining,
+    .remaining {
+      font-size: 0.75rem !important;
+      color: $text-muted !important;
+    }
+  }
+}
+
+// ---------------------------------------------------------------- hydratation
+//
+// La carte etait un aplat bleu vif ($water-color) avec du texte blanc, dans
+// une interface par ailleurs entierement sombre et neutre. Deux defauts
+// s'y ajoutaient :
+//
+//   .water-input { background: rgb(71, 130, 247); color: rgb(71, 130, 247); }
+//
+// soit un texte de la couleur exacte de son fond — le champ de saisie
+// personnalisee etait litteralement illisible, et se lisait comme une grosse
+// barre bleue pleine largeur.
+//
+// Elle redevient une carte comme les autres ; le bleu est reserve au niveau
+// d'eau, ou il porte le sens.
+.hydration-card {
+  background: $surface-secondary !important;
+  color: $text-primary !important;
+  box-shadow: none !important;
+  border: $border-width solid $border-color;
+
+  .card-header .hydration-percentage {
+    font-size: 1rem !important;
+    font-weight: 650 !important;
+    color: $text-primary !important;
+    text-shadow: none !important;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hydration-visual {
+    gap: 1rem !important;
+    align-items: stretch !important;
+  }
+
+  // Le verre : 80x120 px pour un indicateur secondaire. Une jauge verticale
+  // fine suffit.
+  .water-container {
+    width: 28px !important;
+    height: 88px !important;
+    border-radius: $radius-pill !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border: 0 !important;
+    flex-shrink: 0;
+
+    .water-level {
+      background: $info-color !important;
+      border-radius: $radius-pill !important;
+
+      // Les vagues animees a la surface du niveau d'eau.
+      .water-waves { display: none !important; }
+    }
+  }
+
+  .water-controls { gap: 0.625rem !important; }
+
+  .quick-water { gap: 0.375rem !important; }
+
+  .water-btn {
+    padding: 0 0.625rem !important;
+    min-height: 32px !important;
+    border-radius: $radius-sm !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: $border-width solid $border-color !important;
+    color: $text-secondary !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.09) !important;
+      color: $text-primary !important;
+      border-color: $border-strong !important;
+    }
+  }
+
+  .custom-water { gap: 0.5rem !important; }
+
+  // Texte et fond etaient de la meme couleur.
+  .water-input {
+    padding: 0 0.75rem !important;
+    min-height: 34px !important;
+    background: $surface-tertiary !important;
+    border: $border-width solid $border-color !important;
+    color: $text-primary !important;
+    border-radius: $radius-sm !important;
+    font-size: 0.8125rem !important;
+    font-weight: 400 !important;
+
+    &::placeholder { color: $text-muted !important; }
+  }
+
+  .add-water-btn {
+    min-width: 34px !important;
+    min-height: 34px !important;
+    border-radius: $radius-sm !important;
+    background: $primary-color !important;
+    border-color: transparent !important;
+    color: $on-primary !important;
+  }
+}
+
+// --------------------------------------------------- cartes sans contenu utile
+//
+// Plusieurs cartes n'affichaient qu'un en-tete suivi d'un conteneur vide :
+// le rembourrage et la marge basse de l'en-tete produisaient alors 80 a 130 px
+// de vide. Les `*ngIf` ajoutes au gabarit reglent le cas a la source ; ce
+// garde-fou couvre les listes qui se videraient a l'usage.
+.workout-context-card,
+.personalized-tips-card {
+  padding: 1rem 1.25rem !important;
+
+  .card-header { margin-bottom: 0 !important; }
+
+  .context-tags,
+  .tips-grid {
+    &:not(:empty) { margin-top: 1rem; }
   }
 }

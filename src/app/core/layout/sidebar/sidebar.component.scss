@@ -63,7 +63,6 @@
     width: 100vw;
     z-index: 1001;
     background: rgba($surface-secondary, 0.98);
-    backdrop-filter: blur(20px);
     box-shadow: none;
 
     &.show {
@@ -243,7 +242,6 @@
     .nav-title {
       font-size: 0.7rem;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 0.1em;
       color: $text-muted;
       margin: 0 0 1rem 1.25rem;
@@ -390,7 +388,6 @@
             }
 
             .nav-indicator {
-              animation: pulse 2s ease infinite;
             }
           }
 
@@ -434,7 +431,7 @@
           }
 
           .nav-indicator {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: #f093fb;
             color: $on-primary;
             font-size: 0.7rem;
             font-weight: 700;
@@ -549,7 +546,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, $primary-color 0%, #1da460 100%);
+        // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
+        // elle ne rivalise pas avec la donnee qu'elle accompagne.
+        background: rgba($primary-color, 0.12);
+        color: $text-primary;
         border: $border-width solid $border-color;
         transition: var(--transition);
         box-shadow: 0 4px 12px rgba($primary-color, 0.2);
@@ -676,7 +676,7 @@
           }
 
           svg {
-            color: $primary-color;
+            color: $text-primary;
             margin-bottom: 0.1rem;
             width: 14px;
             height: 14px;
@@ -691,7 +691,7 @@
           .stat-value {
             font-size: 0.8rem;
             font-weight: 700;
-            color: $primary-color;
+            color: $text-primary;
             line-height: 1;
 
             @include respond-below(md) {
@@ -703,8 +703,7 @@
           .stat-label {
             font-size: 0.6rem;
             font-weight: 600;
-            color: $primary-color;
-            text-transform: uppercase;
+            color: $text-secondary;
             letter-spacing: 0.03em;
 
             @include respond-below(md) {
@@ -731,7 +730,7 @@
           transition: var(--transition);
           cursor: pointer;
           border: none;
-          background: linear-gradient(135deg, $c-red-500 0%, $c-red-600 100%);
+          background: $c-red-500;
           color: $on-primary;
           box-shadow: 0 3px 10px rgba(239, 68, 68, 0.3);
           min-height: 36px;
@@ -750,7 +749,7 @@
           &:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
-            background: linear-gradient(135deg, $c-red-600 0%, #b91c1c 100%);
+            background: $c-red-600;
 
             @include respond-below(md) {
               transform: translateY(-1px);
@@ -854,7 +853,7 @@
         }
 
         svg {
-          color: $primary-color;
+          color: $text-primary;
           width: 13px;
           height: 13px;
 
@@ -913,7 +912,7 @@
   .logo-icon {
     background: rgba($primary-color, 0.15);
     border: $border-width solid $border-color;
-    color: $primary-color;
+    color: $text-primary;
     animation: none;
     box-shadow: none;
 
@@ -1147,7 +1146,6 @@
     padding: 1.125rem;
     border-radius: 1rem;
     box-shadow: 0 6px 20px rgba($primary-color, 0.4);
-    backdrop-filter: blur(10px);
     border: $border-width solid $border-color;
   }
 
@@ -1297,8 +1295,249 @@
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* =============================================
+ * PASSE DE LISIBILITE — BLOC FAISANT AUTORITE
+ * =============================================
+ *
+ * Ce fichier empile trois generations de styles : les regles d'origine
+ * profondement imbriquees (`.sidebar .sidebar-nav .nav-section .nav-list
+ * .nav-item .nav-link.active`, soit une specificite de 0-7-0), un premier bloc
+ * « DARK NEON THEME OVERRIDES » a 0-2-0 qui ne les atteignait donc jamais, et
+ * une serie de correctifs mobiles en `!important`.
+ *
+ * Resultat concret : le bloc d'override posait `color: $text-inverse` (#0a0a0b)
+ * sur un fond lime translucide — invisible — mais ne s'appliquait pas ; c'est
+ * la regle imbriquee, en lime fluo, qui gagnait. Les deux etaient a corriger.
+ *
+ * Ce bloc final tranche. Le `!important` n'est pas une facilite : c'est le seul
+ * moyen d'avoir le dernier mot sur une chaine a 0-7-0 sans reecrire les
+ * 1 300 lignes qui precedent.
+ */
+
+.sidebar {
+  // Le tiroir n'est plus une carte flottante detachee du bord de l'ecran :
+  // il occupe toute la hauteur, colle au bord, comme une vraie barre laterale.
+  top: 1rem;
+  left: 1rem;
+  bottom: 1rem;
+  border-radius: $radius-xl;
+  background: $surface-secondary;
+  border: $border-width solid $border-color;
+}
+
+.sidebar-header {
+  padding: 1.25rem 1rem !important;
+
+  .logo {
+    padding: 0 !important;
+
+    &:hover { background: transparent !important; }
+  }
+
+  // La pastille du logo etait un aplat lime anime par `gradient-flow`, avec
+  // un halo. C'est le seul endroit ou la couleur de marque a sa place en
+  // aplat : on la garde, sans mouvement ni rayonnement.
+  .logo-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: $radius-sm !important;
+    background: $primary-color !important;
+    border-color: transparent !important;
+    color: $on-primary !important;
+
+    svg { width: 20px; height: 20px; }
+  }
+
+  // Le nom de l'app etait peint en lime : c'est un titre, pas une action.
+  .logo-text {
+    font-size: 1.0625rem !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.01em;
+    color: $text-primary !important;
+    -webkit-text-fill-color: $text-primary !important;
+  }
+}
+
+.sidebar-nav {
+  .nav-title {
+    color: $text-muted !important;
+    font-size: 0.6875rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    &::after { display: none !important; }
+  }
+
+  .nav-item { margin-bottom: 0.125rem !important; }
+
+  .nav-link {
+    padding: 0.625rem 0.75rem !important;
+    min-height: 40px !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    border-radius: $radius-sm !important;
+    border-color: transparent !important;
+    background: transparent !important;
+    color: $text-secondary !important;
+    box-shadow: none !important;
+
+    // Ni deplacement lateral, ni agrandissement d'icone, ni halo : seule la
+    // surface change.
+    &:hover {
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: $text-primary !important;
+      border-color: transparent !important;
+
+      .nav-icon { color: inherit !important; svg { stroke: currentColor !important; } }
+    }
+
+    // Etat actif : c'est le seul usage du lime dans la navigation, et il
+    // porte sur le TEXTE, pas sur un aplat — un aplat lime sur 320px de large
+    // deseequilibrait toute la colonne.
+    &.active {
+      background: rgba(255, 255, 255, 0.07) !important;
+      color: $text-primary !important;
+      border-color: transparent !important;
+      font-weight: 600 !important;
+      box-shadow: none !important;
+
+      .nav-icon {
+        color: $primary-color !important;
+        svg { stroke: $primary-color !important; }
+      }
+    }
+
+    .nav-icon {
+      width: 18px !important;
+      height: 18px !important;
+      color: currentColor !important;
+
+      svg { width: 18px; height: 18px; stroke-width: 1.75; }
+    }
+
+    .nav-text { font-weight: inherit !important; }
+
+    // Les compteurs etaient un aplat rose vif (#f093fb) pour l'un, un degrade
+    // lime-vert pour l'autre, un degrade jaune-violet pour le troisieme : trois
+    // couleurs sans signification, sur trois entrees de menu.
+    .nav-indicator {
+      min-width: 20px !important;
+      padding: 0.0625rem 0.375rem !important;
+      border-radius: $radius-xs !important;
+      background: rgba(255, 255, 255, 0.09) !important;
+      border-color: transparent !important;
+      color: $text-secondary !important;
+      font-size: 0.6875rem !important;
+      font-weight: 600 !important;
+      box-shadow: none !important;
+
+      &.new,
+      &.active {
+        background: rgba($primary-color, 0.16) !important;
+        border-color: transparent !important;
+        color: $primary-light !important;
+      }
+    }
+  }
+}
+
+.user-section {
+  background: transparent !important;
+
+  .user-card {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0.75rem !important;
+
+    &:hover { background: transparent !important; }
+  }
+
+  .user-avatar-placeholder,
+  .user-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: $radius-pill !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: transparent !important;
+    color: $text-secondary !important;
+    box-shadow: none !important;
+  }
+
+  .user-name {
+    color: $text-primary !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+  }
+
+  // Les deux compteurs « Score » et « Jours » etaient des pilules noires a
+  // chiffres lime. Ils redeviennent du texte : une valeur, un libelle.
+  .user-stats .stat-item {
+    min-height: 0 !important;
+    padding: 0.5rem !important;
+    border-radius: $radius-sm !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+
+    .stat-value {
+      color: $text-primary !important;
+      font-size: 0.9375rem !important;
+      font-weight: 650 !important;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+      color: $text-muted !important;
+      font-size: 0.6875rem !important;
+      font-weight: 500 !important;
+    }
+
+    svg { color: $text-muted !important; }
+  }
+}
+
+/* La deconnexion etait un bouton rouge plein, pleine largeur, avec un halo :
+ * l'element le plus visible de la barre laterale pour l'action qu'on souhaite
+ * le moins declencher. Elle passe en action discrete. */
+.user-actions .logout-btn {
+  min-height: 36px !important;
+  border-radius: $radius-sm !important;
+  background: transparent !important;
+  border: $border-width solid $border-color !important;
+  color: $text-secondary !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+
+  &:hover {
+    background: rgba($danger-color, 0.1) !important;
+    border-color: rgba($danger-color, 0.4) !important;
+    color: $error-light !important;
+  }
+}
+
+.sidebar-footer {
+  .app-version,
+  .last-sync {
+    color: $text-muted !important;
+    font-size: 0.6875rem !important;
+    font-weight: 400 !important;
+  }
+
+  svg { color: $text-muted !important; }
+}
+
+/* Le bouton burger mobile etait un carre lime de 56px avec un halo, alors que
+ * la navigation mobile passe entierement par <app-bottom-nav> : il ne servait
+ * plus a rien. */
+.mobile-toggle {
+  background: $surface-tertiary !important;
+  border: $border-width solid $border-color !important;
+  color: $text-primary !important;
+  box-shadow: none !important;
 }

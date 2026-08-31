@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkoutService } from '@app/services/workout.service';
 import { LoadSuggestion, LoggedSet, TrainingLogService } from '@app/services/training-log.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 /** Un exercice tel que l'API le renvoie : le pivot est aplati dans l'objet. */
 interface SessionExercise {
@@ -51,7 +52,7 @@ const RESUME_KEY = 'fitnesspro.activeSession';
 @Component({
   selector: 'app-workout-session',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './workout-session.component.html',
   styleUrls: ['./workout-session.component.scss'],
 })

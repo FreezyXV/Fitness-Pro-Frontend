@@ -90,14 +90,14 @@
             (click)="goToToday()"
             [disabled]="isToday(selectedDay?.fullDate)"
             type="button">
-      <i class="fas fa-calendar-day"></i>
+      <app-icon name="calendar"></app-icon>
       Aujourd'hui
     </button>
     <button class="action-btn schedule-btn" 
             (click)="scheduleWorkout()"
             [disabled]="!selectedDay"
             type="button">
-      <i class="fas fa-plus"></i>
+      <app-icon name="plus"></app-icon>
       Planifier
     </button>
   </div>
@@ -108,11 +108,11 @@
       <h4>{{ getSelectedDateText() }}</h4>
       <div class="day-stats" *ngIf="getDayStats(selectedDay)">
         <span class="stat-item">
-          <i class="fas fa-dumbbell"></i>
+          <app-icon name="dumbbell"></app-icon>
           {{ getDayStats(selectedDay).workouts }}
         </span>
         <span class="stat-item">
-          <i class="fas fa-fire"></i>
+          <app-icon name="flame"></app-icon>
           {{ getDayStats(selectedDay).calories }}cal
         </span>
       </div>
@@ -140,9 +140,7 @@
                       (click)="toggleActivityComplete(activity)"
                       [title]="activity.completed ? 'Marquer comme non terminé' : 'Marquer comme terminé'"
                       type="button">
-                <i class="fas" 
-                   [class.fa-check]="activity.completed" 
-                   [class.fa-circle]="!activity.completed"></i>
+                <app-icon [name]="activity.completed ? 'check-circle' : 'circle'"></app-icon>
               </button>
             </div>
           </div>
@@ -151,7 +149,7 @@
 
       <ng-template #emptyDay>
         <div class="no-activities">
-          <i class="fas fa-calendar-plus"></i>
+          <app-icon name="calendar"></app-icon>
           <p>Aucune activité prévue</p>
           <button class="btn btn-sm btn-outline" 
                   (click)="scheduleWorkout()"
@@ -171,7 +169,7 @@
         <button class="btn-close" 
                 (click)="hideMonthPicker()"
                 type="button">
-          <i class="fas fa-times"></i>
+          <app-icon name="close"></app-icon>
         </button>
       </div>
       <div class="month-picker-grid">
@@ -188,7 +186,7 @@
 
   <!-- Error state -->
   <div class="calendar-error" *ngIf="error">
-    <i class="fas fa-exclamation-triangle"></i>
+    <app-icon name="alert"></app-icon>
     <p>{{ error }}</p>
     <button class="btn btn-sm" (click)="retryLoad()" type="button">
       Réessayer

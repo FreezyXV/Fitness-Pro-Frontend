@@ -83,9 +83,19 @@ describe('TrainingLogService — agregations', () => {
   it('calcule le volume hebdomadaire et garde les semaines vides', () => {
     svc.appendSets(session(2, 50, 10, 3));   // 3 x 10 x 50 = 1500 kg
     const weeks = svc.weeklyVolume(4);
+
     expect(weeks.length).toBe(4);
-    expect(weeks[weeks.length - 1].volumeKg).toBe(1500);
-    expect(weeks[0].volumeKg).toBe(0);
+
+    // On somme sur la fenetre plutot que de viser la derniere semaine : selon
+    // le jour ou le test s'execute, « il y a 2 jours » tombe dans la semaine
+    // courante ou dans la precedente. La version initiale echouait le lundi.
+    const total = weeks.reduce((sum, w) => sum + w.volumeKg, 0);
+    expect(total).toBe(1500);
+
+    // Une seule semaine porte du volume ; les autres restent a zero et sont
+    // bien conservees dans la serie.
+    expect(weeks.filter(w => w.volumeKg > 0).length).toBe(1);
+    expect(weeks.filter(w => w.volumeKg === 0).length).toBe(3);
   });
 
   it('retient la serie la plus lourde du jour', () => {

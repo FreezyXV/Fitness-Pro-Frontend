@@ -57,9 +57,9 @@ export const APP_CONFIG = {
         value: 'intermediate',
         label: 'Intermédiaire',
         icon: '🟡',
-        color: '#ff9800',
+        color: '#fdba74',
       },
-      { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#f44336' },
+      { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
     ],
     CATEGORIES: [
       { value: 'strength', label: 'Force', icon: '💪', color: '#ff6384' },
@@ -96,8 +96,8 @@ export const APP_CONFIG = {
 
   DIFFICULTY_LEVELS: [
     { value: 'beginner', label: 'Débutant', color: '#4caf50' },
-    { value: 'intermediate', label: 'Intermédiaire', color: '#ff9800' },
-    { value: 'advanced', label: 'Avancé', color: '#f44336' },
+    { value: 'intermediate', label: 'Intermédiaire', color: '#fdba74' },
+    { value: 'advanced', label: 'Avancé', color: '#fc8181' },
   ],
 
   // Pagination
@@ -162,12 +162,12 @@ export class BMIUtils {
 
   static getColor(bmi: number): string {
     // Teintes calibrees pour le fond SOMBRE de l'app : les valeurs
-    // precedentes (#6b7280, #3b82f6, #ef4444) tombaient entre 3,6:1 et 4,0:1.
-    if (!bmi || bmi === 0 || isNaN(bmi)) return '#cbd0c2'; // = $text-secondary, etat neutre
+    // precedentes (#8f8f98, #7ecbff, #fc8181) tombaient entre 3,6:1 et 4,0:1.
+    if (!bmi || bmi === 0 || isNaN(bmi)) return '#a1a1aa'; // = $text-secondary, etat neutre
 
     if (bmi < 18.5) return '#7aa9ff'; // bleu, insuffisance ponderale
     if (bmi < 25) return '#34d399';   // vert, intervalle de reference
-    if (bmi < 30) return '#fbbf24';   // ambre
+    if (bmi < 30) return '#fdba74';   // ambre
     return '#ff7a7a';                 // rouge
   }
 
@@ -233,10 +233,10 @@ export class BMIUtils {
     color: string;
   }> {
     return [
-      { label: 'Sous-poids', range: '< 18.5', color: '#3b82f6' },
-      { label: 'Normal', range: '18.5 - 24.9', color: '#21BF73' },
-      { label: 'Surpoids', range: '25 - 29.9', color: '#f59e0b' },
-      { label: 'Obésité', range: '≥ 30', color: '#ef4444' },
+      { label: 'Sous-poids', range: '< 18.5', color: '#7ecbff' },
+      { label: 'Normal', range: '18.5 - 24.9', color: '#d4ff3d' },
+      { label: 'Surpoids', range: '25 - 29.9', color: '#fdba74' },
+      { label: 'Obésité', range: '≥ 30', color: '#fc8181' },
     ];
   }
 

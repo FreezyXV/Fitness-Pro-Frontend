@@ -147,7 +147,7 @@
 
     <!-- ============ RESULTAT ============ -->
     <div class="ob-result" *ngIf="step() === totalSteps">
-      <div class="ob-check" aria-hidden="true">✓</div>
+      <div class="ob-check" aria-hidden="true"><app-icon name="check"></app-icon></div>
       <h1 class="ob-title">Ton profil est prêt</h1>
 
       <ng-container *ngIf="suggestion() as program; else noProgram">

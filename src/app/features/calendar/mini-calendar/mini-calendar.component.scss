@@ -67,7 +67,7 @@
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 2px;
   margin-bottom: 1rem;
 
@@ -77,7 +77,6 @@
     font-weight: 600;
     color: $text-primary;
     padding: 0.5rem 0;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
@@ -473,5 +472,55 @@
     .btn {
       width: 100%;
     }
+  }
+}
+
+
+// =============================================
+// GRILLE DES JOURS — ALLEGEE
+// =============================================
+//
+// Chaque case portait une bordure et un fond : 42 cercles cernes par mois,
+// soit une grille qui vibre au lieu de se lire. Seuls le jour courant et les
+// jours porteurs d'activite ont besoin d'etre distingues.
+
+.mini-calendar-container .calendar-grid .calendar-day {
+  border: 0;
+  background: none;
+  border-radius: $radius-md;
+
+  &:hover { background: rgba(255, 255, 255, 0.05); }
+
+  &.today {
+    background: rgba($primary-color, 0.14);
+    border: 0;
+  }
+
+  &.selected {
+    background: $primary-color;
+
+    .day-number { color: $on-primary; }
+  }
+}
+
+
+// Les deux actions du calendrier etaient deux aplats concurrents : un lime a
+// 70 % et un vert « succes » a 60 %. Deux boutons de meme poids visuel, donc
+// aucune hierarchie — et un vert qui n'appartient pas a la palette.
+.mini-calendar-container .calendar-actions .action-btn {
+  &.today-btn {
+    background: $primary-color;
+    border: 0;
+    color: $on-primary;
+
+    &:hover { background: $primary-light; }
+  }
+
+  &.schedule-btn {
+    background: transparent;
+    border: $border-width solid $border-strong;
+    color: $text-primary;
+
+    &:hover { background: rgba(255, 255, 255, 0.05); }
   }
 }

@@ -9,6 +9,7 @@ import { map, switchMap, catchError, retry, delay, debounceTime, distinctUntilCh
 
 import { Exercise, ExerciseFilters, APP_CONFIG,  WorkoutUtils, StorageUtils } from '@shared';
 import { ExercisesService } from '@app/services/exercises.service';
+import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 interface UIState {
   isLoading: boolean;
@@ -41,7 +42,7 @@ interface InstructionState {
 @Component({
   selector: 'app-exercises-detail-modern',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, IconComponent],
   templateUrl: './exercises-detail.component.html',
   styleUrls: ['./exercises-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

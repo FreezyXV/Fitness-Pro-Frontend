@@ -27,9 +27,9 @@
             [class.error]="isFieldInvalid('email')"
             [class.valid]="isFieldValid('email')"
           />
-          <i class="input-icon fas fa-envelope"></i>
-          <i *ngIf="isFieldValid('email')" 
-             class="validation-icon fas fa-check valid"></i>
+          <app-icon name="mail" class="input-icon"></app-icon>
+          <app-icon *ngIf="isFieldValid('email')" name="check"
+                    class="validation-icon valid"></app-icon>
         </div>
         <div *ngIf="isFieldInvalid('email')" 
              class="text-error">
@@ -49,11 +49,10 @@
             [class.error]="isFieldInvalid('password')"
             [class.valid]="isFieldValid('password')"
           />
-          <i class="input-icon fas" 
-             [class.fa-eye]="!showPassword"
-             [class.fa-eye-slash]="showPassword"
-             (click)="togglePasswordVisibility()"
-             style="cursor: pointer;"></i>
+          <app-icon class="input-icon"
+                    [name]="showPassword ? 'eye-off' : 'eye'"
+                    (click)="togglePasswordVisibility()"
+                    style="cursor: pointer;"></app-icon>
         </div>
         <div *ngIf="isFieldInvalid('password')" 
              class="text-error">
@@ -98,7 +97,7 @@
       (click)="onGuestLogin()"
       [disabled]="isLoading"
       class="guest-btn">
-      <i class="fas fa-user-secret"></i>
+      <app-icon name="user"></app-icon>
       Continuer en tant qu'invité
     </button>
 

@@ -238,7 +238,7 @@
               </div>
             </div>
             <div class="empty-day-message" *ngIf="getSelectedDateEvents().length === 0">
-              <div class="empty-icon">📅</div>
+              <div class="empty-icon"><app-icon name="calendar"></app-icon></div>
               <h4>Aucun événement</h4>
               <p>Aucun événement planifié pour cette date</p>
             </div>
@@ -255,7 +255,7 @@
           </div>
           <div class="stats-grid">
             <div class="stat-item workout">
-              <div class="stat-icon">💪</div>
+              <div class="stat-icon"><app-icon name="dumbbell"></app-icon></div>
               <div class="stat-content">
                 <div class="stat-number">{{monthStats.totalWorkouts}}</div>
                 <div class="stat-label">Entraînements</div>
@@ -269,14 +269,14 @@
               </div>
             </div>
             <div class="stat-item completion">
-              <div class="stat-icon">✅</div>
+              <div class="stat-icon"><app-icon name="check-circle"></app-icon></div>
               <div class="stat-content">
                 <div class="stat-number">{{monthStats.completionRate}}%</div>
                 <div class="stat-label">Complétés</div>
               </div>
             </div>
             <div class="stat-item events">
-              <div class="stat-icon">📅</div>
+              <div class="stat-icon"><app-icon name="calendar"></app-icon></div>
               <div class="stat-content">
                 <div class="stat-number">{{monthStats.totalEvents}}</div>
                 <div class="stat-label">Événements</div>
@@ -349,7 +349,7 @@
 
             <!-- Empty State -->
             <div class="empty-state" *ngIf="getSelectedDateEvents().length === 0">
-              <div class="empty-icon">📅</div>
+              <div class="empty-icon"><app-icon name="calendar"></app-icon></div>
               <h4>Aucun événement</h4>
               <p>Aucun événement planifié pour cette date</p>
               <button class="btn btn-primary" (click)="addNewEvent()">

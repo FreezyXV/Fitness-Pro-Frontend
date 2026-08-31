@@ -7,8 +7,6 @@
 // Enhanced Mixins
 @mixin enhanced-glass-card($opacity: 0.98, $blur: 28px) {
   background: rgba($surface-secondary, $opacity);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -30,7 +28,6 @@
   border-radius: 16px;
   font-weight: 700;
   font-size: 0.9rem;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -259,7 +256,6 @@ padding: 0.25rem;
       border-radius: 20px;
       border: none;
       background: rgba($surface-secondary, 0.95);
-      backdrop-filter: blur(16px);
       color: $gray-700;
       font-weight: 700;
       text-decoration: none;
@@ -299,7 +295,6 @@ padding: 0.25rem;
         border-radius: 50%;
         border: none;
         background: rgba($surface-secondary, 0.95);
-        backdrop-filter: blur(16px);
         color: $text-primary;
         display: flex;
         align-items: center;
@@ -367,10 +362,8 @@ padding: 0.25rem;
         padding: 1rem 0.5rem;
         border-radius: 20px;
         font-weight: 800;
-        text-transform: uppercase;
         letter-spacing: 0.05em;
         background: rgba($surface-secondary, 0.95);
-        backdrop-filter: blur(16px);
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         border: $border-width solid $border-color;
 
@@ -432,7 +425,7 @@ padding: 0.25rem;
       }
 
       .body-part-badge {
-        color: $primary-color;
+        color: $text-secondary;
         border: $border-width solid $border-color;
         background: rgba($primary-color, 0.05);
       }
@@ -460,12 +453,7 @@ padding: 0.25rem;
       color: $gray-900;
       margin: 0 0 1.5rem 0;
       text-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      background: $primary-dark;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-size: 200% 200%;
-      animation: gradient-animation 4s ease infinite;
     }
 
     .exercise-description {
@@ -485,23 +473,23 @@ padding: 0.25rem;
   // Enhanced Quick Stats
   .quick-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
     gap: 2rem;
 
     @include respond-below(md) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.5rem;
       padding: 0 0.5rem;
     }
 
     @include respond-below(sm) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1rem;
       padding: 0;
     }
 
     @include respond-below(xs) {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 0.875rem;
     }
 
@@ -548,7 +536,6 @@ padding: 0.25rem;
         .stat-label {
           font-size: clamp(0.8rem, 2vw, 0.9rem);
           color: $text-primary;
-          text-transform: uppercase;
           letter-spacing: 0.1em;
           font-weight: 700;
         }
@@ -563,7 +550,7 @@ padding: 0.25rem;
 
 // Enhanced Main Content Layout with improved responsive behavior
 .main-content-layout {
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
   align-items: start;
   width: 100%;
@@ -571,13 +558,13 @@ padding: 0.25rem;
   margin: 0 auto;
 
   @include respond-above(lg) {
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: 1.5fr minmax(0, 1fr);
     gap: 2.5rem;
  
   }
 
   @include respond-above(xl) {
-    grid-template-columns: 1.6fr 1fr;
+    grid-template-columns: 1.6fr minmax(0, 1fr);
     gap: 3rem;
 
   }
@@ -619,7 +606,6 @@ padding: 0.25rem;
   @include enhanced-glass-card(0.97, 24px);
   border-radius: 24px;
   padding: 2rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -661,7 +647,6 @@ padding: 0.25rem;
         border-radius: 16px;
         font-size: 0.875rem;
         font-weight: 700;
-        text-transform: uppercase;
         letter-spacing: 0.05em;
 
         &.success {
@@ -736,8 +721,7 @@ padding: 0.25rem;
             border-radius: 50%;
             border: none;
             background: rgba($surface-secondary, 0.95);
-            backdrop-filter: blur(20px);
-            color: $primary-color;
+            color: $text-primary;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -770,7 +754,6 @@ padding: 0.25rem;
         .video-controls {
           padding: 2rem;
           background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(20px);
 
           .progress-container {
             margin-bottom: 1.5rem;
@@ -824,7 +807,6 @@ padding: 0.25rem;
               border-radius: 50%;
               border: none;
               background: rgba($surface-secondary, 0.2);
-              backdrop-filter: blur(10px);
               color: $on-primary;
               display: flex;
               align-items: center;
@@ -852,7 +834,6 @@ padding: 0.25rem;
         align-items: center;
         justify-content: center;
         background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(20px);
         color: $on-primary;
 
         .loading-spinner {
@@ -919,7 +900,6 @@ padding: 0.25rem;
   @include enhanced-glass-card(0.97, 24px);
   border-radius: 24px;
   padding: 2rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -1186,7 +1166,6 @@ width: 100%;
   @include enhanced-glass-card(0.95, 20px);
   border-radius: 20px;
   padding: 2rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
   @include enhanced-hover-lift;
   width: 100%;
   max-width: 100%;
@@ -1268,7 +1247,6 @@ width: 100%;
           color: $text-primary;
           font-size: 0.8rem;
           font-weight: 700;
-          text-transform: uppercase;
           letter-spacing: 0.05em;
           margin-bottom: 0.5rem;
         }
@@ -1289,7 +1267,6 @@ width: 100%;
   @include enhanced-glass-card(0.95, 20px);
   border-radius: 20px;
   padding: 2rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
   @include enhanced-hover-lift;
   width: 100%;
   max-width: 100%;
@@ -1379,7 +1356,6 @@ width: 100%;
   @include enhanced-glass-card(0.95, 20px);
   border-radius: 20px;
   padding: 2rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1s both;
   @include enhanced-hover-lift;
   width: 100%;
   max-width: 100%;
@@ -1427,7 +1403,7 @@ width: 100%;
       padding: 0.875rem 1.5rem;
       border-radius: 16px;
       background: rgba($primary-color, 0.1);
-      color: $primary-color;
+      color: $text-primary;
       font-weight: 700;
       border: $border-width solid $border-color;
       transition: all 0.3s ease;
@@ -1451,7 +1427,6 @@ width: 100%;
   @include enhanced-glass-card(0.97, 24px);
   border-radius: 24px;
   padding: 2rem;
-  animation: enhanced-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -1492,11 +1467,11 @@ width: 100%;
 
   .related-exercises-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
     gap: 2rem;
 
     @include respond-below(md) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 1.5rem;
     }
 
@@ -1559,10 +1534,9 @@ width: 100%;
             border-radius: 12px;
             font-size: 0.8rem;
             font-weight: 700;
-            text-transform: uppercase;
             letter-spacing: 0.05em;
             background: rgba($primary-color, 0.1);
-            color: $primary-color;
+            color: $text-secondary;
             border: $border-width solid $border-color;
             width: fit-content;
           }
@@ -1591,7 +1565,6 @@ width: 100%;
   left: 0;
   right: 0;
   background: rgba($surface-secondary, 0.98);
-  backdrop-filter: blur(32px);
   border-top: $border-width solid $border-color;
   border-radius: 24px 24px 24px 24px;
   padding: 2rem;
@@ -1694,7 +1667,6 @@ width: 100%;
   justify-content: center;
   background: $primary-dark;
   background-size: 400% 400%;
-  animation: gradient-animation 20s ease infinite;
   padding: 3rem;
 
   .loading-content {
@@ -1776,7 +1748,6 @@ width: 100%;
   justify-content: center;
   background: $primary-dark;
   background-size: 400% 400%;
-  animation: gradient-animation 20s ease infinite;
   padding: 3rem;
 
   .error-content {
@@ -1919,4 +1890,162 @@ width: 100%;
 .exercise-detail-container .detail-button.secondary {
   background: rgba($primary-color, 0.15);
   color: $text-primary;
+}
+
+
+// =============================================
+// EN-TETE D'ECRAN — TRAITEMENT COMPACT
+// =============================================
+//
+// L'ecran s'ouvrait sur un bloc centre : pictogramme, titre sur deux lignes,
+// phrase d'accroche, puis des cartes de statistiques de 150 px de haut. Sur
+// telephone l'ensemble remplissait le premier ecran et repoussait le contenu
+// reel — liste, recherche, filtres — sous la ligne de flottaison.
+//
+// Les selecteurs ci-dessous reprennent la profondeur des regles d'origine,
+// qui descendent jusqu'a cinq niveaux et vivent en partie dans des media
+// queries. Une media query n'ajoute pas de specificite : a egalite, la
+// derniere regle du fichier l'emporte.
+
+.exercise-detail-container {
+  .hero-section {
+    padding: 1.25rem 0 0.5rem;
+    margin: 0;
+    border: 0;
+    background: none;
+    text-align: left;
+
+    .hero-background { display: none; }
+
+    .hero-content {
+      display: block;
+      padding: 0;
+      gap: 0;
+      text-align: left;
+
+      .title-section {
+        display: flex;
+        // row explicite : plusieurs ecrans forcaient la colonne, ce qui
+        // laissait le pictogramme seul et centre au-dessus du titre.
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0 0 1rem;
+        text-align: left;
+
+        .title-icon {
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          min-width: 34px;
+          min-height: 34px;
+          flex-shrink: 0;
+          margin: 0;
+          padding: 0;
+          border-radius: $radius-md;
+          background: rgba($primary-color, 0.12);
+          color: $text-primary;
+          font-size: 1rem;
+
+          app-icon { width: 18px; height: 18px; }
+        }
+
+        .title-content {
+          flex: 1;
+          min-width: 0;
+          text-align: left;
+
+          .page-title {
+            margin: 0;
+            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: $text-primary;
+            text-align: left;
+          }
+
+          .page-subtitle {
+            margin: 0.125rem 0 0;
+            font-size: 0.8125rem;
+            font-weight: 400;
+            line-height: 1.45;
+            color: $text-secondary;
+            text-align: left;
+          }
+        }
+      }
+
+      // --- Statistiques : une ligne dense, pas des cartes ---
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+        gap: 0.5rem;
+        margin: 0 0 1.25rem;
+        padding: 0;
+
+        .stat-item,
+        .stat-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 0;
+
+          min-height: 0;
+          height: auto;
+          padding: 0.625rem 0.75rem;
+
+          border: $border-width solid $border-color;
+          border-radius: $radius-lg;
+          background: $surface-secondary;
+          text-align: left;
+
+          &::before, &::after { display: none; }
+          &:hover { transform: none; background: $surface-secondary; }
+
+          // Une icone n'apporte rien a cote d'un chiffre et de son libelle.
+          .stat-icon { display: none; }
+
+          .stat-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            text-align: left;
+
+            .stat-value {
+              font-size: 1.0625rem;
+              font-weight: 700;
+              line-height: 1.2;
+              color: $text-primary;
+              font-variant-numeric: tabular-nums;
+            }
+
+            .stat-label {
+              font-size: 0.6875rem;
+              font-weight: 500;
+              line-height: 1.3;
+              text-transform: none;
+              letter-spacing: 0;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    // Variante sans .hero-content, presente sur certains ecrans.
+    > .title-section {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0 0 1rem;
+      text-align: left;
+    }
+  }
 }
