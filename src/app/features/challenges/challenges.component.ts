@@ -106,7 +106,7 @@ const STATUS_CONFIG = {
   available: { label: 'Disponible', emoji: '🚀', color: '#7ecbff', icon: 'fas fa-play-circle' },
   active: { label: 'En cours', emoji: '⚡', color: '#fdba74', icon: 'fas fa-clock' },
   completed: { label: 'Terminé', emoji: '✅', color: '#6ee7b7', icon: 'fas fa-check-circle' },
-  expired: { label: 'Expiré', emoji: '⏰', color: '#8f8f98', icon: 'fas fa-times-circle' }
+  expired: { label: 'Expiré', emoji: '⏰', color: '#a8a8b0', icon: 'fas fa-times-circle' }
 };
 
 // Utility classes (simplified for standalone component)
@@ -1270,10 +1270,10 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     const statusColors: { [key: string]: string } = {
       'available': '#7ecbff',
       'active': '#6ee7b7',
-      'completed': '#8f8f98',
+      'completed': '#a8a8b0',
       'expired': '#fc8181',
       'pending': '#fdba74'
     };
-    return statusColors[status] || '#8f8f98';
+    return statusColors[status] || '#a8a8b0';
   }
 }

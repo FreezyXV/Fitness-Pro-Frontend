@@ -932,12 +932,12 @@ padding: 0.5rem;
         }
 
         &.btn-primary {
-          background: $primary-dark;
+          background: $primary-color;
           color: $on-primary;
-          box-shadow: 0 10px 30px rgba($primary-color, 0.4);
+          border-color: transparent;
 
           &:hover:not(:disabled) {
-            box-shadow: 0 20px 50px rgba($primary-color, 0.5);
+            background: $primary-light;
           }
         }
 
@@ -954,12 +954,13 @@ padding: 0.5rem;
         }
 
         &.btn-danger {
-          background: $danger-gradient;
-          color: $on-primary;
-          box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+          background: transparent;
+          color: $error-light;
+          border-color: rgba($danger-color, 0.4);
 
           &:hover:not(:disabled) {
-            box-shadow: 0 20px 50px rgba(255, 107, 107, 0.5);
+            background: rgba($danger-color, 0.12);
+            border-color: rgba($danger-color, 0.65);
           }
         }
 
@@ -1261,45 +1262,23 @@ padding: 0.5rem;
     z-index: 0;
   }
 
+  // display: flex/flex-direction: column redeclare explicitement le
+  // squelette global (styles.scss) : en-tete et pied restent toujours
+  // visibles, seul le corps defile si le contenu depasse l'espace
+  // disponible. Le halo au survol (bordure lime->menthe en degrade,
+  // apparaissant au survol de toute la modale) est retire : les modales ne
+  // portent plus d'effet de survol.
   .modal {
+    display: flex;
+    flex-direction: column;
     @include glass-card(0.98, 30px);
-    border-radius: $border-radius-3xl;
-   
- 
+    border-radius: $border-radius-2xl;
     max-height: 90vh;
     overflow: hidden;
-    box-shadow: 
-      0 32px 64px rgba(0, 0, 0, 0.15),
-      0 16px 32px rgba(0, 0, 0, 0.1),
-      0 0 0 1px rgba($surface-secondary, 0.1);
-    animation: modalContentIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-xl);
     border: $border-width solid $border-color;
     position: relative;
     z-index: 10;
-    
-    // Premium glow effect
-    &::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(
-        135deg,
-        rgba($primary-color, 0.2),
-        rgba($secondary-color, 0.2),
-        rgba($primary-color, 0.2)
-      );
-      border-radius: $border-radius-3xl;
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    &:hover::before {
-      opacity: 1;
-    }
 
     &.modal-md {
       max-width: 500px;
@@ -1349,63 +1328,62 @@ padding: 0.5rem;
 
       
       .modal-header {
-        padding: 2rem 1.5rem 1.5rem 1.5rem;
-        
+        padding: 0.875rem 1.25rem;
+
         .modal-title {
-          font-size: 1.5rem;
+          font-size: 1rem;
         }
-        
+
         .btn-close {
-          width: 40px;
-          height: 40px;
+          width: 32px;
+          height: 32px;
         }
-        
+
         &::after {
-          left: 1.5rem;
-          right: 1.5rem;
+          left: 1.25rem;
+          right: 1.25rem;
         }
       }
-      
+
       .modal-body {
-        padding: 1rem;
-        max-height: 80vh;
+        flex: 1 1 auto;
+        min-height: 0;
+        padding: 0.875rem 1.25rem;
         overflow-y: auto;
        .modal-close {
-          width: 40px;
-          height: 40px;
-          border: none;
-          background: rgba($gray-500, 0.1);
+          width: 32px;
+          height: 32px;
+          border: $border-width solid $border-color;
+          background: transparent;
           border-radius: 50%;
-          color: $text-primary;
+          color: $text-secondary;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: all 0.3s ease;
-          font-size: 1.5rem;
+          font-size: 1.25rem;
           font-weight: 300;
 
           &:hover {
-            background: rgba($gray-500, 0.2);
-            color: $gray-800;
-            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.06);
+            color: $text-primary;
           }
         }
       }
-      
+
       .modal-footer {
-        padding: 1.5rem;
-        
+        padding: 0.875rem 1.25rem;
+
         &::before {
-          left: 1.5rem;
-          right: 1.5rem;
+          left: 1.25rem;
+          right: 1.25rem;
         }
-        
+
         .modal-actions {
           flex-direction: column-reverse;
-          gap: 1rem;
+          gap: 0.625rem;
           width: 100%;
-          
+
           .btn {
             width: 100%;
             min-width: auto;
@@ -1415,337 +1393,263 @@ padding: 0.5rem;
     }
 
     .modal-header {
-      padding: 2rem;
+      padding: 1rem 1.5rem;
       border-bottom: $border-width solid $border-color;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
 
-      .modal-title {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: $gray-900;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-
-        .goal-icon {
-          color: $text-primary;
-        }
-      }
-
+      .modal-title,
       h2 {
         margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: $gray-900;
+        font-size: 1.0625rem;
+        font-weight: 650;
+        color: $text-primary;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: 0.5rem;
+        min-width: 0;
 
+        .goal-icon,
         svg {
-          color: $text-primary;
+          color: $text-secondary;
+          flex-shrink: 0;
         }
       }
 
       .btn-close {
-        width: 40px;
-        height: 40px;
-        border: none;
-        background: rgba($gray-500, 0.1);
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border: $border-width solid $border-color;
+        background: transparent;
         border-radius: 50%;
-        color: $text-primary;
+        color: $text-secondary;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
 
         &:hover {
-          background: rgba($gray-500, 0.2);
-          color: $gray-800;
-          transform: scale(1.1);
-        }
-
-        svg {
-          transition: transform 0.3s ease;
+          background: rgba(255, 255, 255, 0.06);
+          color: $text-primary;
         }
       }
     }
 
     .modal-body {
-      padding: 1.25rem;
-      max-height: 80vh;
+      flex: 1 1 auto;
+      min-height: 0;
+      padding: 1rem 1.5rem;
       overflow-y: auto;
-      
-      // Custom scrollbar
-      &::-webkit-scrollbar {
-        width: 8px;
-      }
-      
-      &::-webkit-scrollbar-track {
-        background: rgba($surface-secondary, 0.1);
-        border-radius: 4px;
-      }
-      
-      &::-webkit-scrollbar-thumb {
-        background: $primary-color;
-        border-radius: 4px;
-        
-        &:hover {
-          background: $primary-color;
-        }
-      }
 
       // Enhanced body for goal details modal
+      // =============================================
+      // MODALE DE DETAIL — PASSE DE COMPACITE
+      // =============================================
+      //
+      // Chaque section (Vue d'ensemble, Progression, Calendrier) etait une
+      // carte a 1,5-2rem de rembourrage avec un survol anime (soulevement +
+      // ombre + bandeau lumineux), et `.progress-stats` n'avait AUCUNE regle
+      // de mise en page (`display` absent) : ses trois pastilles — 100%,
+      // valeur actuelle, objectif — s'empilaient donc verticalement au lieu
+      // de se placer cote a cote, chacune a 1,5rem de rembourrage pour un
+      // seul chiffre en 2rem. C'est la raison principale du defilement.
       &.modal-details-body {
-        background: linear-gradient(
-          135deg,
-          rgba($surface-secondary, 0.02) 0%,
-          rgba($primary-color, 0.02) 50%,
-          rgba($surface-secondary, 0.02) 100%
-        );
-        
+        background: none;
+
         .goal-details-content {
           display: flex;
           flex-direction: column;
-        
-          
+          gap: 0.75rem;
+
           .details-section {
-            padding: 1rem;
-            background: rgba($surface-secondary, 0.5);
-            border-radius: $border-radius-2xl;
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: $radius-lg;
             border: $border-width solid $border-color;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            
-            &::before {
-              content: '';
-              position: absolute;
-              top: 0;
-              left: -100%;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(
-                90deg,
-                transparent,
-                rgba($surface-secondary, 0.1),
-                transparent
-              );
-              transition: left 0.8s;
-            }
-            
-            &:hover {
-              background: rgba($surface-secondary, 0.7);
-              transform: translateY(-2px);
-              box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-              
-              &::before {
-                left: 100%;
-              }
-            }
-            
+
             .details-title {
-              font-size: 1.25rem;
-              font-weight: 700;
-              color: $gray-800;
-              margin-bottom: 1.5rem;
+              font-size: 0.8125rem;
+              font-weight: 600;
+              color: $text-secondary;
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              margin-bottom: 0.625rem;
               display: flex;
               align-items: center;
-              gap: 0.75rem;
-              
+              gap: 0.5rem;
+
               &::before {
                 content: '';
-                width: 4px;
-                height: 24px;
-                background: $primary-dark;
+                width: 3px;
+                height: 12px;
+                background: $primary-color;
                 border-radius: 2px;
               }
             }
-            
-            // Overview Grid
+
+            // Vue d'ensemble : trois puces cote a cote.
             .overview-grid {
               display: grid;
-              grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-              gap: 1.5rem;
-              
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+              gap: 0.5rem;
+
+              @include respond-below(sm) {
+                grid-template-columns: minmax(0, 1fr);
+              }
+
               .overview-item {
                 display: flex;
                 flex-direction: column;
-                gap: 0.75rem;
-                
+                gap: 0.25rem;
+                min-width: 0;
+
                 .overview-label {
-                  @include label-caps;
+                  font-size: 0.6875rem;
+                  font-weight: 500;
+                  color: $text-muted;
                 }
-                
+
                 .category-display,
                 .priority-display,
                 .status-display {
                   display: flex;
                   align-items: center;
-                  gap: 0.75rem;
-                  padding: 1rem 1.5rem;
-                  border-radius: $border-radius-xl;
-                  font-weight: 700;
-                  transition: all 0.3s ease;
-                  
-                  &:hover {
-                    transform: translateX(4px);
-                  }
-                }
-                
-                .category-display {
-                  background: rgba($surface-secondary, 0.8);
+                  gap: 0.375rem;
+                  padding: 0.5rem 0.625rem;
+                  border-radius: $radius-md;
+                  font-weight: 600;
+                  font-size: 0.8125rem;
+                  background: rgba(255, 255, 255, 0.05);
                   border: $border-width solid $border-color;
-                  
-                  .category-icon {
-                    font-size: 1.5rem;
-                  }
-                }
-                
-                .priority-display {
-                  background: rgba($surface-secondary, 0.8);
-                  border: $border-width solid $border-color;
-                  
-                  .priority-icon {
-                    font-size: 1.25rem;
-                  }
-                }
-                
-                .status-display {
-                  background: rgba($surface-secondary, 0.8);
-                  border: $border-width solid $border-color;
-                  
-                  .status-icon {
-                    font-size: 1.25rem;
-                  }
-                }
-              }
-            }
-            
-            // Progress Details
-            .progress-details {
-              .progress-visual {
-                .large-progress-bar {
-                  width: 100%;
-                  height: 16px;
-                  background: rgba($primary-color, 0.1);
-                  border-radius: 12px;
-                  overflow: hidden;
-                  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
-                  margin-bottom: 2rem;
-                  
-                  .large-progress-fill {
-                    height: 100%;
-                    border-radius: 12px;
-                    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-                    position: relative;
-                    
-                    &::after {
-                      content: '';
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                      right: 0;
-                      bottom: 0;
-                      background: linear-gradient(
-                        90deg,
-                        transparent,
-                        rgba($surface-secondary, 0.4),
-                        transparent
-                      );
-                    }
-                  }
-                }
-                
-                .progress-stats {
 
-                  
-                  .progress-stat {
-                    text-align: center;
-                    padding: 1.5rem;
-                    background: rgba($surface-secondary, 0.6);
-                    border-radius: $border-radius-xl;
-                    border: $border-width solid $border-color;
-                    transition: all 0.3s ease;
-                    
-                    &:hover {
-                      background: rgba($surface-secondary, 0.8);
-                      transform: translateY(-2px);
-                    }
-                    
-                    .stat-value {
-                      display: block;
-                      font-size: 2rem;
-                      font-weight: 800;
-                      color: $gray-900;
-                      margin-bottom: 0.5rem;
-                    }
-                    
-                    .stat-label {
-                      @include label-caps;
-                    }
+                  .category-icon,
+                  .priority-icon {
+                    font-size: 1rem;
+                    flex-shrink: 0;
+                  }
+
+                  .status-icon {
+                    font-size: 0.9375rem;
+                    flex-shrink: 0;
+                  }
+                }
+
+                // L'inline `[style.background]` fournit une teinte claire
+                // pensee pour du TEXTE (palette "on-dark"), pas pour un
+                // aplat : sans cette regle, le libelle heritait du blanc
+                // par defaut et devenait illisible dessus.
+                .category-display {
+                  background: rgba(255, 255, 255, 0.05) !important;
+                  color: $text-primary;
+                }
+              }
+            }
+
+            // Progression.
+            .progress-details .progress-visual {
+              .large-progress-bar {
+                width: 100%;
+                height: 6px;
+                background: rgba(255, 255, 255, 0.09);
+                border-radius: $radius-pill;
+                overflow: hidden;
+                box-shadow: none;
+                margin-bottom: 0.625rem;
+
+                .large-progress-fill {
+                  height: 100%;
+                  border-radius: $radius-pill;
+
+                  &::after { display: none; }
+                }
+              }
+
+              .progress-stats {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.5rem;
+
+                @include respond-below(sm) {
+                  grid-template-columns: minmax(0, 1fr);
+                }
+
+                .progress-stat {
+                  text-align: center;
+                  padding: 0.625rem;
+                  background: rgba(255, 255, 255, 0.04);
+                  border-radius: $radius-md;
+                  border: $border-width solid $border-color;
+
+                  .stat-value {
+                    display: block;
+                    font-size: 1.125rem;
+                    font-weight: 650;
+                    color: $text-primary;
+                    margin-bottom: 0.125rem;
+                    font-variant-numeric: tabular-nums;
+                  }
+
+                  .stat-label {
+                    font-size: 0.6875rem;
+                    font-weight: 500;
+                    color: $text-muted;
                   }
                 }
               }
             }
-            
-            // Timeline Info
+
+            // Calendrier.
             .timeline-info {
               display: flex;
               flex-direction: column;
-              gap: 1.5rem;
-              
+              gap: 0.5rem;
+
               .timeline-item {
                 display: flex;
                 align-items: center;
-                gap: 1rem;
-                padding: 1.25rem 1.5rem;
-                background: rgba($surface-secondary, 0.6);
-                border-radius: $border-radius-xl;
+                gap: 0.625rem;
+                padding: 0.5rem 0.625rem;
+                background: rgba(255, 255, 255, 0.04);
+                border-radius: $radius-md;
                 border: $border-width solid $border-color;
-                transition: all 0.3s ease;
-                
-                &:hover {
-                  background: rgba($surface-secondary, 0.8);
-                  transform: translateX(4px);
-                }
-                
+
                 .timeline-icon {
-                  font-size: 1.5rem;
-                  width: 48px;
-                  height: 48px;
-                  background: $primary-dark;
+                  font-size: 0.9375rem;
+                  width: 30px;
+                  height: 30px;
+                  background: rgba(255, 255, 255, 0.06);
+                  color: $text-secondary;
                   border-radius: 50%;
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   flex-shrink: 0;
                 }
-                
+
                 .timeline-content {
                   flex: 1;
-                  
+                  min-width: 0;
+
                   .timeline-label {
                     display: block;
+                    font-size: 0.6875rem;
+                    font-weight: 500;
+                    color: $text-muted;
+                    letter-spacing: 0;
+                  }
+
+                  .timeline-value {
                     font-size: 0.875rem;
                     font-weight: 600;
                     color: $text-primary;
-                    margin-bottom: 0.25rem;
-                    letter-spacing: 0.05em;
-                  }
-                  
-                  .timeline-value {
-                    font-size: 1.125rem;
-                    font-weight: 700;
-                    color: $gray-900;
-                    
+
                     &.overdue {
                       color: $c-red-300-on-dark;
                     }
-                    
+
                     &.completed {
                       color: $c-emerald-300-on-dark;
                     }
@@ -1753,16 +1657,16 @@ padding: 0.5rem;
                 }
               }
             }
-            
-            // Full descriptions
+
+            // Descriptions et notes.
             .goal-description-full,
             .goal-notes {
-              font-size: 1rem;
-              line-height: 1.7;
-              color: $gray-700;
-              background: rgba($surface-secondary, 0.6);
-              padding: 1.5rem;
-              border-radius: $border-radius-xl;
+              font-size: 0.875rem;
+              line-height: 1.6;
+              color: $text-secondary;
+              background: rgba(255, 255, 255, 0.03);
+              padding: 0.75rem 0.875rem;
+              border-radius: $radius-md;
               border: $border-width solid $border-color;
               margin: 0;
             }
@@ -1772,70 +1676,30 @@ padding: 0.5rem;
     }
 
     .modal-footer {
-      padding: 2rem 2.5rem 2.5rem 2.5rem;
+      padding: 0.875rem 1.5rem;
       border-top: $border-width solid $border-color;
-      background: linear-gradient(
-        135deg,
-        rgba($surface-secondary, 0.05) 0%,
-        rgba($surface-secondary, 0.1) 100%
-      );
+      background: none;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 1rem;
-      position: relative;
-      
-      // Subtle glow line at top
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 2.5rem;
-        right: 2.5rem;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($primary-color, 0.5),
-          rgba($secondary-color, 0.5),
-          transparent
-        );
-      }
-      
+      gap: 0.625rem;
+
+      &::before { display: none; }
+
       .modal-actions {
         display: flex;
         align-items: center;
-        gap: 1.25rem;
-        
+        gap: 0.625rem;
+
         .btn {
-          min-width: 120px;
-          font-weight: 700;
-          font-size: 0.95rem;
-          padding: 1rem 2rem;
-          border-radius: $border-radius-2xl;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          position: relative;
-          overflow: hidden;
-          
-          &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-              90deg,
-              transparent,
-              rgba($surface-secondary, 0.2),
-              transparent
-            );
-            transition: left 0.6s;
-          }
-          
-          &:hover::before {
-            left: 100%;
-          }
+          min-width: 0;
+          font-weight: 600;
+          font-size: 0.875rem;
+          padding: 0.5rem 1rem;
+          min-height: 0;
+          border-radius: $radius-md;
+
+          &::before { display: none; }
         }
       }
     }
@@ -2128,12 +1992,12 @@ padding: 0.5rem;
   }
 
   &.btn-primary {
-    background: $primary-dark;
+    background: $primary-color;
     color: $on-primary;
-    box-shadow: 0 8px 20px rgba($primary-color, 0.3);
+    border-color: transparent;
 
     &:hover:not(:disabled) {
-      box-shadow: 0 12px 30px rgba($primary-color, 0.4);
+      background: $primary-light;
     }
   }
 
@@ -2158,12 +2022,13 @@ padding: 0.5rem;
   }
 
   &.btn-danger {
-    background: $danger-gradient;
-    color: $on-primary;
-    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+    background: transparent;
+    color: $error-light;
+    border-color: rgba($danger-color, 0.4);
 
     &:hover:not(:disabled) {
-      box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+      background: rgba($danger-color, 0.12);
+      border-color: rgba($danger-color, 0.65);
     }
   }
 
@@ -2459,44 +2324,18 @@ padding: 0.5rem;
   }
 
   .modal {
+    display: flex;
+    flex-direction: column;
     @include glass-card(0.98, 30px);
-    border-radius: $border-radius-3xl;
+    border-radius: $border-radius-2xl;
     max-width: 900px;
     width: 100%;
     max-height: 90vh;
     overflow: hidden;
-    box-shadow: 
-      0 32px 64px rgba(0, 0, 0, 0.15),
-      0 16px 32px rgba(0, 0, 0, 0.1),
-      0 0 0 1px rgba($surface-secondary, 0.1);
-    animation: modalContentIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-xl);
     border: $border-width solid $border-color;
     position: relative;
     z-index: 10;
-    
-    // Premium glow effect
-    &::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: linear-gradient(
-        135deg,
-        rgba($primary-color, 0.2),
-        rgba($secondary-color, 0.2),
-        rgba($primary-color, 0.2)
-      );
-      border-radius: $border-radius-3xl;
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    &:hover::before {
-      opacity: 1;
-    }
 
     &.modal-md {
       max-width: 500px;
@@ -2513,42 +2352,43 @@ padding: 0.5rem;
       border-radius: $border-radius-2xl;
       
       .modal-header {
-        padding: 2rem 1.5rem 1.5rem 1.5rem;
-        
+        padding: 0.875rem 1.25rem;
+
         .modal-title {
-          font-size: 1.5rem;
+          font-size: 1rem;
         }
-        
+
         .btn-close {
-          width: 40px;
-          height: 40px;
+          width: 32px;
+          height: 32px;
         }
-        
+
         &::after {
-          left: 1.5rem;
-          right: 1.5rem;
+          left: 1.25rem;
+          right: 1.25rem;
         }
       }
-      
+
       .modal-body {
-        padding: 2rem;
-        max-height: 80vh;
+        flex: 1 1 auto;
+        min-height: 0;
+        padding: 0.875rem 1.25rem;
         overflow-y: auto;
       }
-      
+
       .modal-footer {
-        padding: 1.5rem;
-        
+        padding: 0.875rem 1.25rem;
+
         &::before {
-          left: 1.5rem;
-          right: 1.5rem;
+          left: 1.25rem;
+          right: 1.25rem;
         }
-        
+
         .modal-actions {
           flex-direction: column-reverse;
-          gap: 1rem;
+          gap: 0.625rem;
           width: 100%;
-          
+
           .btn {
             width: 100%;
             min-width: auto;
@@ -2557,69 +2397,61 @@ padding: 0.5rem;
       }
     }
 
+    // Second exemplaire de l'en-tete (le fichier duplique l'integralite du
+    // bloc `.modal-overlay .modal` a deux endroits) : alignee sur les memes
+    // valeurs que le premier pour que le rendu ne depende pas de l'ordre de
+    // la cascade.
     .modal-header {
-      padding: 1rem;
+      flex-shrink: 0;
+      padding: 1rem 1.5rem;
       border-bottom: $border-width solid $border-color;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
 
-      .modal-title {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: $gray-900;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-
-        .goal-icon {
-          color: $text-primary;
-        }
-      }
-
+      .modal-title,
       h2 {
         margin: 0;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: $gray-900;
+        font-size: 1.0625rem;
+        font-weight: 650;
+        color: $text-primary;
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: 0.5rem;
+        min-width: 0;
 
+        .goal-icon,
         svg {
-          color: $text-primary;
+          color: $text-secondary;
+          flex-shrink: 0;
         }
       }
 
       .btn-close {
-        width: 40px;
-        height: 40px;
-        border: none;
-        background: rgba($gray-500, 0.1);
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border: $border-width solid $border-color;
+        background: transparent;
         border-radius: 50%;
-        color: $text-primary;
+        color: $text-secondary;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
 
         &:hover {
-          background: rgba($gray-500, 0.2);
-          color: $gray-800;
-          transform: scale(1.1);
-        }
-
-        svg {
-          transition: transform 0.3s ease;
+          background: rgba(255, 255, 255, 0.06);
+          color: $text-primary;
         }
       }
     }
 
     .modal-body {
+      flex: 1 1 auto;
+      min-height: 0;
       padding: 0.5rem;
-      max-height: 80vh;
       overflow-y: auto;
       position: relative;
       
@@ -2644,71 +2476,27 @@ padding: 0.5rem;
     }
 
     .modal-footer {
-      padding: 1rem 0.5rem 0.5rem 1rem;
+      flex-shrink: 0;
+      padding: 1.125rem 1.5rem;
       border-top: $border-width solid $border-color;
-      background: linear-gradient(
-        135deg,
-        rgba($surface-secondary, 0.05) 0%,
-        rgba($surface-secondary, 0.1) 100%
-      );
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 1rem;
-      position: relative;
-      
-      // Subtle glow line at top
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 2.5rem;
-        right: 2.5rem;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          rgba($primary-color, 0.5),
-          rgba($secondary-color, 0.5),
-          transparent
-        );
-      }
-      
+      gap: 0.75rem;
+
       .modal-actions {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        display: flex;
         align-items: center;
-        gap: 1.25rem;
-        
+        justify-content: flex-end;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+
         .btn {
-          min-width: 120px;
-          font-weight: 700;
-          font-size: 0.95rem;
-          padding: 1rem 2rem;
-          border-radius: $border-radius-2xl;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          position: relative;
-          overflow: hidden;
-          
-          &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-              90deg,
-              transparent,
-              rgba($surface-secondary, 0.2),
-              transparent
-            );
-            transition: left 0.6s;
-          }
-          
-          &:hover::before {
-            left: 100%;
-          }
+          min-width: 0;
+          font-weight: 600;
+          font-size: 0.875rem;
+          padding: 0.625rem 1.25rem;
+          border-radius: $border-radius-md;
         }
       }
     }
@@ -2862,12 +2650,12 @@ padding: 0.5rem;
   }
 
   &.btn-primary {
-    background: $primary-dark;
+    background: $primary-color;
     color: $on-primary;
-    box-shadow: 0 8px 20px rgba($primary-color, 0.3);
+    border-color: transparent;
 
     &:hover {
-      box-shadow: 0 12px 30px rgba($primary-color, 0.4);
+      background: $primary-light;
     }
   }
 
@@ -2892,12 +2680,13 @@ padding: 0.5rem;
   }
 
   &.btn-danger {
-    background: $danger-gradient;
-    color: $on-primary;
-    box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+    background: transparent;
+    color: $error-light;
+    border-color: rgba($danger-color, 0.4);
 
     &:hover {
-      box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
+      background: rgba($danger-color, 0.12);
+      border-color: rgba($danger-color, 0.65);
     }
   }
 
@@ -3653,12 +3442,12 @@ padding: 0.5rem;
             }
 
             &.btn-primary {
-              background: $primary-dark;
+              background: $primary-color;
               color: $on-primary;
-              box-shadow: 0 10px 30px rgba($primary-color, 0.4);
+              border-color: transparent;
 
               &:hover:not(:disabled) {
-                box-shadow: 0 20px 50px rgba($primary-color, 0.5);
+                background: $primary-light;
               }
             }
 
@@ -3675,12 +3464,13 @@ padding: 0.5rem;
             }
 
             &.btn-danger {
-              background: $danger-gradient;
-              color: $on-primary;
-              box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+              background: transparent;
+              color: $error-light;
+              border-color: rgba($danger-color, 0.4);
 
               &:hover:not(:disabled) {
-                box-shadow: 0 20px 50px rgba(255, 107, 107, 0.5);
+                background: rgba($danger-color, 0.12);
+                border-color: rgba($danger-color, 0.65);
               }
             }
 

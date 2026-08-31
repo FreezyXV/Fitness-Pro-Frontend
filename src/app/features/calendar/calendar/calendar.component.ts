@@ -57,11 +57,11 @@ const EVENT_META: Record<CalendarTask['task_type'], {
 }> = {
   workout: { color: '#d4ff3d', icon: '💪' },
   goal: { color: '#7ecbff', icon: '🎯' },
-  rest: { color: '#a1a1aa', icon: '😴' },
+  rest: { color: '#d4d4d8', icon: '😴' },
   nutrition: { color: '#ffd860', icon: '🍎' },
   meal: { color: '#ffd860', icon: '🍽️' },
   reminder: { color: '#c4b5fd', icon: '⏰' },
-  other: { color: '#8f8f98', icon: '📝' }
+  other: { color: '#a8a8b0', icon: '📝' }
 };
 
 
@@ -676,7 +676,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getEventTypeColor(type: CalendarTask['task_type']): string {
-    return EVENT_META[type]?.color || '#8f8f98';
+    return EVENT_META[type]?.color || '#a8a8b0';
   }
 
   getEventIcon(type: CalendarTask['task_type']): string {

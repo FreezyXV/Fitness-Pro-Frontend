@@ -405,14 +405,14 @@ getBMIPosition(): number {
 
   getBMIColor(): string {
     if (!this.user || !this.user.height || !this.user.weight) {
-      return '#a1a1aa'; // = $text-secondary, lisible sur fond sombre
+      return '#d4d4d8'; // = $text-secondary, lisible sur fond sombre
     }
     
     try {
       const bmi = BMIUtils.calculate(this.user.height, this.user.weight);
       return BMIUtils.getColor(bmi);
     } catch (error) {
-      return '#a1a1aa'; // = $text-secondary, lisible sur fond sombre
+      return '#d4d4d8'; // = $text-secondary, lisible sur fond sombre
     }
   }
 

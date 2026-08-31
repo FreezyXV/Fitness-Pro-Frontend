@@ -66,8 +66,8 @@ html {
   --color-surface-soft: #1c1c20;
   --color-surface-raised: #26262b;
   --color-text: #f4f4f5;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #8f8f98;
+  --color-text-secondary: #d4d4d8;
+  --color-text-muted: #a8a8b0;
   --color-primary: #d4ff3d;
   --color-primary-contrast: #050505;
   // --color-secondary et --color-accent valaient le meme lime que la couleur
@@ -84,8 +84,8 @@ html {
   --gray-300: #26262b;
   --gray-400: #3f3f46;
   --gray-500: #52525b;
-  --gray-600: #8f8f98;
-  --gray-700: #a1a1aa;
+  --gray-600: #a8a8b0;
+  --gray-700: #d4d4d8;
   --gray-800: #d4d4d8;
   --gray-900: #f4f4f5;
 
@@ -567,13 +567,33 @@ a {
   z-index: 1050;
 }
 
+// =============================================
+// MODALES — SQUELETTE COMMUN
+// =============================================
+//
+// `.modal` plafonnait a 94vh avec `overflow: hidden`, tandis que
+// `.modal-body` plafonnait separement a 80vh. Les deux valeurs sont
+// independantes : rien ne garantit que en-tete + corps + pied ne depassent
+// pas ensemble 94vh, et quand c'est le cas, `overflow: hidden` sur le
+// conteneur ne fait pas defiler l'exces — il le DECOUPE. C'est ce qui
+// coupait le pied de la modale de detail d'objectif (boutons Modifier /
+// Supprimer invisibles) sur un ecran de 900px de haut, sans qu'aucun
+// defilement ne soit propose pour y acceder.
+//
+// Le conteneur passe en colonne flex : l'en-tete et le pied gardent leur
+// taille naturelle (`flex-shrink: 0`), seul le corps est elastique et
+// defile en interne si son propre contenu depasse l'espace restant. Le pied
+// — donc les actions — reste TOUJOURS visible, quelle que soit la hauteur
+// de l'ecran ou la longueur du formulaire.
 .modal {
+  display: flex;
+  flex-direction: column;
   background: $surface-secondary;
   border: $border-width solid $border-color;
   border-radius: var(--border-radius-xl);
   max-width: 600px;
   width: 100%;
-  max-height: 94vh;
+  max-height: 90vh;
   overflow: hidden;
   box-shadow: var(--shadow-xl);
 
@@ -582,11 +602,12 @@ a {
   &.modal-xl { max-width: 1200px; }
 
   .modal-header {
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding: 1.25rem 1.5rem;
+    padding: 1.125rem 1.5rem;
     border-bottom: $border-width solid $border-color;
 
     h2, h3 {
@@ -611,17 +632,19 @@ a {
   }
 
   .modal-body {
-    padding: 1.25rem 1.5rem;
-    // 65vh laissait un tiers de la fenetre inutilise alors que le cadre
-    // exterieur de la modale (94vh) pouvait accueillir davantage : les
-    // formulaires de plus de six champs (objectif, defi) defilaient en
-    // interne sans necessite.
-    max-height: 80vh;
+    flex: 1 1 auto;
+    // Indispensable pour qu'un enfant flex accepte de retrecir sous la
+    // hauteur de son contenu : sans cette ligne, `flex: 1` est ignore des
+    // que le contenu depasse l'espace disponible, et c'est de nouveau le
+    // conteneur parent qui deborde au lieu du corps qui defile.
+    min-height: 0;
+    padding: 1.125rem 1.5rem;
     overflow-y: auto;
   }
 
   .modal-footer {
-    padding: 1.25rem 1.5rem;
+    flex-shrink: 0;
+    padding: 1.125rem 1.5rem;
     border-top: $border-width solid $border-color;
     display: flex;
     gap: 0.75rem;

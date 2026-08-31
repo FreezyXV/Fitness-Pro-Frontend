@@ -74,8 +74,12 @@ $gray-500: #42424c;
 // designaient en realite une couleur de texte, ils pointent desormais sur
 // $text-primary. La valeur ci-dessous remet l'echelle en ordre.
 $gray-600: #5a5a64;
-$gray-700: #7d7d85;
-$gray-800: #a4a4ab;
+// $gray-700 et $gray-800 servent de couleur de TEXTE dans 15 et 11 fichiers
+// (descriptions, libelles) : a #7d7d85 et #a4a4ab, ils lisaient distinctement
+// gris. Relevees pour repondre a la meme demande que $text-secondary
+// ci-dessus — plus de blanc, moins de gris, dans toute l'application.
+$gray-700: #d4d4d8;
+$gray-800: #e0e0e3;
 $gray-900: #e4e4e7;
 
 // =============================================
@@ -108,11 +112,15 @@ $surface-raised: #26262b;
 // precedentes ($text-secondary valait #cbd0c2) donnaient un voile colore a
 // tout le texte de l'interface.
 $text-primary: #f4f4f5;
-$text-secondary: #a1a1aa;
+// Relevee de #a1a1aa a #d4d4d8 : l'utilisateur a demande, a deux reprises,
+// plus de blanc et moins de gris pour la lisibilite. Le token reste
+// legerement distinct du blanc pur pour garder un soupcon de hierarchie
+// entre titre et texte de soutien, mais la difference est desormais fine.
+$text-secondary: #d4d4d8;
 // #71717a tombait a 3,8:1 sur la surface des cartes (#141416), sous le seuil
-// AA de 4,5:1. Valeur relevee a 5,7:1 tout en restant distincte de
-// $text-secondary.
-$text-muted: #8f8f98;
+// AA de 4,5:1. Releve une premiere fois a 5,7:1, puis une seconde fois pour
+// suivre le relevement de $text-secondary ci-dessus.
+$text-muted: #a8a8b0;
 $text-light: #f4f4f5;
 $text-inverse: #0a0a0b;
 

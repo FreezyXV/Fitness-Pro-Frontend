@@ -272,7 +272,7 @@ export class UserService {
         bmi: null,
         status: 'unknown',
         category: 'Non calculé',
-        color: '#8f8f98',
+        color: '#a8a8b0',
         recommendation:
           'Renseignez votre taille et poids pour obtenir des recommandations.',
       },
@@ -690,7 +690,7 @@ export class UserService {
         bmi: null,
         status: 'unknown',
         category: 'Non calculé',
-        color: '#8f8f98',
+        color: '#a8a8b0',
         recommendation:
           'Renseignez votre taille et poids pour obtenir des recommandations.',
       },

@@ -239,7 +239,7 @@ const STATUS_CONFIG = {
   'not-started': {
     label: 'Non commencé',
     emoji: '⏳',
-    color: '#8f8f98',
+    color: '#a8a8b0',
     icon: '',
   },
   active: {
@@ -889,7 +889,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
       progressColor: this.getProgressColor(progressPercentage, goal.status),
       statusColor:
         this.statusConfig[goal.status as keyof typeof this.statusConfig]
-          ?.color || '#8f8f98',
+          ?.color || '#a8a8b0',
       isOnFire: progressPercentage >= 80 && daysSinceCreated >= 7,
       progressTrend,
       velocityScore,
@@ -927,7 +927,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
    * la progression : atteint, et en pause.
    */
   private getProgressColor(progress: number, status: string): string {
-    if (status === 'paused') return '#8f8f98';
+    if (status === 'paused') return '#a8a8b0';
     return '#d4ff3d';
   }
 
@@ -2018,7 +2018,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
   getStatusColor(status: string): string {
     return (
       this.statusConfig[status as keyof typeof this.statusConfig]?.color ||
-      '#8f8f98'
+      '#a8a8b0'
     );
   }
 
@@ -2029,10 +2029,13 @@ export class GoalsComponent implements OnInit, OnDestroy {
     );
   }
 
+  // STATUS_CONFIG ne renseigne que `emoji`, jamais `icon` (toujours '') :
+  // cette methode retournait donc systematiquement le repli '❓', quel que
+  // soit le statut — d'ou le point d'interrogation rouge affiche a la place
+  // d'une coche pour un objectif termine.
   getStatusIcon(status: string): string {
-    return (
-      this.statusConfig[status as keyof typeof this.statusConfig]?.icon || '❓'
-    );
+    const cfg = this.statusConfig[status as keyof typeof this.statusConfig];
+    return cfg?.emoji || cfg?.icon || '';
   }
 
   formatDate(date: string | Date): string {

@@ -238,9 +238,12 @@
         }
       }
 
+      // $on-primary est l'encre presque noire prevue pour un aplat lime : sur
+      // le fond sombre de la page, le separateur etait invisible — le fil
+      // d'Ariane semblait n'avoir aucune ponctuation entre ses deux etapes.
       .breadcrumb-separator {
         margin: 0 $spacing-md;
-        color: $on-primary;
+        color: $text-muted;
         font-weight: $font-normal;
       }
     }
@@ -600,8 +603,11 @@
   margin-bottom: 2rem;
 
   .nav-card {
+    // Rayon aligne sur celui des autres cartes de la page (18px) : il valait
+    // 26px, un ecart discret mais suffisant pour que chaque bloc de la page
+    // semble suivre sa propre echelle.
     @include glass-premium(0.96, 28px);
-    border-radius: $radius-4xl;
+    border-radius: $radius-2xl;
     padding: $spacing-2xl;
     overflow: hidden;
 
@@ -783,31 +789,32 @@
 // =============================================
 // FORM CONTAINER - Enhanced
 // =============================================
+// `.form-container` (transparent) et `.form-section` (chacune de ses
+// cartes) etaient TOUTES LES DEUX peintes en $surface-secondary : deux
+// niveaux d'imbrication, une seule couleur. Seules les bordures — empilees
+// les unes dans les autres — signalaient une separation, d'ou l'aspect
+// charge du reste de la page malgre l'absence de veritable contraste de
+// fond. Le conteneur redevient transparent ; chaque section garde seule
+// l'aplat de carte.
 .form-container {
-  background: $surface-secondary;
+  background: transparent;
   border-radius: $radius-2xl;
   .profile-form {
     .form-section {
-      @include glass-card(0.94, 24px);
+      background: $surface-secondary;
       border-radius: $radius-2xl;
       padding: 0;
       position: relative;
 
       overflow: hidden;
       border: $border-width solid $border-color;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
 
       &:last-child {
         margin-bottom: 0;
       }
 
-      &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.8s ease, -12deg);
-      }
-
-      &:hover::before {
-        left: 100%;
-      }
+      &::before { display: none; }
 
       .section-header-card {
         display: flex;
@@ -2279,6 +2286,32 @@
 
   .form-section,
   .settings-section {
+    padding: 1.25rem !important;
+  }
+
+  // `.form-section` a un rembourrage NUL (`padding: 0`, ligne 793) : tout son
+  // espace vient de ses deux enfants, `.section-header-card` et
+  // `.form-fields`, chacun a 3rem. Compacter le parent ci-dessus ne change
+  // donc rien tant que ces deux-la restent a 3rem.
+  .section-header-card {
+    padding: 1rem 1.25rem !important;
+    gap: 0.875rem !important;
+    background: none !important;
+
+    &::before { display: none !important; }
+
+    .section-icon {
+      width: 40px !important;
+      height: 40px !important;
+      border-radius: $radius-md !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      color: $text-secondary !important;
+      font-size: 1.125rem !important;
+      box-shadow: none !important;
+    }
+  }
+
+  .form-fields {
     padding: 1.25rem !important;
   }
 

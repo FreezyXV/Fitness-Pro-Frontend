@@ -638,7 +638,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getBMIColor(): string {
     if (!this.user?.height || !this.user?.weight) {
-      return '#8f8f98';
+      return '#a8a8b0';
     }
     
     try {
@@ -646,7 +646,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return BMIUtils.getColor(bmi);
     } catch (error) {
       console.error('❌ BMI color error:', error);
-      return '#8f8f98';
+      return '#a8a8b0';
     }
   }
 

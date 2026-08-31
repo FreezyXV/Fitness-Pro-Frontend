@@ -162,8 +162,8 @@ export class BMIUtils {
 
   static getColor(bmi: number): string {
     // Teintes calibrees pour le fond SOMBRE de l'app : les valeurs
-    // precedentes (#8f8f98, #7ecbff, #fc8181) tombaient entre 3,6:1 et 4,0:1.
-    if (!bmi || bmi === 0 || isNaN(bmi)) return '#a1a1aa'; // = $text-secondary, etat neutre
+    // precedentes (#a8a8b0, #7ecbff, #fc8181) tombaient entre 3,6:1 et 4,0:1.
+    if (!bmi || bmi === 0 || isNaN(bmi)) return '#d4d4d8'; // = $text-secondary, etat neutre
 
     if (bmi < 18.5) return '#7aa9ff'; // bleu, insuffisance ponderale
     if (bmi < 25) return '#34d399';   // vert, intervalle de reference

@@ -114,7 +114,7 @@ import { ExercisesService } from './services/exercises.service';
       width: 28px;
       height: 28px;
       border: 2px solid rgba(255, 255, 255, 0.14);
-      border-top-color: #a1a1aa;
+      border-top-color: #d4d4d8;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       margin: 0 auto 1rem;
@@ -140,7 +140,7 @@ import { ExercisesService } from './services/exercises.service';
       background: #141416;
       border: 1px solid rgba(255, 255, 255, 0.10);
       border-radius: 10px;
-      color: #a1a1aa;
+      color: #d4d4d8;
       font-size: 0.8125rem;
     }
 
@@ -195,7 +195,7 @@ import { ExercisesService } from './services/exercises.service';
       border: 0;
       border-radius: 8px;
       background: none;
-      color: #a1a1aa;
+      color: #d4d4d8;
       font-size: 1rem;
       cursor: pointer;
     }
@@ -230,7 +230,7 @@ import { ExercisesService } from './services/exercises.service';
 
     .wake-card p {
       margin: 0;
-      color: #a1a1aa;
+      color: #d4d4d8;
       font-size: 0.9375rem;
       line-height: 1.6;
     }

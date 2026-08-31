@@ -115,10 +115,10 @@ import { DateUtils } from '@shared';
   
     static getStatusConfig(status: ChallengeStatus) {
       const configs = {
-        draft: { label: 'Brouillon', emoji: '📝', color: '#6b7280' },
+        draft: { label: 'Brouillon', emoji: '📝', color: '#a8a8b0' },
         available: { label: 'Disponible', emoji: '🚀', color: '#3b82f6' },
         active: { label: 'En cours', emoji: '⚡', color: '#10b981' },
-        completed: { label: 'Terminé', emoji: '✅', color: '#6b7280' },
+        completed: { label: 'Terminé', emoji: '✅', color: '#a8a8b0' },
         expired: { label: 'Expiré', emoji: '⏰', color: '#ef4444' },
         paused: { label: 'En pause', emoji: '⏸️', color: '#f59e0b' },
         cancelled: { label: 'Annulé', emoji: '❌', color: '#ef4444' }

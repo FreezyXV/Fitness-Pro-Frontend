@@ -671,15 +671,21 @@ padding: 0.25rem;
   }
 
   .video-player-container {
+    // 16/9 pleine largeur de modale donnait ~450-500px de haut : la
+    // demonstration video depassait la hauteur de tout le reste de la fiche
+    // reunie. Plafonnee pour rester une illustration, pas l'element
+    // dominant de la page.
     .video-player {
       align-items: center;
       position: relative;
       background: rgba(0, 0, 0, 0.95);
-      border-radius: 20px;
+      border-radius: $radius-lg;
       overflow: hidden;
       aspect-ratio: 16/9;
+      max-height: 280px;
+      margin: 0 auto;
       border: $border-width solid $border-color;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+      box-shadow: none;
 
       .main-video {
         width: 100%;
@@ -855,11 +861,13 @@ padding: 0.25rem;
 
     .no-video-placeholder {
       aspect-ratio: 16/9;
+      max-height: 280px;
+      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba($surface-secondary, 0.9);
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: $radius-lg;
       border: $border-width solid $border-color;
 
       .no-video-content {

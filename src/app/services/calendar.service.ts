@@ -431,9 +431,9 @@ export class CalendarService {
     return [
       { value: 'workout', label: 'Entraînement', icon: '💪', color: '#d4ff3d' },
       { value: 'goal', label: 'Objectif', icon: '🎯', color: '#7ecbff' },
-      { value: 'rest', label: 'Repos', icon: '😴', color: '#a1a1aa' },
+      { value: 'rest', label: 'Repos', icon: '😴', color: '#d4d4d8' },
       { value: 'nutrition', label: 'Nutrition', icon: '🍎', color: '#ffd860' },
-      { value: 'other', label: 'Autre', icon: '📝', color: '#8f8f98' },
+      { value: 'other', label: 'Autre', icon: '📝', color: '#a8a8b0' },
     ];
   }
 
@@ -469,7 +469,7 @@ export class CalendarService {
         '📝',
       typeColor:
         this.getTaskTypes().find((t) => t.value === task.taskType)?.color ||
-        '#8f8f98',
+        '#a8a8b0',
       priorityLabel:
         this.getPriorityLevels().find((p) => p.value === task.priority)
           ?.label || 'Moyenne',
