@@ -138,7 +138,7 @@ padding: 0.25rem;
 // Hero Section - Enhanced Dashboard Style with responsive design
 .hero-section {
   @include glass-card(0.95);
-  border-radius: 2.5rem;
+
   padding: 2.5rem;
   margin-bottom: 2rem;
   position: relative;
@@ -380,6 +380,7 @@ padding: 0.25rem;
   margin-bottom: 2rem;
 
   .filters-card {
+    margin-top: 1rem;
     @include glass-card(0.95);
     border-radius: $border-radius-2xl;
     padding: 2rem;

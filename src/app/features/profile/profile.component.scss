@@ -810,7 +810,7 @@
       position: relative;
 
       overflow: hidden;
-      border: $border-width solid $border-color;
+      
       margin-bottom: 1rem;
 
       &:last-child {
@@ -825,7 +825,7 @@
         gap: $spacing-2xl;
         padding: 3rem;
         background: rgba($surface-secondary, 0.6);
-        border-bottom: $border-width solid $border-color;
+        
         position: relative;
         overflow: hidden;
 

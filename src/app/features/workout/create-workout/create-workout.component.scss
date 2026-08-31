@@ -612,6 +612,7 @@
 
 // Filters
 .filters-card {
+  margin-top: 1rem;
   margin-bottom: 2rem;
   @include glass-card(0.95);
   border-radius: $border-radius-2xl;

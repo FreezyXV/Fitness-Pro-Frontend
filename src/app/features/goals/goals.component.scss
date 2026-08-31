@@ -318,6 +318,7 @@ padding: 0.5rem;
   width: 100%;
 
   .filters-card {
+    margin-top: 1rem;
     @include glass-card(0.98, 24px);
     border-radius: $border-radius-2xl;
     padding: 1rem;
