@@ -130,7 +130,7 @@
   @include glass-card(0.95);
   border-radius: $border-radius-3xl;
   padding: 2.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
   position: relative;
   z-index: 1;
 
@@ -236,7 +236,7 @@
 .progress-steps {
   width: 100%;
 
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
   position: relative;
   z-index: 1;
 }
@@ -399,7 +399,7 @@
   border: $border-width solid $border-color;
   border-radius: $border-radius-lg;
   padding: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
   position: relative;
   z-index: 1;
 
@@ -461,7 +461,7 @@
   @include glass-card(0.95);
   border-radius: $border-radius-3xl;
   padding: 3rem;
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
 
   @include respond-below(md) {
     padding: 1.5rem;
@@ -470,7 +470,7 @@
 
 .step-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: $block-spacing;
 
   h2 {
     font-size: 1.875rem;
@@ -572,7 +572,7 @@
     width: 20px;
     height: 20px;
     border: $border-width solid $border-strong;
-    border-radius: 4px;
+    border-radius: 18px;
     background-color: $surface-tertiary;
     display: grid;
     place-content: center;
@@ -612,8 +612,8 @@
 
 // Filters
 .filters-card {
-  margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin-top: $block-spacing;
+  margin-bottom: $block-spacing;
   @include glass-card(0.95);
   border-radius: $border-radius-2xl;
   padding: 2rem;
@@ -621,7 +621,7 @@
 
 .search-container {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
 
   .search-input-wrapper {
     position: relative;
@@ -747,7 +747,7 @@
 
 // Selected Exercises Preview
 .selected-preview {
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
   padding: 1.5rem;
   background: rgba($primary-color, 0.1);
   border-radius: $border-radius-xl;
@@ -1103,7 +1103,7 @@
 
 // Final Summary
 .final-summary {
-  margin-top: 2rem;
+  margin-top: $block-spacing;
   padding: 2rem;
   background: rgba($primary-color, 0.1);
   border-radius: $border-radius-xl;
@@ -1203,7 +1203,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: $block-spacing;
   @include glass-card(0.95);
   border-radius: $border-radius-3xl;
   padding: 1.5rem;

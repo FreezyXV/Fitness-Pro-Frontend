@@ -48,12 +48,12 @@
   width: 100%;
   height: 8px;
   background: rgba($primary-color, 0.2);
-  border-radius: 4px;
+  border-radius: 18px;
   overflow: hidden;
 
   .progress-fill {
     height: 100%;
-    border-radius: 4px;
+    border-radius: 18px;
     transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
 
@@ -184,7 +184,7 @@
 
   @include respond-below(lg) {
     padding: 3rem 1.5rem;
-    border-radius: 2.5rem;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
@@ -220,22 +220,22 @@ padding: 0.25rem;
   width: 100%;
 
   @include glass-card(0.95);
-  border-radius: 2.5rem;
+  border-radius: 18px;
   padding: 2.5rem;
 
   @include respond-below(lg) {
     padding: 2rem;
-    border-radius: 2.5rem;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
     padding: 1.75rem;
-    border-radius: 2.5rem;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1.25rem;
-    border-radius: 2.5rem;
+    border-radius: 18px;
   }
 
   .hero-background {
@@ -456,6 +456,7 @@ padding: 0.25rem;
   }
 
   .gamification-section {
+    margin-top: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -500,14 +501,14 @@ padding: 0.25rem;
           width: 200px;
           height: 10px;
           background: rgba($surface-secondary, 0.3);
-          border-radius: 5px;
+          border-radius: 18px;
           overflow: hidden;
 
           .xp-fill {
             height: 100%;
             background: $c-amber-soft;
             transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 5px;
+            border-radius: 18px;
             position: relative;
 
             &::after {
@@ -579,7 +580,7 @@ padding: 0.25rem;
     justify-content: space-between;
     align-items: center;
     padding: clamp(0.875rem, 2vw, 1.5rem);
-    border-radius: clamp($border-radius-xl, 3vw, $border-radius-3xl);
+    border-radius: 18px;
 
     .nav-btn {
       @include modern-button($accent-gradient, translateY(-2px) scale(1.05));
@@ -629,7 +630,7 @@ padding: 0.25rem;
     gap: 0.5rem;
 
     @include respond-below(lg) {
-      border-radius: 2.5rem;
+      border-radius: 18px;
       padding: 0.625rem;
     }
 
@@ -639,7 +640,7 @@ padding: 0.25rem;
 
     @include respond-below(sm) {
       padding: 0.375rem;
-      border-radius: 2.5rem;
+      border-radius: 18px;
     }
 
     .nav-tab {
@@ -666,15 +667,7 @@ padding: 0.25rem;
   .tab-content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-
-    @include respond-below(md) {
-      gap: 1rem;
-    }
-
-    @include respond-below(xs) {
-      gap: 0.5rem;
-    }
+    gap: $block-spacing;
   }
 }
 
@@ -925,8 +918,17 @@ padding: 0.25rem;
       }
 
       .category-icon {
-        font-size: 2rem;
-        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
       }
 
       .category-info {
@@ -1349,7 +1351,7 @@ padding: 0.25rem;
 
         .macro-bar {
           height: 20px;
-          border-radius: 10px;
+          border-radius: 18px;
           overflow: hidden;
           display: flex;
           background: $surface-tertiary;
@@ -2633,7 +2635,7 @@ padding: 0.25rem;
         .food-restrictions,
         .food-indicators,
         .preparation-tips {
-          border-radius: 1.5rem;
+          border-radius: 18px;
           border: 1px solid rgba($primary-color, 0.15);
           background: rgba($surface-primary, 0.78);
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
@@ -3504,13 +3506,13 @@ padding: 0.25rem;
           flex: 1;
           height: 6px;
           background: rgba(0, 0, 0, 0.1);
-          border-radius: 3px;
+          border-radius: 18px;
           overflow: hidden;
 
           .nutrient-fill {
             height: 100%;
             background: $fiber-color;
-            border-radius: 3px;
+            border-radius: 18px;
             transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
           }
         }
@@ -3694,7 +3696,7 @@ padding: 0.25rem;
 
             .macro-bar {
               height: 20px;
-              border-radius: 10px;
+              border-radius: 18px;
               min-width: 60px;
               transition: width 0.8s ease;
             }
@@ -4664,7 +4666,7 @@ textarea:focus {
 
 // Diet Details Modal Enhancements
 .diet-overview {
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
 
   .diet-stats {
     display: grid;
@@ -4720,7 +4722,7 @@ textarea:focus {
 
 // Macro Details Section
 .macro-details {
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
 
   h3 {
     color: $gray-900;
@@ -4768,7 +4770,7 @@ textarea:focus {
 
       .macro-bar {
         height: 12px;
-        border-radius: 6px;
+        border-radius: 18px;
         overflow: hidden;
         background: rgba(0, 0, 0, 0.1);
         margin-bottom: 0.5rem;
@@ -4821,7 +4823,7 @@ textarea:focus {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
 
   .objectives-section,
   .restrictions-section {
@@ -5063,7 +5065,7 @@ textarea:focus {
 
     .nutrient-highlight {
       background: $surface-secondary;
-      border-radius: 12px;
+      border-radius: 18px;
       padding: 1rem;
       display: flex;
       align-items: center;
@@ -5140,7 +5142,7 @@ textarea:focus {
 
   .food-description, .health-benefits {
     background: #f7fafc;
-    border-radius: 12px;
+    border-radius: 18px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
 
@@ -5167,7 +5169,7 @@ textarea:focus {
       background: $c-indigo-400;
       color: white;
       padding: 0.4rem 0.8rem;
-      border-radius: 20px;
+      border-radius: 18px;
       font-size: 0.8rem;
       font-weight: 500;
       display: inline-block;
@@ -5177,9 +5179,9 @@ textarea:focus {
 
 .complete-nutrition {
   background: $surface-secondary;
-  border-radius: 12px;
+  border-radius: 18px;
   padding: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 
   h3 {
@@ -5259,12 +5261,12 @@ textarea:focus {
             right: 0;
             height: 3px;
             background-color: #e2e8f0;
-            border-radius: 3px;
+            border-radius: 18px;
             overflow: hidden;
 
             .nutrient-fill {
               height: 100%;
-              border-radius: 3px;
+              border-radius: 18px;
               transition: width 0.6s ease;
 
               &.calories {
@@ -5293,7 +5295,7 @@ textarea:focus {
 .food-restrictions {
   background: #fef5e7;
   border: $border-width solid $border-color;
-  border-radius: 12px;
+  border-radius: 18px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 
@@ -5313,7 +5315,7 @@ textarea:focus {
       background: $c-red-100;
       color: #c53030;
       padding: 0.4rem 0.8rem;
-      border-radius: 20px;
+      border-radius: 18px;
       font-size: 0.8rem;
       font-weight: 600;
       border: $border-width solid $border-color;
@@ -5336,7 +5338,7 @@ textarea:focus {
 
     .indicator-card {
       background: $surface-secondary;
-      border-radius: 12px;
+      border-radius: 18px;
       padding: 1rem;
       display: flex;
       align-items: center;
@@ -5383,7 +5385,7 @@ textarea:focus {
 .preparation-tips {
   background: #f0fff4;
   border: $border-width solid $border-color;
-  border-radius: 12px;
+  border-radius: 18px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 
@@ -5464,7 +5466,7 @@ textarea:focus {
 
 .community-badge {
   padding: 0.125rem 0.375rem;
-  border-radius: 0.375rem;
+  border-radius: 18px;
   background: rgba($text-secondary, 0.2);
   color: $text-secondary;
   font-size: 0.5625rem;
@@ -5478,7 +5480,7 @@ textarea:focus {
   min-width: 20px;
   height: 20px;
   padding: 0 0.25rem;
-  border-radius: 0.375rem;
+  border-radius: 18px;
   color: #0b0b0b;
   font-size: 0.6875rem;
   font-weight: 800;
@@ -5700,13 +5702,13 @@ textarea:focus {
 
     .xp-bar {
       height: 4px;
-      border-radius: 2px;
+      border-radius: 18px;
       background: rgba(255, 255, 255, 0.08);
       overflow: hidden;
 
       .xp-fill {
         height: 100%;
-        border-radius: 2px;
+        border-radius: 18px;
         background: $primary-color;
       }
     }

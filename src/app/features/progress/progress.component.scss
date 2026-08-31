@@ -107,7 +107,7 @@
 
   padding: 1rem;
   border: $border-width solid $border-color;
-  border-radius: 1.25rem;
+  border-radius: 18px;
   background: $surface-secondary;
 }
 
@@ -131,7 +131,7 @@
 .card {
   padding: 1.25rem;
   border: $border-width solid $border-color;
-  border-radius: 1.5rem;
+  border-radius: 18px;
   background: $surface-secondary;
 
   h2 {
@@ -186,7 +186,7 @@
 
   appearance: none;
   border: $border-width solid $border-color;
-  border-radius: 0.875rem;
+  border-radius: 18px;
   background: $bg-primary;
   // Chevron dessine en CSS : evite une requete pour une icone de 200 octets.
   background-image: linear-gradient(45deg, transparent 50%, $text-secondary 50%),
@@ -299,7 +299,7 @@
 
   padding: 2.5rem 1.5rem;
   border: $border-width solid $border-color;
-  border-radius: 1.5rem;
+  border-radius: 18px;
   background: $surface-secondary;
   text-align: center;
 

@@ -227,7 +227,7 @@
     }
     &::-webkit-scrollbar-thumb {
       background: rgba($primary-color, 0.3);
-      border-radius: 2px;
+      border-radius: 18px;
     }
   }
 
@@ -264,7 +264,7 @@
         width: 1.75rem;
         height: 2px;
         background: var(--primary-gradient);
-        border-radius: 1px;
+        border-radius: 18px;
         transition: var(--transition);
 
         @include respond-below(md) {
@@ -306,7 +306,7 @@
             font-size: 0.9rem;
             font-weight: 700;
             min-height: 52px;
-            border-radius: 0.75rem;
+            border-radius: 18px;
             margin-bottom: 0.125rem;
           }
 
@@ -436,7 +436,7 @@
             font-size: 0.7rem;
             font-weight: 700;
             padding: 0.25rem 0.6rem;
-            border-radius: 20px;
+            border-radius: 18px;
             margin-left: auto;
             min-width: 24px;
             text-align: center;
@@ -648,7 +648,7 @@
           gap: 0.25rem;
           padding: 0.5rem 0.4rem;
           background: black;
-          border-radius: 3rem;
+          border-radius: 18px;
           transition: var(--transition);
           border: $border-width solid $border-color;
 
@@ -656,7 +656,7 @@
           @include respond-below(md) {
             padding: 0.6rem 0.4rem;
             gap: 0.3rem;
-            border-radius: 0.6rem;
+            border-radius: 18px;
             background: rgba(248, 250, 252, 0.9);
             border: $border-width solid $border-color;
             min-height: 60px;
@@ -724,7 +724,7 @@
           justify-content: center;
           gap: 0.4rem;
           padding: 0.5rem 3rem;
-          border-radius: 3rem;
+          border-radius: 18px;
           font-size: 0.75rem;
           font-weight: 600;
           transition: var(--transition);
@@ -741,7 +741,7 @@
             gap: 0.45rem;
             font-size: 0.78rem;
             font-weight: 700;
-            border-radius: 0.6rem;
+            border-radius: 18px;
             min-height: 40px;
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35);
           }
@@ -810,7 +810,7 @@
   .footer-content {
 
     padding: 0.6rem 0.75rem;
-    border-radius: 0.5rem;
+    border-radius: 18px;
  
     transition: var(--transition);
     @include shimmer-effect;
@@ -818,7 +818,7 @@
     /* Mobile optimizations - very compact */
     @include respond-below(md) {
       padding: 0.5rem;
-      border-radius: 0.5rem;
+      border-radius: 18px;
 
     }
 
@@ -1144,7 +1144,7 @@
     top: 1rem;
     left: 1rem;
     padding: 1.125rem;
-    border-radius: 1rem;
+    border-radius: 18px;
     box-shadow: 0 6px 20px rgba($primary-color, 0.4);
     border: $border-width solid $border-color;
   }
@@ -1215,7 +1215,7 @@
 
       .user-card {
         padding: 0.75rem;
-        border-radius: var(--$border-radius-lg);
+        border-radius: $border-radius-lg;
       }
     }
 
@@ -1225,7 +1225,7 @@
 
       .footer-content {
         padding: 0.5rem;
-        border-radius: var(--$border-radius-lg);
+        border-radius: $border-radius-lg;
       }
     }
   }

@@ -390,7 +390,7 @@ $forest-gradient: $gradient-forest;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 2rem;
   width: 100%;
-  margin: 0 2rem 2rem 2rem;
+  margin: 0 2rem $block-spacing 2rem;
   // width: 100%;
   // max-width: 1600px;
   position: relative;
@@ -557,7 +557,7 @@ $forest-gradient: $gradient-forest;
               $warning-color 85%,
               $danger-color 100%
             );
-            border-radius: 6px;
+            border-radius: 18px;
             margin-bottom: 0.75rem;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -1408,7 +1408,7 @@ $forest-gradient: $gradient-forest;
             width: 60px;
             height: 60px;
             background: $surface-secondary;
-            border-radius: 12px;
+            border-radius: 18px;
             top: 35%;
             right: 65%;
           }

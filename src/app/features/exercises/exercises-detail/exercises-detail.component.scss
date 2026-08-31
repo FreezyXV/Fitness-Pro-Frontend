@@ -25,7 +25,7 @@
   justify-content: center;
 
   border: none;
-  border-radius: 16px;
+  border-radius: 18px;
   font-weight: 700;
   font-size: 0.9rem;
   letter-spacing: 0.05em;
@@ -123,7 +123,7 @@
 // Main Container
 .exercise-detail-container {
   min-height: 100vh;
-  background: $bg-primary;
+ 
   background-size: initial;
   animation: none;
   border: $border-width solid $border-color;
@@ -194,7 +194,7 @@ padding: 0.25rem;
 // Enhanced Hero Section with better responsive padding
 .hero-section {
   @include enhanced-glass-card(0.98, 32px);
-  border-radius: 32px;
+  border-radius: 18px;
   padding: 3rem;
   animation: enhanced-slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
@@ -205,22 +205,22 @@ padding: 0.25rem;
 
   @include respond-below(xl) {
     padding: 2.5rem;
-    border-radius: 28px;
+    border-radius: 18px;
   }
 
   @include respond-below(lg) {
     padding: 2rem;
-    border-radius: 24px;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
     padding: 1.5rem;
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1.25rem;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   &:hover {
@@ -253,7 +253,7 @@ padding: 0.25rem;
       align-items: center;
       gap: 1rem;
       padding: 1.25rem 2.5rem;
-      border-radius: 20px;
+      border-radius: 18px;
       border: none;
       background: rgba($surface-secondary, 0.95);
       color: $gray-700;
@@ -360,7 +360,7 @@ padding: 0.25rem;
         align-items: center;
         gap: 0.875rem;
         padding: 1rem 0.5rem;
-        border-radius: 20px;
+        border-radius: 18px;
         font-weight: 800;
         letter-spacing: 0.05em;
         background: rgba($surface-secondary, 0.95);
@@ -499,7 +499,7 @@ padding: 0.25rem;
       flex-direction: column;
       align-items: center;
       padding: 2.5rem 2rem;
-      border-radius: 24px;
+      border-radius: 18px;
       @include enhanced-hover-lift;
       position: relative;
       overflow: hidden;
@@ -550,7 +550,7 @@ padding: 0.25rem;
 
 // Enhanced Main Content Layout with improved responsive behavior
 .main-content-layout {
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
   align-items: start;
   width: 100%;
@@ -570,6 +570,7 @@ padding: 0.25rem;
   }
 
   @include respond-below(md) {
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.5rem;
     margin: 0;
   }
@@ -603,7 +604,7 @@ padding: 0.25rem;
 // Enhanced Video Section with improved mobile padding
 .video-section-card {
   @include enhanced-glass-card(0.97, 24px);
-  border-radius: 24px;
+  border-radius: 18px;
   padding: 2rem;
   width: 100%;
   max-width: 100%;
@@ -611,17 +612,17 @@ padding: 0.25rem;
 
   @include respond-below(lg) {
     padding: 1.5rem;
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
     padding: 1.25rem;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 18px;
   }
 
   .card-header {
@@ -643,7 +644,7 @@ padding: 0.25rem;
     .video-status {
       .status-indicator {
         padding: 0.75rem 1.5rem;
-        border-radius: 16px;
+        border-radius: 18px;
         font-size: 0.875rem;
         font-weight: 700;
         letter-spacing: 0.05em;
@@ -766,7 +767,7 @@ padding: 0.25rem;
             .progress-bar {
               position: relative;
               height: 8px;
-              border-radius: 4px;
+              border-radius: 18px;
               background: rgba($surface-secondary, 0.2);
               cursor: pointer;
               margin-bottom: 1rem;
@@ -779,7 +780,7 @@ padding: 0.25rem;
                 right: 0;
                 bottom: 0;
                 background: rgba($surface-secondary, 0.3);
-                border-radius: 4px;
+                border-radius: 18px;
               }
 
               .progress-played {
@@ -788,7 +789,7 @@ padding: 0.25rem;
                 left: 0;
                 height: 100%;
                 background: $primary-dark;
-                border-radius: 4px;
+                border-radius: 18px;
                 transition: width 0.1s ease;
               }
             }
@@ -905,26 +906,26 @@ padding: 0.25rem;
 // Enhanced Instructions Section with better mobile spacing
 .instructions-section-card {
   @include enhanced-glass-card(0.97, 24px);
-  border-radius: 24px;
+  border-radius: 18px;
   padding: 2rem;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  margin-bottom: 2rem;
+  margin-bottom: $block-spacing;
 
   @include respond-below(lg) {
     padding: 1.5rem;
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
     padding: 1.25rem;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 18px;
   }
 
   .card-header {
@@ -955,7 +956,7 @@ padding: 0.25rem;
         align-items: center;
         gap: 0.5rem;
         padding: 0.875rem 1.5rem;
-        border-radius: 16px;
+        border-radius: 18px;
         border: none;
         background: rgba($surface-secondary, 0.95);
         color: $gray-700;
@@ -991,7 +992,7 @@ padding: 0.25rem;
         display: flex;
         gap: 2rem;
         padding: 2rem;
-        border-radius: 20px;
+        border-radius: 18px;
         background: rgba($surface-secondary, 0.9);
         border: $border-width solid $border-color;
         cursor: pointer;
@@ -1052,7 +1053,7 @@ padding: 0.25rem;
             .progress-bar {
               position: relative;
               height: 4px;
-              border-radius: 2px;
+              border-radius: 18px;
               background: rgba($primary-color, 0.2);
               overflow: hidden;
 
@@ -1062,7 +1063,7 @@ padding: 0.25rem;
                 left: 0;
                 height: 100%;
                 background: $secondary-gradient;
-                border-radius: 2px;
+                border-radius: 18px;
                 transition: width 0.1s ease;
               }
             }
@@ -1133,7 +1134,7 @@ padding: 0.25rem;
 
       .step-counter {
         padding: 1rem 2rem;
-        border-radius: 16px;
+        border-radius: 18px;
         background: rgba($surface-secondary, 0.95);
         color: $gray-700;
         font-weight: 700;
@@ -1153,7 +1154,7 @@ width: 100%;
 // Enhanced Secondary Content
 .secondary-content {
   display: flex;
-  flex-direction: column;
+  margin-top: $block-spacing;
   gap: 2rem;
   width: 100%;
   max-width: 100%;
@@ -1171,7 +1172,7 @@ width: 100%;
 // Enhanced Info Card with improved responsive padding
 .info-card {
   @include enhanced-glass-card(0.95, 20px);
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 2rem;
   @include enhanced-hover-lift;
   width: 100%;
@@ -1185,12 +1186,12 @@ width: 100%;
 
   @include respond-below(md) {
     padding: 1.25rem;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1rem;
-    border-radius: 14px;
+    border-radius: 18px;
   }
 
   .card-header {
@@ -1221,7 +1222,7 @@ width: 100%;
       align-items: center;
       gap: 1.5rem;
       padding: 1.5rem;
-      border-radius: 16px;
+      border-radius: 18px;
       background: rgba($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1272,7 +1273,7 @@ width: 100%;
 // Enhanced Tips Card with better mobile padding
 .tips-card {
   @include enhanced-glass-card(0.95, 20px);
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 2rem;
   @include enhanced-hover-lift;
   width: 100%;
@@ -1286,12 +1287,12 @@ width: 100%;
 
   @include respond-below(md) {
     padding: 1.25rem;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1rem;
-    border-radius: 14px;
+    border-radius: 18px;
   }
 
   .card-header {
@@ -1363,7 +1364,7 @@ width: 100%;
 // Enhanced Muscle Groups Card with improved responsive design
 .muscle-groups-card {
   @include enhanced-glass-card(0.95, 20px);
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 2rem;
   @include enhanced-hover-lift;
   width: 100%;
@@ -1377,12 +1378,12 @@ width: 100%;
 
   @include respond-below(md) {
     padding: 1.25rem;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1rem;
-    border-radius: 14px;
+    border-radius: 18px;
   }
 
   .card-header {
@@ -1410,7 +1411,7 @@ width: 100%;
 
     .muscle-tag {
       padding: 0.875rem 1.5rem;
-      border-radius: 16px;
+      border-radius: 18px;
       background: rgba($primary-color, 0.1);
       color: $text-primary;
       font-weight: 700;
@@ -1434,7 +1435,7 @@ width: 100%;
 // Enhanced Related Exercises Section
 .related-exercises-section {
   @include enhanced-glass-card(0.97, 24px);
-  border-radius: 24px;
+  border-radius: 18px;
   padding: 2rem;
   width: 100%;
   max-width: 100%;
@@ -1442,17 +1443,17 @@ width: 100%;
 
   @include respond-below(lg) {
     padding: 1.5rem;
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
     padding: 1.25rem;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
   @include respond-below(sm) {
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 18px;
   }
 
   .section-header {
@@ -1489,7 +1490,7 @@ width: 100%;
       align-items: center;
       gap: 2rem;
       padding: 1rem;
-      border-radius: 20px;
+      border-radius: 18px;
       background: rgba($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       cursor: pointer;
@@ -1508,7 +1509,7 @@ width: 100%;
       .exercise-preview {
         width: 64px;
         height: 64px;
-        border-radius: 16px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1540,7 +1541,7 @@ width: 100%;
 
           .difficulty-tag {
             padding: 0.5rem 1rem;
-            border-radius: 12px;
+            border-radius: 18px;
             font-size: 0.8rem;
             font-weight: 700;
             letter-spacing: 0.05em;
@@ -1575,9 +1576,9 @@ width: 100%;
   right: 0;
   background: rgba($surface-secondary, 0.98);
   border-top: $border-width solid $border-color;
-  border-radius: 24px 24px 24px 24px;
+  border-radius: 18px;
   padding: 2rem;
-  margin-top: 3rem;
+  margin-top: $block-spacing;
   box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 100%;
@@ -1585,18 +1586,18 @@ width: 100%;
 
   @include respond-below(lg) {
     padding: 1.5rem;
-    border-radius: 20px 20px 20px 20px;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
     padding: 1.25rem;
-    border-radius: 16px 16px 16px 16px;
+    border-radius: 18px;
     margin-top: 2rem;
   }
 
   @include respond-below(sm) {
     padding: 1rem;
-    border-radius: 12px 12px 12px 12px;
+    border-radius: 18px;
     margin-top: 1.5rem;
   }
 
@@ -1680,7 +1681,7 @@ width: 100%;
 
   .loading-content {
     @include enhanced-glass-card(0.98, 32px);
-    border-radius: 28px;
+    border-radius: 18px;
     padding: 4rem;
     text-align: center;
     max-width: 500px;
@@ -1711,7 +1712,7 @@ width: 100%;
       position: relative;
       width: 100%;
       height: 8px;
-      border-radius: 4px;
+      border-radius: 18px;
       background: rgba($gray-200, 0.8);
       overflow: hidden;
       margin: 2rem 0;
@@ -1723,7 +1724,7 @@ width: 100%;
         right: 0;
         bottom: 0;
         background: rgba($gray-200, 0.8);
-        border-radius: 4px;
+        border-radius: 18px;
       }
 
       .progress-fill {
@@ -1732,7 +1733,7 @@ width: 100%;
         left: 0;
         height: 100%;
         background: $primary-dark;
-        border-radius: 4px;
+        border-radius: 18px;
         transition: width 0.3s ease;
       }
 
@@ -1761,7 +1762,7 @@ width: 100%;
 
   .error-content {
     @include enhanced-glass-card(0.98, 32px);
-    border-radius: 28px;
+    border-radius: 18px;
     padding: 4rem;
     text-align: center;
     max-width: 500px;
@@ -1885,7 +1886,7 @@ width: 100%;
 .exercise-detail-container [class*='panel'],
 .exercise-detail-container [class*='module'],
 .exercise-detail-container [class*='section'] {
-  background: $surface-secondary;
+ 
 
 }
 

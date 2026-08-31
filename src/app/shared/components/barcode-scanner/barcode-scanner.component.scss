@@ -20,7 +20,7 @@
   overflow-y: auto;
 
   border: $border-width solid $border-color;
-  border-radius: 1.5rem;
+  border-radius: 18px;
   background: $surface-secondary;
 
   // Sur telephone la boite prend le bas de l'ecran : le pouce atteint les
@@ -31,7 +31,7 @@
     transform: translateX(-50%);
     width: 100vw;
     max-height: 88vh;
-    border-radius: 1.5rem 1.5rem 0 0;
+    border-radius: 18px 18px 0 0;
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
@@ -120,7 +120,7 @@
 .viewfinder {
   position: relative;
   aspect-ratio: 4 / 3;
-  border-radius: 1rem;
+  border-radius: 18px;
   overflow: hidden;
   background: #000;
 
@@ -140,7 +140,7 @@
   transform: translateY(-50%);
 
   border: 2px solid $primary-color;
-  border-radius: 0.75rem;
+  border-radius: 18px;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
 }
 
@@ -174,7 +174,7 @@
     padding: 0 0.875rem;
 
     border: $border-width solid $border-color;
-    border-radius: 0.875rem;
+    border-radius: 18px;
     background: $bg-primary;
     color: $text-primary;
     font: inherit;

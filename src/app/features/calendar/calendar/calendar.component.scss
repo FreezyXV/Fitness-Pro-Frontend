@@ -159,30 +159,30 @@ padding: 0.25rem;
 
   .hero-content {
     @include glass-morphism(0.95);
-    
-    padding: $space-10 $space-12;
+    border-radius: 18px;
+    padding: 1rem 1.25rem !important;
     box-shadow: $shadow-2xl;
     position: relative;
     overflow: hidden;
 
     @include respond-below(xl) {
       padding: $space-8 $space-10;
-      border-radius: 2.5rem;
+      border-radius: 18px;
     }
 
     @include respond-below(lg) {
       padding: $space-6 $space-8;
-      border-radius: 2.5rem;
+      border-radius: 18px;
     }
 
     @include respond-below(md) {
       padding: $space-5 $space-6;
-      border-radius: 2.5rem;
+      border-radius: 18px;
     }
 
     @include respond-below(sm) {
       padding: $space-4 $space-5;
-      border-radius: 2.5rem;
+      border-radius: 18px;
     }
 
     &::before {
@@ -286,9 +286,9 @@ padding: 0.25rem;
 
 .nav-card {
   @include glass-morphism(0.9);
-  border-radius: 2.5rem;
+  border-radius: 18px;
   padding: $space-8;
-  margin-bottom: $space-8;
+  margin-bottom: $block-spacing;
   box-shadow: $shadow-xl;
   display: flex;
   justify-content: space-between;
@@ -300,14 +300,14 @@ padding: 0.25rem;
     padding: $space-6;
     margin-bottom: $space-6;
     gap: $space-6;
-    border-radius: 2.5rem;
+    border-radius: 18px;
   }
 
   @include respond-below(lg) {
     padding: $space-5;
     margin-bottom: $space-5;
     gap: $space-5;
-    border-radius: 2.5rem;
+    border-radius: 18px;
   }
 
   @include respond-below(md) {
@@ -321,7 +321,7 @@ padding: 0.25rem;
     padding: $space-3;
     margin-bottom: $space-3;
     gap: $space-3;
-    border-radius: 2.5rem;
+    border-radius: 18px;
   }
 
   .nav-controls {
@@ -511,14 +511,13 @@ padding: 0.25rem;
 
   .calendar-view {
     @include glass-morphism(0.9);
-    border-radius: 2.5;
     overflow: hidden;
     box-shadow: $shadow-xl;
     min-height: 600px;
-    border-radius: 2.5rem;
+    border-radius: 18px;
 
     @include respond-below(md) {
-      border-radius: 2.5rem;
+      border-radius: 18px;
     }
 
     &.month-view {
@@ -616,7 +615,7 @@ padding: 0.25rem;
           // pas par un aplat.
           &.selected {
             background: rgba($primary-color, 0.06);
-            border: $border-width solid rgba($primary-color, 0.45);
+           
             transform: none;
             z-index: 5;
             box-shadow: none;
@@ -1164,7 +1163,7 @@ padding: 0.25rem;
           .event-indicator {
             width: 8px;
             min-height: 60px;
-            border-radius: 4px;
+            border-radius: 18px;
             box-shadow: $shadow-xs;
           }
 
@@ -1380,10 +1379,10 @@ padding: 0.25rem;
 
 @include respond-below(md) {
   .hero-section {
-    padding: 0.25rem;
+    padding: 1rem 1.25rem !important;
 
     .hero-content {
-      padding: $space-6 $space-6;
+      padding: 1rem 1.25rem !important;
     }
 
     .title-section {
@@ -1617,7 +1616,7 @@ padding: 0.25rem;
   }
 
   .calendar-view {
-    border-radius: 2.5rem;
+    border-radius: 18px;
     min-height: auto;
 
     // Mobile-optimized Month View
@@ -1927,7 +1926,7 @@ padding: 0.25rem;
   &.selected,
   &:hover {
     background: rgba($primary-color, 0.15);
-    border: $border-width solid $border-color;
+   
   }
 }
 
@@ -1986,9 +1985,10 @@ padding: 0.25rem;
 
 .calendar-container {
   .hero-section {
-    padding: 1.25rem 0 0.5rem;
+
+    border-radius: 18px;
     margin: 0;
-    border: 0;
+
     background: none;
     text-align: left;
 

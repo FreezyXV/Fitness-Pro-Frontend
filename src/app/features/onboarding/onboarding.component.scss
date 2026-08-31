@@ -47,7 +47,7 @@
 .ob-progress {
   flex: 1;
   height: 4px;
-  border-radius: 2px;
+  border-radius: 18px;
   // Piste NEUTRE. Elle etait un lime a 15 % : sur le fond noir, la piste
   // entiere se lisait comme un remplissage olive, si bien que la barre
   // paraissait presque pleine des la premiere des cinq questions.
@@ -57,7 +57,7 @@
 
 .ob-progress-fill {
   height: 100%;
-  border-radius: 2px;
+  border-radius: 18px;
   background: $primary-color;
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -127,7 +127,7 @@
 
   appearance: none;
   border: $border-width solid $border-color;
-  border-radius: 1.25rem;
+  border-radius: 18px;
   background: $surface-secondary;
   cursor: pointer;
   text-align: left;
@@ -200,7 +200,7 @@
 
   padding: 0 0.75rem;
   border: $border-width solid $border-color;
-  border-radius: 0.875rem;
+  border-radius: 18px;
   background: $surface-secondary;
 
   &:focus-within {
@@ -334,7 +334,7 @@
   &:focus-visible {
     outline: 2px solid $primary-color;
     outline-offset: 2px;
-    border-radius: 0.5rem;
+    border-radius: 18px;
   }
 }
 
@@ -367,7 +367,7 @@
   width: 100%;
   padding: 1.25rem;
   border: $border-width solid $primary-color;
-  border-radius: 1.25rem;
+  border-radius: 18px;
   background: rgba($primary-color, 0.07);
   text-align: left;
 

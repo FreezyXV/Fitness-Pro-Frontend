@@ -452,7 +452,11 @@
             (click)="selectFoodCategory(category)"
           >
             <div class="category-icon">
-              <app-icon [name]="getFoodCategoryIcon(category)" [size]="28"></app-icon>
+              <img
+                [src]="getFoodCategoryImage(category)"
+                [alt]="getFoodCategoryLabel(category)"
+                loading="lazy"
+              />
             </div>
             <div class="category-info">
               <h4>{{ getFoodCategoryLabel(category) }}</h4>

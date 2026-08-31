@@ -1251,7 +1251,7 @@ export class NutritionComponent implements OnInit, OnDestroy {
     return labels[category] || category;
   }
 
-  /** Renvoie un nom d'icone du jeu de l'application (voir IconName). */
+  /** Renvoie un nom d'icone du jeu de l'application (voir IconName), pour les usages ponctuels (ex. badge inline). */
   getFoodCategoryIcon(category: FoodCategory): string {
     const icons = {
       [FoodCategory.PROTEINS]: 'flame',
@@ -1267,7 +1267,26 @@ export class NutritionComponent implements OnInit, OnDestroy {
       [FoodCategory.SEAFOOD]: 'droplet',
       [FoodCategory.SUPPLEMENTS]: 'bolt',
     };
-    return icons[category] || '🍽️';
+    return icons[category] || 'utensils';
+  }
+
+  /** Renvoie l'image d'un aliment representatif de la categorie (assets/Aliments), pour les tuiles de categorie. */
+  getFoodCategoryImage(category: FoodCategory): string {
+    const images = {
+      [FoodCategory.PROTEINS]: 'assets/Aliments/poulet.png',
+      [FoodCategory.VEGETABLES]: 'assets/Aliments/tomate.png',
+      [FoodCategory.FRUITS]: 'assets/Aliments/pomme.png',
+      [FoodCategory.GRAINS]: 'assets/Aliments/avoine.png',
+      [FoodCategory.DAIRY]: 'assets/Aliments/yaourt.png',
+      [FoodCategory.NUTS_SEEDS]: 'assets/Aliments/noix.png',
+      [FoodCategory.LEGUMES]: 'assets/Aliments/pois-chiches.png',
+      [FoodCategory.OILS_FATS]: 'assets/Aliments/huile-dolive.png',
+      [FoodCategory.BEVERAGES]: 'assets/Aliments/tasse-a-cafe.png',
+      [FoodCategory.HERBS_SPICES]: 'assets/Aliments/curcuma.png',
+      [FoodCategory.SEAFOOD]: 'assets/Aliments/crevette.png',
+      [FoodCategory.SUPPLEMENTS]: 'assets/Aliments/proteine-de-lactoserum.png',
+    };
+    return images[category] || 'assets/Aliments/pomme.png';
   }
 
   getDietaryRestrictionLabel(restriction: DietaryRestriction): string {

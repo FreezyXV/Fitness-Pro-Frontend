@@ -25,7 +25,7 @@
   justify-content: center;
   gap: 0.75rem;
   border: none;
-  border-radius: 16px;
+  border-radius: 18px;
   font-weight: 700;
   font-size: 0.9rem;
   letter-spacing: 0.05em;
@@ -221,7 +221,7 @@ padding: 0.25rem;
 // Enhanced Hero Section
 .hero-section {
   @include enhanced-glass-card(0.98, 32px);
-  border-radius: 32px;
+  border-radius: 18px;
   padding: 4rem;
   animation: enhanced-slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
@@ -229,12 +229,12 @@ padding: 0.25rem;
 
   @include respond-below(md) {
     padding: 2.5rem;
-    border-radius: 24px;
+    border-radius: 18px;
   }
 
   @include respond-below(xs) {
     padding: 2rem;
-    border-radius: 20px;
+    border-radius: 18px;
   }
 
   &:hover {
@@ -253,7 +253,7 @@ padding: 0.25rem;
   // Enhanced Session Progress Banner
   .session-progress-banner {
     @include enhanced-glass-card(0.95, 20px);
-    border-radius: 20px;
+    border-radius: 18px;
     padding: 2rem;
     margin-bottom: 3rem;
     border: $border-width solid $border-color;
@@ -313,13 +313,13 @@ padding: 0.25rem;
     .progress-track {
       height: 8px;
       background: rgba($success-color, 0.1);
-      border-radius: 6px;
+      border-radius: 18px;
       overflow: hidden;
 
       .progress-fill {
         height: 100%;
         background: $success-color;
-        border-radius: 6px;
+        border-radius: 18px;
         transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         position: relative;
 
@@ -362,7 +362,7 @@ padding: 0.25rem;
       align-items: center;
       gap: 1rem;
       padding: 1.25rem 2.5rem;
-      border-radius: 20px;
+      border-radius: 18px;
       border: none;
       background: rgba($surface-secondary, 0.95);
       color: $gray-700;
@@ -451,7 +451,7 @@ padding: 0.25rem;
         align-items: center;
         gap: 0.875rem;
         padding: 1.25rem 2.5rem;
-        border-radius: 20px;
+        border-radius: 18px;
         font-weight: 800;
         letter-spacing: 0.05em;
         background: rgba($surface-secondary, 0.95);
@@ -575,7 +575,7 @@ padding: 0.25rem;
       flex-direction: column;
       align-items: center;
       padding: 1.5rem 1rem;
-      border-radius: 24px;
+      border-radius: 18px;
       @include enhanced-hover-lift;
       position: relative;
       overflow: hidden;
@@ -678,12 +678,12 @@ padding: 0.25rem;
     display: flex;
     flex-direction: column;
     height: 100%;
-    border-radius: 28px;
+    border-radius: 18px;
     padding: 3rem;
 
     @include respond-below(md) {
       padding: 1rem;
-      border-radius: 20px;
+      border-radius: 18px;
     }
 
     .card-header {
@@ -717,7 +717,7 @@ padding: 0.25rem;
           align-items: center;
           gap: 0.5rem;
           padding: 0.875rem 1.5rem;
-          border-radius: 16px;
+          border-radius: 18px;
           border: none;
           background: rgba($surface-secondary, 0.95);
           color: $gray-700;
@@ -759,7 +759,7 @@ padding: 0.25rem;
 
         .exercise-item {
           @include enhanced-glass-card(0.9, 16px);
-          border-radius: 20px;
+          border-radius: 18px;
           border: $border-width solid $border-color;
           transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           overflow: hidden;
@@ -882,7 +882,7 @@ padding: 0.25rem;
 
                 .exercise-status-badge {
                   padding: 0.5rem 1rem;
-                  border-radius: 12px;
+                  border-radius: 18px;
                   font-size: 0.8rem;
                   font-weight: 700;
                   letter-spacing: 0.05em;
@@ -1031,7 +1031,7 @@ padding: 0.25rem;
                   gap: 1rem;
                   padding: 1.5rem;
                   background: rgba($surface-secondary, 0.9);
-                  border-radius: 16px;
+                  border-radius: 18px;
                   border: $border-width solid $border-color;
                   transition: all 0.3s ease;
 
@@ -1089,7 +1089,7 @@ padding: 0.25rem;
                   gap: 1rem;
                   padding: 1.25rem;
                   background: rgba($surface-secondary, 0.8);
-                  border-radius: 12px;
+                  border-radius: 18px;
 
                   .meta-icon {
                     font-size: 1.25rem;
@@ -1144,7 +1144,7 @@ padding: 0.25rem;
                     padding: 0.5rem 1rem;
                     background: rgba($primary-color, 0.1);
                     color: $text-secondary;
-                    border-radius: 12px;
+                    border-radius: 18px;
                     font-size: 0.8rem;
                     font-weight: 600;
                     border: $border-width solid $border-color;
@@ -1162,7 +1162,7 @@ padding: 0.25rem;
                 padding: 1rem;
                 background: rgba($info-color, 0.05);
                 border-left: $border-width solid $border-color;
-                border-radius: 0 8px 8px 0;
+                border-radius: 0 18px 18px 0;
               }
             }
 
@@ -1216,7 +1216,7 @@ padding: 0.25rem;
                 padding: 0.75rem 1.5rem;
                 background: rgba($success-color, 0.1);
                 color: $success-color;
-                border-radius: 12px;
+                border-radius: 18px;
                 font-weight: 700;
                 border: $border-width solid $border-color;
                 animation: completed-glow 3s ease-in-out infinite;
@@ -1273,7 +1273,7 @@ padding: 0.25rem;
 // Enhanced Info Card
 .info-card {
   @include enhanced-glass-card(0.95, 20px);
-  border-radius: 24px;
+  border-radius: 18px;
   padding: 2.5rem;
   @include enhanced-hover-lift;
 
@@ -1309,7 +1309,7 @@ padding: 0.25rem;
       align-items: center;
       gap: 1.5rem;
       padding: 1.5rem;
-      border-radius: 16px;
+      border-radius: 18px;
       background: rgba($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1360,7 +1360,7 @@ padding: 0.25rem;
 // Enhanced Workout Overview Card
 .workout-overview-card {
   @include enhanced-glass-card(0.95, 20px);
-  border-radius: 24px;
+  border-radius: 18px;
   padding: 2.5rem;
   @include enhanced-hover-lift;
 
@@ -1396,7 +1396,7 @@ padding: 0.25rem;
       align-items: center;
       gap: 1.5rem;
       padding: 1.5rem;
-      border-radius: 16px;
+      border-radius: 18px;
       background: rgba($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1476,7 +1476,7 @@ padding: 0.25rem;
 // Enhanced Progress Card
 .progress-card {
   @include enhanced-glass-card(0.95, 20px);
-  border-radius: 24px;
+  border-radius: 18px;
   padding: 2.5rem;
   @include enhanced-hover-lift;
 
@@ -1514,7 +1514,7 @@ padding: 0.25rem;
       gap: 1rem;
       padding: 1.25rem;
       background: rgba($success-color, 0.05);
-      border-radius: 16px;
+      border-radius: 18px;
       border: $border-width solid $border-color;
 
       .stat-icon {
@@ -1565,7 +1565,7 @@ padding: 0.25rem;
         gap: 1rem;
         padding: 1rem;
         background: rgba($surface-secondary, 0.8);
-        border-radius: 12px;
+        border-radius: 18px;
         border: $border-width solid $border-color;
 
         .session-status {
@@ -1616,14 +1616,14 @@ padding: 0.25rem;
   right: 0;
   background: rgba($surface-secondary, 0.98);
   border-top: $border-width solid $border-color;
-  border-radius: 32px 32px 32px 32px;
+  border-radius: 18px;
   padding: 2.5rem;
-  margin-top: 2rem;
+  margin-top: $block-spacing;
   box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
 
   @include respond-below(md) {
     padding: 2rem;
-    border-radius: 20px 20px 20px 20px;
+    border-radius: 18px;
   }
 
   .action-buttons {
@@ -1732,7 +1732,7 @@ padding: 0.25rem;
 
   .loading-content {
     @include enhanced-glass-card(0.98, 32px);
-    border-radius: 28px;
+    border-radius: 18px;
     padding: 4rem;
     text-align: center;
     max-width: 500px;
@@ -1763,7 +1763,7 @@ padding: 0.25rem;
       position: relative;
       width: 100%;
       height: 8px;
-      border-radius: 4px;
+      border-radius: 18px;
       background: rgba($gray-200, 0.8);
       overflow: hidden;
       margin: 2rem 0;
@@ -1775,7 +1775,7 @@ padding: 0.25rem;
         right: 0;
         bottom: 0;
         background: rgba($gray-200, 0.8);
-        border-radius: 4px;
+        border-radius: 18px;
       }
 
       .progress-fill {
@@ -1784,7 +1784,7 @@ padding: 0.25rem;
         left: 0;
         height: 100%;
         background: $gradient-secondary;
-        border-radius: 4px;
+        border-radius: 18px;
         transition: width 0.3s ease;
       }
 
@@ -1813,7 +1813,7 @@ padding: 0.25rem;
 
   .error-content {
     @include enhanced-glass-card(0.98, 32px);
-    border-radius: 28px;
+    border-radius: 18px;
     padding: 4rem;
     text-align: center;
     max-width: 500px;
