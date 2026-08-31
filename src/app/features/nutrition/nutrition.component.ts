@@ -1223,6 +1223,33 @@ export class NutritionComponent implements OnInit, OnDestroy {
     this.dailyNutrition.fiber += entry.fiber;
   }
 
+  /**
+   * Libelle FR d'une categorie d'aliment.
+   *
+   * Le gabarit affichait la valeur brute de l'enum (`nuts_seeds`,
+   * `oils_fats`, `herbs_spices`) avec un `text-transform: capitalize` CSS qui
+   * ne majuscule que la premiere lettre : les categories a underscore
+   * s'affichaient « Nuts_seeds » plutot que d'etre traduites.
+   */
+  getFoodCategoryLabel(category: FoodCategory | null | undefined): string {
+    if (!category) return '';
+    const labels: Record<FoodCategory, string> = {
+      [FoodCategory.PROTEINS]: 'Protéines',
+      [FoodCategory.VEGETABLES]: 'Légumes',
+      [FoodCategory.FRUITS]: 'Fruits',
+      [FoodCategory.GRAINS]: 'Céréales',
+      [FoodCategory.DAIRY]: 'Produits laitiers',
+      [FoodCategory.NUTS_SEEDS]: 'Noix et graines',
+      [FoodCategory.LEGUMES]: 'Légumineuses',
+      [FoodCategory.OILS_FATS]: 'Huiles et matières grasses',
+      [FoodCategory.BEVERAGES]: 'Boissons',
+      [FoodCategory.HERBS_SPICES]: 'Herbes et épices',
+      [FoodCategory.SEAFOOD]: 'Fruits de mer',
+      [FoodCategory.SUPPLEMENTS]: 'Compléments',
+    };
+    return labels[category] || category;
+  }
+
   getFoodCategoryIcon(category: FoodCategory): string {
     const icons = {
       [FoodCategory.PROTEINS]: '🥩',

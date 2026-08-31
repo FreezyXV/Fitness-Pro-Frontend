@@ -347,7 +347,7 @@
       }
 
       .filter-select {
-        padding: 0.875rem 1rem;
+        padding: 0.625rem 0.875rem;
         border: $border-width solid $border-color;
         border-radius: $border-radius;
         background: rgba($surface-secondary, 0.9);
@@ -1117,7 +1117,7 @@
 
     .modal-body {
       padding: 2rem;
-      max-height: 60vh;
+      max-height: 80vh;
       overflow-y: auto;
 
       .challenge-details {
@@ -1702,20 +1702,21 @@ gap: 1rem;
     input[type="date"],
     select,
     textarea {
-      padding: 0.875rem 1rem;
+      padding: 0.625rem 0.875rem;
       border: $border-width solid $border-color;
       border-radius: $border-radius;
       font-size: 1rem;
       font-family: inherit;
       background-color: rgba($surface-secondary, 0.8);
-      transition: all 0.3s ease;
-      color: $gray-900;
+      color: $text-primary;
 
+      // Meme bug que le formulaire d'objectif : le fond passait au blanc pur
+      // au focus sans que le texte change de couleur.
       &:focus {
         outline: none;
         border-color: $primary-color;
         box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
-        background-color: white;
+        background-color: $surface-secondary;
       }
 
       &.is-invalid {

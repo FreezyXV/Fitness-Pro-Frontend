@@ -437,7 +437,10 @@ $form-input-padding-y: 0.5rem;
 
 // Enhanced Form Variables (for auth pages only)
 $form-input-bg-enhanced: rgba($surface-secondary, 0.08);
-$form-input-padding: 0.75rem 1rem;
+// Resserre de 0.75rem/1rem a 0.625rem/0.875rem : sur un formulaire de six
+// champs (calendrier, objectifs, defis), l'ecart economise environ 70px et
+// evite le defilement dans la plupart des modales de saisie.
+$form-input-padding: 0.625rem 0.875rem;
 $form-input-padding-lg: 1rem 1.25rem;
 $form-input-border-radius: $border-radius;
 $form-input-transition: all 0.3s ease;

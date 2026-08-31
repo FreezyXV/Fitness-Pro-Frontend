@@ -1229,8 +1229,10 @@ padding: 0.25rem;
             line-height: 1.6;
           }
 
+          // Texte blanc sur un aplat lime ($primary-dark) : 1,76:1, bien sous
+          // le seuil de 4,5:1. L'encre foncee dediee aux aplats de marque.
           .btn {
-            @include enhanced-button($primary-dark, white, medium);
+            @include enhanced-button($primary-color, $on-primary, medium);
           }
         }
       }
@@ -1619,24 +1621,22 @@ padding: 0.25rem;
       grid-template-columns: minmax(0, 1fr) ;
     }
 
-    // Enhanced Primary Session Button
+    // =============================================
+    // BARRE D'ACTIONS — PALETTE UNIFIEE
+    // =============================================
+    //
+    // Les cinq boutons portaient chacun une couleur differente sans rapport
+    // entre elles : menthe (session), bleu (calendrier), vert plein
+    // (terminer), gris (dupliquer), orange (modifier) — plus un degrade
+    // anime et un halo pulsant sur l'etat « session active ». Une seule
+    // action garde l'aplat lime (l'action principale de l'ecran) ; toutes
+    // les autres reprennent le meme contour neutre utilise partout ailleurs
+    // dans l'application. Seul « Terminer » garde une teinte — verte,
+    // parce que c'est la conclusion positive du parcours — mais en contour,
+    // pas en aplat.
     .primary-action-btn,
     .action-btn.primary.large {
-      @include enhanced-button($secondary-gradient, black, large);
-      box-shadow: 0 15px 40px rgba($secondary-color, 0.4);
-      color: $on-primary;
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      overflow: hidden;
-
-      &:not(.success.active) {
-        background-size: 200% 200%;
-      }
-
-      &:hover {
-        box-shadow: 0 20px 50px rgba($secondary-color, 0.5);
-        transform: translateY(-3px) scale(1.02);
-      }
+      @include enhanced-button($primary-color, $on-primary, large);
 
       &.loading {
         opacity: 0.8;
@@ -1646,90 +1646,34 @@ padding: 0.25rem;
         }
       }
 
-      // Enhanced Session Active State
+      // Etat « session en cours ».
       &.success.active {
-        background: linear-gradient(135deg,
-          rgba($success-color, 0.95),
-          rgba($success-light, 0.95),
-          rgba($success-color, 0.95));
-        background-size: 300% 300%;
-        box-shadow:
-          0 15px 40px rgba($success-color, 0.4),
-          0 0 0 4px rgba($success-color, 0.1),
-          inset 0 1px 0 rgba($surface-secondary, 0.2);
-        animation: session-active-pulse 3s ease-in-out infinite, gradient-animation 8s ease infinite;
-        border: $border-width solid $border-color;
-
-        // Enhanced glow effect
-        &::before {
-          content: '';
-          position: absolute;
-          top: -2px;
-          left: -2px;
-          right: -2px;
-          bottom: -2px;
-          background: linear-gradient(45deg,
-            transparent,
-            rgba($success-color, 0.4),
-            transparent,
-            rgba($success-light, 0.4),
-            transparent);
-          border-radius: inherit;
-          z-index: -1;
-          animation: session-border-glow 4s linear infinite;
-        }
-
-        // Success icon animation
-        .btn-icon svg {
-          animation: success-bounce 2s ease-in-out infinite;
-        }
-
-        &:hover {
-          transform: translateY(-4px) scale(1.03);
-          box-shadow:
-            0 25px 60px rgba($success-color, 0.6),
-            0 0 0 6px rgba($success-color, 0.15),
-            inset 0 1px 0 rgba($surface-secondary, 0.3);
-        }
+        background: $success-color;
+        color: $on-primary;
+        border: $border-width solid transparent;
       }
     }
 
-    .secondary-action-btn {
-      @include enhanced-button(rgba($info-color, 0.1), $info-color, medium);
+    .secondary-action-btn,
+    .tertiary-action-btn,
+    .edit-action-btn {
+      @include enhanced-button(rgba(255, 255, 255, 0.04), $text-secondary, medium);
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba($info-color, 0.15);
-        border: $border-width solid $border-color;
+        background: rgba(255, 255, 255, 0.07);
+        border-color: $border-strong;
+        color: $text-primary;
       }
     }
 
     .completion-action-btn {
-      @include enhanced-button($success-gradient, white, medium);
-      box-shadow: 0 12px 30px rgba($success-color, 0.4);
+      @include enhanced-button(rgba($success-color, 0.12), $success-light, medium);
+      border: $border-width solid rgba($success-color, 0.3);
 
       &:hover {
-        box-shadow: 0 15px 40px rgba($success-color, 0.5);
-      }
-    }
-
-    .tertiary-action-btn {
-      @include enhanced-button(rgba($gray-500, 0.1), $gray-700, medium);
-      border: $border-width solid $border-color;
-
-      &:hover {
-        background: rgba($gray-100, 0.8);
-        border: $border-width solid $border-color;
-      }
-    }
-
-    .edit-action-btn {
-      @include enhanced-button(rgba($warning-color, 0.1), $warning-color, medium);
-      border: $border-width solid $border-color;
-
-      &:hover {
-        background: rgba($warning-color, 0.15);
-        border: $border-width solid $border-color;
+        background: rgba($success-color, 0.18);
+        border-color: rgba($success-color, 0.5);
       }
     }
 
@@ -2204,5 +2148,213 @@ padding: 0.25rem;
       margin: 0 0 1rem;
       text-align: left;
     }
+  }
+}
+
+/* =============================================
+ * DETAIL DE PROGRAMME — PASSE DE COMPACITE
+ * =============================================
+ *
+ * Meme constat que l'ecran de detail d'exercice : titre a 4,5rem, quatre
+ * cartes de stat a 1,5-2,5rem de rembourrage avec une icone de 3rem, un
+ * en-tete de section a 2,5rem de rembourrage pour deux lignes de texte, et un
+ * etat vide de 4rem de rembourrage avec une icone flottante animee. Resserre
+ * a l'echelle du reste de l'application.
+ */
+
+.workout-detail-container {
+  .plan-title {
+    font-size: clamp(1.5rem, 3.2vw, 1.875rem) !important;
+    font-weight: 700 !important;
+    color: $text-primary !important;
+    margin: 0 0 0.375rem 0 !important;
+    text-shadow: none !important;
+  }
+
+  .plan-description {
+    font-size: 0.9375rem !important;
+    color: $text-secondary !important;
+    font-weight: 400 !important;
+  }
+
+  .title-section {
+    margin-bottom: 1.25rem !important;
+  }
+
+  // Puces d'etat de l'en-tete : difficulte, categorie, statut. La derniere
+  // ($secondary-color, un turquoise) est une troisieme teinte d'accent sans
+  // rapport avec le reste — elle redevient neutre.
+  .status-badge {
+    color: $text-secondary !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  // Les puces occupaient chacune la moitie de la largeur de l'en-tete :
+  // `.meta-badges` les plaçait dans une grille a deux colonnes forcees
+  // (`grid-template-columns: 1fr 1fr`) avec `width: 100%` sur chaque puce.
+  // Une puce se dimensionne a son contenu, pas a la largeur de son
+  // conteneur — elle redevient une ligne qui se replie.
+  .meta-badges {
+    display: flex !important;
+    gap: 0.5rem !important;
+  }
+
+  .difficulty-badge,
+  .category-badge,
+  .status-badge {
+    display: inline-flex !important;
+    width: auto !important;
+    padding: 0.375rem 0.625rem !important;
+    border-radius: $radius-sm !important;
+    gap: 0.375rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+
+    &.session-active { animation: none !important; }
+
+    .badge-icon { font-size: 1rem !important; filter: none !important; }
+    .badge-text { font-size: 0.75rem !important; }
+  }
+
+  .quick-stats-grid {
+    gap: 0.75rem !important;
+
+    .stat-card {
+      padding: 0.875rem !important;
+      border-radius: $radius-lg !important;
+
+      &.session-progress { animation: none !important; }
+      &::before { display: none !important; }
+
+      .stat-icon {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.375rem !important;
+        filter: none !important;
+        animation: none !important;
+      }
+
+      .stat-value {
+        font-size: 1.125rem !important;
+        font-weight: 650 !important;
+        color: $text-primary !important;
+        margin-bottom: 0.125rem !important;
+      }
+
+      .stat-label {
+        font-size: 0.6875rem !important;
+        letter-spacing: 0 !important;
+        font-weight: 500 !important;
+        color: $text-muted !important;
+      }
+    }
+  }
+
+  .exercises-card,
+  .info-card {
+    padding: 1rem !important;
+    border-radius: $radius-xl !important;
+
+    .card-header {
+      margin-bottom: 0.875rem !important;
+
+      .section-title {
+        font-size: 0.9375rem !important;
+        font-weight: 650 !important;
+        color: $text-primary !important;
+        gap: 0.5rem !important;
+
+        .title-icon { font-size: 1.0625rem !important; filter: none !important; }
+      }
+    }
+  }
+
+  .secondary-content {
+    gap: 0.75rem !important;
+  }
+
+  // L'etat vide occupait 4rem de rembourrage avec une icone de 4rem
+  // flottante — pour dire qu'il n'y a rien a montrer.
+  .no-exercises-placeholder {
+    padding: 1.5rem 1rem !important;
+
+    .no-exercises-icon {
+      font-size: 1.75rem !important;
+      margin-bottom: 0.5rem !important;
+      animation: none !important;
+      opacity: 0.6;
+    }
+
+    .no-exercises-title {
+      font-size: 1rem !important;
+      font-weight: 650 !important;
+      color: $text-primary !important;
+      margin-bottom: 0.25rem !important;
+    }
+
+    .no-exercises-description {
+      font-size: 0.875rem !important;
+      margin-bottom: 1rem !important;
+      color: $text-secondary !important;
+    }
+  }
+
+  .info-items {
+    gap: 0.5rem !important;
+
+    .info-item {
+      padding: 0.625rem 0.75rem !important;
+      border-radius: $radius-lg !important;
+      gap: 0.75rem !important;
+
+      &:hover { box-shadow: none !important; }
+
+      // Pastille ronde en degrade menthe : encore une couleur d'accent
+      // supplementaire pour une simple icone d'information.
+      .info-icon {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.9375rem !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        color: $text-secondary !important;
+        box-shadow: none !important;
+      }
+
+      .info-label {
+        font-size: 0.6875rem !important;
+        letter-spacing: 0 !important;
+        margin-bottom: 0.125rem !important;
+        color: $text-muted !important;
+      }
+
+      .info-value {
+        font-size: 0.9375rem !important;
+        color: $text-primary !important;
+      }
+    }
+  }
+}
+
+// =============================================
+// BARRE D'ACTIONS FLOTTANTE — COMPACITE
+// =============================================
+.floating-action-bar {
+  .action-buttons {
+    gap: 0.625rem !important;
+  }
+
+  .primary-action-btn,
+  .action-btn.primary.large,
+  .secondary-action-btn,
+  .completion-action-btn,
+  .tertiary-action-btn,
+  .edit-action-btn {
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0 !important;
+    border-radius: $radius-lg !important;
+    gap: 0.5rem !important;
+
+    .btn-icon svg { width: 18px; height: 18px; }
   }
 }

@@ -783,17 +783,20 @@ padding: 0.25rem;
         }
       }
 
+      // Etait jaune ($accent-color) : une TROISIEME teinte d'accent a cote
+      // du lime, sur deux boutons d'une seule barre de recherche.
       .filters-toggle {
-        @include modern-button(rgba($secondary-color, 0.1));
         width: 48px;
         height: 48px;
         border-radius: $border-radius-lg;
-        color: $accent-color;
+        background: rgba(255, 255, 255, 0.05);
+        color: $text-secondary;
         border: $border-width solid $border-color;
 
         &:hover {
-          background: rgba($secondary-color, 0.2);
-          border-color: $accent-color;
+          background: rgba(255, 255, 255, 0.09);
+          color: $text-primary;
+          border-color: $border-strong;
         }
       }
     }
@@ -885,62 +888,65 @@ padding: 0.25rem;
 .food-categories-card {
   @extend %card-base;
 
+  // La grille etait quatre tuiles de 300px chacune, emoji a 5rem (80px) et
+  // 1,5rem de rembourrage : chaque case pesait plus que le contenu qu'elle
+  // affiche. Resserree a une echelle de puce de categorie normale.
   .categories-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+    gap: 0.75rem;
 
     .category-card {
-
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 1rem;
-      padding: 1.5rem;
-      background: rgba($surface-secondary, 0.8);
+      text-align: center;
+      gap: 0.375rem;
+      padding: 1rem 0.75rem;
+      background: rgba(255, 255, 255, 0.03);
       border: $border-width solid $border-color;
-      border-radius: $border-radius-xl;
+      border-radius: $radius-lg;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: $shadow;
-        border-color: $primary-color;
-        background: rgba($primary-color, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: $border-strong;
       }
 
       &.selected {
-        background: $primary-gradient;
-        color: $on-primary;
+        background: rgba($primary-color, 0.12);
+        color: $text-primary;
         border-color: $primary-color;
+
+        .category-count {
+          color: $text-secondary;
+          opacity: 1;
+        }
       }
 
       .category-icon {
-        font-size: 5rem;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: $border-radius-lg;
+        font-size: 2rem;
+        line-height: 1;
       }
 
       .category-info {
-        flex: 1;
-        text-transform: capitalize;
+        text-align: center;
 
         h4 {
-
-          font-size: 1.25rem;
-          font-weight: 700;
+          margin: 0;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: $text-primary;
         }
 
+        // Le compte d'aliments etait en $on-primary (encre sombre prevue pour
+        // un aplat clair) alors que la carte, non selectionnee, a un fond
+        // sombre : le texte etait quasi invisible. Il ne redevient sombre
+        // que sur la carte selectionnee, dont le fond est lime.
         .category-count {
-          color: $on-primary;
-          font-size: 1rem;
-          opacity: 0.8;
-
-          &.selected {
-         color: $on-primary;
-          }
+          color: $text-secondary;
+          font-size: 0.75rem;
+          opacity: 1;
         }
       }
     }
@@ -1161,56 +1167,66 @@ gap: 2rem;
         @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
       }
 
+      // Seule « Créer un régime » est l'action principale de cet ecran ; elle
+      // seule prend l'aplat lime. « Templates Repas » etait rendue en bleu
+      // ($info-gradient) — une troisieme couleur d'action sans lien avec le
+      // reste de la palette. Elle redevient une action secondaire neutre,
+      // au meme langage que .btn-secondary partout ailleurs dans l'app.
       &.create-diet {
-        background: $primary-gradient;
+        background: $primary-color;
         color: $on-primary;
-        box-shadow: 0 8px 20px rgba($primary-color, 0.3);
       }
 
-      &.ai-diet {
-        background: $accent-gradient;
-        color: $on-primary;
-        box-shadow: 0 8px 20px rgba($secondary-color, 0.3);
-      }
-
+      &.ai-diet,
       &.templates {
-        background: $info-gradient;
-        color: $on-primary;
-        box-shadow: 0 8px 20px rgba(116, 185, 255, 0.3);
-      }
+        background: rgba(255, 255, 255, 0.04);
+        border: $border-width solid $border-color;
+        color: $text-primary;
 
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 15px 40px rgba($primary-color, 0.4);
+        &:hover {
+          background: rgba(255, 255, 255, 0.07);
+          border-color: $border-strong;
+        }
 
-        &::before {
-          left: 100%;
+        .action-icon {
+          background: rgba(255, 255, 255, 0.06);
+        }
+
+        .action-content h3,
+        .action-content p {
+          color: $text-primary;
+        }
+
+        .action-content p {
+          color: $text-secondary;
         }
       }
 
       .action-icon {
-        font-size: 2rem;
-        width: 50px;
-        height: 50px;
-        border-radius: $border-radius-xl;
-        background: rgba($surface-secondary, 0.2);
+        font-size: 1.5rem;
+        width: 44px;
+        height: 44px;
+        border-radius: $border-radius-lg;
+        background: rgba(255, 255, 255, 0.14);
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
       }
 
       .action-content {
         h3 {
-          color: $on-primary;
+          color: inherit;
           margin: 0 0 0.25rem 0;
-          font-size: 1.125rem;
-          font-weight: 700;
+          font-size: 1.0625rem;
+          font-weight: 650;
         }
 
         p {
-          color: $on-primary;
+          color: inherit;
           margin: 0;
-          opacity: 0.9;
+          opacity: 0.85;
+          font-size: 0.875rem;
         }
       }
     }
@@ -1235,17 +1251,17 @@ gap: 2rem;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       &:hover {
-        transform: translateY(-4px);
-        box-shadow: $shadow-lg;
-        border-color: $primary-color;
+        border-color: $border-strong;
       }
 
-      &.professional {
-        border: 4px solid $primary-color;
-      }
-
+      // Les deux variantes portaient une bordure epaisse de 4px, l'une lime,
+      // l'autre jaune, en PERMANENCE — pas seulement pour le regime
+      // actuellement suivi (`.currently-followed`, definie plus bas, gere
+      // deja ce cas correctement). Toutes les cartes de la grille recevaient
+      // donc un cadre colore des l'affichage, sans rapport avec un etat.
+      &.professional,
       &.custom {
-        border: 4px solid $accent-color;
+        border: $border-width solid $border-color;
       }
 
       .diet-header {
@@ -1287,25 +1303,31 @@ gap: 2rem;
             font-size: 0.75rem;
             font-weight: 600;
 
+            // Fond teinte discret, texte dans la teinte claire : meme
+            // convention que les autres pastilles d'etat de l'application.
             &.difficulty-facile {
-              background: rgba(40, 167, 69, 0.2);
-              color: $c-green-bootstrap;
+              background: rgba($success-color, 0.14);
+              border: $border-width solid rgba($success-color, 0.3);
+              color: $success-light;
             }
 
             &.difficulty-modéré {
-              background: rgba(255, 193, 7, 0.2);
-              color: $c-amber-bootstrap;
+              background: rgba($warning-color, 0.14);
+              border: $border-width solid rgba($warning-color, 0.3);
+              color: $warning-light;
             }
 
             &.difficulty-difficile {
-              background: rgba(220, 53, 69, 0.2);
-              color: $c-red-bootstrap;
+              background: rgba($danger-color, 0.14);
+              border: $border-width solid rgba($danger-color, 0.3);
+              color: $error-light;
             }
           }
 
           .custom-badge {
-            background: rgba($secondary-color, 0.2);
-            color: $accent-color;
+            background: rgba(255, 255, 255, 0.06);
+            border: $border-width solid $border-color;
+            color: $text-secondary;
           }
         }
 
@@ -1853,190 +1875,206 @@ gap: 2rem;
 // ==========================================
 .meal-actions-card {
   @extend %card-base;
+  padding: 1rem !important;
 
   .actions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: 0.75rem;
 
     .action-card {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      padding: 1.5rem;
-      border: none;
-      border-radius: $border-radius-xl;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+      border: $border-width solid $border-color;
+      border-radius: $radius-lg;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       text-align: left;
-      position: relative;
-      overflow: hidden;
 
-      &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
-      }
-
+      // Un seul aplat lime pour l'action principale ; le reste reste neutre.
       &.primary {
-        background: $primary-gradient;
+        background: $primary-color;
         color: $on-primary;
-        box-shadow: 0 8px 20px rgba($primary-color, 0.3);
+        border-color: transparent;
       }
 
       &.secondary {
-        background: transparent;
-        border: $border-width solid $border-strong;
+        background: rgba(255, 255, 255, 0.03);
         color: $text-primary;
-      }
 
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 15px 40px rgba($primary-color, 0.4);
-
-        &::before {
-          left: 100%;
+        &:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: $border-strong;
         }
       }
 
       .action-icon {
-        font-size: 2rem;
-        width: 50px;
-        height: 50px;
-        border-radius: $border-radius-xl;
-        background: rgba($surface-secondary, 0.2);
+        font-size: 1.125rem;
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+        border-radius: $radius-md;
+        background: rgba(255, 255, 255, 0.14);
         display: flex;
         align-items: center;
         justify-content: center;
       }
 
+      &.primary .action-icon {
+        background: rgba(0, 0, 0, 0.14);
+      }
+
       .action-content {
+        min-width: 0;
+
         h3 {
-          color: $on-primary;
-          margin: 0 0 0.25rem 0;
-          font-size: 1.125rem;
-          font-weight: 700;
+          color: inherit;
+          margin: 0;
+          font-size: 0.875rem;
+          font-weight: 650;
         }
 
         p {
-          color: $on-primary;
+          color: inherit;
           margin: 0;
-          opacity: 0.9;
+          opacity: 0.75;
+          font-size: 0.75rem;
+          @include text-ellipsis(1);
         }
       }
     }
   }
 }
 
+// =============================================
+// REPAS — MISE EN PAGE COMPACTE
+// =============================================
+//
+// Chaque type de repas (6 au total, tous affiches meme vides) occupait
+// ~470px : en-tete a 1,5rem de rembourrage avec une pastille de 60px, puis un
+// etat vide a 2rem de rembourrage avec une icone de 3rem et un gros bouton.
+// Resserre a l'echelle du reste de l'application.
 .meals-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.75rem;
 
   .meal-card {
-    @include glass-card(0.95);
-    border-radius: $border-radius-2xl;
+    background: $surface-secondary;
+    border: $border-width solid $border-color;
+    border-radius: $radius-xl;
     overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-
-    &:hover {
-      transform: translateY(-4px);
-      box-shadow: $shadow-xl;
-    }
 
     .meal-header {
-      background: rgba(248, 249, 250, 0.05);
-      padding: 1.5rem;
+      background: none;
+      padding: 0.875rem 1rem;
       border-bottom: $border-width solid $border-color;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 0.75rem;
 
       .meal-info {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 0.75rem;
+        min-width: 0;
 
         .meal-icon {
-          font-size: 2rem;
-          width: 60px;
-          height: 60px;
+          font-size: 1.125rem;
+          width: 36px;
+          height: 36px;
+          flex-shrink: 0;
           display: flex;
           align-items: center;
           justify-content: center;
-          // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
-          // elle ne rivalise pas avec la donnee qu'elle accompagne.
-          background: rgba($primary-color, 0.12);
-          color: $text-primary;
-          border-radius: $border-radius-2xl;
+          background: rgba(255, 255, 255, 0.06);
+          color: $text-secondary;
+          border-radius: $radius-md;
         }
 
         .meal-details {
+          min-width: 0;
+
           h3 {
-            margin: 0 0 0.25rem 0;
-            color: $gray-900;
-            font-size: 1.25rem;
-            font-weight: 800;
+            margin: 0;
+            color: $text-primary;
+            font-size: 0.9375rem;
+            font-weight: 650;
           }
 
           .meal-description {
-            margin: 0 0 0.25rem 0;
-            color: $gray-700;
-            font-size: 0.875rem;
+            margin: 0;
+            color: $text-secondary;
+            font-size: 0.8125rem;
+            @include text-ellipsis(1);
           }
 
           .meal-timing {
-            color: $text-primary;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-            background: rgba($primary-color, 0.1);
-            border-radius: $border-radius-lg;
+            display: inline-block;
+            margin-top: 0.25rem;
+            color: $text-muted;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            padding: 0;
+            background: none;
+            border-radius: 0;
           }
         }
       }
 
       .add-meal-btn {
-        @include modern-button($primary-gradient, translateY(-2px) scale(1.05));
-        width: 48px;
-        height: 48px;
+        width: 30px;
+        height: 30px;
+        flex-shrink: 0;
         border-radius: 50%;
-        font-size: 1.25rem;
+        background: rgba(255, 255, 255, 0.06);
+        border: $border-width solid $border-color;
+        color: $text-secondary;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          background: $primary-color;
+          border-color: transparent;
+          color: $on-primary;
+        }
+
+        svg { width: 16px; height: 16px; }
       }
     }
 
     .meal-content {
-      padding: 1.5rem;
+      padding: 0.75rem 1rem;
 
       .meal-entries {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.5rem;
 
         .food-entry {
           display: flex;
           align-items: center;
-          gap: 1rem;
-          padding: 1rem;
-          background: rgba($surface-secondary, 0.8);
-          border-radius: $border-radius-xl;
-          transition: all 0.3s ease;
-
-          &:hover {
-            transform: translateY(-2px);
-            box-shadow: $shadow;
-          }
+          gap: 0.75rem;
+          padding: 0.5rem;
+          background: rgba(255, 255, 255, 0.03);
+          border-radius: $radius-md;
 
           .entry-food {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.625rem;
             flex: 1;
+            min-width: 0;
 
             .food-image-container {
-              width: 48px;
-              height: 48px;
-              border-radius: $border-radius-lg;
+              width: 32px;
+              height: 32px;
+              flex-shrink: 0;
+              border-radius: $radius-sm;
               overflow: hidden;
-              box-shadow: $shadow;
 
               .food-image {
                 width: 100%;
@@ -2046,78 +2084,108 @@ gap: 2rem;
             }
 
             .food-details {
+              min-width: 0;
+
               h4 {
-                margin: 0 0 0.25rem 0;
-                color: $gray-900;
-                font-size: 1rem;
-                font-weight: 700;
+                margin: 0;
+                color: $text-primary;
+                font-size: 0.8125rem;
+                font-weight: 600;
+                @include text-ellipsis(1);
               }
 
               p {
                 margin: 0;
-                color: $text-primary;
-                font-size: 0.875rem;
+                color: $text-secondary;
+                font-size: 0.75rem;
               }
             }
           }
 
           .entry-nutrition {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
+            flex-shrink: 0;
 
             .nutrition-item {
               text-align: center;
-              min-width: 50px;
+              min-width: 34px;
 
               .value {
                 display: block;
-                font-weight: 700;
-                color: $gray-900;
-                font-size: 0.875rem;
+                font-weight: 600;
+                color: $text-primary;
+                font-size: 0.75rem;
               }
 
               .unit {
-                color: $text-primary;
-                font-size: 0.75rem;
-                font-weight: 600;
+                color: $text-muted;
+                font-size: 0.625rem;
+                font-weight: 500;
               }
             }
           }
 
           .remove-btn {
-            @include modern-button($danger-gradient);
-            width: 32px;
-            height: 32px;
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
             border-radius: 50%;
-            font-size: 0.875rem;
+            background: none;
+            border: 0;
+            color: $text-muted;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+              background: rgba($danger-color, 0.12);
+              color: $error-light;
+            }
+
+            svg { width: 14px; height: 14px; }
           }
         }
       }
 
+      // L'etat vide occupait a lui seul ~300px par repas — icone de 3rem,
+      // rembourrage de 2rem, gros bouton lime — pour dire « rien ici ».
+      // Reduit a une ligne discrete avec un lien texte.
       .empty-meal {
-        text-align: center;
-        padding: 2rem;
-        background: rgba($surface-secondary, 0.8);
-        border-radius: $border-radius-xl;
-        border: $border-width solid $border-color;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.5rem 0.25rem;
+        background: none;
+        border: 0;
+        text-align: left;
 
         .empty-icon {
-          font-size: 3rem;
-          margin-bottom: 1rem;
-          opacity: 0.5;
-          color: $text-muted;
+          display: none;
         }
 
         p {
-          margin: 0 0 1.5rem 0;
-          font-size: 1rem;
-          color: $text-primary;
+          margin: 0;
+          font-size: 0.8125rem;
+          color: $text-muted;
         }
 
         .add-first-btn {
-          @include modern-button($primary-gradient);
-          padding: 1rem 2rem;
-          font-size: 1rem;
+          flex-shrink: 0;
+          padding: 0.375rem 0.75rem;
+          min-height: 0;
+          border-radius: $radius-sm;
+          background: none;
+          border: $border-width solid $border-color;
+          color: $text-secondary;
+          font-size: 0.75rem;
+          font-weight: 600;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: $text-primary;
+          }
         }
       }
     }
@@ -2511,70 +2579,61 @@ gap: 2rem;
     overflow: hidden;
     box-shadow: $shadow-2xl;
 
+    // Variante « large » : elle portait une bordure lime permanente (0,35
+    // d'opacite), un degrade radial decoratif en overlay plein cadre, une
+    // ombre de 95px de flou, et un en-tete SANS mise en page explicite —
+    // sans `display: flex`, le bouton de fermeture et le titre se
+    // chevauchaient au lieu de se placer aux deux bouts de la ligne.
     &.large {
-      
-      border: 1px solid rgba($primary-color, 0.35);
-      background: linear-gradient(
-          145deg,
-          rgba($surface-tertiary, 0.98),
-          rgba($surface-secondary, 0.95)
-        );
-      box-shadow: 0 45px 95px rgba(0, 0, 0, 0.65);
+      border: $border-width solid $border-color;
+      background: $surface-secondary;
+      box-shadow: var(--shadow-xl);
       padding: 0;
       position: relative;
-      overflow: hidden;
 
-      &::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-          circle at top right,
-          rgba($primary-color, 0.15),
-          transparent 60%
-        );
-        pointer-events: none;
-        mix-blend-mode: screen;
-      }
+      &::after { display: none !important; }
 
       .modal-header {
-        padding: 2rem 2.5rem;
-        background: rgba($surface-primary, 0.8);
-        border-bottom: 1px solid rgba($primary-color, 0.35);
-        position: relative;
-        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+        background: none;
+        border-bottom: $border-width solid $border-color;
 
         h2 {
+          margin: 0;
+          font-size: 1.0625rem;
+          font-weight: 650;
           color: $text-primary;
         }
 
         .close-btn {
-          background: rgba($surface-secondary, 0.9);
-          border: 1px solid rgba($primary-color, 0.4);
-          color: $text-primary;
-          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+          flex-shrink: 0;
+          width: 32px;
+          height: 32px;
+          background: transparent;
+          border: $border-width solid $border-color;
+          color: $text-secondary;
+          box-shadow: none;
 
           &:hover {
-            background: rgba($primary-color, 0.2);
+            background: rgba(255, 255, 255, 0.06);
             color: $text-primary;
           }
         }
       }
 
       .modal-body {
-        background: radial-gradient(
-            circle at bottom left,
-            rgba($primary-color, 0.08),
-            transparent 55%
-          ),
-          rgba($surface-secondary, 0.92);
-        padding: 2rem 2.5rem;
-        max-height: 70vh;
+        background: none;
+        padding: 1.25rem 1.5rem;
+        max-height: 80vh;
         overflow-y: auto;
         z-index: 1;
 
         @include respond-below(lg) {
-          padding: 1.5rem;
+          padding: 1rem;
         }
 
         .food-overview,
@@ -2736,7 +2795,7 @@ gap: 2rem;
 
     .modal-body {
       padding: 1.5rem;
-      max-height: 60vh;
+      max-height: 80vh;
       overflow-y: auto;
 
       // Search Section
@@ -2887,13 +2946,13 @@ gap: 2rem;
       // Diet Creation Form
       .diet-form {
         .form-section {
-          margin-bottom: 2rem;
+          margin-bottom: 1.25rem;
 
           h3 {
-            color: $gray-900;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+            color: $text-primary;
+            font-size: 0.9375rem;
+            font-weight: 650;
+            margin-bottom: 0.75rem;
             padding-bottom: 0.5rem;
             border-bottom: $border-width solid $border-color;
           }
@@ -2901,81 +2960,114 @@ gap: 2rem;
           .form-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+          }
 
-            .form-group {
-              label {
-                display: block;
-                margin-bottom: 0.5rem;
-                color: $gray-900;
-                font-weight: 700;
-                font-size: 0.875rem;
+          // Le champ Description vit HORS de `.form-row` (un seul champ
+          // pleine largeur), mais la regle precedente ne stylait que
+          // `.form-row .form-group` : label et zone de texte, sans
+          // `display: block`, se posaient l'un a cote de l'autre au lieu de
+          // s'empiler — c'est ce qui produisait le chevauchement.
+          .form-group {
+            margin-bottom: 0.75rem;
+
+            label {
+              display: block;
+              margin-bottom: 0.375rem;
+              color: $text-secondary;
+              font-weight: 500;
+              font-size: 0.8125rem;
+            }
+
+            input,
+            textarea,
+            select {
+              display: block;
+              width: 100%;
+              padding: 0.625rem 0.875rem;
+              border: $border-width solid $border-color;
+              border-radius: $radius-md;
+              font-size: 0.9375rem;
+              font-family: inherit;
+              background: $surface-tertiary;
+              color: $text-primary;
+
+              &:focus {
+                outline: none;
+                border-color: $primary-color;
+                box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
               }
 
-              input,
-              textarea,
-              select {
-                width: 100%;
-                padding: 0.75rem;
-                border: $border-width solid $border-color;
-                border-radius: $border-radius-lg;
-                font-size: 1rem;
-                font-family: inherit;
-                background: $surface-secondary;
+              &::placeholder { color: $text-muted; }
+            }
 
-                &:focus {
-                  outline: none;
-                  border-color: $primary-color;
-                  box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
-                }
-              }
-
-              textarea {
-                min-height: 80px;
-                resize: vertical;
-              }
+            textarea {
+              min-height: 60px;
+              resize: vertical;
             }
           }
 
-          // Macro Sliders
+          // Curseurs de macronutriments.
+          //
+          // `background: $surface-tertiary` sur l'element `<input>` lui-meme
+          // n'a aucun effet sur son rendu : sans `appearance: none`, le
+          // navigateur dessine sa PISTE native par-dessus — d'ou le curseur
+          // bleu (couleur d'accent systeme) au lieu du gris attendu. Seul le
+          // pouce etait personnalise.
           .macro-sliders {
             .macro-slider {
-              margin-bottom: 1rem;
+              margin-bottom: 0.75rem;
 
               label {
                 display: block;
-                margin-bottom: 0.5rem;
-                color: $gray-900;
-                font-weight: 700;
+                margin-bottom: 0.375rem;
+                color: $text-secondary;
+                font-weight: 500;
+                font-size: 0.8125rem;
               }
 
               input[type="range"] {
+                appearance: none;
+                -webkit-appearance: none;
                 width: 100%;
-                height: 8px;
-                background: $surface-tertiary;
-                border-radius: 4px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.09);
+                border-radius: $radius-pill;
                 outline: none;
                 cursor: pointer;
+                accent-color: $primary-color;
+
+                &::-webkit-slider-runnable-track {
+                  height: 4px;
+                  background: transparent;
+                  border-radius: $radius-pill;
+                }
+
+                &::-moz-range-track {
+                  height: 4px;
+                  background: rgba(255, 255, 255, 0.09);
+                  border-radius: $radius-pill;
+                }
 
                 &::-webkit-slider-thumb {
                   appearance: none;
-                  width: 20px;
-                  height: 20px;
-                  background: $primary-gradient;
+                  -webkit-appearance: none;
+                  width: 16px;
+                  height: 16px;
+                  margin-top: -6px;
+                  background: $primary-color;
                   border-radius: 50%;
                   cursor: pointer;
-                  box-shadow: 0 4px 8px rgba($primary-color, 0.3);
                 }
 
                 &::-moz-range-thumb {
-                  width: 20px;
-                  height: 20px;
-                  background: $primary-gradient;
+                  width: 16px;
+                  height: 16px;
+                  background: $primary-color;
                   border-radius: 50%;
                   cursor: pointer;
                   border: none;
-                  box-shadow: 0 4px 8px rgba($primary-color, 0.3);
                 }
               }
             }
@@ -2983,11 +3075,11 @@ gap: 2rem;
 
           // Macro Visualization
           .macro-visualization {
-            margin-top: 1rem;
+            margin-top: 0.5rem;
 
             .macro-bar {
-              height: 30px;
-              border-radius: 15px;
+              height: 20px;
+              border-radius: $radius-pill;
               overflow: hidden;
               display: flex;
               background: $surface-tertiary;
@@ -2996,10 +3088,10 @@ gap: 2rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: white;
-                font-size: 0.875rem;
-                font-weight: 600;
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                color: rgba(0, 0, 0, 0.65);
+                font-size: 0.6875rem;
+                font-weight: 650;
+                text-shadow: none;
 
                 &.carbs {
                   background: $carbs-color;
@@ -3014,60 +3106,37 @@ gap: 2rem;
             }
           }
 
-          // Restrictions Grid
-          .restrictions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
-            gap: 0.75rem;
-
-            .restriction-btn {
-              padding: 0.75rem 1rem;
-              border: $border-width solid $border-color;
-              background: $surface-secondary;
-              border-radius: $border-radius-lg;
-              cursor: pointer;
-              transition: all 0.3s ease;
-              font-weight: 600;
-              text-align: center;
-
-              &:hover {
-                border-color: $primary-color;
-                background: rgba($primary-color, 0.1);
-              }
-
-              &.active {
-                background: $primary-gradient;
-                color: white;
-                border-color: $primary-color;
-              }
-            }
-          }
-
-          // Objectives Grid
+          // Etat actif : texte blanc sur $primary-gradient (aplat lime) —
+          // 1,8:1, sous le seuil AA. L'encre foncee dediee aux aplats clairs.
+          .restrictions-grid,
           .objectives-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-            gap: 0.75rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+            gap: 0.5rem;
 
+            .restriction-btn,
             .objective-btn {
-              padding: 0.75rem 1rem;
+              padding: 0.5rem 0.75rem;
               border: $border-width solid $border-color;
-              background: $surface-secondary;
-              border-radius: $border-radius-lg;
+              background: rgba(255, 255, 255, 0.03);
+              color: $text-secondary;
+              border-radius: $radius-md;
               cursor: pointer;
-              transition: all 0.3s ease;
-              font-weight: 600;
+              font-weight: 500;
+              font-size: 0.8125rem;
               text-align: center;
 
               &:hover {
-                border-color: $primary-color;
-                background: rgba($primary-color, 0.1);
+                border-color: $border-strong;
+                background: rgba(255, 255, 255, 0.06);
+                color: $text-primary;
               }
 
               &.active {
-                background: $primary-gradient;
-                color: white;
-                border-color: $primary-color;
+                background: $primary-color;
+                color: $on-primary;
+                border-color: transparent;
+                font-weight: 600;
               }
             }
           }
@@ -3080,101 +3149,100 @@ gap: 2rem;
         grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
         gap: 1.5rem;
 
+        // Pas de bordure au survol (consigne generale pour les modales) : seul
+        // `.selected`, un etat reel, garde un contour lime.
         .template-card {
-          background: rgba($surface-secondary, 0.9);
+          background: rgba(255, 255, 255, 0.03);
           border: $border-width solid $border-color;
-          border-radius: $border-radius-2xl;
-          padding: 1.5rem;
+          border-radius: $radius-lg;
+          padding: 0.875rem 1rem;
           cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-
-          &:hover {
-            transform: translateY(-4px);
-            box-shadow: $shadow-lg;
-            border-color: $primary-color;
-          }
 
           &.selected {
             border-color: $primary-color;
-            background: rgba($primary-color, 0.1);
+            background: rgba($primary-color, 0.06);
           }
 
           .template-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
 
             .template-icon {
-              font-size: 2rem;
+              font-size: 1.25rem;
             }
 
             .template-info {
               flex: 1;
-              margin-left: 1rem;
+              min-width: 0;
+              margin-left: 0.625rem;
 
               h3 {
-                margin: 0 0 0.25rem 0;
-                color: $gray-900;
-                font-size: 1.125rem;
-                font-weight: 700;
+                margin: 0;
+                color: $text-primary;
+                font-size: 0.9375rem;
+                font-weight: 650;
               }
 
               .template-type {
-                color: $text-primary;
-                font-size: 0.875rem;
-                font-weight: 600;
+                color: $text-muted;
+                font-size: 0.75rem;
+                font-weight: 500;
               }
             }
 
             .template-meta {
               text-align: right;
+              flex-shrink: 0;
 
               .calories {
                 display: block;
-                font-weight: 800;
-                color: $calories-color;
-                font-size: 1rem;
-                margin-bottom: 0.25rem;
+                font-weight: 650;
+                color: $text-primary;
+                font-size: 0.875rem;
               }
 
               .time {
-                color: $text-primary;
-                font-size: 0.875rem;
-                font-weight: 600;
+                color: $text-muted;
+                font-size: 0.75rem;
+                font-weight: 500;
               }
             }
           }
 
           .template-description {
-            color: $gray-700;
-            margin-bottom: 1rem;
+            color: $text-secondary;
+            font-size: 0.8125rem;
+            margin-bottom: 0.5rem;
             line-height: 1.5;
           }
 
           .template-foods {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
 
             .food-item {
               display: flex;
               justify-content: space-between;
               align-items: center;
-              padding: 0.5rem 0;
+              padding: 0.25rem 0;
               border-bottom: $border-width solid $border-color;
+              font-size: 0.8125rem;
 
               &:last-child {
                 border-bottom: none;
               }
 
               .food-name {
-                color: $gray-900;
-                font-weight: 600;
+                color: $text-secondary;
+                font-weight: 500;
               }
 
               .food-quantity {
-                color: $text-primary;
-                font-size: 0.875rem;
-                font-weight: 600;
+                color: $text-muted;
+                font-size: 0.75rem;
+                font-weight: 500;
               }
             }
           }
@@ -3182,24 +3250,26 @@ gap: 2rem;
           .template-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 0.75rem;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
 
             .btn {
-              padding: 0.5rem 1rem;
+              padding: 0.375rem 0.75rem;
+              min-height: 0;
               border: none;
-              border-radius: $border-radius-lg;
+              border-radius: $radius-sm;
               font-weight: 600;
+              font-size: 0.8125rem;
               cursor: pointer;
-              transition: all 0.3s ease;
 
               &.secondary {
                 background: transparent;
-                border: $border-width solid $border-strong;
-                color: $text-primary;
+                border: $border-width solid $border-color;
+                color: $text-secondary;
 
                 &:hover {
-                  background: rgba(0, 0, 0, 0.15);
-                  transform: translateY(-1px);
+                  background: rgba(255, 255, 255, 0.05);
+                  color: $text-primary;
                 }
               }
 
@@ -4074,14 +4144,7 @@ align-items: end;
     }
 
     .categories-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-
-      .category-card {
-        .category-icon {
-
-          font-size: 4rem;
-        }
-      }
+      grid-template-columns: repeat(auto-fill, minmax(min(120px, 100%), 1fr));
     }
 
     .food-card {
@@ -5735,7 +5798,8 @@ textarea:focus {
       display: flex;
       align-items: baseline;
       gap: 0.1875rem;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
 
     .macro-percentage {
@@ -5913,4 +5977,27 @@ textarea:focus {
   .tips-grid {
     &:not(:empty) { margin-top: 1rem; }
   }
+}
+
+// =============================================
+// COLLISION AVEC LA PASTILLE D'ICONE GLOBALE
+// =============================================
+//
+// styles.scss neutralise `.category-icon` a l'echelle de l'app (fond gris
+// discret, couleur de texte secondaire) pour les petites pastilles d'icone
+// qui portent ce nom dans les cartes d'objectifs, de defis et de programmes.
+//
+// Ce fichier reutilise le MEME nom de classe pour deux elements sans rapport :
+// l'emoji de 5rem des tuiles de categorie, et l'emoji inline des en-tetes du
+// tableau nutritionnel. Le fond gris de la regle globale s'appliquait donc
+// aussi derriere ces emoji, produisant un rectangle terne bien visible que
+// rien dans ce fichier ne justifie.
+.food-categories-card .category-icon {
+  background: none !important;
+  color: initial !important;
+}
+
+.nutrient-category .category-title .category-icon {
+  background: none !important;
+  color: initial !important;
 }

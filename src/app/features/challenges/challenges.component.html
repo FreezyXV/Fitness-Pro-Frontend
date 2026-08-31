@@ -523,7 +523,7 @@
 
           <div class="form-group">
             <label for="description">Description <span class="required">*</span></label>
-            <textarea id="description" formControlName="description" rows="4"
+            <textarea id="description" formControlName="description" rows="2"
                       placeholder="Décrivez votre défi en détail"
                       [class.is-invalid]="challengeForm.get('description')?.invalid && challengeForm.get('description')?.touched"></textarea>
             <div *ngIf="challengeForm.get('description')?.invalid && challengeForm.get('description')?.touched" class="invalid-feedback">

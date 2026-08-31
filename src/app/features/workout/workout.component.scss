@@ -580,16 +580,21 @@ padding: 0.25rem;
         gap: 0.75rem;
         cursor: pointer;
 
+          // Case a cocher.
+          //
+          // Fond blanc a l'etat non coche, et une fois cochee, une coche
+          // dessinee en $primary-color sur un fond... $primary-color : le
+          // symbole devenait invisible sur son propre fond. Fond neutre au
+          // repos, coche foncee sur l'aplat lime.
         input[type="checkbox"] {
           appearance: none;
           width: 20px;
           height: 20px;
-          border: $border-width solid $border-color;
+          border: $border-width solid $border-strong;
           border-radius: 4px;
-          background-color: white;
+          background-color: $surface-tertiary;
           display: grid;
           place-content: center;
-          transition: all 0.2s ease;
 
           &::before {
             content: "";
@@ -597,7 +602,7 @@ padding: 0.25rem;
             height: 12px;
             transform: scale(0);
             transition: 120ms transform ease-in-out;
-            box-shadow: inset 1em 1em $primary-color;
+            box-shadow: inset 1em 1em $on-primary;
             background-color: CanvasText;
             clip-path: polygon(
               14% 44%,

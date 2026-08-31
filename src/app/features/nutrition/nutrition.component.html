@@ -319,7 +319,7 @@
               placeholder="Rechercher un aliment ou un produit..."
               [(ngModel)]="searchTerm"
               (input)="searchFoods()"
-              class="search-input advanced"
+              class="search-input"
             aria-label="Rechercher un aliment ou un produit"
           />
             <!-- Scan : place juste apres le champ, parce que c'est le geste
@@ -378,7 +378,7 @@
                     *ngFor="let category of foodCategories"
                     [ngValue]="category"
                   >
-                    {{ getFoodCategoryIcon(category) }} {{ category }}
+                    {{ getFoodCategoryIcon(category) }} {{ getFoodCategoryLabel(category) }}
                   </option>
                 </select>
               </div>
@@ -453,7 +453,7 @@
           >
             <div class="category-icon">{{ getFoodCategoryIcon(category) }}</div>
             <div class="category-info">
-              <h4>{{ category }}</h4>
+              <h4>{{ getFoodCategoryLabel(category) }}</h4>
               <span class="category-count">
                 {{ (foodDatabase | filter : { category: category }).length }}
                 aliments
@@ -522,7 +522,7 @@
 
             <div class="food-info">
               <h4>{{ food.name }}</h4>
-              <p class="food-category">{{ food.category }}</p>
+              <p class="food-category">{{ getFoodCategoryLabel(food.category) }}</p>
               <p class="food-description">{{ food.description }}</p>
 
               <!-- Valeurs nutritionnelles principales -->
@@ -2126,7 +2126,7 @@
             <h2>{{ selectedFoodForInfo?.name }}</h2>
             <p class="food-category">
               {{ getFoodCategoryIcon(selectedFoodForInfo?.category!) }}
-              {{ selectedFoodForInfo?.category }}
+              {{ getFoodCategoryLabel(selectedFoodForInfo?.category) }}
             </p>
           </div>
         </div>
