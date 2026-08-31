@@ -134,10 +134,24 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
   ];
 
   // Notifications Management
+  /**
+   * Compteurs de la navigation laterale.
+   *
+   * Ils valaient 1, 2 et 3 — les trois premiers entiers, dans l'ordre des
+   * entrees du menu. Ce ne sont pas des donnees : aucune source ne les
+   * alimente, `updateNotification()` n'est appelee nulle part, et
+   * `clearNotifications()` non plus. Chaque utilisateur voyait donc en
+   * permanence les memes trois pastilles, annoncant des nouveautes qui
+   * n'existaient pas — et ajoutant trois reperes chiffres a une colonne de
+   * navigation de huit entrees.
+   *
+   * Le mecanisme est conserve pour le jour ou une vraie source existera ;
+   * `*ngIf="getNotificationCount(...) > 0"` masque les pastilles a zero.
+   */
   private notifications: NotificationCounts = {
-    dashboard: 1,
-    workouts: 2,
-    challenges: 3,
+    dashboard: 0,
+    workouts: 0,
+    challenges: 0,
   };
 
   constructor(

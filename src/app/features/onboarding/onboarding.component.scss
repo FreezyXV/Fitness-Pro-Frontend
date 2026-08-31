@@ -48,7 +48,10 @@
   flex: 1;
   height: 4px;
   border-radius: 2px;
-  background: rgba($primary-color, 0.15);
+  // Piste NEUTRE. Elle etait un lime a 15 % : sur le fond noir, la piste
+  // entiere se lisait comme un remplissage olive, si bien que la barre
+  // paraissait presque pleine des la premiere des cinq questions.
+  background: rgba(255, 255, 255, 0.09);
   overflow: hidden;
 }
 

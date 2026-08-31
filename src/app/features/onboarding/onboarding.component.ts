@@ -60,8 +60,14 @@ export class OnboardingComponent {
   readonly saving = signal(false);
   readonly suggestion = signal<Workout | null>(null);
 
+  /**
+   * `step()` est un INDEX (0 pour la premiere question) : la barre restait
+   * donc entierement vide en face du compteur « 1/5 », ce qui se lit comme un
+   * indicateur casse plutot que comme un debut de parcours. Le compteur
+   * affiche `step() + 1` ; la barre suit la meme convention.
+   */
   readonly progress = computed(() =>
-    Math.round((Math.min(this.step(), this.totalSteps) / this.totalSteps) * 100)
+    Math.round((Math.min(this.step() + 1, this.totalSteps) / this.totalSteps) * 100)
   );
 
   // ------------------------------------------------------------------ choix

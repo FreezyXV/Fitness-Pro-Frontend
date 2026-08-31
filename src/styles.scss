@@ -1669,3 +1669,152 @@ textarea {
   line-height: 1.5;
   resize: vertical;
 }
+
+
+// =============================================
+// INTITULES DE CHAMP
+// =============================================
+//
+// Les formulaires des modales (nouvel objectif, nouveau defi, nouvel
+// evenement, ajout d'aliment) faisaient preceder CHAQUE intitule d'un
+// pictogramme : huit icones pour huit champs sur un meme ecran. Elles
+// n'apportent rien — l'intitule est deja en clair, juste au-dessus de son
+// champ — et plusieurs designaient autre chose que le champ qu'elles
+// annoncaient : une EPINGLE DE CARTE devant « Valeur actuelle », un
+// TRIANGLE DE LECTURE devant « Objectif cible », une coupe devant « Unité ».
+//
+// Un intitule de champ est du texte. Les rares icones porteuses de sens
+// (l'oeil d'un champ mot de passe, la loupe d'une recherche) sont posees dans
+// le CHAMP, pas dans son intitule, et ne sont donc pas concernees.
+.modal .form-label > svg,
+.modal label.form-label > svg,
+.modal-body .form-label > svg {
+  display: none;
+}
+
+// L'intitule redevient une simple ligne de texte, sans grille interne.
+.modal .form-label,
+.modal-body .form-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: $text-secondary;
+}
+
+// Le voile passe de 72 a 82 % : a 72 %, le bouton d'action lime de la page
+// restait parfaitement lisible derriere la modale et continuait d'attirer
+// l'oeil hors du formulaire ouvert.
+.modal-overlay.modal-overlay.modal-overlay,
+.modal-backdrop.modal-backdrop.modal-backdrop,
+[class*='-scrim'] {
+  background: rgba(0, 0, 0, 0.82) !important;
+}
+
+
+// =============================================
+// MODALES — EN-TETE ET PIED, TOUTES VARIANTES
+// =============================================
+//
+// Le squelette `.modal` defini plus haut donne un en-tete de 1,0625rem en
+// graisse 650 avec un bouton de fermeture de 32px. Mais quatre ecrans
+// construisent leurs modales sur `.modal-content` plutot que sur `.modal` :
+// ils retombaient sur leur propre mise en forme, soit un titre de 1,5rem en
+// graisse 800 et une croix de 40px — la fenetre « Ajouter un aliment »
+// affichait ainsi un titre plus gros que celui de la page derriere elle.
+.modal-content > .modal-header,
+.modal-panel > .modal-header,
+.modal-dialog > .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.125rem 1.5rem;
+  border-bottom: $border-width solid $border-color;
+
+  h1, h2, h3 {
+    margin: 0;
+    font-size: 1.0625rem !important;
+    font-weight: 650 !important;
+    color: $text-primary;
+  }
+
+  .close-btn,
+  .btn-close {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border-radius: $radius-sm !important;
+    background: transparent !important;
+    border: $border-width solid $border-color !important;
+    color: $text-secondary !important;
+    font-size: 1rem;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06) !important;
+      color: $text-primary !important;
+    }
+  }
+}
+
+// Sur telephone, une modale devient une feuille ancree en bas : le pouce
+// atteint ses actions sans changer de prise, et elle ne flotte plus au milieu
+// de l'ecran en laissant voir la page de part et d'autre. C'est deja ce que
+// fait le mixin `modal-panel` du systeme ; les modales baties sur
+// `.modal-content` ne le suivaient pas.
+@include respond-below(sm) {
+  // `!important` sur l'ancrage : plusieurs composants declarent leur propre
+  // `.modal-overlay { align-items: center }` dans une media query, plus
+  // specifique que ce selecteur. Sans cela, la feuille restait centree, avec
+  // une bande de page visible au-dessus ET en dessous, et ses quatre coins
+  // arrondis — ni fenetre, ni feuille.
+  // Selecteurs repetes, comme pour le voile plus haut : les regles d'origine
+  // sont marquees `!important` ET encapsulees par Angular (0-2-0), donc
+  // injectees apres cette feuille. Il faut passer devant en specificite.
+  .modal-overlay.modal-overlay.modal-overlay,
+  .modal-backdrop.modal-backdrop.modal-backdrop {
+    align-items: flex-end !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+
+  .modal.modal.modal,
+  .modal-content.modal-content.modal-content,
+  .modal-dialog.modal-dialog.modal-dialog {
+    width: 100% !important;
+    max-width: none !important;
+    max-height: 90vh;
+    // La marge de 0,5rem posee plus haut detachait la feuille du bord bas.
+    margin: 0 !important;
+    border-radius: $radius-2xl $radius-2xl 0 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+
+// =============================================
+// PISTES DE BARRE DE PROGRESSION
+// =============================================
+//
+// Une quinzaine de composants peignaient la PISTE de leur barre en
+// `rgba($primary-color, 0.15)` — un lime translucide. Sur le fond sombre de
+// l'application, ce lime dilue rend un olive assez soutenu pour se lire comme
+// un remplissage : la barre paraissait deja bien avancee a 0 %. C'etait le
+// cas de la barre d'onboarding (« 1/5 » avec une piste pleine largeur en
+// olive), de l'apercu de la modale d'objectif et des barres de macros.
+//
+// `:has(> [class*='fill'])` cible precisement les elements qui CONTIENNENT un
+// remplissage — donc les pistes, et rien d'autre. La couleur du remplissage
+// n'est pas touchee : plusieurs en portent une qui a du sens (statut d'un
+// objectif, macronutriment).
+[class*='progress']:has(> [class*='fill']),
+[class*='-bar']:has(> [class*='fill']),
+[class*='-track']:has(> [class*='fill']) {
+  background: rgba(255, 255, 255, 0.09) !important;
+  background-image: none !important;
+}
