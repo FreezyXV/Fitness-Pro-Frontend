@@ -19,6 +19,7 @@ import {
   Goal,
   UserStats, // Added import for UserStats
   BMIInfo, // Added import for BMIInfo
+  GuestProfileUtils,
 } from '@shared';
 import { AuthService } from './auth.service';
 
@@ -63,7 +64,10 @@ export class UserService {
         ),
         map((response) => {
           if (response.success && response.data) {
-            const user = this.normalizeUserData(response.data);
+            let user = this.normalizeUserData(response.data);
+            if (this.authService.isGuestMode) {
+              user = GuestProfileUtils.applyDefaults(user);
+            }
             console.log('📝 UserService: Profile data normalized:', user);
             this.profileSubject.next(user);
             this.setCachedData('profile', user);

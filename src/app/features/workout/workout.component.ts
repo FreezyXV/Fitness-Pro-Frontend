@@ -174,7 +174,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   private setupFilterDebounce(): void {
     this.filterSubject
-      .pipe(debounceTime(100), distinctUntilChanged(), takeUntil(this.destroy$))
+      .pipe(debounceTime(100), takeUntil(this.destroy$))
       .subscribe((filters) => {
         if (filters) {
           this.performFiltering(filters);

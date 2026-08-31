@@ -11,7 +11,8 @@ import {
   RegisterRequest,
   ApiResponse,
   APP_CONFIG,
-  StorageUtils
+  StorageUtils,
+  GuestProfileUtils
 } from '@shared';
 
 @Injectable({
@@ -61,6 +62,10 @@ export class AuthService {
 
   get isInitialized(): boolean {
     return this.isInitializedSubject.value;
+  }
+
+  get isGuestMode(): boolean {
+    return StorageUtils.getItem<boolean>(APP_CONFIG.STORAGE_KEYS.GUEST_MODE) === true;
   }
 
   // =============================================
@@ -279,12 +284,13 @@ export class AuthService {
   // SESSION MANAGEMENT
   // =============================================
 
-  private handleAuthSuccess(authResponse: AuthResponse): void {
+  private handleAuthSuccess(authResponse: AuthResponse, isGuest: boolean = false): void {
     console.log('✅ AuthService: Authentication successful');
-    
+
     this.setToken(authResponse.token);
     this.updateUser(authResponse.user);
     this.setupAutoLogout();
+    StorageUtils.setItem(APP_CONFIG.STORAGE_KEYS.GUEST_MODE, isGuest);
 
     console.log(`Bienvenue ${authResponse.user.name}!`);
   }
@@ -308,6 +314,7 @@ export class AuthService {
     
     this.removeToken();
     StorageUtils.removeItem(APP_CONFIG.USER_KEY);
+    StorageUtils.removeItem(APP_CONFIG.STORAGE_KEYS.GUEST_MODE);
     this.currentUserSubject.next(null);
   }
 
@@ -470,7 +477,8 @@ export class AuthService {
       tap(response => console.log('✅ AuthService: Guest login response received')),
       map(response => {
         if (response.success && response.data) {
-          this.handleAuthSuccess(response.data);
+          response.data.user = GuestProfileUtils.applyDefaults(response.data.user);
+          this.handleAuthSuccess(response.data, true);
           return response.data;
         }
         throw new Error(response.message || 'Échec de la connexion invité');

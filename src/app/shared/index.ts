@@ -4,6 +4,7 @@
 // APP CONFIGURATION
 // ==============================================
 import { environment } from '../../environments/environment';
+import type { User } from './models/app.models';
 
 export const APP_CONFIG = {
   APP_NAME: environment.appName,
@@ -31,6 +32,7 @@ export const APP_CONFIG = {
     EXERCISES_FILTERS: 'exercises_filters',
     EXERCISES_VIEW_MODE: 'exercises_view_mode',
     USER_PREFERENCES: 'user_preferences',
+    GUEST_MODE: 'is_guest_mode',
   },
 
   // Exercise Configuration - ICÔNES CORRIGÉES
@@ -451,6 +453,43 @@ export class FormUtils {
   static sanitizeInput(input: string): string {
     if (!input || typeof input !== 'string') return '';
     return input.trim().replace(/[<>]/g, '');
+  }
+}
+
+export class GuestProfileUtils {
+  // Persona fictive utilisee pour remplir le profil du compte invite,
+  // qui arrive du backend sans donnees personnelles.
+  private static readonly BIRTH_DATE = '1997-03-10';
+
+  static applyDefaults(user: User): User {
+    if (!user) return user;
+
+    return {
+      ...user,
+      name: 'Alex Moreau',
+      dateOfBirth: user.dateOfBirth || this.BIRTH_DATE,
+      age: user.age ?? this.calculateAge(this.BIRTH_DATE),
+      gender: user.gender || 'male',
+      height: user.height || 178,
+      weight: user.weight || 74,
+      bloodGroup: user.bloodGroup || 'O+',
+      activityLevel: user.activityLevel || 'moderately_active',
+      location: user.location || 'Paris, France',
+      bio:
+        user.bio ||
+        'Passionné de fitness, toujours partant pour tester un nouveau programme.',
+    };
+  }
+
+  private static calculateAge(dateOfBirth: string): number {
+    const birth = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
   }
 }
 
