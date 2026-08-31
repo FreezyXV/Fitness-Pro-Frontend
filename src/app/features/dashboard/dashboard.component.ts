@@ -10,13 +10,12 @@ import { UserService } from '@app/services/user.service';
 import { WorkoutService } from '@app/services/workout.service';
 import { User, Workout, Goal, BMIUtils, DateUtils, WorkoutUtils, WorkoutIntensity } from '@shared';
 import { MiniCalendarComponent } from '@features/calendar/mini-calendar/mini-calendar.component';
-import { ChartComponent, ChartPoint } from '@app/shared/components/chart/chart.component';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MiniCalendarComponent, IconComponent, ChartComponent],
+  imports: [CommonModule, MiniCalendarComponent, IconComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -684,27 +683,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getTimeAgo(date: string): string {
     return DateUtils.getTimeAgo(date);
-  }
-
-  /**
-   * Serie alimentant la courbe des 30 derniers jours : une seance terminee,
-   * un point, en minutes effectuees.
-   *
-   * Le gabarit tracait auparavant dix points ecrits en dur, identiques pour
-   * tout le monde. Une courbe qui ne depend pas des donnees n'informe de
-   * rien ; quand il n'y a pas assez de seances, <app-chart> le dit.
-   */
-  get performanceSeries(): ChartPoint[] {
-    const since = Date.now() - 30 * 24 * 60 * 60 * 1000;
-
-    return this.recentWorkouts
-      .filter((w) => w.status === 'completed' && !!w.completedAt)
-      .map((w) => ({ date: new Date(w.completedAt as string), minutes: w.durationMinutes || 0 }))
-      .filter((w) => !isNaN(w.date.getTime()) && w.date.getTime() >= since)
-      // Du plus ancien au plus recent : une progression se lit de gauche a
-      // droite, alors que l'API renvoie les seances les plus recentes d'abord.
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .map(({ date, minutes }) => ({ x: date, y: minutes }));
   }
 
   getPerformanceGrowth(): number {

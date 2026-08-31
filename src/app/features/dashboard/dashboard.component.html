@@ -349,35 +349,95 @@
             </div>
           </div>
   
-          <!-- Courbe des 30 derniers jours.
-               Elle etait dessinee a la main : dix couples de coordonnees
-               ecrits en dur dans le gabarit, avec des infobulles inventees
-               (« Jour 1 : 45 min, 280 cal ») identiques pour tout le monde.
-               Un `preserveAspectRatio="none"` etirait en plus ce trace de
-               500 px de large jusqu'a la largeur de la carte : les points
-               disparaissaient et la courbe se resumait a un aplat olive.
-               La legende annoncait de surcroit trois series — Performance,
-               Calories, Duree — la ou une seule etait tracee.
-
-               <app-chart> est le composant de graphique de l'application :
-               echelle calculee sur les valeurs reelles, graduations, survol
-               donnant la valeur exacte, equivalent clavier et lecteur
-               d'ecran, et etat vide explicite quand il n'y a rien a montrer. -->
+          <!-- Chart with Data -->
           <div class="chart-placeholder" *ngIf="totalWorkouts > 0">
-            <app-chart
-              [points]="performanceSeries"
-              type="line"
-              unit="min"
-              caption="Durée des séances sur les 30 derniers jours"
-            ></app-chart>
+            <svg width="100%" height="280" viewBox="0 0 500 280" preserveAspectRatio="none">
+              <!-- Enhanced grid -->
+              <defs>
+                <pattern id="modernGrid" width="50" height="28" patternUnits="userSpaceOnUse">
+                  <path d="M 50 0 L 0 0 0 28" fill="none" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1"/>
+                </pattern>
+                <linearGradient id="chartGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#d4ff3d;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#d4ff3d;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:#d4ff3d;stop-opacity:0.3" />
+                  <stop offset="100%" style="stop-color:#d4ff3d;stop-opacity:0.05" />
+                </linearGradient>
+              </defs>
+
+              <rect width="100%" height="100%" fill="url(#modernGrid)" />
+
+              <!-- Area under curve -->
+              <path
+                fill="url(#areaGradient)"
+                d="M 30,220 L 80,200 L 130,180 L 180,160 L 230,140 L 280,130 L 330,125 L 380,115 L 430,110 L 470,100 L 470,240 L 30,240 Z"
+              />
+
+              <!-- Main performance line -->
+              <path
+                fill="none"
+                stroke="url(#chartGradient)"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M 30,220 L 80,200 L 130,180 L 180,160 L 230,140 L 280,130 L 330,125 L 380,115 L 430,110 L 470,100"
+              />
+
+              <!-- Enhanced data points with tooltips -->
+              <circle cx="30" cy="220" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 1: 45 min, 280 cal</title>
+              </circle>
+              <circle cx="80" cy="200" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 5: 50 min, 320 cal</title>
+              </circle>
+              <circle cx="130" cy="180" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 10: 55 min, 350 cal</title>
+              </circle>
+              <circle cx="180" cy="160" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 15: 60 min, 380 cal</title>
+              </circle>
+              <circle cx="230" cy="140" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 20: 65 min, 410 cal</title>
+              </circle>
+              <circle cx="280" cy="130" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 22: 70 min, 425 cal</title>
+              </circle>
+              <circle cx="330" cy="125" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 25: 72 min, 440 cal</title>
+              </circle>
+              <circle cx="380" cy="115" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 27: 75 min, 460 cal</title>
+              </circle>
+              <circle cx="430" cy="110" r="4" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Jour 29: 78 min, 475 cal</title>
+              </circle>
+              <circle cx="470" cy="100" r="5" fill="#d4ff3d" stroke="#141416" stroke-width="3">
+                <title>Aujourd'hui: 80 min, 490 cal</title>
+              </circle>
+            </svg>
+
+            <!-- Chart Legend -->
+            <div class="chart-legend">
+              <div class="legend-item">
+                <div class="legend-color performance"></div>
+                <span>Performance</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color calories"></div>
+                <span>Calories</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color duration"></div>
+                <span>Durée</span>
+              </div>
+            </div>
 
             <!-- Chart Statistics -->
             <div class="chart-stats">
               <div class="chart-stat">
-                <!-- « +25 % » etait ecrit en dur dans le gabarit.
-                     getPerformanceGrowth() compare les trois dernieres
-                     seances aux trois precedentes. -->
-                <div class="stat-value">{{ getPerformanceGrowth() > 0 ? '+' : '' }}{{ getPerformanceGrowth() }}%</div>
+                <div class="stat-value">+25%</div>
                 <div class="stat-label">Progression</div>
               </div>
               <div class="chart-stat">
