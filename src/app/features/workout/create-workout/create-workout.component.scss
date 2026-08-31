@@ -304,13 +304,30 @@
   }
 }
 
+// `color: $on-primary` etait pose sur le CERCLE, mais `.step-number` a
+// l'interieur redeclare sa propre couleur ($gray-700, un gris clair) : le
+// chiffre de l'etape courante tombait a 1,19:1 sur l'aplat lime — le seul
+// texte illisible restant de l'application, et c'est celui qui indique ou
+// l'on en est dans l'assistant de creation.
+//
+// $primary-dark est de surcroit le lime FONCE (#a1d428), pas la couleur de
+// marque : le cercle actif n'etait donc pas non plus de la bonne teinte.
 .step-item.active .step-circle {
-  background: $primary-dark;
-  color: $on-primary;
+  background: $primary-color;
+
+  .step-number,
+  svg {
+    color: $on-primary;
+  }
 }
 
 .step-item.completed .step-circle {
-  background: $success-gradient;
+  background: rgba($primary-color, 0.16);
+
+  .step-number,
+  svg {
+    color: $primary-color;
+  }
 }
 
 .step-content {

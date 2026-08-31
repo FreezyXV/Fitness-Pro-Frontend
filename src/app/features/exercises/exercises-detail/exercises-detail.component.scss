@@ -2300,8 +2300,14 @@ width: 100%;
 // la DESCRIPTION a droite du titre, sur la meme ligne. Le titre se retrouvait
 // donc coince dans une colonne etroite (« Développé / couché » sur deux
 // lignes) tandis que le texte courant s'etalait a cote.
+// Prefixe `.hero-content` : la regle qui met cette section en `flex-direction:
+// row` est imbriquee a ce niveau (0-3-0). Elle a ete ecrite pour un en-tete
+// « pictogramme + titre » ; ici la section ne contient que le titre et la
+// description, que la rangee posait donc cote a cote — le titre coince dans
+// une colonne de 117px sur telephone, coupe en « Développé / couché ».
+.exercise-detail-container .hero-content .title-section,
 .exercise-detail-container .title-section {
-  display: block;
+  display: block !important;
   margin-bottom: 1.25rem !important;
 
   .exercise-title { display: block; }
