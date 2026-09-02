@@ -198,7 +198,7 @@ padding: 0.25rem;
 
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 2rem;
 
   @include respond-below(xl) {
     width: 100%;
@@ -652,7 +652,8 @@ padding: 0.25rem;
   // « icone + intitule + valeur » : « Vue d'ensemble » se cassait en deux
   // lignes, « Fréquence recommandée » en trois. Une colonne laterale a une
   // largeur de lecture minimale, pas une fraction.
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: 1fr 1fr;
+  
   gap: 1.5rem;
   // `stretch` etirait la carte des exercices a la hauteur de la colonne
   // laterale : 300 px de vide sous le dernier exercice d'un programme court.
@@ -1618,7 +1619,7 @@ padding: 0.25rem;
   border-top: $border-width solid $border-color;
   border-radius: 18px;
   padding: 2.5rem;
-  margin-top: $block-spacing;
+ 
   box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.1);
 
   @include respond-below(md) {

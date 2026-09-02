@@ -1231,12 +1231,13 @@ $forest-gradient: $gradient-forest;
 .motivation-section {
 
   width: 100%;
-  max-width: 1600px;
+
   position: relative;
   z-index: 1;
 
   .motivation-card {
     margin-top: 1rem;
+    margin-bottom: 1rem;
     background: $surface-secondary;
     background-size: 400% 400%;
     border-radius: $border-radius-2xl;
@@ -1475,6 +1476,7 @@ $forest-gradient: $gradient-forest;
 @include respond-below(xl) {
   .stats-grid {
     grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    
   }
 }
 

@@ -28,7 +28,7 @@
 .mini-calendar-container {
   background: $surface-secondary;
   border-radius: $border-radius-2xl;
-  padding: 1.5rem;
+  padding: 0.5rem;
   border: $border-width solid $border-color;
   box-shadow: none;
   max-width: 320px;
@@ -429,7 +429,8 @@
 @include respond-below(md) {
   .mini-calendar-container {
     max-width: 100%;
-    padding: 1rem;
+    padding: 0rem;
+    border: none;
   }
 
   .calendar-grid {

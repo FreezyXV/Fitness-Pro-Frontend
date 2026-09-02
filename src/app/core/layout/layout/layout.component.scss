@@ -49,7 +49,7 @@
 
   @include respond-below(md) {
     width: 100%;
-    padding: 1rem 1rem 0;
+    padding: 0.5rem;
     // Reserve la hauteur de la barre d'onglets (56px) et l'encoche gestuelle :
     // sans cela le dernier bloc de chaque page passe dessous.
     padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 1rem);
