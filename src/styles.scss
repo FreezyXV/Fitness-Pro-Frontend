@@ -133,6 +133,13 @@ html {
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+
+  // Pose par BodyScrollLock : c'est <html>, pas <body>, qui fait office de
+  // scrollingElement dans la plupart des navigateurs. Bloquer seulement
+  // <body> laisse la page defiler derriere une modale/un panneau ouvert.
+  &.body-scroll-locked {
+    overflow: hidden !important;
+  }
 }
 
 body {
@@ -155,6 +162,13 @@ body {
 
   &.fitnesspro-theme {
     background: $bg-primary !important;
+  }
+
+  // Pose par BodyScrollLock pendant qu'une modale/un panneau plein ecran
+  // est ouvert (ex. le panneau de filtres mobile) : sans ca, la page
+  // derriere continue de defiler alors que le panneau, lui, reste fixe.
+  &.body-scroll-locked {
+    overflow: hidden !important;
   }
 }
 

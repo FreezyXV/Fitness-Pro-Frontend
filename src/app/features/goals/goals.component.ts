@@ -44,6 +44,7 @@ import {
 import { AuthService } from '@app/services/auth.service';
 import { GoalsService } from '@app/services/goals.service';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
+import { BodyScrollLock } from '@shared';
 
 /* =============================================
    ENHANCED INTERFACES
@@ -524,6 +525,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
     this.saveViewModeToStorage();
     this.destroy$.next();
     this.destroy$.complete();
+    BodyScrollLock.unlock();
   }
 
   /* =============================================
@@ -1062,10 +1064,12 @@ export class GoalsComponent implements OnInit, OnDestroy {
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
+    BodyScrollLock.lock();
   }
 
   closeMobileFilters(): void {
     this.showMobileFilters = false;
+    BodyScrollLock.unlock();
   }
 
   applyFilters(): void {

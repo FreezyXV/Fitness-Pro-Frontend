@@ -29,6 +29,7 @@ import {
   StorageUtils,
   Workout,
   WorkoutStats,
+  BodyScrollLock,
 } from '@shared';
 
 interface WorkoutFilters {
@@ -141,6 +142,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     this.saveUserPreferences();
     this.destroy$.next();
     this.destroy$.complete();
+    BodyScrollLock.unlock();
   }
 
   @ViewChild('searchInput', { static: false })
@@ -310,10 +312,12 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
+    BodyScrollLock.lock();
   }
 
   closeMobileFilters(): void {
     this.showMobileFilters = false;
+    BodyScrollLock.unlock();
   }
 
   setFilter(filter: string): void {

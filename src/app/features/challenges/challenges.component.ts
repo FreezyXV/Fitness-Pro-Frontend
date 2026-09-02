@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { Subject, BehaviorSubject, timer, of } from 'rxjs';
 import { takeUntil, debounceTime, distinctUntilChanged, catchError } from 'rxjs/operators';
 import { ChallengesService } from '@app/services/challenges.service';
-import { Task } from '@shared';
+import { Task, BodyScrollLock } from '@shared';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 // Enhanced interfaces
@@ -232,6 +232,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
     this.refreshTimer$.next();
     this.refreshTimer$.complete();
+    BodyScrollLock.unlock();
   }
 
   // =============================================
@@ -834,10 +835,12 @@ export class ChallengesComponent implements OnInit, OnDestroy {
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
+    BodyScrollLock.lock();
   }
 
   closeMobileFilters(): void {
     this.showMobileFilters = false;
+    BodyScrollLock.unlock();
   }
 
   clearFilters(): void {

@@ -455,6 +455,26 @@ export class FormUtils {
   }
 }
 
+/**
+ * Empeche le defilement de la page derriere une modale/un panneau plein
+ * ecran. Pose la classe sur <html> ET <body> : le scroll du document est
+ * gere par <html> (document.scrollingElement) dans la plupart des
+ * navigateurs — bloquer seulement <body> ne suffit pas.
+ */
+export class BodyScrollLock {
+  private static readonly LOCK_CLASS = 'body-scroll-locked';
+
+  static lock(): void {
+    document.documentElement.classList.add(this.LOCK_CLASS);
+    document.body.classList.add(this.LOCK_CLASS);
+  }
+
+  static unlock(): void {
+    document.documentElement.classList.remove(this.LOCK_CLASS);
+    document.body.classList.remove(this.LOCK_CLASS);
+  }
+}
+
 export class GuestProfileUtils {
   // Persona fictive utilisee pour remplir le profil du compte invite,
   // qui arrive du backend sans donnees personnelles.

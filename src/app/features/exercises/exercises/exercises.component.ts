@@ -24,7 +24,7 @@ import { WorkoutService } from '@app/services/workout.service';
 import { UserService } from '@app/services/user.service';
 import { ExerciseFilters, Exercise, Workout } from '@shared';
 import { ExerciseCardComponent } from '../exercises-card/exercise-card.component';
-import { APP_CONFIG, WorkoutUtils, StorageUtils } from '@shared';
+import { APP_CONFIG, WorkoutUtils, StorageUtils, BodyScrollLock } from '@shared';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 interface UIState {
@@ -127,6 +127,7 @@ export class ExercisesComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
     this.refreshTimer$.next();
     this.refreshTimer$.complete();
+    BodyScrollLock.unlock();
   }
 
   @HostListener('window:beforeunload')
@@ -527,10 +528,12 @@ export class ExercisesComponent implements OnInit, OnDestroy {
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
+    BodyScrollLock.lock();
   }
 
   closeMobileFilters(): void {
     this.showMobileFilters = false;
+    BodyScrollLock.unlock();
   }
 
   clearAllFilters(): void {
