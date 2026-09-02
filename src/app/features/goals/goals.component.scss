@@ -316,6 +316,11 @@ padding: 0.5rem;
 .filters-section {
   margin-bottom: $block-spacing;
   width: 100%;
+  @include mobile-filters-section;
+
+  .filters-backdrop {
+    @include mobile-filter-backdrop;
+  }
 
   .filters-card {
     margin-top: 1rem;
@@ -323,7 +328,12 @@ padding: 0.5rem;
     border-radius: $border-radius-2xl;
     padding: 1rem;
     border: $border-width solid $border-color;
+    @include mobile-filter-sheet;
   }
+}
+
+.mobile-filter-trigger {
+  @include mobile-filter-trigger;
 }
 
 // Enhanced Filter Controls

@@ -560,3 +560,155 @@ $breakpoints: (
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 }
+
+// =============================================
+// FILTRES MOBILES
+// =============================================
+//
+// Un bloc de filtres toujours visible prend en permanence de la place a
+// l'ecran sur telephone, avant meme que le client en ait besoin. Sur
+// mobile, ce bloc reste dans le DOM (recherche, selects, tris inchanges)
+// mais devient une carte modale centree ouverte par un bouton flottant :
+// l'ecran affiche le resultat par defaut, le client choisit, valide, et
+// retrouve directement sa liste filtree.
+//
+// Usage, sur chacune des 4 pages a liste filtrable :
+//   .filters-section { @include mobile-filters-section; }
+//   .filters-card     { @include mobile-filter-sheet; }
+//   .filters-backdrop { @include mobile-filter-backdrop; }
+//   .mobile-filter-trigger { @include mobile-filter-trigger; }
+
+/// Le bloc de filtres ferme ne doit laisser aucun vide a sa place.
+@mixin mobile-filters-section {
+  @include respond-below(md) {
+    margin-bottom: 0;
+  }
+}
+
+/// Voile derriere le panneau de filtres, cliquable pour fermer.
+@mixin mobile-filter-backdrop {
+  @include respond-below(md) {
+    position: fixed;
+    inset: 0;
+    z-index: $z-modal-backdrop;
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/// A inclure sur `.filters-card` : cache par defaut sur mobile, devient une
+/// carte modale centree (coins arrondis, marges visibles, pas de plein-ecran
+/// bord a bord) quand la classe `.mobile-open` est posee. Attend un
+/// `.filters-mobile-header` (titre + bouton fermer) et un `.filters-apply-btn`
+/// en pied de panneau, tous deux invisibles hors de cet etat.
+@mixin mobile-filter-sheet {
+  @include respond-below(md) {
+    display: none;
+
+    &.mobile-open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      z-index: $z-modal;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(420px, calc(100vw - 2rem));
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+      border-radius: $radius-2xl;
+      box-shadow: $shadow-xl;
+    }
+
+    .filters-mobile-header {
+      display: none;
+    }
+
+    .filters-apply-btn {
+      display: none;
+    }
+
+    &.mobile-open {
+      .filters-mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $space-4;
+
+        h3 {
+          margin: 0;
+          font-size: 1.125rem;
+          font-weight: 800;
+          color: $text-primary;
+        }
+
+        .filters-close-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          flex-shrink: 0;
+          border: none;
+          border-radius: 50%;
+          background: $surface-tertiary;
+          color: $text-primary;
+          cursor: pointer;
+        }
+      }
+
+      .filters-apply-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: $space-4;
+        padding: 1rem;
+        border: none;
+        border-radius: $radius-md;
+        background: $primary-dark;
+        color: $on-primary;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+/// Bouton flottant "Filtrer" : invisible sur bureau, ancre en bas-centre
+/// de l'ecran sur mobile, au-dessus de la barre de navigation basse.
+/// Les 4 pages qui l'utilisent posent toutes un `> * { position: relative;
+/// width: 100% }` sur les enfants directs de leur conteneur (pour leur
+/// propre empilement de sections) : plus specifique qu'une simple classe,
+/// cette regle gagnerait sinon et clouerait le bouton dans le flux normal
+/// au lieu de le laisser flotter. D'ou les !important, uniquement sur ce
+/// qui doit imperativement l'emporter.
+@mixin mobile-filter-trigger {
+  display: none;
+
+  @include respond-below(md) {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    position: fixed !important;
+    left: 50% !important;
+    bottom: calc(56px + env(safe-area-inset-bottom, 0px) + #{$block-spacing}) !important;
+    transform: translateX(-50%) !important;
+    width: auto !important;
+    z-index: $z-floating-action !important;
+    padding: 0.5rem;
+    border: none;
+    border-radius: $radius-pill;
+    background: $primary-dark;
+    color: $on-primary;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    box-shadow: $shadow-lg;
+    cursor: pointer;
+
+    &:active {
+      transform: translateX(-50%) scale(0.96) !important;
+    }
+  }
+}

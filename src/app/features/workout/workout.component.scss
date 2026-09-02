@@ -391,14 +391,19 @@ padding: 0.25rem;
 // Filters Section - Enhanced
 .filters-section {
   margin-bottom: $block-spacing;
-
   width: 100%;
+  @include mobile-filters-section;
+
+  .filters-backdrop {
+    @include mobile-filter-backdrop;
+  }
 
   .filters-card {
     margin-top: 1rem;
     @include glass-card(0.95);
     border-radius: 18px;
     padding: 2rem;
+    @include mobile-filter-sheet;
 
     @include respond-below(lg) {
       padding: 1.75rem;
@@ -746,6 +751,10 @@ padding: 0.25rem;
       }
     }
   }
+}
+
+.mobile-filter-trigger {
+  @include mobile-filter-trigger;
 }
 
 // State Sections (Loading, Error, etc.)

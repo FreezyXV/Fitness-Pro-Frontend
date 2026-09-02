@@ -315,12 +315,18 @@
 // Enhanced Filters Section
 .filters-section {
   margin-bottom: $block-spacing;
+  @include mobile-filters-section;
+
+  .filters-backdrop {
+    @include mobile-filter-backdrop;
+  }
 
   .filters-card {
     margin-top: 1rem;
     @include glass-card(0.95);
     border-radius: $border-radius-2xl;
     padding: 2rem;
+    @include mobile-filter-sheet;
   }
 
   .filter-controls-grid {
@@ -368,6 +374,10 @@
       }
     }
   }
+}
+
+.mobile-filter-trigger {
+  @include mobile-filter-trigger;
 }
 
 // Enhanced Challenge Cards - Based on Workout Plan Card Design
@@ -1142,7 +1152,7 @@
             .badge {
               padding: 0.5rem 1rem;
               border-radius: 18px;
-              color: white;
+              color: rgb(1, 1, 1);
               font-size: 0.875rem;
               font-weight: 600;
               display: flex;

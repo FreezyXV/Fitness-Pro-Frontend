@@ -827,6 +827,19 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Panneau de filtres mobile : masque par defaut, ouvert par le bouton
+  // flottant "Filtrer", ferme en revalidant (les filtres s'appliquent deja
+  // en direct, "Appliquer" ne fait que revenir au resultat).
+  showMobileFilters = false;
+
+  openMobileFilters(): void {
+    this.showMobileFilters = true;
+  }
+
+  closeMobileFilters(): void {
+    this.showMobileFilters = false;
+  }
+
   clearFilters(): void {
     this.activeFilter = 'all';
     this.activeCategoryFilter = 'all';

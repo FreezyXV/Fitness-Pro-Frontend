@@ -378,12 +378,18 @@ padding: 0.25rem;
 // Filters Section - Enhanced
 .filters-section {
   margin-bottom: $block-spacing;
+  @include mobile-filters-section;
+
+  .filters-backdrop {
+    @include mobile-filter-backdrop;
+  }
 
   .filters-card {
     margin-top: 1rem;
     @include glass-card(0.95);
     border-radius: $border-radius-2xl;
     padding: 2rem;
+    @include mobile-filter-sheet;
   }
 
   // Search Container
@@ -623,6 +629,10 @@ padding: 0.25rem;
 
     }
   }
+}
+
+.mobile-filter-trigger {
+  @include mobile-filter-trigger;
 }
 
 // State Sections (Loading, Error, etc.)
