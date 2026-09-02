@@ -20,7 +20,6 @@ import { IconComponent } from '@app/shared/components/icon/icon.component';
 })
 export class ExerciseCardComponent implements OnInit, OnDestroy {
   @Input() exercise!: Exercise;
-  @Input() viewMode: 'grid' | 'list' = 'grid';
   @Input() showQuickActions = true;
   @Input() showProgress = false;
   

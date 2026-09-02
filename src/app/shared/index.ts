@@ -30,7 +30,6 @@ export const APP_CONFIG = {
   STORAGE_KEYS: {
     EXERCISES_FAVORITES: 'exercises_favorites',
     EXERCISES_FILTERS: 'exercises_filters',
-    EXERCISES_VIEW_MODE: 'exercises_view_mode',
     USER_PREFERENCES: 'user_preferences',
     GUEST_MODE: 'is_guest_mode',
   },

@@ -170,53 +170,6 @@
     }
   }
 
-  &.list-view {
-    flex-direction: row;
-    height: auto;
-    min-height: 180px;
-    max-height: none;
-
-    .card-content {
-      flex: 1;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: 1.5rem;
-    }
-
-    .card-header {
-      @include card-header;
-    }
-
-    .exercise-stats {
-      display: flex !important;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin: 1rem 0;
-
-      .stat-item {
-        flex: 0 0 auto;
-        min-width: 120px;
-        font-size: 0.85rem;
-        padding: 0.75rem 1rem;
-      }
-    }
-
-    .action-buttons {
-      margin-top: auto;
-    }
-
-    .additional-info {
-      display: block;
-    }
-
-    &:hover {
-      transform: translateY(-2px) scale(1.005);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    }
-  }
-
   .card-header {
     @include card-header;
     .favorite-btn {
@@ -769,47 +722,6 @@
       }
     }
 
-    .additional-info {
-      display: none;
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: $border-width solid $border-color;
-
-      h4 {
-        font-size: 1rem;
-        font-weight: 800;
-        color: $gray-700;
-        margin: 0 0 1rem 0;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        letter-spacing: 0.05em;
-      }
-
-      p {
-        font-size: 0.9rem;
-        color: $text-primary;
-        margin: 0;
-        line-height: 1.6;
-        font-weight: 500;
-      }
-
-      .tips-preview,
-      .equipment-info,
-      .muscle-groups-info,
-      .video-status-info,
-      .calories-info {
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: rgba($secondary-color, 0.05);
-        border-radius: $border-radius-xl;
-        border: $border-width solid $border-color;
-
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-    }
   }
 
   .progress-indicator {
@@ -956,40 +868,6 @@
 
 @include respond-below(md) {
   .exercise-card-enhanced {
-    &.list-view {
-      flex-direction: column;
-      height: auto;
-      min-height: auto;
-
-      .card-content {
-        padding: 2rem;
-
-
-        .exercise-stats {
-          gap: 1rem;
-
-          .stat-item {
-            flex: 1 1 calc(50% - 0.5rem);
-            min-width: 140px;
-            justify-content: center;
-            text-align: center;
-          }
-        }
-      }
-
-      .card-header {
-        @include card-header;
-        .favorite-btn {
-          width: 40px;
-          height: 40px;
-        }
-        .difficulty-badge {
-          font-size: 0.8rem;
-          padding: 0.6rem 1rem;
-        }
-      }
-    }
-
     .card-content {
       padding: 2rem;
       margin-top: 1rem;

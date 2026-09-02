@@ -1,7 +1,6 @@
 <!-- src/app/exercises-filtres/exercises-detail/exercise-card.component.html - Enhanced Dashboard Style -->
 
-<div class="exercise-card-enhanced" 
-     [class.list-view]="viewMode === 'list'"
+<div class="exercise-card-enhanced"
      [class.favorite]="exercise.isFavorite"
      [class.has-video]="hasVideo"
      (click)="navigateToDetail()">
@@ -234,48 +233,6 @@
       
     </div>
 
-    <!-- Enhanced Additional Info for List View -->
-    <div class="additional-info" *ngIf="viewMode === 'list'">
-      <!-- Enhanced Tips Preview -->
-      <div class="tips-preview" *ngIf="exercise.tips && exercise.tips.length">
-        <h4>Conseil d'expert</h4>
-        <p>{{ exercise.tips[0] }}</p>
-      </div>
-
-      <!-- Enhanced Equipment Info -->
-      <div class="equipment-info" *ngIf="exercise.equipmentNeeded && exercise.equipmentNeeded !== 'none'">
-        <h4>Équipement nécessaire</h4>
-        <p>{{ exercise.equipmentNeeded }}</p>
-      </div>
-
-      <!-- Enhanced Muscle Groups Info -->
-      <div class="muscle-groups-info" *ngIf="exercise.muscleGroups && exercise.muscleGroups.length">
-        <h4>Muscles ciblés</h4>
-        <p>{{ exercise.muscleGroups.join(', ') }}</p>
-      </div>
-
-      <!-- Enhanced Video Status -->
-      <div class="video-status-info" *ngIf="exercise.videoUrl">
-        <h4>Démonstration vidéo</h4>
-        <p *ngIf="hasVideo && !videoError">Démonstration HD disponible - Cliquez pour voir</p>
-        <p *ngIf="videoError" class="error-text">
-          Vidéo temporairement indisponible
-          <button class="inline-retry-btn" (click)="retryVideoLoad($event)" title="Réessayer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="23 4 23 10 17 10"/>
-              <polyline points="1 20 1 14 7 14"/>
-              <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"/>
-            </svg>
-          </button>
-        </p>
-      </div>
-
-      <!-- Enhanced Estimated Calories -->
-      <div class="calories-info" *ngIf="exercise.estimatedCaloriesPerMinute">
-        <h4>Estimation calorique</h4>
-        <p>~{{ exercise.estimatedCaloriesPerMinute }} cal/min</p>
-      </div>
-    </div>
   </div>
 
   <!-- Enhanced Progress Indicator -->

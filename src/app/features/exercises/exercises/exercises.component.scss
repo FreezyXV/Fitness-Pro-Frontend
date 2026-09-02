@@ -621,35 +621,6 @@ padding: 0.25rem;
         }
       }
 
-      .view-mode-toggle {
-        display: flex;
-        border: $border-width solid $border-color;
-        border-radius: $border-radius;
-        overflow: hidden;
-        background: rgba($surface-secondary, 0.9);
-
-        .view-mode-btn {
-          background: transparent;
-          border: none;
-          padding: 0.75rem;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          color: $text-primary;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          &:hover {
-            background: rgba($primary-color, 0.1);
-            color: $primary-color;
-          }
-
-          &.active {
-            background: $primary-color;
-            color: $on-primary;
-          }
-        }
-      }
     }
   }
 }
@@ -731,14 +702,7 @@ padding: 0.25rem;
   .exercises-grid {
     display: grid;
     gap: 2rem;
-  }
-
-  &.grid-view .exercises-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  &.list-view .exercises-grid {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .exercise-card-wrapper {
@@ -881,11 +845,9 @@ padding: 0.25rem;
     }
   }
 
-  .exercises-content {
-    &.grid-view .exercises-grid {
-      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
-      gap: 1.5rem;
-    }
+  .exercises-content .exercises-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 1.5rem;
   }
 
   .hero-section {
@@ -973,10 +935,8 @@ gap: 1rem;
       }
     }
 
-    .exercises-content {
-      &.grid-view .exercises-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
+    .exercises-content .exercises-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 

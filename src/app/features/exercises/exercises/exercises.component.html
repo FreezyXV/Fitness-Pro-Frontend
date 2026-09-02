@@ -260,34 +260,6 @@
             </button>
           </div>
 
-          <div class="view-mode-toggle">
-            <button 
-              (click)="setViewMode('grid')"
-              [class.active]="viewMode === 'grid'"
-              class="view-mode-btn"
-              title="Vue grille">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="7" height="7"/>
-                <rect x="14" y="3" width="7" height="7"/>
-                <rect x="14" y="14" width="7" height="7"/>
-                <rect x="3" y="14" width="7" height="7"/>
-              </svg>
-            </button>
-            <button 
-              (click)="setViewMode('list')"
-              [class.active]="viewMode === 'list'"
-              class="view-mode-btn"
-              title="Vue liste">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="8" y1="6" x2="21" y2="6"/>
-                <line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/>
-                <line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/>
-                <line x1="3" y1="18" x2="3.01" y2="18"/>
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -381,17 +353,14 @@
     </div>
   </div>
 
-  <!-- Exercises Grid/List -->
-  <div *ngIf="!isLoading && !error && filteredExercises.length > 0" 
-       class="exercises-content"
-       [class.grid-view]="viewMode === 'grid'"
-       [class.list-view]="viewMode === 'list'">
-    
+  <!-- Exercises Grid -->
+  <div *ngIf="!isLoading && !error && filteredExercises.length > 0"
+       class="exercises-content">
+
     <div class="exercises-grid">
       <app-exercise-card-enhanced
         *ngFor="let exercise of filteredExercises; trackBy: trackByExercise"
         [exercise]="exercise"
-        [viewMode]="viewMode"
         (favoriteToggle)="onFavoriteToggle(exercise)"
         (quickStartEvent)="onQuickStart(exercise)"
         class="exercise-card-wrapper">

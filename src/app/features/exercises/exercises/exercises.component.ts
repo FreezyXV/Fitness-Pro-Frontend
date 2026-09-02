@@ -67,8 +67,6 @@ export class ExercisesComponent implements OnInit, OnDestroy {
     return this.uiState.value.error;
   }
 
-  viewMode: 'grid' | 'list' = 'grid';
-
   // =============================================
   // FILTERS
   // =============================================
@@ -548,14 +546,6 @@ export class ExercisesComponent implements OnInit, OnDestroy {
     );
   }
 
-  setViewMode(mode: 'grid' | 'list'): void {
-    if (this.viewMode !== mode) {
-      this.viewMode = mode;
-      this.markUserInteraction();
-      this.saveUserPreferences();
-    }
-  }
-
   // =============================================
   // EXERCISE ACTIONS
   // =============================================
@@ -663,13 +653,6 @@ export class ExercisesComponent implements OnInit, OnDestroy {
         const preferences = JSON.parse(saved);
         this.filters = { ...this.filters, ...preferences };
       }
-
-      const viewMode = StorageUtils.getItem<string>(
-        APP_CONFIG.STORAGE_KEYS.EXERCISES_VIEW_MODE
-      ) as 'grid' | 'list';
-      if (viewMode) {
-        this.viewMode = viewMode;
-      }
     } catch (error) {
       console.warn('Error loading user preferences:', error);
     }
@@ -683,10 +666,6 @@ export class ExercisesComponent implements OnInit, OnDestroy {
       StorageUtils.setItem(
         APP_CONFIG.STORAGE_KEYS.EXERCISES_FILTERS,
         this.filters
-      );
-      StorageUtils.setItem(
-        APP_CONFIG.STORAGE_KEYS.EXERCISES_VIEW_MODE,
-        this.viewMode
       );
     } catch (error) {
       console.warn('Error saving user preferences:', error);
