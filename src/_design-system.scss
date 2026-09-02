@@ -578,10 +578,18 @@ $breakpoints: (
 //   .filters-backdrop { @include mobile-filter-backdrop; }
 //   .mobile-filter-trigger { @include mobile-filter-trigger; }
 
-/// Le bloc de filtres ferme ne doit laisser aucun vide a sa place.
+/// Le bloc de filtres ferme ne doit laisser aucun vide a sa place. Le
+/// `z-index: $z-modal !important` compense le `> * { position: relative;
+/// z-index: 1 }` que chacune des 4 pages pose sur les enfants directs de
+/// son conteneur : cette regle ferait sinon de `.filters-section` un
+/// contexte d'empilement fige a z-index 1, dans lequel `.filters-card`
+/// resterait pris au piege derriere le reste de la page meme avec
+/// `position: fixed` et un z-index eleve — position:fixed echappe au flux,
+/// pas a l'empilement d'un ancetre qui cree son propre contexte.
 @mixin mobile-filters-section {
   @include respond-below(md) {
     margin-bottom: 0;
+    z-index: $z-modal !important;
   }
 }
 
