@@ -152,41 +152,35 @@
 
         <!-- Week View -->
         <div class="calendar-view week-view" *ngIf="currentView === 'week' && !isLoading">
-          <div class="week-header">
-            <div class="week-day" *ngFor="let day of getWeekDays(); trackBy: trackByDate">
+          <div class="week-grid">
+            <div class="week-day-block" *ngFor="let day of getWeekDays(); trackBy: trackByDate">
               <div class="week-day-info">
                 <div class="week-day-name">{{dayNames[day.date.getDay() === 0 ? 6 : day.date.getDay() - 1]}}</div>
-                <div class="week-day-number" 
+                <div class="week-day-number"
                      [class.today]="day.isToday"
                      [class.selected]="day.isSelected"
                      (click)="selectDate(day)">
                   {{day.date.getDate()}}
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div class="week-content">
-            <div class="week-events-grid">
-              <div class="week-day-column" *ngFor="let day of getWeekDays(); trackBy: trackByDate">
-                <div class="week-day-column-content">
-                  <div class="week-event" 
-                       *ngFor="let event of day.events; trackBy: trackByEvent"
-                       [style.border-left-color]="getEventTypeColor(event.task_type)"
-                       [class.completed]="event.is_completed"
-                       (click)="editEvent(event)">
-                    
-                    <div class="event-content">
-                      <div class="event-time" *ngIf="event.reminder_time">
-                        {{formatTime(event.reminder_time)}}
-                      </div>
-                      <div class="event-title">{{event.title}}</div>
-                      <div class="event-type">{{getEventIcon(event.task_type)}}</div>
+              <div class="week-day-events">
+                <div class="week-event"
+                     *ngFor="let event of day.events; trackBy: trackByEvent"
+                     [style.border-left-color]="getEventTypeColor(event.task_type)"
+                     [class.completed]="event.is_completed"
+                     (click)="editEvent(event)">
+
+                  <div class="event-content">
+                    <div class="event-time" *ngIf="event.reminder_time">
+                      {{formatTime(event.reminder_time)}}
                     </div>
+                    <div class="event-title">{{event.title}}</div>
+                    <div class="event-type">{{getEventIcon(event.task_type)}}</div>
                   </div>
-                  <div class="empty-day-message" *ngIf="day.events.length === 0">
-                    Aucun événement
-                  </div>
+                </div>
+                <div class="empty-day-message" *ngIf="day.events.length === 0">
+                  Aucun événement
                 </div>
               </div>
             </div>

@@ -598,8 +598,7 @@ padding: 0.25rem;
               background: $primary-dark;
               color: $on-primary;
               border-radius: 50%;
-              width: 32px;
-              height: 32px;
+             
               display: flex;
               align-items: center;
               justify-content: center;
@@ -726,137 +725,137 @@ padding: 0.25rem;
     }
 
     &.week-view {
-      .week-header {
-        display: grid;
-        grid-template-columns: repeat(7, minmax(0, 1fr));
-        background: $dark-gradient;
-        padding: $space-4 $space-6;
-        color: $on-primary;
-        border-bottom: $border-width solid $border-color;
+      // Desktop/tablette : une colonne par jour, en-tete du jour au-dessus
+      // de sa liste d'evenements. Sur mobile (respond-below(sm) plus bas),
+      // ce meme balisage passe en lignes (jour a gauche, evenements a
+      // droite) via un simple changement de flex-direction.
+      .week-grid {
+        display: flex;
+        gap: $space-4;
+        padding: $space-6;
+        background: $surface-secondary;
+        min-height: 500px;
 
-        .week-day {
+        .week-day-block {
+          flex: 1 1 0;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: $space-3;
+        }
+
+        .week-day-info {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: $space-1;
           text-align: center;
           padding: $space-3;
+          background: $dark-gradient;
+          border-radius: $radius-md;
+          color: $on-primary;
 
-          .week-day-info {
+          .week-day-name {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0.8;
+          }
+
+          .week-day-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            width: 40px;
+            height: 40px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: $space-1;
+            justify-content: center;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
 
-            .week-day-name {
-              font-size: 0.875rem;
-              font-weight: 600;
-              opacity: 0.8;
+            &:hover {
+              background: rgba($surface-secondary, 0.1);
             }
 
-            .week-day-number {
-              font-size: 1.5rem;
-              font-weight: 700;
-              width: 40px;
-              height: 40px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-radius: 50%;
-              cursor: pointer;
-              transition: all 0.2s ease;
+            &.today {
+              background: $primary-dark;
+              color: $on-primary;
+              box-shadow: $shadow-md;
+            }
 
-              &:hover {
-                background: rgba($surface-secondary, 0.1);
-              }
-
-              &.today {
-                background: $primary-dark;
-                color: $on-primary;
-                box-shadow: $shadow-md;
-              }
-
-              &.selected {
-                background: $accent-gradient;
-                color: $on-primary;
-                box-shadow: $shadow-md;
-                transform: scale(1.1);
-              }
+            &.selected {
+              background: $accent-gradient;
+              color: $on-primary;
+              box-shadow: $shadow-md;
+              transform: scale(1.1);
             }
           }
         }
-      }
 
-      .week-content {
-        padding: $space-6;
-        background: $surface-secondary;
-        min-height: 500px; /* Ensure enough height for scrolling */
+        .week-day-events {
+          background: $surface-tertiary;
+          border-radius: $radius-md;
+          padding: $space-3;
+          border: $border-width solid $border-color;
+          display: flex;
+          flex-direction: column;
+          gap: $space-2;
+          min-height: 400px; /* Minimum height for each day column */
+          overflow-y: auto; /* Enable scrolling for events */
 
-        .week-events-grid {
-          display: grid;
-          grid-template-columns: repeat(7, minmax(0, 1fr));
-          gap: $space-4;
-          height: 100%;
-
-          .week-day-column {
-            background: $surface-secondary;
-            border-radius: $radius-md;
+          .week-event {
+            @include glass-morphism(0.8);
+            border-left: 4px solid;
+            border-radius: $radius-lg;
             padding: $space-3;
+            margin-bottom: $space-2; /* Spacing between events */
+            @include card-hover;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            &.completed {
+              opacity: 0.7;
+              .event-title {
+                text-decoration: line-through;
+                color: $text-muted;
+              }
+            }
+
+            .event-content {
+              display: flex;
+              flex-direction: column;
+              gap: $space-1;
+
+              .event-time {
+                font-size: 0.75rem;
+                color: $text-primary;
+                font-weight: 500;
+              }
+
+              .event-title {
+                font-weight: 600;
+                color: $gray-800;
+                font-size: 0.9rem;
+              }
+
+              .event-type {
+                font-size: 0.8rem;
+                opacity: 0.8;
+              }
+            }
+          }
+
+          .empty-day-message {
+            text-align: center;
+            color: $text-muted;
+            font-size: 0.875rem;
+            padding: $space-4;
+            margin-top: $space-4;
             border: $border-width solid $border-color;
-            display: flex;
-            flex-direction: column;
-            gap: $space-2;
-            min-height: 400px; /* Minimum height for each day column */
-            overflow-y: auto; /* Enable scrolling for events */
-
-            .week-event {
-              @include glass-morphism(0.8);
-              border-left: 4px solid;
-              border-radius: $radius-lg;
-              padding: $space-3;
-              margin-bottom: $space-2; /* Spacing between events */
-              @include card-hover;
-              cursor: pointer;
-              transition: all 0.2s ease;
-
-              &.completed {
-                opacity: 0.7;
-                .event-title {
-                  text-decoration: line-through;
-                  color: $text-muted;
-                }
-              }
-
-              .event-content {
-                display: flex;
-                flex-direction: column;
-                gap: $space-1;
-
-                .event-time {
-                  font-size: 0.75rem;
-                  color: $text-primary;
-                  font-weight: 500;
-                }
-
-                .event-title {
-                  font-weight: 600;
-                  color: $gray-800;
-                  font-size: 0.9rem;
-                }
-
-                .event-type {
-                  font-size: 0.8rem;
-                  opacity: 0.8;
-                }
-              }
-            }
-
-            .empty-day-message {
-              text-align: center;
-              color: $text-muted;
-              font-size: 0.875rem;
-              padding: $space-4;
-              margin-top: $space-4;
-              border: $border-width solid $border-color;
-              border-radius: $radius-md;
-              background: $surface-secondary;
-            }
+            border-radius: $radius-md;
+            background: $surface-secondary;
           }
         }
       }
@@ -1379,7 +1378,7 @@ padding: 0.25rem;
 
 @include respond-below(md) {
   .hero-section {
-    padding: 1rem 1.25rem !important;
+    
 
     .hero-content {
       padding: 1rem 1.25rem !important;
@@ -1492,29 +1491,26 @@ padding: 0.25rem;
     }
   }
 
-  .calendar-view.week-view {
-    .week-content {
+  .calendar-section .calendar-view.week-view {
+    .week-grid {
       padding: $space-4;
+      gap: $space-2;
 
-      .week-events-grid {
-        gap: $space-2;
+      .week-day-events {
+        padding: $space-2;
+        min-height: 300px;
 
-        .week-day-column {
+        .week-event {
           padding: $space-2;
-          min-height: 300px;
+          margin-bottom: $space-1;
 
-          .week-event {
-            padding: $space-2;
-            margin-bottom: $space-1;
+          .event-content {
+            .event-title {
+              font-size: 0.8rem;
+            }
 
-            .event-content {
-              .event-title {
-                font-size: 0.8rem;
-              }
-
-              .event-time {
-                font-size: 0.7rem;
-              }
+            .event-time {
+              font-size: 0.7rem;
             }
           }
         }
@@ -1653,8 +1649,7 @@ padding: 0.25rem;
           }
 
           &.today .day-number {
-            width: 30px;
-            height: 30px;
+           
             font-size: 0.85rem;
             font-weight: 800;
           }
@@ -1701,79 +1696,103 @@ padding: 0.25rem;
     }
 
     // Mobile-optimized Week View
+    //
+    // 7 colonnes de 45px sur un ecran de telephone rendaient les
+    // evenements illisibles : le texte se repliait sur lui-meme jusqu'a
+    // disparaitre, ne laissant voir que la bordure de couleur. Passe en
+    // lignes : un jour par ligne, son libelle a gauche, ses evenements a
+    // droite sur la meme ligne — meme balisage que le bureau, juste
+    // reoriente.
     &.week-view {
-      .week-header {
-        padding: $space-3 $space-2;
-
-        .week-day {
-          padding: $space-1;
-
-          .week-day-info {
-            gap: 4px;
-
-            .week-day-name {
-              font-size: 0.75rem;
-              font-weight: 600;
-            }
-
-            .week-day-number {
-              font-size: 1.2rem;
-              font-weight: 800;
-              width: 36px;
-              height: 36px;
-            }
-          }
-        }
-      }
-
-      .week-content {
+      // `.calendar-section &` : la regle de bureau (.calendar-section
+      // .calendar-view.week-view .week-grid .week-day-block) a 5 classes de
+      // specificite. Sans ce prefixe, cette regle mobile (3 classes)
+      // perdait toujours face au bureau, meme dans la bonne media query —
+      // le flex-direction: row n'etait jamais applique.
+      .calendar-section & .week-grid {
+        flex-direction: column;
+        gap: $space-3;
         padding: $space-3;
 
-        .week-events-grid {
-          gap: $space-2;
+        .week-day-block {
+          flex-direction: row;
+          align-items: stretch;
+          gap: $space-3;
+        }
 
-          .week-day-column {
+        .week-day-info {
+          flex: 0 0 56px;
+          width: 56px;
+          padding: $space-2 $space-1;
+          border-radius: $radius-md;
+          gap: 4px;
+
+          .week-day-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+          }
+
+          .week-day-number {
+            font-size: 1.1rem;
+            font-weight: 800;
+            width: 32px;
+            height: 32px;
+          }
+        }
+
+        .week-day-events {
+          flex: 1 1 auto;
+          flex-direction: row;
+          flex-wrap: wrap;
+          align-items: stretch;
+          min-height: unset;
+          max-height: none;
+          overflow-y: visible;
+          padding: $space-2;
+          border-radius: $radius-md;
+
+          .week-event {
+            flex: 1 1 130px;
+            max-width: 100%;
+            margin-bottom: 0;
             padding: $space-2;
             border-radius: $radius-md;
-            min-height: 250px;
+            background: $surface-tertiary;
+            cursor: pointer;
+            transition: all 0.2s ease;
 
-            .week-event {
-              padding: $space-2;
-              margin-bottom: $space-2;
-              border-radius: $radius-md;
-              cursor: pointer;
-              transition: all 0.2s ease;
-
-              &:active {
-                transform: scale(0.98);
-              }
-
-              .event-content {
-                gap: 4px;
-
-                .event-time {
-                  font-size: 0.7rem;
-                  font-weight: 600;
-                }
-
-                .event-title {
-                  font-size: 0.8rem;
-                  font-weight: 700;
-                  line-height: 1.2;
-                }
-
-                .event-type {
-                  font-size: 0.75rem;
-                }
-              }
+            &:active {
+              transform: scale(0.98);
             }
 
-            .empty-day-message {
-              font-size: 0.75rem;
-              padding: $space-3;
-              margin-top: $space-2;
-              text-align: center;
+            .event-content {
+              gap: 4px;
+
+              .event-time {
+                font-size: 0.7rem;
+                font-weight: 600;
+              }
+
+              .event-title {
+                font-size: 0.8rem;
+                font-weight: 700;
+                line-height: 1.2;
+              }
+
+              .event-type {
+                font-size: 0.75rem;
+              }
             }
+          }
+
+          .empty-day-message {
+            flex: 1 1 auto;
+            font-size: 0.75rem;
+            padding: $space-2 $space-3;
+            margin-top: 0;
+            text-align: left;
+            display: flex;
+            align-items: center;
           }
         }
       }
@@ -1904,8 +1923,7 @@ padding: 0.25rem;
 .calendar-container .hero-content,
 .calendar-container .calendar-grid,
 .calendar-container .calendar-grid .calendar-day,
-.calendar-container .week-content,
-.calendar-container .week-day-column,
+.calendar-container .week-day-events,
 .calendar-container .day-view-content,
 .calendar-container .time-slots,
 .calendar-container .time-slot,
@@ -1940,14 +1958,6 @@ padding: 0.25rem;
 
 .calendar-container .calendar-day .progress-fill {
   background: $bg-primary;
-}
-
-.calendar-container .week-day-column {
-  border: $border-width solid $border-color;
-}
-
-.calendar-container .week-content {
-  background: $surface-tertiary;
 }
 
 .calendar-container .day-view-content {
