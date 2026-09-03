@@ -592,6 +592,7 @@ padding: 0.25rem;
 
   @include respond-below(md) {
     gap: 1.5rem;
+    display: grid;
   }
 
   @include respond-below(sm) {
@@ -1007,7 +1008,7 @@ padding: 0.25rem;
         &.active {
           border: $border-width solid $border-color;
           background: rgba($primary-color, 0.05);
-          transform: translateX(12px);
+          
           box-shadow: 0 20px 50px rgba($primary-color, 0.2);
         }
 
@@ -1153,7 +1154,7 @@ width: 100%;
 
 // Enhanced Secondary Content
 .secondary-content {
-  display: flex;
+  display: grid;
   margin-top: $block-spacing;
   gap: 2rem;
   width: 100%;

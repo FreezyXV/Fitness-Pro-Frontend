@@ -1592,7 +1592,7 @@
   .hero-section {
     .profile-overview-stats {
       grid-template-columns: minmax(0, 1fr);
-      gap: $spacing-3xl;
+      gap: 2rem;
 
       .user-info-card {
         max-width: none;
@@ -2288,10 +2288,7 @@
 
   .form-group { margin-bottom: 0 !important; }
 
-  .form-section,
-  .settings-section {
-    padding: 1.25rem !important;
-  }
+
 
   // `.form-section` a un rembourrage NUL (`padding: 0`, ligne 793) : tout son
   // espace vient de ses deux enfants, `.section-header-card` et

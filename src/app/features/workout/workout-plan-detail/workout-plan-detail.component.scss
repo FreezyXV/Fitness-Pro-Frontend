@@ -1265,8 +1265,8 @@ padding: 0.25rem;
 }
 
 // Enhanced Secondary Content
-.secondary-content {
-  display: flex;
+.secondary-content {  
+  display: grid;
   
   gap: 2.5rem;
 }
