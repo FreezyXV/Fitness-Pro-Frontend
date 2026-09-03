@@ -1419,58 +1419,6 @@ $forest-gradient: $gradient-forest;
   }
 }
 
-// Quick Actions Mobile amélioré
-// =============================================
-// ACTION FLOTTANTE (MOBILE)
-// =============================================
-//
-// Trois cercles lime de 56px empiles a 2rem du bas : ils recouvraient le
-// calendrier, chevauchaient la barre d'onglets, et DEUX des trois repetaient
-// des boutons deja presents en haut du meme ecran (« Commencer un
-// entrainement » et « Voir mes progres »).
-//
-// Il n'en reste qu'un — l'enregistrement rapide d'une seance, la seule action
-// qui n'existe nulle part ailleurs — pose au-dessus de la barre d'onglets et
-// non par-dessus le contenu.
-.quick-actions-mobile {
-  position: fixed;
-  right: 1rem;
-  bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 1rem);
-  z-index: $z-floating-action;
-
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  @include respond-above(md) {
-    display: none;
-  }
-
-  // Seul le deuxieme bouton (saisie rapide) subsiste.
-  .quick-btn:not(:nth-child(2)) {
-    display: none;
-  }
-
-  .quick-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: $primary-color;
-    color: $on-primary;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:focus-visible {
-      outline: 2px solid $primary-color;
-      outline-offset: 3px;
-    }
-
-    svg { width: 22px; height: 22px; }
-  }
-}
 
 // Responsive Design amélioré
 @include respond-below(xl) {

@@ -8,7 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth.service';
 import { UserService } from '@app/services/user.service';
 import { WorkoutService } from '@app/services/workout.service';
-import { User, Workout, Goal, BMIUtils, DateUtils, WorkoutUtils, WorkoutIntensity } from '@shared';
+import { User, Workout, Goal, BMIUtils, DateUtils } from '@shared';
 import { MiniCalendarComponent } from '@features/calendar/mini-calendar/mini-calendar.component';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
 
@@ -808,45 +808,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // Add visual celebration effect
     console.log('🎊 Celebrating goal completion:', goal.title);
     // Could trigger confetti animation or other celebration effects
-  }
-
-  quickLogWorkout(): void {
-    console.log('📝 Quick logging enhanced workout');
-    
-    const sessionData: Partial<Workout> = { // Changed to Partial<Workout>
-      name: 'Séance Express', // Changed to name
-      durationMinutes: 25,
-      caloriesBurned: WorkoutUtils.calculateCalories(25, WorkoutIntensity.High, this.user?.weight || 70),
-      status: 'completed',
-      completedAt: new Date().toISOString(),
-      isTemplate: false, // Added
-      userId: this.user?.id || 1, // Added
-      createdAt: new Date().toISOString(), // Added
-      updatedAt: new Date().toISOString(), // Added
-    };
-
-    if (this.workoutService) { // Changed to workoutService
-      this.workoutService.logWorkout(sessionData as any) // Changed to logWorkout
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (session) => {
-            this.recentWorkouts.unshift(session);
-            this.calculateEnhancedStats();
-            console.log('💪 Séance express enregistrée avec succès !');
-          },
-          error: (error) => {
-            console.error('Error logging workout:', error);
-            console.error('❌ Erreur lors de l\'enregistrement');
-          }
-        });
-    } else {
-      // Local update if no service
-      const mockSession: Workout = { ...sessionData, id: Date.now(), userId: sessionData.userId || 1, name: sessionData.name || 'Séance Express', isTemplate: sessionData.isTemplate || false }; // Changed to Workout
-      this.recentWorkouts.unshift(mockSession);
-      this.calculateEnhancedStats();
-      console.log('💪 Séance express enregistrée avec succès !');
-      this.cdr.detectChanges();
-    }
   }
 
   // =============================================

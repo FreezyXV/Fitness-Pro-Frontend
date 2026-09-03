@@ -619,9 +619,22 @@ $breakpoints: (
       z-index: $z-modal;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%);
+      // `!important` : styles.scss neutralise les deplacements au survol et au
+      // clic via `[class*='card']:hover, [class*='card']:active { transform:
+      // none !important }`, et `.filters-card` correspond a ce selecteur. Sur
+      // telephone, toucher le panneau (un menu deroulant, un champ) y laisse
+      // l'etat :hover : le centrage sautait alors, et le panneau partait coin
+      // superieur gauche au centre de l'ecran, deborde a droite et en bas.
+      // Un `!important` non prioritaire perdait contre celui de la regle
+      // globale, quelle que soit la specificite.
+      transform: translate(-50%, -50%) !important;
       width: min(420px, calc(100vw - 2rem));
+      // `dvh` puis repli `vh` : sur iOS, `100vh` ignore la barre d'outils de
+      // Safari, si bien que le bas du panneau (donc « Appliquer ») se
+      // retrouvait masque derriere elle. Les navigateurs sans `dvh` gardent
+      // la premiere declaration.
       max-height: calc(100vh - 4rem);
+      max-height: calc(100dvh - 4rem);
       overflow-y: auto;
       border-radius: $radius-2xl;
       box-shadow: $shadow-xl;
