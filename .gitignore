@@ -436,7 +436,6 @@ archive-*
 
 # PWA Files (if not using)
 /src/manifest.json.local
-/src/sw.js
 
 # Angular Service Worker
 /ngsw-config.json.local

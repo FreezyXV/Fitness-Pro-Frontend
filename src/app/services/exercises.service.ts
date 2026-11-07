@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError, from } from 'rxjs';
-import { map, catchError, tap, finalize, switchMap } from 'rxjs/operators';
+import { map, catchError, tap, finalize, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import {
   Exercise,
   ExerciseFilters,
@@ -9,6 +9,7 @@ import {
   APP_CONFIG,
 } from '@shared';
 import { ApiService } from '@core/services/api.service';
+import { AuthService } from '@app/services/auth.service';
 import { videoUrl, hasHostedMedia } from '@app/utils/exercise-media';
 
 interface CacheEntry<T> {
@@ -32,8 +33,21 @@ export class ExercisesService {
   private cache = new Map<string, CacheEntry<any>>();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
+  private auth = inject(AuthService);
+
   constructor(private api: ApiService) {
-    this.loadFavorites();
+    // Les favoris sont propres a un compte : on ne les demande qu'avec un
+    // token, et on les vide a la deconnexion. Avant, l'appel partait des la
+    // page de connexion, pour rien.
+    this.auth.token$
+      .pipe(map((token) => !!token), distinctUntilChanged())
+      .subscribe((loggedIn) => {
+        if (loggedIn) {
+          this.loadFavorites();
+        } else {
+          this.favoritesSubject.next(new Set());
+        }
+      });
   }
 
   // ==============================================================================
