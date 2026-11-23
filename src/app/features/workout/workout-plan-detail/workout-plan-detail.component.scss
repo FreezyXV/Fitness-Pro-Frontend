@@ -1681,11 +1681,11 @@ padding: 0.25rem;
     .secondary-action-btn,
     .tertiary-action-btn,
     .edit-action-btn {
-      @include enhanced-button(rgba(255, 255, 255, 0.04), $text-secondary, medium);
+      @include enhanced-button(rgba(237, 232, 224, 0.04), $text-secondary, medium);
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(237, 232, 224, 0.07);
         border-color: $border-strong;
         color: $text-primary;
       }
@@ -2210,7 +2210,7 @@ padding: 0.25rem;
   // rapport avec le reste — elle redevient neutre.
   .status-badge {
     color: $text-secondary !important;
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(237, 232, 224, 0.05) !important;
   }
 
   // Les puces occupaient chacune la moitie de la largeur de l'en-tete :
@@ -2344,7 +2344,7 @@ padding: 0.25rem;
         width: 32px !important;
         height: 32px !important;
         font-size: 0.9375rem !important;
-        background: rgba(255, 255, 255, 0.08) !important;
+        background: rgba(237, 232, 224, 0.08) !important;
         color: $text-secondary !important;
         box-shadow: none !important;
       }
@@ -2451,7 +2451,7 @@ padding: 0.25rem;
     width: 30px !important;
     height: 30px !important;
     border-radius: $radius-sm !important;
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(237, 232, 224, 0.06) !important;
     background-image: none !important;
     color: $text-secondary !important;
     font-size: 0.8125rem !important;
@@ -2480,7 +2480,7 @@ padding: 0.25rem;
     .meta-item {
       padding: 0.125rem 0.5rem !important;
       border-radius: $radius-xs !important;
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: rgba(237, 232, 224, 0.04) !important;
       border: 0 !important;
       font-size: 0.75rem !important;
       font-weight: 500 !important;
@@ -2517,7 +2517,7 @@ padding: 0.25rem;
       height: 32px !important;
       flex-shrink: 0;
       border-radius: $radius-sm !important;
-      background: rgba(255, 255, 255, 0.06) !important;
+      background: rgba(237, 232, 224, 0.06) !important;
       color: $text-secondary !important;
 
       svg { width: 16px; height: 16px; }
@@ -2547,6 +2547,6 @@ padding: 0.25rem;
   // jaune…) : cinq aplats vifs choisis par RANG, sans rapport avec ce qu'ils
   // illustrent.
   .overview-item:nth-child(n) .overview-icon {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(237, 232, 224, 0.06) !important;
   }
 }

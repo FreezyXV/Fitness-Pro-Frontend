@@ -247,10 +247,13 @@ export class BMIUtils {
     color: string;
   }> {
     return [
-      { label: 'Sous-poids', range: '< 18.5', color: '#7ecbff' },
-      { label: 'Normal', range: '18.5 - 24.9', color: '#d4ff3d' },
-      { label: 'Surpoids', range: '25 - 29.9', color: '#fdba74' },
-      { label: 'Obésité', range: '≥ 30', color: '#fc8181' },
+      // Couleurs alignees sur les tokens semantiques de variables.scss
+      // ($bmi-underweight/normal/overweight/obese) : ce fichier TypeScript ne
+      // peut pas lire les variables SCSS, les valeurs sont donc dupliquees ici.
+      { label: 'Sous-poids', range: '< 18.5', color: '#5c7a8a' },
+      { label: 'Normal', range: '18.5 - 24.9', color: '#6b8a5a' },
+      { label: 'Surpoids', range: '25 - 29.9', color: '#c9a227' },
+      { label: 'Obésité', range: '≥ 30', color: '#b23a2a' },
     ];
   }
 

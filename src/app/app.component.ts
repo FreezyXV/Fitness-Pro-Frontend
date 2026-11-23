@@ -100,11 +100,14 @@ import { ExercisesService } from './services/exercises.service';
     }
 
     /* La carte de chargement etait BLANCHE, au milieu d'une application
-       entierement sombre : un rectangle eclatant a chaque demarrage. */
+       entierement sombre : un rectangle eclatant a chaque demarrage.
+       Ces styles sont en CSS pur (pas de @use) : Angular ne compile pas les
+       styles inline d'un composant en SCSS. Les valeurs reprennent donc a la
+       main les tokens de variables.scss (palette "Fonte & Craie"). */
     .loading-spinner {
-      background: #141416;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      color: #f4f4f5;
+      background: #1e1c20;
+      border: 1px solid rgba(237, 232, 224, 0.10);
+      color: #ede8e0;
       padding: 2rem;
       border-radius: 12px;
       text-align: center;
@@ -113,8 +116,8 @@ import { ExercisesService } from './services/exercises.service';
     .spinner {
       width: 28px;
       height: 28px;
-      border: 2px solid rgba(255, 255, 255, 0.14);
-      border-top-color: #d4d4d8;
+      border: 2px solid rgba(237, 232, 224, 0.14);
+      border-top-color: #b8b2a8;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       margin: 0 auto 1rem;
@@ -137,16 +140,16 @@ import { ExercisesService } from './services/exercises.service';
       max-width: calc(100vw - 2rem);
       padding: 0.5rem 0.875rem;
 
-      background: #141416;
-      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: #1e1c20;
+      border: 1px solid rgba(237, 232, 224, 0.10);
       border-radius: 10px;
-      color: #d4d4d8;
+      color: #b8b2a8;
       font-size: 0.8125rem;
     }
 
     .connection-status.offline {
-      border-color: rgba(255, 107, 107, 0.4);
-      color: #ff9f9f;
+      border-color: rgba(178, 58, 42, 0.4);
+      color: #e0a99a;
     }
 
     .app-banner {
@@ -164,11 +167,10 @@ import { ExercisesService } from './services/exercises.service';
       width: min(520px, calc(100vw - 2rem));
       padding: 0.75rem 0.75rem 0.75rem 1rem;
 
-      background: #141416;
-      /* La bordure lime a 35 % etait le dernier cerclage fluo de l'app. */
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #1e1c20;
+      border: 1px solid rgba(237, 232, 224, 0.12);
       border-radius: 12px;
-      color: #f4f4f5;
+      color: #ede8e0;
       font-size: 0.875rem;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
     }
@@ -180,9 +182,9 @@ import { ExercisesService } from './services/exercises.service';
       min-height: 40px;
       padding: 0 0.875rem;
       border: 0;
-      border-radius: 8px;
-      background: #d4ff3d;
-      color: #050505;
+      border-radius: 6px;
+      background: #9c4823;
+      color: #f7f3ec;
       font: inherit;
       font-weight: 600;
       cursor: pointer;
@@ -193,16 +195,16 @@ import { ExercisesService } from './services/exercises.service';
       width: 36px;
       height: 36px;
       border: 0;
-      border-radius: 8px;
+      border-radius: 6px;
       background: none;
-      color: #d4d4d8;
+      color: #b8b2a8;
       font-size: 1rem;
       cursor: pointer;
     }
 
     .banner-action:focus-visible,
     .banner-dismiss:focus-visible {
-      outline: 2px solid #d4ff3d;
+      outline: 2px solid #9c4823;
       outline-offset: 2px;
     }
 
@@ -213,13 +215,13 @@ import { ExercisesService } from './services/exercises.service';
       display: grid;
       place-items: center;
       padding: 1.5rem;
-      background: #050505;
+      background: #17161a;
     }
 
     .wake-card {
       width: min(420px, 100%);
       text-align: center;
-      color: #f4f4f5;
+      color: #ede8e0;
     }
 
     .wake-card h2 {
@@ -230,7 +232,7 @@ import { ExercisesService } from './services/exercises.service';
 
     .wake-card p {
       margin: 0;
-      color: #d4d4d8;
+      color: #b8b2a8;
       font-size: 0.9375rem;
       line-height: 1.6;
     }
@@ -238,13 +240,13 @@ import { ExercisesService } from './services/exercises.service';
     .wake-bar {
       height: 4px;
       border-radius: 2px;
-      background: rgba(255, 255, 255, 0.09);
+      background: rgba(237, 232, 224, 0.09);
       overflow: hidden;
     }
 
     .wake-fill {
       height: 100%;
-      background: #d4ff3d;
+      background: #9c4823;
       border-radius: 2px;
       transition: width 1s linear;
     }
@@ -272,7 +274,7 @@ import { ExercisesService } from './services/exercises.service';
       font-weight: 700;
       /* Un compte a rebours est une valeur, pas une action : il ne prend pas
          la couleur d'accent. */
-      color: #f4f4f5 !important;
+      color: #ede8e0 !important;
       font-variant-numeric: tabular-nums;
     }
   `]

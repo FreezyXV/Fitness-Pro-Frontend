@@ -2204,7 +2204,7 @@ padding: 0.25rem;
 // colores de la page, poses sur une information de second plan que la carte
 // « Statistiques du mois » repete deja mot pour mot dans la colonne de droite.
 .calendar-container .period-stats .stat-badge {
-  background: rgba(255, 255, 255, 0.05) !important;
+  background: rgba(237, 232, 224, 0.05) !important;
   background-image: none !important;
   border: $border-width solid $border-color !important;
   border-radius: $radius-md !important;
@@ -2265,7 +2265,7 @@ padding: 0.25rem;
     // Le survol agrandissait la case de 2 % et la faisait passer au-dessus
     // de ses voisines : la grille entiere tremblait au passage de la souris.
     &:hover {
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(237, 232, 224, 0.04);
       transform: none;
       box-shadow: none;
     }

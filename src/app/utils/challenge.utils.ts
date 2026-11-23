@@ -255,10 +255,10 @@ import { DateUtils } from '@shared';
       // sert qu'a un liseré : le fond reste la surface sombre des cartes,
       // comme pour les modales.
       const accents: Record<string, string> = {
-        success: '#4ade80',
-        error: '#f87171',
-        warning: '#fbbf24',
-        info: '#60a5fa',
+        success: '#6b8a5a',
+        error: '#b23a2a',
+        warning: '#c9a227',
+        info: '#5c7a8a',
       };
       const accent = accents[options.type] ?? accents['info'];
 
@@ -274,12 +274,12 @@ import { DateUtils } from '@shared';
         maxWidth: '420px',
         padding: '12px 14px',
         borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.10)',
+        border: '1px solid rgba(237, 232, 224, 0.10)',
         borderLeft: `3px solid ${accent}`,
-        background: '#141416',
-        color: '#f4f4f5',
+        background: '#1e1c20',
+        color: '#ede8e0',
         boxShadow: '0 16px 40px rgba(0, 0, 0, 0.55)',
-        font: '500 0.875rem/1.45 Inter, system-ui, sans-serif',
+        font: '500 0.875rem/1.45 Archivo, system-ui, sans-serif',
         pointerEvents: 'auto',
       } as Partial<CSSStyleDeclaration>);
 

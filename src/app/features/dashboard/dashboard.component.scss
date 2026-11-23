@@ -467,7 +467,7 @@ $forest-gradient: $gradient-forest;
           align-items: center;
           gap: 0.75rem;
           padding: 0.875rem;
-          background: rgba(255, 255, 255, 0.03);
+          background: rgba(237, 232, 224, 0.03);
           border-radius: $radius-lg;
           border: $border-width solid $border-color;
 
@@ -475,7 +475,7 @@ $forest-gradient: $gradient-forest;
             width: 36px;
             height: 36px;
             border-radius: $radius-sm;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(237, 232, 224, 0.06);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -706,7 +706,7 @@ $forest-gradient: $gradient-forest;
 
             .calories-bg {
               fill: none;
-              stroke: rgba(255, 255, 255, 0.08);
+              stroke: rgba(237, 232, 224, 0.08);
               stroke-width: 8;
               stroke-linecap: round;
             }
@@ -753,7 +753,7 @@ $forest-gradient: $gradient-forest;
           // pour une seule donnee. Meme couleur, et piste affinee.
           .progress-bar {
             height: 6px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(237, 232, 224, 0.08);
             border-radius: $radius-pill;
             overflow: hidden;
             margin-bottom: 0.75rem;
@@ -1933,7 +1933,7 @@ $forest-gradient: $gradient-forest;
     display: block !important;
     padding: 1rem 1.25rem !important;
     border-radius: $radius-lg;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(237, 232, 224, 0.03);
     border: $border-width solid $border-color;
     text-align: left !important;
 
@@ -2139,7 +2139,7 @@ $forest-gradient: $gradient-forest;
       gap: 0.625rem;
       padding: 0.75rem !important;
       border-radius: $radius-lg !important;
-      background: rgba(255, 255, 255, 0.03) !important;
+      background: rgba(237, 232, 224, 0.03) !important;
       border: $border-width solid $border-color !important;
       text-align: left !important;
     }

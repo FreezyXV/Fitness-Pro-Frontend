@@ -444,7 +444,7 @@
       height: 100%;
       // Meme correction que .video-container ci-dessus : $gray-800 est une
       // couleur de TEXTE clair, pas une surface.
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(237, 232, 224, 0.04);
       color: $text-muted;
       display: flex;
       align-items: center;
@@ -1027,7 +1027,7 @@
     letter-spacing: 0 !important;
     line-height: 1.4;
     white-space: nowrap;
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(237, 232, 224, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
     box-shadow: none !important;
@@ -1072,7 +1072,7 @@
   }
 
   .no-media-placeholder {
-    background: rgba(255, 255, 255, 0.04) !important;
+    background: rgba(237, 232, 224, 0.04) !important;
 
     .placeholder-icon svg { width: 22px; height: 22px; }
 
@@ -1134,7 +1134,7 @@
       padding: 0.1875rem 0.5rem !important;
       min-height: 0 !important;
       border-radius: $radius-xs !important;
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: rgba(237, 232, 224, 0.04) !important;
       border: 0 !important;
       color: $text-secondary !important;
       font-size: 0.75rem !important;
@@ -1173,7 +1173,7 @@
     // cran en dessous du contour d'accent employe par « Démarrer » et
     // « Rejoindre » sur les deux autres grilles.
     .btn-primary {
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: rgba(237, 232, 224, 0.04) !important;
       border: $border-width solid $border-color !important;
       color: $text-primary !important;
 

@@ -429,7 +429,7 @@ export class CalendarService {
     color: string;
   }> {
     return [
-      { value: 'workout', label: 'Entraînement', icon: '💪', color: '#d4ff3d' },
+      { value: 'workout', label: 'Entraînement', icon: '💪', color: '#9c4823' },
       { value: 'goal', label: 'Objectif', icon: '🎯', color: '#7ecbff' },
       { value: 'rest', label: 'Repos', icon: '😴', color: '#d4d4d8' },
       { value: 'nutrition', label: 'Nutrition', icon: '🍎', color: '#ffd860' },

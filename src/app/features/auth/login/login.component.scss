@@ -34,7 +34,7 @@
 .floating-orb {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(237, 232, 224, 0.15);
   animation: floatOrb 8s ease-in-out infinite;
   pointer-events: none;
 
@@ -105,7 +105,7 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(237, 232, 224, 0.3);
         animation: logoShine 3s ease-in-out infinite;
         transform: rotate(45deg);
       }

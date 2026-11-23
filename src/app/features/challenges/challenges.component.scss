@@ -2057,7 +2057,7 @@ gap: 1rem;
     letter-spacing: 0 !important;
     line-height: 1.4;
     white-space: nowrap;
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(237, 232, 224, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
     box-shadow: none !important;
@@ -2133,7 +2133,7 @@ gap: 1rem;
       padding: 0.25rem 0.5rem !important;
       min-height: 0 !important;
       border-radius: $radius-xs !important;
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: rgba(237, 232, 224, 0.04) !important;
       border: 0 !important;
       color: $text-secondary !important;
       font-size: 0.75rem !important;
@@ -2169,7 +2169,7 @@ gap: 1rem;
     .progress-bar {
       height: 4px !important;
       border-radius: $radius-pill !important;
-      background: rgba(255, 255, 255, 0.09) !important;
+      background: rgba(237, 232, 224, 0.09) !important;
       overflow: hidden;
 
       .progress-fill {

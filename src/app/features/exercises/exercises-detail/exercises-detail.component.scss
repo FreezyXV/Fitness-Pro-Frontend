@@ -867,7 +867,7 @@ padding: 0.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(237, 232, 224, 0.03);
       border-radius: $radius-lg;
       border: $border-width solid $border-color;
 
@@ -1341,7 +1341,7 @@ width: 100%;
         align-items: center;
         justify-content: center;
         font-size: 1.125rem;
-        background: rgba(255, 255, 255, 0.08) !important;
+        background: rgba(237, 232, 224, 0.08) !important;
         color: $text-primary !important;
         box-shadow: none !important;
         flex-shrink: 0;
@@ -2217,7 +2217,7 @@ width: 100%;
         width: 44px !important;
         height: 44px !important;
         border-radius: $radius-md !important;
-        background: rgba(255, 255, 255, 0.08) !important;
+        background: rgba(237, 232, 224, 0.08) !important;
         color: $text-secondary !important;
         box-shadow: none !important;
 
@@ -2245,7 +2245,7 @@ width: 100%;
 :host {
   .instruction-step {
     .step-indicator {
-      background: rgba(255, 255, 255, 0.08) !important;
+      background: rgba(237, 232, 224, 0.08) !important;
       background-image: none !important;
       color: $text-secondary !important;
       box-shadow: none !important;
@@ -2256,7 +2256,7 @@ width: 100%;
     // ailleurs dans l'application, plutot que par un aplat teinte.
     &.active,
     &.current {
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: rgba(237, 232, 224, 0.04) !important;
       background-image: none !important;
       border-color: rgba($primary-color, 0.45) !important;
 
@@ -2268,7 +2268,7 @@ width: 100%;
   }
 
   .muscle-tags .muscle-tag {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(237, 232, 224, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
   }
@@ -2276,7 +2276,7 @@ width: 100%;
   // La pastille des informations laterales : meme menthe, meme absence de
   // sens porte.
   .info-item .info-icon {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(237, 232, 224, 0.06) !important;
     background-image: none !important;
     color: $text-secondary !important;
     box-shadow: none !important;

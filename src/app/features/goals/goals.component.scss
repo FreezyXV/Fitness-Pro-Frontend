@@ -1376,7 +1376,7 @@ padding: 0.5rem;
           font-weight: 400;
 
           &:hover {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(237, 232, 224, 0.06);
             color: $text-primary;
           }
         }
@@ -1443,7 +1443,7 @@ padding: 0.5rem;
         justify-content: center;
 
         &:hover {
-          background: rgba(255, 255, 255, 0.06);
+          background: rgba(237, 232, 224, 0.06);
           color: $text-primary;
         }
       }
@@ -1477,7 +1477,7 @@ padding: 0.5rem;
 
           .details-section {
             padding: 0.875rem 1rem;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(237, 232, 224, 0.03);
             border-radius: $radius-lg;
             border: $border-width solid $border-color;
 
@@ -1533,7 +1533,7 @@ padding: 0.5rem;
                   border-radius: $radius-md;
                   font-weight: 600;
                   font-size: 0.8125rem;
-                  background: rgba(255, 255, 255, 0.05);
+                  background: rgba(237, 232, 224, 0.05);
                   border: $border-width solid $border-color;
 
                   .category-icon,
@@ -1553,7 +1553,7 @@ padding: 0.5rem;
                 // aplat : sans cette regle, le libelle heritait du blanc
                 // par defaut et devenait illisible dessus.
                 .category-display {
-                  background: rgba(255, 255, 255, 0.05) !important;
+                  background: rgba(237, 232, 224, 0.05) !important;
                   color: $text-primary;
                 }
               }
@@ -1564,7 +1564,7 @@ padding: 0.5rem;
               .large-progress-bar {
                 width: 100%;
                 height: 6px;
-                background: rgba(255, 255, 255, 0.09);
+                background: rgba(237, 232, 224, 0.09);
                 border-radius: $radius-pill;
                 overflow: hidden;
                 box-shadow: none;
@@ -1590,7 +1590,7 @@ padding: 0.5rem;
                 .progress-stat {
                   text-align: center;
                   padding: 0.625rem;
-                  background: rgba(255, 255, 255, 0.04);
+                  background: rgba(237, 232, 224, 0.04);
                   border-radius: $radius-md;
                   border: $border-width solid $border-color;
 
@@ -1623,7 +1623,7 @@ padding: 0.5rem;
                 align-items: center;
                 gap: 0.625rem;
                 padding: 0.5rem 0.625rem;
-                background: rgba(255, 255, 255, 0.04);
+                background: rgba(237, 232, 224, 0.04);
                 border-radius: $radius-md;
                 border: $border-width solid $border-color;
 
@@ -1631,7 +1631,7 @@ padding: 0.5rem;
                   font-size: 0.9375rem;
                   width: 30px;
                   height: 30px;
-                  background: rgba(255, 255, 255, 0.06);
+                  background: rgba(237, 232, 224, 0.06);
                   color: $text-secondary;
                   border-radius: 50%;
                   display: flex;
@@ -1675,7 +1675,7 @@ padding: 0.5rem;
               font-size: 0.875rem;
               line-height: 1.6;
               color: $text-secondary;
-              background: rgba(255, 255, 255, 0.03);
+              background: rgba(237, 232, 224, 0.03);
               padding: 0.75rem 0.875rem;
               border-radius: $radius-md;
               border: $border-width solid $border-color;
@@ -1896,7 +1896,7 @@ padding: 0.5rem;
     // Un lime a 5 % sur la surface sombre de la modale donne un olive terne :
     // le bloc etait le seul element teinte du formulaire, pour un simple
     // rappel des deux valeurs saisies juste au-dessus.
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(237, 232, 224, 0.04);
     border-radius: $radius-lg;
     border: $border-width solid $border-color;
     margin-top: 0;
@@ -1939,7 +1939,7 @@ padding: 0.5rem;
       height: 4px;
       // La piste etait un lime a 15 % : la barre paraissait a moitie pleine
       // meme a 0 %.
-      background: rgba(255, 255, 255, 0.09);
+      background: rgba(237, 232, 224, 0.09);
       border-radius: $radius-pill;
       overflow: hidden;
 
@@ -2458,7 +2458,7 @@ padding: 0.5rem;
         justify-content: center;
 
         &:hover {
-          background: rgba(255, 255, 255, 0.06);
+          background: rgba(237, 232, 224, 0.06);
           color: $text-primary;
         }
       }
@@ -4111,7 +4111,7 @@ padding: 0.5rem;
   }
 
   .category-badge {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(237, 232, 224, 0.06) !important;
     border: $border-width solid $border-color;
   }
 
@@ -4125,7 +4125,7 @@ padding: 0.5rem;
   // Convention retenue pour tout fond sombre : fond teinte tres discret,
   // TEXTE dans la teinte claire.
   .status-badge {
-    background: rgba(255, 255, 255, 0.05) !important;
+    background: rgba(237, 232, 224, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
 
@@ -4199,7 +4199,7 @@ padding: 0.5rem;
       padding: 0.25rem 0.5rem !important;
       min-height: 0 !important;
       border-radius: $radius-xs !important;
-      background: rgba(255, 255, 255, 0.04) !important;
+      background: rgba(237, 232, 224, 0.04) !important;
       border: 0 !important;
       color: $text-secondary !important;
       font-size: 0.75rem !important;
@@ -4244,7 +4244,7 @@ padding: 0.5rem;
     .progress-bar {
       height: 4px !important;
       border-radius: $radius-pill !important;
-      background: rgba(255, 255, 255, 0.09) !important;
+      background: rgba(237, 232, 224, 0.09) !important;
       overflow: hidden;
 
       .progress-fill {
@@ -4311,7 +4311,7 @@ padding: 0.5rem;
       color: $text-secondary !important;
 
       &:hover:not(:disabled) {
-        background: rgba(255, 255, 255, 0.05) !important;
+        background: rgba(237, 232, 224, 0.05) !important;
         color: $text-primary !important;
       }
     }

@@ -56,7 +56,7 @@ const EVENT_META: Record<CalendarTask['task_type'], {
   icon: string;
 }> = {
   // `icon` designe une entree du jeu d'icones de l'application (IconName).
-  workout: { color: '#d4ff3d', icon: 'dumbbell' },
+  workout: { color: '#9c4823', icon: 'dumbbell' },
   goal: { color: '#7ecbff', icon: 'target' },
   rest: { color: '#d4d4d8', icon: 'moon' },
   nutrition: { color: '#ffd860', icon: 'utensils' },

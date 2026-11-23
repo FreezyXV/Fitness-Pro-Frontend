@@ -106,7 +106,7 @@ html {
 
   // Bordure NEUTRE. Elle valait rgba(212, 255, 61, .35) : toutes les cartes
   // de l'app etaient cerclees de lime.
-  --border-color: rgba(255, 255, 255, 0.10);
+  --border-color: rgba(237, 232, 224, 0.10);
 
   // Une seule elevation, pour ce qui flotte au-dessus du contenu.
   --shadow-sm: none;
@@ -194,6 +194,18 @@ h1, h2, h3, h4, h5, h6 {
 // Echelle resserree. Les ecarts precedents (2,5rem pour h1, 2rem pour h2)
 // donnaient a chaque en-tete de carte la taille d'un titre de page.
 h1 { font-size: clamp(1.5rem, 3.2vw, 1.875rem); font-weight: 700; }
+
+// Titre de page (classe .page-title, reprise par la plupart des ecrans) :
+// estampille en Big Shoulders Stencil. Reservee a ce seul intitule — un par
+// ecran — plutot qu'a h1 en general, qui porte aussi des titres de contenu
+// (nom d'exercice, de programme...) ou l'alterne rendrait la lecture plus
+// difficile plutot que plus nette.
+.page-title {
+  font-family: $font-family-display;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
 h2 { font-size: clamp(1.25rem, 2.4vw, 1.375rem); font-weight: 650; }
 h3 { font-size: clamp(1rem, 1.8vw, 1.125rem); font-weight: 650; }
 h4 { font-size: 1rem;      font-weight: 600; }
@@ -318,7 +330,7 @@ a {
     border: $border-width solid $border-color;
 
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(237, 232, 224, 0.05);
       color: $text-primary;
       border-color: $border-strong;
     }
@@ -343,7 +355,7 @@ a {
     border-color: transparent;
 
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(237, 232, 224, 0.05);
       color: $text-primary;
       border-color: transparent;
     }
@@ -529,7 +541,7 @@ a {
   line-height: 1.4;
   letter-spacing: 0;
   border: $border-width solid $border-color;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(237, 232, 224, 0.05);
   color: $text-secondary;
 
   @mixin badge-tone($hue, $ink) {
@@ -544,7 +556,7 @@ a {
   &.badge-danger    { @include badge-tone($danger-color,  $error-light);   }
   &.badge-info      { @include badge-tone($info-color,    $info-light);    }
   &.badge-secondary {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(237, 232, 224, 0.06);
     border-color: $border-color;
     color: $text-secondary;
   }
@@ -556,7 +568,7 @@ a {
   // 12px de haut avec un fond lime a 15 % : la barre paraissait a moitie
   // pleine meme a 0 %. Piste neutre et fine, remplissage lime.
   height: 6px;
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(237, 232, 224, 0.09);
   border-radius: $radius-pill;
   overflow: hidden;
 
@@ -640,7 +652,7 @@ a {
       cursor: pointer;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.06);
+        background: rgba(237, 232, 224, 0.06);
         color: $text-primary;
       }
     }
@@ -702,7 +714,7 @@ a {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.14);
+  border: 2px solid rgba(237, 232, 224, 0.14);
   border-top-color: $text-secondary;
   animation: spin 0.7s linear infinite;
 }
@@ -724,11 +736,11 @@ a {
 // Le curseur etait lime : chaque zone defilante ajoutait une barre fluo a
 // l'ecran. Neutre.
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(237, 232, 224, 0.14);
   border-radius: $radius-pill;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.24);
+    background: rgba(237, 232, 224, 0.24);
   }
 }
 
@@ -914,7 +926,7 @@ a {
 // .hover-lift n'ajoute plus de deplacement : les elements ne se soulevent
 // plus au passage de la souris. Conservee pour ses appelants.
 .hover-lift {
-  &:hover { background: rgba(255, 255, 255, 0.04); }
+  &:hover { background: rgba(237, 232, 224, 0.04); }
 }
 
 // Loading States
@@ -1269,7 +1281,7 @@ textarea:disabled {
 .nav-indicator,
 .nav-indicator.new,
 .nav-indicator.active {
-  background: rgba(255, 255, 255, 0.09) !important;
+  background: rgba(237, 232, 224, 0.09) !important;
   color: $text-secondary !important;
   border-color: transparent !important;
 }
@@ -1349,13 +1361,13 @@ textarea:disabled {
 // 200px le long du formulaire, l'element le plus voyant de la fenetre.
 ::-webkit-scrollbar-thumb,
 *::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14) !important;
+  background: rgba(237, 232, 224, 0.14) !important;
   border-radius: $radius-pill;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.24) !important;
+  background: rgba(237, 232, 224, 0.24) !important;
 }
 
 ::-webkit-scrollbar-track,
@@ -1539,13 +1551,13 @@ input[type='range'] {
   &::-webkit-slider-runnable-track {
     height: 4px;
     border-radius: $radius-pill;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(237, 232, 224, 0.12);
   }
 
   &::-moz-range-track {
     height: 4px;
     border-radius: $radius-pill;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(237, 232, 224, 0.12);
   }
 
   &::-webkit-slider-thumb {
@@ -1770,7 +1782,7 @@ textarea {
     font-size: 1rem;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.06) !important;
+      background: rgba(237, 232, 224, 0.06) !important;
       color: $text-primary !important;
     }
   }
@@ -1829,6 +1841,6 @@ textarea {
 [class*='progress']:has(> [class*='fill']),
 [class*='-bar']:has(> [class*='fill']),
 [class*='-track']:has(> [class*='fill']) {
-  background: rgba(255, 255, 255, 0.09) !important;
+  background: rgba(237, 232, 224, 0.09) !important;
   background-image: none !important;
 }
