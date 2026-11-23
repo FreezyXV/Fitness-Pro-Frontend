@@ -189,12 +189,12 @@
       &:hover {
         transform: scale(1.1);
         color: $danger-color;
-        box-shadow: 0 12px 30px rgba(239, 68, 68, 0.2);
+        box-shadow: 0 12px 30px rgba(178, 58, 42, 0.2);
       }
 
       &.active {
         color: $danger-color;
-        background: rgba(239, 68, 68, 0.1);
+        background: rgba(178, 58, 42, 0.1);
         border: $border-width solid $border-color;
         animation: heartbeat 1.5s infinite;
       }
@@ -237,7 +237,7 @@
         border: $border-width solid $border-color;
 
         &:hover {
-          background: rgba(22, 163, 74, 0.1);
+          background: rgba(107, 138, 90, 0.1);
           border: $border-width solid $border-color;
         }
       }
@@ -247,7 +247,7 @@
         border: $border-width solid $border-color;
 
         &:hover {
-          background: rgba(234, 88, 12, 0.1);
+          background: rgba(163, 127, 31, 0.1);
           border: $border-width solid $border-color;
         }
       }
@@ -257,7 +257,7 @@
         border: $border-width solid $border-color;
 
         &:hover {
-          background: rgba(220, 38, 38, 0.1);
+          background: rgba(143, 46, 32, 0.1);
           border: $border-width solid $border-color;
         }
       }
@@ -555,7 +555,7 @@
           border: $border-width solid $border-color;
 
           &:hover {
-            background: rgba(220, 38, 38, 0.1);
+            background: rgba(143, 46, 32, 0.1);
             border: $border-width solid $border-color;
           }
         }
@@ -564,7 +564,7 @@
           border: $border-width solid $border-color;
 
           &:hover {
-            background: rgba(234, 88, 12, 0.1);
+            background: rgba(163, 127, 31, 0.1);
             border: $border-width solid $border-color;
           }
         }
@@ -573,7 +573,7 @@
           border: $border-width solid $border-color;
 
           &:hover {
-            background: rgba(124, 58, 237, 0.1);
+            background: rgba(107, 79, 102, 0.1);
             border: $border-width solid $border-color;
           }
         }
@@ -582,7 +582,7 @@
           border: $border-width solid $border-color;
 
           &:hover {
-            background: rgba(5, 150, 105, 0.1);
+            background: rgba(85, 110, 71, 0.1);
             border: $border-width solid $border-color;
           }
         }
@@ -591,7 +591,7 @@
           border: $border-width solid $border-color;
 
           &:hover {
-            background: rgba(194, 65, 12, 0.1);
+            background: rgba(138, 98, 24, 0.1);
             border: $border-width solid $border-color;
           }
         }
@@ -726,7 +726,7 @@
 
   .progress-indicator {
     padding: 1.5rem 2.5rem;
-    background: rgba(34, 197, 94, 0.08);
+    background: rgba(107, 138, 90, 0.08);
     border-top: $border-width solid $border-color;
     position: relative;
 
@@ -739,15 +739,15 @@
       bottom: 0;
       background: linear-gradient(
         90deg,
-        rgba(34, 197, 94, 0.05) 0%,
-        rgba(34, 197, 94, 0.1) 50%,
-        rgba(34, 197, 94, 0.05) 100%
+        rgba(107, 138, 90, 0.05) 0%,
+        rgba(107, 138, 90, 0.1) 50%,
+        rgba(107, 138, 90, 0.05) 100%
       );
     }
 
     .progress-bar {
       height: 8px;
-      background: rgba(34, 197, 94, 0.2);
+      background: rgba(107, 138, 90, 0.2);
       border-radius: 18px;
       overflow: hidden;
       margin-bottom: 0.75rem;

@@ -867,25 +867,28 @@ $forest-gradient: $gradient-forest;
             position: relative;
             flex-shrink: 0;
 
-            // Couleurs spécifiques pour chaque type d'icône
+            // Couleurs specifiques par type d'icone : aplat + ombre assortie,
+            // a la place des 4 degrades (rouge-rose/bleu/violet-rose/vert
+            // nettement decoratifs) qui etaient deja retombes a une couleur
+            // de fond unique mais gardaient leur halo neon d'origine.
             &.total-workouts {
-              background: $fire-gradient;
-              box-shadow: 0 8px 20px rgba(255, 65, 108, 0.3);
+              background: $primary-color;
+              box-shadow: 0 8px 20px rgba($primary-color, 0.3);
             }
 
             &.total-minutes {
-              background: $ocean-gradient;
+              background: $secondary-color;
               box-shadow: 0 8px 20px rgba($secondary-color, 0.3);
             }
 
             &.current-streak {
-              background: $sunset-gradient;
-              box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+              background: $accent-color;
+              box-shadow: 0 8px 20px rgba($accent-color, 0.3);
             }
 
             &.weekly-workouts {
-              background: $forest-gradient;
-              box-shadow: 0 8px 20px rgba(86, 171, 47, 0.3);
+              background: $success-color;
+              box-shadow: 0 8px 20px rgba($success-color, 0.3);
             }
 
             svg {

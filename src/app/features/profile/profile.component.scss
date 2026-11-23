@@ -321,7 +321,7 @@
           right: -6px;
           width: 28px;
           height: 28px;
-          background: #ffd700;
+          background: $accent-color;
           border-radius: $radius-full;
           display: flex;
           align-items: center;
@@ -451,11 +451,11 @@
 
         // Specific stat card styles
         &.weight-stat .stat-icon {
-          background: #8b5cf6;
+          background: $c-purple-500;
         }
 
         &.height-stat .stat-icon {
-          background: #06b6d4;
+          background: $info-color;
         }
 
         &.bmi-stat .stat-icon {

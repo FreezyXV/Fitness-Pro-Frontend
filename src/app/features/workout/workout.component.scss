@@ -710,7 +710,7 @@ padding: 0.25rem;
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
+          box-shadow: 0 8px 20px rgba(209, 104, 86, 0.4);
         }
       }
     }
@@ -989,10 +989,10 @@ padding: 0.25rem;
         font-size: 1.5rem;
 
         &.completed {
-          filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.5));
+          filter: drop-shadow(0 0 8px rgba(107, 138, 90, 0.5));
         }
         &.in_progress {
-          filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
+          filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.5));
         }
       }
     }

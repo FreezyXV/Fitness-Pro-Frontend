@@ -672,61 +672,59 @@ $white-rgba-30: $glass-white-30;
 // =============================================
 //
 // Ces teintes etaient ecrites en dur dans les composants : 218 occurrences
-// reparties sur 85 nuances, dont 3 seulement correspondaient a une variable
-// existante. Il y avait donc une seconde palette, non documentee, melangeant
-// des valeurs Tailwind et Bootstrap.
-//
-// Les valeurs ci-dessous sont reprises telles quelles : nommer d'abord, sans
-// rien deplacer visuellement. Plusieurs sont des quasi-doublons (trois rouges,
-// deux verts, deux cyans) et gagneraient a etre fusionnes, mais c'est une
-// decision de design, pas un refactor : elle se fait maintenant en un seul
-// endroit.
+// reparties sur 85 nuances Tailwind/Bootstrap, non rattachees au reste de la
+// feuille de style. Nommees une premiere fois sans rien deplacer visuellement
+// (voir l'historique), elles sont a present recolorees sur la palette
+// "Fonte & Craie" : chaque role (danger/succes/avertissement/info) reprend le
+// token de statut correspondant, et les quasi-doublons releves alors (trois
+// rouges, deux verts, deux cyans) fusionnent sur une seule valeur.
+// Le violet n'avait pas d'equivalent dans la palette materiaux : il reprend
+// la teinte d'une sangle ou bande de resistance (accessoire de salle reel),
+// desaturee pour rester dans le registre du reste de l'appli.
 
-// Rouges / danger — trois rouges coexistent pour le meme role
-// Teintes claires des memes couleurs, destinees au TEXTE sur fond sombre.
-// Les nuances 600 a 900 de cette palette sont calibrees pour un fond blanc :
-// utilisees comme couleur de texte ici, elles tombaient entre 2,0:1 et 3,9:1.
-// On garde les deux gammes : la sombre reste correcte pour un aplat.
-$c-red-300-on-dark:     #fc8181;
-$c-orange-300-on-dark:  #fdba74;
-$c-orange-200-on-dark:  #fed7aa;
-$c-emerald-300-on-dark: #6ee7b7;
-$c-green-300-on-dark:   #86efac;
-$c-violet-300-on-dark:  #c4b5fd;
-$c-cyan-300-on-dark:    #67e8f9;
+// Rouges / danger — fusionnes sur $error-color
+// Teintes claires, destinees au TEXTE sur fond sombre (verifiees AA, >=5:1).
+$c-red-300-on-dark:     $error-light;
+$c-orange-300-on-dark:  $warning-light;
+$c-orange-200-on-dark:  #e3d08a;
+$c-emerald-300-on-dark: $success-light;
+$c-green-300-on-dark:   $success-light;
+$c-violet-300-on-dark:  #b3a0b8;
+$c-cyan-300-on-dark:    $info-light;
 
-$c-red-500: #ef4444;
-$c-red-600: #dc2626;
-$c-red-bootstrap: #dc3545;
-$c-red-300: #fc8181;
-$c-red-100: #fed7d7;
+$c-red-500: $error-color;
+$c-red-600: #8f2e20;
+$c-red-bootstrap: $error-color;
+$c-red-300: $error-light;
+$c-red-100: #f0d9d2;
 
-// Verts / succes
-$c-green-500: #22c55e;
-$c-green-600: #16a34a;
-$c-green-bootstrap: #28a745;
+// Verts / succes — fusionnes sur $success-color
+$c-green-500: $success-color;
+$c-green-600: #556e47;
+$c-green-bootstrap: $success-color;
 $c-green-brand: $primary-color;
-$c-emerald-500: #10b981;
-$c-emerald-600: #059669;
+$c-emerald-500: $success-color;
+$c-emerald-600: #556e47;
 
-// Oranges / ambre — avertissements et intensite
-$c-orange-600: #ea580c;
-$c-orange-700: #c2410c;
-$c-orange-900: #7c2d12;
-$c-amber-500: #f59e0b;
-$c-amber-600: #d97706;
-$c-amber-bootstrap: #ffc107;
-$c-amber-soft: #fdcb6e;
-$c-terracotta: #e17055;
+// Oranges / ambre — fusionnes sur $warning-color (meme famille que l'accent,
+// qui reprend deja la teinte ocre des disques de competition)
+$c-orange-600: #a37f1f;
+$c-orange-700: #8a6218;
+$c-orange-900: #5c4712;
+$c-amber-500: $warning-color;
+$c-amber-600: #a37f1f;
+$c-amber-bootstrap: $warning-color;
+$c-amber-soft: $warning-light;
+$c-terracotta: $primary-light;
 
-// Bleus / violets — information et degrades
-$c-blue-500: #3b82f6;
-$c-cyan-600: #0891b2;
-$c-cyan-bootstrap: #17a2b8;
+// Bleus / violets — fusionnes sur $info-color (= $secondary-color, acier)
+$c-blue-500: $info-color;
+$c-cyan-600: #45606c;
+$c-cyan-bootstrap: $info-color;
 $c-indigo-400: $secondary-color;
-$c-purple-500: #764ba2;
-$c-violet-600: #7c3aed;
+$c-purple-500: #6b4f66;
+$c-violet-600: #5a4055;
 
-// Neutres froids
-$c-slate-500: #718096;
-$c-slate-800: #2d3748;
+// Neutres — alignes sur l'echelle de gris chaude plutot que sur un gris froid
+$c-slate-500: $gray-600;
+$c-slate-800: $gray-800;

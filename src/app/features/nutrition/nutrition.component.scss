@@ -422,7 +422,7 @@ padding: 0.25rem;
 
         &:hover {
           transform: translateY(-3px);
-          box-shadow: 0 15px 40px rgba(116, 185, 255, 0.5);
+          box-shadow: 0 15px 40px rgba(130, 160, 174, 0.5);
 
           &::before {
             left: 100%;
@@ -479,7 +479,7 @@ padding: 0.25rem;
         padding: 0.75rem 1rem;
         border-radius: $border-radius-xl;
         font-weight: 700;
-        box-shadow: 0 8px 20px rgba(253, 203, 110, 0.4);
+        box-shadow: 0 8px 20px rgba(217, 188, 92, 0.4);
 
         .level-icon {
           font-size: 1.25rem;
@@ -1521,7 +1521,7 @@ padding: 0.25rem;
       }
 
       &.priority-high {
-        background: rgba(220, 53, 69, 0.1);
+        background: rgba(178, 58, 42, 0.1);
         border: $border-width solid $border-color;
 
         &::before {
@@ -1530,7 +1530,7 @@ padding: 0.25rem;
       }
 
       &.priority-medium {
-        background: rgba(255, 193, 7, 0.1);
+        background: rgba(201, 162, 39, 0.1);
         border: $border-width solid $border-color;
 
         &::before {
@@ -1539,7 +1539,7 @@ padding: 0.25rem;
       }
 
       &.priority-low {
-        background: rgba(23, 162, 184, 0.1);
+        background: rgba(92, 122, 138, 0.1);
         border: $border-width solid $border-color;
 
         &::before {
@@ -1750,7 +1750,7 @@ padding: 0.25rem;
   @extend %card-base;
   background: $water-color;
   color: white;
-  box-shadow: 0 25px 50px rgba(116, 185, 255, 0.3);
+  box-shadow: 0 25px 50px rgba(130, 160, 174, 0.3);
 
   .card-header {
     @include card-header;
@@ -1771,7 +1771,7 @@ padding: 0.25rem;
       position: relative;
       width: 80px;
       height: 120px;
-      background: rgba(71, 130, 247, 0.393);
+      background: rgba(92, 122, 138, 0.393);
       border-radius: $border-radius-2xl;
       overflow: hidden;
       border: $border-width solid $border-color;
@@ -1791,7 +1791,7 @@ padding: 0.25rem;
           left: 50%;
           width: 100%;
           height: 10px;
-          background: rgba(71, 130, 247, 0.249);
+          background: rgba(92, 122, 138, 0.249);
           border-radius: 50%;
           transform: translateX(-50%);
           animation: waterWave 2s ease-in-out infinite;
@@ -2265,17 +2265,17 @@ padding: 0.25rem;
           font-weight: 600;
 
           &.priority-high {
-            background: rgba(220, 53, 69, 0.2);
+            background: rgba(178, 58, 42, 0.2);
             color: $c-red-bootstrap;
           }
 
           &.priority-medium {
-            background: rgba(255, 193, 7, 0.2);
+            background: rgba(201, 162, 39, 0.2);
             color: $c-amber-bootstrap;
           }
 
           &.priority-low {
-            background: rgba(23, 162, 184, 0.2);
+            background: rgba(92, 122, 138, 0.2);
             color: $c-cyan-bootstrap;
           }
         }
@@ -2377,17 +2377,20 @@ padding: 0.25rem;
         box-shadow: $shadow-lg;
       }
 
+      // Convention "rarete d'objet" (jeu video) : gris, bleu, violet, or.
+      // Les quatre teintes reprennent la palette de l'app plutot que des
+      // couleurs Tailwind arbitraires, en gardant l'ordre reconnaissable.
       &.rarity-common {
-        border-color: #95a5a6;
+        border-color: $gray-600;
       }
       &.rarity-rare {
-        border-color: #7ec8f5;
+        border-color: $info-color;
       }
       &.rarity-epic {
-        border-color: #9b59b6;
+        border-color: $c-purple-500;
       }
       &.rarity-legendary {
-        border-color: #ffc85c;
+        border-color: $accent-color;
       }
 
       .achievement-icon {
@@ -2448,7 +2451,7 @@ padding: 0.25rem;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
       &.status-completed {
-        background: rgba(40, 167, 69, 0.15);
+        background: rgba(107, 138, 90, 0.15);
         border-color: $primary-color;
       }
 
@@ -3364,7 +3367,7 @@ padding: 0.25rem;
 
     &.notification-success {
       border-left-color: $c-green-500;
-      background: rgba(34, 197, 94, 0.1);
+      background: rgba(107, 138, 90, 0.1);
 
       .notification-icon {
         color: $c-green-500;
@@ -3372,17 +3375,17 @@ padding: 0.25rem;
     }
 
     &.notification-warning {
-      border-left-color: #eab308;
-      background: rgba(234, 179, 8, 0.1);
+      border-left-color: $warning-color;
+      background: rgba(201, 162, 39, 0.1);
 
       .notification-icon {
-        color: #eab308;
+        color: $warning-color;
       }
     }
 
     &.notification-error {
       border-left-color: $c-red-500;
-      background: rgba(239, 68, 68, 0.1);
+      background: rgba(178, 58, 42, 0.1);
 
       .notification-icon {
         color: $c-red-500;
@@ -3391,7 +3394,7 @@ padding: 0.25rem;
 
     &.notification-info {
       border-left-color: $c-blue-500;
-      background: rgba(59, 130, 246, 0.1);
+      background: rgba(92, 122, 138, 0.1);
 
       .notification-icon {
         color: $c-blue-500;
@@ -3607,7 +3610,7 @@ padding: 0.25rem;
 
               &.filled {
                 opacity: 1;
-                color: #fbbf24;
+                color: $accent-color;
               }
             }
           }
@@ -3653,15 +3656,15 @@ padding: 0.25rem;
           margin-top: 0.5rem;
 
           &.facile {
-            background: rgba(40, 167, 69, 0.2);
+            background: rgba(107, 138, 90, 0.2);
             color: $c-green-bootstrap;
           }
           &.modéré {
-            background: rgba(255, 193, 7, 0.2);
+            background: rgba(201, 162, 39, 0.2);
             color: $c-amber-bootstrap;
           }
           &.difficile {
-            background: rgba(220, 53, 69, 0.2);
+            background: rgba(178, 58, 42, 0.2);
             color: $c-red-bootstrap;
           }
         }
@@ -3777,21 +3780,21 @@ padding: 0.25rem;
               transition: all 0.3s ease;
 
               &.allowed {
-                background: rgba(40, 167, 69, 0.2);
+                background: rgba(107, 138, 90, 0.2);
                 color: $c-green-bootstrap;
 
                 &:hover {
-                  background: rgba(40, 167, 69, 0.3);
+                  background: rgba(107, 138, 90, 0.3);
                   transform: translateY(-2px);
                 }
               }
 
               &.restricted {
-                background: rgba(220, 53, 69, 0.2);
+                background: rgba(178, 58, 42, 0.2);
                 color: $c-red-bootstrap;
 
                 &:hover {
-                  background: rgba(220, 53, 69, 0.3);
+                  background: rgba(178, 58, 42, 0.3);
                   transform: translateY(-2px);
                 }
               }
@@ -4440,17 +4443,17 @@ textarea:focus {
       background: rgba($surface-secondary, 0.2);
 
       &.score-excellent {
-        background: rgba(34, 197, 94, 0.3);
+        background: rgba(107, 138, 90, 0.3);
         border: $border-width solid $border-color;
       }
 
       &.score-good {
-        background: rgba(234, 179, 8, 0.3);
+        background: rgba(201, 162, 39, 0.3);
         border: $border-width solid $border-color;
       }
 
       &.score-needs-improvement {
-        background: rgba(239, 68, 68, 0.3);
+        background: rgba(178, 58, 42, 0.3);
         border: $border-width solid $border-color;
       }
     }
@@ -4515,12 +4518,12 @@ textarea:focus {
       }
 
       &.warning {
-        background: rgba(239, 68, 68, 0.3);
+        background: rgba(178, 58, 42, 0.3);
         color: $on-primary;
         border: $border-width solid $border-color;
 
         &:hover {
-          background: rgba(239, 68, 68, 0.5);
+          background: rgba(178, 58, 42, 0.5);
           transform: translateY(-2px);
         }
       }
@@ -4561,14 +4564,14 @@ textarea:focus {
     }
 
     &.preview {
-      background: rgba(59, 130, 246, 0.2);
+      background: rgba(92, 122, 138, 0.2);
       color: $c-blue-500;
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba(59, 130, 246, 0.3);
+        background: rgba(92, 122, 138, 0.3);
         transform: translateY(-2px) scale(1.1);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        box-shadow: 0 8px 20px rgba(92, 122, 138, 0.4);
       }
     }
 
@@ -4585,26 +4588,26 @@ textarea:focus {
     }
 
     &.adopt {
-      background: rgba(34, 197, 94, 0.2);
+      background: rgba(107, 138, 90, 0.2);
       color: $c-green-500;
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba(34, 197, 94, 0.3);
+        background: rgba(107, 138, 90, 0.3);
         transform: translateY(-2px) scale(1.1);
-        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+        box-shadow: 0 8px 20px rgba(107, 138, 90, 0.4);
       }
     }
 
     &.stop {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(178, 58, 42, 0.2);
       color: $c-red-500;
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba(239, 68, 68, 0.3);
+        background: rgba(178, 58, 42, 0.3);
         transform: translateY(-2px) scale(1.1);
-        box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        box-shadow: 0 8px 20px rgba(178, 58, 42, 0.4);
       }
     }
   }
@@ -4621,7 +4624,7 @@ textarea:focus {
   border-radius: $border-radius-xl;
   font-size: 0.75rem;
   font-weight: 700;
-  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+  box-shadow: 0 4px 15px rgba(107, 138, 90, 0.4);
   letter-spacing: 0.05em;
 }
 
@@ -4870,7 +4873,7 @@ textarea:focus {
       }
 
       .restriction-tag {
-        background: rgba(239, 68, 68, 0.2);
+        background: rgba(178, 58, 42, 0.2);
         color: $c-red-500;
         padding: 0.5rem 1rem;
         border-radius: $border-radius-lg;
@@ -4879,7 +4882,7 @@ textarea:focus {
         transition: all 0.3s ease;
 
         &:hover {
-          background: rgba(239, 68, 68, 0.3);
+          background: rgba(178, 58, 42, 0.3);
           transform: translateY(-1px);
         }
       }
@@ -4957,19 +4960,19 @@ textarea:focus {
       color: $text-secondary;
 
       &:hover {
-        background: rgba(59, 130, 246, 0.2);
+        background: rgba(92, 122, 138, 0.2);
         border-color: $c-blue-500;
         transform: translateY(-2px);
       }
     }
 
     &.warning {
-      background: rgba(239, 68, 68, 0.1);
+      background: rgba(178, 58, 42, 0.1);
       color: $c-red-500;
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba(239, 68, 68, 0.2);
+        background: rgba(178, 58, 42, 0.2);
         border-color: $c-red-500;
         transform: translateY(-2px);
       }
@@ -5079,31 +5082,34 @@ textarea:focus {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
+      // Ces 4 blocs avaient leurs propres teintes en dur (vert/orange/violet
+      // clairs Tailwind), independantes des tokens $calories/protein/carbs/
+      // fat-color deja definis dans variables.scss pour ces memes macros.
       &.calories {
-        border-color: $c-red-100;
+        border-color: rgba($calories-color, 0.35);
         .nutrient-icon {
-          background: $c-red-300;
+          background: $calories-color;
         }
       }
 
       &.protein {
-        border-color: #c6f6d5;
+        border-color: rgba($protein-color, 0.35);
         .nutrient-icon {
-          background: #68d391;
+          background: $protein-color;
         }
       }
 
       &.carbs {
-        border-color: #feebc8;
+        border-color: rgba($carbs-color, 0.35);
         .nutrient-icon {
-          background: #f6ad55;
+          background: $carbs-color;
         }
       }
 
       &.fat {
-        border-color: #e9d8fd;
+        border-color: rgba($fat-color, 0.35);
         .nutrient-icon {
-          background: #b794f6;
+          background: $fat-color;
         }
       }
 
@@ -5140,9 +5146,12 @@ textarea:focus {
     }
   }
 
+  // Ce bloc et les trois suivants (.food-restrictions, .preparation-tips)
+  // avaient un fond quasi blanc et du texte gris fonce Tailwind : des cartes
+  // pensees pour un theme clair, posees telles quelles dans une app sombre.
   .food-description, .health-benefits {
-    background: #f7fafc;
-    border-radius: 18px;
+    background: $surface-secondary;
+    border-radius: $radius-lg;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
 
@@ -5150,13 +5159,13 @@ textarea:focus {
       margin: 0 0 1rem 0;
       font-size: 1.1rem;
       font-weight: 600;
-      color: $text-muted;
+      color: $text-primary;
     }
 
     p {
       margin: 0;
       line-height: 1.6;
-      color: #4a5568;
+      color: $text-secondary;
     }
   }
 
@@ -5204,7 +5213,7 @@ textarea:focus {
         margin-bottom: 1rem;
         font-size: 1rem;
         font-weight: 600;
-        color: #4a5568;
+        color: $text-secondary;
 
         .category-icon {
           font-size: 1.2rem;
@@ -5229,7 +5238,7 @@ textarea:focus {
 
             .nutrient-name {
               font-weight: 500;
-              color: white;
+              color: $text-primary;
               font-size: 0.9rem;
             }
           }
@@ -5243,7 +5252,7 @@ textarea:focus {
 
             .nutrient-value {
               font-weight: 700;
-              color: white;
+              color: $text-primary;
               font-size: 0.9rem;
             }
 
@@ -5260,29 +5269,29 @@ textarea:focus {
             left: 0;
             right: 0;
             height: 3px;
-            background-color: #e2e8f0;
-            border-radius: 18px;
+            background-color: rgba(237, 232, 224, 0.09);
+            border-radius: $radius-pill;
             overflow: hidden;
 
             .nutrient-fill {
               height: 100%;
-              border-radius: 18px;
+              border-radius: $radius-pill;
               transition: width 0.6s ease;
 
               &.calories {
-                background: $c-red-300;
+                background: $calories-color;
               }
 
               &.protéines {
-                background: #68d391;
+                background: $protein-color;
               }
 
               &.glucides {
-                background: #f6ad55;
+                background: $carbs-color;
               }
 
               &.lipides {
-                background: #b794f6;
+                background: $fat-color;
               }
             }
           }
@@ -5293,9 +5302,9 @@ textarea:focus {
 }
 
 .food-restrictions {
-  background: #fef5e7;
+  background: $surface-secondary;
   border: $border-width solid $border-color;
-  border-radius: 18px;
+  border-radius: $radius-lg;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 
@@ -5303,7 +5312,7 @@ textarea:focus {
     margin: 0 0 1rem 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #c05621;
+    color: $text-primary;
   }
 
   .allergens-list {
@@ -5312,18 +5321,18 @@ textarea:focus {
     gap: 0.5rem;
 
     .allergen-tag {
-      background: $c-red-100;
-      color: #c53030;
+      background: rgba($error-color, 0.14);
+      color: $error-light;
       padding: 0.4rem 0.8rem;
-      border-radius: 18px;
+      border-radius: $radius-pill;
       font-size: 0.8rem;
       font-weight: 600;
-      border: $border-width solid $border-color;
+      border: $border-width solid rgba($error-color, 0.3);
 
       &.warning {
-        background: $c-red-100;
-        color: #c53030;
-        border-color: $c-red-300;
+        background: rgba($error-color, 0.14);
+        color: $error-light;
+        border-color: rgba($error-color, 0.4);
       }
     }
   }
@@ -5383,9 +5392,9 @@ textarea:focus {
 }
 
 .preparation-tips {
-  background: #f0fff4;
+  background: $surface-secondary;
   border: $border-width solid $border-color;
-  border-radius: 18px;
+  border-radius: $radius-lg;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
 
@@ -5393,7 +5402,7 @@ textarea:focus {
     margin: 0 0 1rem 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #22543d;
+    color: $text-primary;
   }
 
   .tips-list {
@@ -5402,7 +5411,7 @@ textarea:focus {
 
     li {
       margin-bottom: 0.5rem;
-      color: #2f855a;
+      color: $success-light;
       font-weight: 500;
       line-height: 1.5;
 

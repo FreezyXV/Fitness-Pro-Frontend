@@ -531,12 +531,12 @@ padding: 0.5rem;
 
   &.ending-soon {
     border: $border-width solid $border-color;
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+    box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2);
 
     &::before {
       background: radial-gradient(
         circle,
-        rgba(245, 158, 11, 0.1) 2px,
+        rgba(201, 162, 39, 0.1) 2px,
         transparent 2px
       );
     }
@@ -560,7 +560,7 @@ padding: 0.5rem;
     &::before {
       background: radial-gradient(
         circle,
-        rgba(34, 197, 94, 0.1) 2px,
+        rgba(107, 138, 90, 0.1) 2px,
         transparent 2px
       );
     }
@@ -572,7 +572,7 @@ padding: 0.5rem;
     &::before {
       background: radial-gradient(
         circle,
-        rgba(245, 158, 11, 0.1) 2px,
+        rgba(201, 162, 39, 0.1) 2px,
         transparent 2px
       );
     }
@@ -596,7 +596,7 @@ padding: 0.5rem;
     &::before {
       background: radial-gradient(
         circle,
-        rgba(200, 200, 200, 0.1) 2px,
+        rgba(147, 141, 130, 0.1) 2px,
         transparent 2px
       );
     }
@@ -704,34 +704,34 @@ padding: 0.5rem;
 
         &.difficulty {
           &[data-level="easy"] {
-            background: rgba(34, 197, 94, 0.9);
+            background: rgba(107, 138, 90, 0.9);
             color: $on-primary;
-            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+            box-shadow: 0 4px 15px rgba(107, 138, 90, 0.3);
           }
 
           &[data-level="medium"] {
-            background: rgba(245, 158, 11, 0.9);
+            background: rgba(201, 162, 39, 0.9);
             color: $on-primary;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
           }
 
           &[data-level="hard"] {
-            background: rgba(239, 68, 68, 0.9);
+            background: rgba(178, 58, 42, 0.9);
             color: $on-primary;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 4px 15px rgba(178, 58, 42, 0.3);
           }
         }
 
         &.active {
-          background: rgba(34, 197, 94, 0.9);
+          background: rgba(107, 138, 90, 0.9);
           color: $on-primary;
-          box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+          box-shadow: 0 4px 15px rgba(107, 138, 90, 0.3);
         }
 
         &.warning {
-          background: rgba(245, 158, 11, 0.9);
+          background: rgba(201, 162, 39, 0.9);
           color: $on-primary;
-          box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+          box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
         }
 
         &:hover {
@@ -988,17 +988,17 @@ padding: 0.5rem;
         &.btn-warning {
           background: $c-amber-500;
           color: $on-primary;
-          box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+          box-shadow: 0 10px 30px rgba(201, 162, 39, 0.4);
 
           &:hover:not(:disabled) {
-            box-shadow: 0 20px 50px rgba(245, 158, 11, 0.5);
+            box-shadow: 0 20px 50px rgba(201, 162, 39, 0.5);
           }
         }
 
         &.btn-completed {
           background: $c-emerald-500;
           color: $on-primary;
-          box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+          box-shadow: 0 10px 30px rgba(107, 138, 90, 0.4);
           opacity: 0.8;
           cursor: not-allowed;
         }
@@ -1055,7 +1055,7 @@ padding: 0.5rem;
       align-items: center;
       gap: 1rem;
       padding: 1rem;
-      background: rgba(59, 130, 246, 0.1);
+      background: rgba(92, 122, 138, 0.1);
       border: $border-width solid $border-color;
       border-radius: $border-radius-xl;
       margin-top: 1rem;
@@ -1072,7 +1072,7 @@ padding: 0.5rem;
         flex: 1;
 
         span {
-          color: rgba(59, 130, 246, 0.9);
+          color: rgba(92, 122, 138, 0.9);
           font-weight: 600;
           font-size: 0.95rem;
         }
@@ -1091,7 +1091,7 @@ padding: 0.5rem;
 
           &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 8px 25px rgba(92, 122, 138, 0.4);
           }
         }
       }
@@ -1307,7 +1307,7 @@ padding: 0.5rem;
       .modal-header {
         background: linear-gradient(
           135deg,
-          rgba(239, 68, 68, 0.1) 0%,
+          rgba(178, 58, 42, 0.1) 0%,
           rgba($surface-secondary, 0.05) 100%
         );
         border-bottom: $border-width solid $border-color;
@@ -1324,7 +1324,7 @@ padding: 0.5rem;
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(239, 68, 68, 0.5),
+            rgba(178, 58, 42, 0.5),
             transparent
           );
         }
@@ -1829,8 +1829,8 @@ padding: 0.5rem;
 
       &.is-invalid {
         border-color: $danger-color;
-        box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
-        background: rgba(239, 68, 68, 0.05);
+        box-shadow: 0 0 0 4px rgba(178, 58, 42, 0.15);
+        background: rgba(178, 58, 42, 0.05);
       }
 
       &::placeholder {
@@ -1863,7 +1863,7 @@ padding: 0.5rem;
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem 0.75rem;
-      background: rgba(239, 68, 68, 0.1);
+      background: rgba(178, 58, 42, 0.1);
       border-radius: $border-radius;
       border: $border-width solid $border-color;
       animation: error-slide 0.3s ease-out;
@@ -2051,10 +2051,10 @@ padding: 0.5rem;
   &.btn-warning {
     background: $c-amber-500;
     color: $on-primary;
-    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 8px 20px rgba(201, 162, 39, 0.3);
 
     &:hover:not(:disabled) {
-      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.4);
+      box-shadow: 0 12px 30px rgba(201, 162, 39, 0.4);
     }
   }
 
@@ -2895,8 +2895,8 @@ padding: 0.5rem;
 }
 
 .modal-danger .modal-header {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: rgba($error-color, 0.14);
+  color: $error-light;
 }
 
 .modal-danger .btn-danger {
@@ -3045,12 +3045,12 @@ padding: 0.5rem;
 
       &.ending-soon {
         border: $border-width solid $border-color;
-        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+        box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.2);
 
         &::before {
           background: radial-gradient(
             circle,
-            rgba(245, 158, 11, 0.1) 2px,
+            rgba(201, 162, 39, 0.1) 2px,
             transparent 2px
           );
         }
@@ -3074,7 +3074,7 @@ padding: 0.5rem;
         &::before {
           background: radial-gradient(
             circle,
-            rgba(34, 197, 94, 0.1) 2px,
+            rgba(107, 138, 90, 0.1) 2px,
             transparent 2px
           );
         }
@@ -3086,7 +3086,7 @@ padding: 0.5rem;
         &::before {
           background: radial-gradient(
             circle,
-            rgba(245, 158, 11, 0.1) 2px,
+            rgba(201, 162, 39, 0.1) 2px,
             transparent 2px
           );
         }
@@ -3110,7 +3110,7 @@ padding: 0.5rem;
         &::before {
           background: radial-gradient(
             circle,
-            rgba(200, 200, 200, 0.1) 2px,
+            rgba(147, 141, 130, 0.1) 2px,
             transparent 2px
           );
         }
@@ -3218,34 +3218,34 @@ padding: 0.5rem;
 
             &.difficulty {
               &[data-level="easy"] {
-                background: rgba(34, 197, 94, 0.9);
+                background: rgba(107, 138, 90, 0.9);
                 color: $on-primary;
-                box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+                box-shadow: 0 4px 15px rgba(107, 138, 90, 0.3);
               }
 
               &[data-level="medium"] {
-                background: rgba(245, 158, 11, 0.9);
+                background: rgba(201, 162, 39, 0.9);
                 color: $on-primary;
-                box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+                box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
               }
 
               &[data-level="hard"] {
-                background: rgba(239, 68, 68, 0.9);
+                background: rgba(178, 58, 42, 0.9);
                 color: $on-primary;
-                box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+                box-shadow: 0 4px 15px rgba(178, 58, 42, 0.3);
               }
             }
 
             &.active {
-              background: rgba(34, 197, 94, 0.9);
+              background: rgba(107, 138, 90, 0.9);
               color: $on-primary;
-              box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+              box-shadow: 0 4px 15px rgba(107, 138, 90, 0.3);
             }
 
             &.warning {
-              background: rgba(245, 158, 11, 0.9);
+              background: rgba(201, 162, 39, 0.9);
               color: $on-primary;
-              box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+              box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
             }
 
             &:hover {
@@ -3503,17 +3503,17 @@ padding: 0.5rem;
             &.btn-warning {
               background: $c-amber-500;
               color: $on-primary;
-              box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+              box-shadow: 0 10px 30px rgba(201, 162, 39, 0.4);
 
               &:hover:not(:disabled) {
-                box-shadow: 0 20px 50px rgba(245, 158, 11, 0.5);
+                box-shadow: 0 20px 50px rgba(201, 162, 39, 0.5);
               }
             }
 
             &.btn-completed {
               background: $c-emerald-500;
               color: $on-primary;
-              box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+              box-shadow: 0 10px 30px rgba(107, 138, 90, 0.4);
               opacity: 0.8;
               cursor: not-allowed;
             }
@@ -4118,7 +4118,7 @@ padding: 0.5rem;
   // Puces d'etat.
   //
   // Elles etaient des aplats pleins tres satures — « Actif » en
-  // rgba(34, 197, 94, .9) avec une encre noire, « Moyenne » en ambre plein —
+  // rgba(107, 138, 90, .9) avec une encre noire, « Moyenne » en ambre plein —
   // ce qui donnait a un simple libelle de statut plus de poids visuel que le
   // titre de l'objectif et que son bouton d'action.
   //
