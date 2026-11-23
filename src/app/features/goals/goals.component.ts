@@ -755,7 +755,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
           1
         ).toISOString(),
         progress_percentage: 80,
-        icon: '🏃‍♂️',
+        icon: 'trending',
         notes: 'Alterner entre courses lentes et fractionnés.',
         lastUpdateDate: new Date().toISOString(),
       },
@@ -777,7 +777,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
           Date.now() - 60 * 24 * 60 * 60 * 1000
         ).toISOString(),
         progress_percentage: 100,
-        icon: '🧘‍♀️',
+        icon: 'moon',
         notes: 'Sessions de 10-15 minutes chaque matin.',
         lastUpdateDate: new Date().toISOString(),
       },
@@ -799,7 +799,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
           Date.now() - 25 * 24 * 60 * 60 * 1000
         ).toISOString(),
         progress_percentage: 83,
-        icon: '👟',
+        icon: 'trending',
         notes: 'Utiliser podomètre pour tracking quotidien.',
         lastUpdateDate: new Date().toISOString(),
       },

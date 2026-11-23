@@ -772,7 +772,7 @@ export class NutritionService {
         scientificBasis:
           'Répartition optimale des protéines sur la journée pour la synthèse musculaire',
         isPersonalized: true,
-        icon: '💪',
+        icon: 'dumbbell',
         timestamp: new Date(),
       });
     }
@@ -800,7 +800,7 @@ export class NutritionService {
         scientificBasis:
           "Les glucides pré-exercice améliorent l'endurance de 15-20%",
         isPersonalized: true,
-        icon: '⚡',
+        icon: 'bolt',
         timestamp: new Date(),
       });
     }

@@ -85,21 +85,21 @@ export class CreateWorkoutComponent
 
   // Configuration
   readonly workoutCategories = [
-    { value: 'strength', label: 'Force', icon: '💪' },
-    { value: 'cardio', label: 'Cardio', icon: '❤️' },
-    { value: 'flexibility', label: 'Flexibilité', icon: '🧘' },
-    { value: 'hiit', label: 'HIIT', icon: '🔥' },
+    { value: 'strength', label: 'Force', icon: 'dumbbell' },
+    { value: 'cardio', label: 'Cardio', icon: 'flame' },
+    { value: 'flexibility', label: 'Flexibilité', icon: 'refresh' },
+    { value: 'hiit', label: 'HIIT', icon: 'bolt' },
   ];
 
   readonly difficultyLevels = [
-    { value: 'beginner', label: 'Débutant', icon: '🟢', color: '#4CAF50' },
+    { value: 'beginner', label: 'Débutant', icon: 'circle', color: '#6b8a5a' },
     {
       value: 'intermediate',
       label: 'Intermédiaire',
-      icon: '🟡',
-      color: '#fdba74',
+      icon: 'bolt',
+      color: '#c9a227',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
+    { value: 'advanced', label: 'Avancé', icon: 'flame', color: '#b23a2a' },
   ];
 
   readonly bodyParts = [

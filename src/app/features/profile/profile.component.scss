@@ -430,22 +430,16 @@
           cursor: pointer;
         }
 
-        &::before {
-          @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.8s ease, -12deg);
-        }
+        // Les 4 tuiles (poids/taille/IMC/completion) relevaient toutes la
+        // meme animation au survol, alors que seule celle de l'IMC ouvre
+        // l'onglet Sante (clic reel) — les trois autres sont de simples
+        // valeurs affichees. Seule la tuile cliquable reagit desormais.
+        &.bmi-stat {
+          cursor: pointer;
 
-        &:hover {
-          transform: translateY(-4px);
-          box-shadow: $shadow-xl;
-          background: rgba($surface-secondary, 0.98);
-
-          &::before {
-            left: 100%;
-          }
-
-          &.clickable {
-            border: $border-width solid $border-color;
-            transform: translateY(-6px) scale(1.01);
+          &:hover {
+            border-color: $primary-color;
+            background: rgba($surface-secondary, 0.98);
           }
         }
 
@@ -1107,7 +1101,7 @@
         $bmi-obese 75%,
         $bmi-obese 100%
       );
-      border-radius: 18px;
+      border-radius: $radius-pill;
       margin-bottom: $spacing-lg;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -1199,15 +1193,10 @@
       margin-bottom: 0;
     }
 
+    // Une ligne de reglage (toggle a l'interieur) n'est pas elle-meme un
+    // bouton : elle n'a plus besoin de se soulever au survol.
     &.enhanced {
       gap: $spacing-xl;
-
-      &:hover {
-        background: rgba($surface-secondary, 0.98);
-        transform: translateY(-4px);
-        box-shadow: $shadow-xl;
-        border: $border-width solid $border-color;
-      }
     }
 
     .preference-icon {
@@ -1273,7 +1262,7 @@
         bottom: 0;
         background: rgba($gray-400, 0.4);
         transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 18px;
+        border-radius: $radius-pill;
         box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 
         &.enhanced {
@@ -1336,7 +1325,7 @@
   &.enhanced {
     .strength-bar {
       height: 8px;
-      border-radius: 18px;
+      border-radius: $radius-pill;
       box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
@@ -1357,14 +1346,14 @@
     width: 100%;
     height: 6px;
     background: rgba($gray-300, 0.6);
-    border-radius: 18px;
+    border-radius: $radius-pill;
     overflow: hidden;
     margin-bottom: $spacing-sm;
 
     .strength-fill {
       height: 100%;
       transition: all 0.3s ease;
-      border-radius: 18px;
+      border-radius: $radius-pill;
     }
   }
 
@@ -1524,14 +1513,14 @@
         width: 100%;
         height: 8px;
         background: rgba($gray-300, 0.6);
-        border-radius: 18px;
+        border-radius: $radius-pill;
         overflow: hidden;
 
         .progress-fill {
           height: 100%;
           background: $success-gradient;
           transition: width 0.3s ease;
-          border-radius: 18px;
+          border-radius: $radius-pill;
         }
       }
     }
@@ -1813,7 +1802,7 @@
   margin: 1.5rem 0;
   padding: 1.25rem;
   border: $border-width solid $border-color;
-  border-radius: 18px;
+  border-radius: $radius-lg;
   background: $surface-secondary;
 }
 
@@ -1884,7 +1873,7 @@
   margin-right: 0.25rem;
 
   border: $border-width solid $border-color;
-  border-radius: 18px;
+  border-radius: $radius-pill;
   cursor: pointer;
 
   font-size: 0.75rem;
@@ -1928,7 +1917,7 @@
     min-height: 44px;
     padding: 0 0.75rem;
     border: $border-width solid $border-color;
-    border-radius: 18px;
+    border-radius: $radius-lg;
     background: $bg-primary;
     color: $text-primary;
     font: inherit;

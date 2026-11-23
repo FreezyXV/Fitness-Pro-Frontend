@@ -159,7 +159,7 @@ padding: 0.25rem;
 
   .hero-content {
     @include glass-morphism(0.95);
-    border-radius: 18px;
+    border-radius: $radius-2xl;
     padding: 1rem 1.25rem !important;
     box-shadow: $shadow-2xl;
     position: relative;
@@ -167,22 +167,22 @@ padding: 0.25rem;
 
     @include respond-below(xl) {
       padding: $space-8 $space-10;
-      border-radius: 18px;
+      border-radius: $radius-2xl;
     }
 
     @include respond-below(lg) {
       padding: $space-6 $space-8;
-      border-radius: 18px;
+      border-radius: $radius-2xl;
     }
 
     @include respond-below(md) {
       padding: $space-5 $space-6;
-      border-radius: 18px;
+      border-radius: $radius-2xl;
     }
 
     @include respond-below(sm) {
       padding: $space-4 $space-5;
-      border-radius: 18px;
+      border-radius: $radius-2xl;
     }
 
     &::before {
@@ -286,7 +286,7 @@ padding: 0.25rem;
 
 .nav-card {
   @include glass-morphism(0.9);
-  border-radius: 18px;
+  border-radius: $radius-lg;
   padding: $space-8;
   margin-bottom: $block-spacing;
   box-shadow: $shadow-xl;
@@ -300,14 +300,14 @@ padding: 0.25rem;
     padding: $space-6;
     margin-bottom: $space-6;
     gap: $space-6;
-    border-radius: 18px;
+    border-radius: $radius-lg;
   }
 
   @include respond-below(lg) {
     padding: $space-5;
     margin-bottom: $space-5;
     gap: $space-5;
-    border-radius: 18px;
+    border-radius: $radius-lg;
   }
 
   @include respond-below(md) {
@@ -321,7 +321,7 @@ padding: 0.25rem;
     padding: $space-3;
     margin-bottom: $space-3;
     gap: $space-3;
-    border-radius: 18px;
+    border-radius: $radius-lg;
   }
 
   .nav-controls {
@@ -514,10 +514,10 @@ padding: 0.25rem;
     overflow: hidden;
     box-shadow: $shadow-xl;
     min-height: 600px;
-    border-radius: 18px;
+    border-radius: $radius-2xl;
 
     @include respond-below(md) {
-      border-radius: 18px;
+      border-radius: $radius-2xl;
     }
 
     &.month-view {
@@ -1072,7 +1072,7 @@ padding: 0.25rem;
         display: flex;
         align-items: center;
         gap: $space-3;
-        @include card-hover;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         border: $border-width solid $border-color;
 
         &.workout {
@@ -1146,7 +1146,7 @@ padding: 0.25rem;
           margin-bottom: $space-4;
           display: flex;
           gap: $space-3;
-          @include card-hover;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           border: $border-width solid $border-color;
 
           &.completed {
@@ -1162,7 +1162,7 @@ padding: 0.25rem;
           .event-indicator {
             width: 8px;
             min-height: 60px;
-            border-radius: 18px;
+            border-radius: $radius-pill;
             box-shadow: $shadow-xs;
           }
 
@@ -1612,7 +1612,7 @@ padding: 0.25rem;
   }
 
   .calendar-view {
-    border-radius: 18px;
+    border-radius: $radius-2xl;
     min-height: auto;
 
     // Mobile-optimized Month View
@@ -1996,7 +1996,7 @@ padding: 0.25rem;
 .calendar-container {
   .hero-section {
 
-    border-radius: 18px;
+    border-radius: $radius-2xl;
     margin: 0;
 
     background: none;

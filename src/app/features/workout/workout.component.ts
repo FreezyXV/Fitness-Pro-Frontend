@@ -81,26 +81,26 @@ export class WorkoutComponent implements OnInit, OnDestroy {
 
   // Configuration
   readonly categories = [
-    { value: 'strength', label: 'Force', icon: '💪', color: '#4CAF50' },
-    { value: 'cardio', label: 'Cardio', icon: '❤️', color: '#FF5722' },
-    { value: 'hiit', label: 'HIIT', icon: '🔥', color: '#fdba74' },
+    { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#5c7a8a' },
+    { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#b2574a' },
+    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9c4823' },
     {
       value: 'flexibility',
       label: 'Flexibilité',
-      icon: '🧘',
-      color: '#c4b5fd',
+      icon: 'refresh',
+      color: '#8a7aa8',
     },
   ];
 
   readonly difficultyLevels = [
-    { value: 'beginner', label: 'Débutant', icon: '🟢', color: '#4CAF50' },
+    { value: 'beginner', label: 'Débutant', icon: 'circle', color: '#6b8a5a' },
     {
       value: 'intermediate',
       label: 'Intermédiaire',
-      icon: '🟡',
-      color: '#fdba74',
+      icon: 'bolt',
+      color: '#c9a227',
     },
-    { value: 'advanced', label: 'Avancé', icon: '🔴', color: '#fc8181' },
+    { value: 'advanced', label: 'Avancé', icon: 'flame', color: '#b23a2a' },
   ];
 
   readonly sortOptions = [

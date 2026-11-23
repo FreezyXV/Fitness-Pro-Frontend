@@ -45,48 +45,56 @@ export const APP_CONFIG = {
   // rond rouge n'est de surcroit pas une information lisible : il ne dit ni
   // « avance », ni pourquoi, et disparait pour qui ne distingue pas le rouge
   // du vert.
+  //
+  // Les couleurs elles-memes etaient restees la palette par defaut de
+  // Chart.js (#ff6384, #36a2eb, #ffce56, #4bc0c0, #9966ff...), un degrade
+  // arc-en-ciel sans rapport avec la zone ou la discipline qu'il distingue.
+  // Elles reprennent desormais les 5 teintes "materiaux" deja definies dans
+  // variables.scss pour cet usage ($strength/$cardio/$flexibility-color...),
+  // et la difficulte suit une echelle a 3 niveaux (succes -> alerte ->
+  // danger) plutot que trois teintes arbitraires.
   EXERCISE_CONFIG: {
     BODY_PARTS: [
-      { value: 'chest', label: 'Poitrine', icon: 'dumbbell', color: '#ff6384' },
-      { value: 'back', label: 'Dos', icon: 'dumbbell', color: '#36a2eb' },
-      { value: 'arms', label: 'Bras', icon: 'dumbbell', color: '#ffce56' },
-      { value: 'legs', label: 'Jambes', icon: 'dumbbell', color: '#4bc0c0' },
-      { value: 'shoulders', label: 'Épaules', icon: 'dumbbell', color: '#9966ff' },
-      { value: 'abs', label: 'Abdominaux', icon: 'flame', color: '#ff9f40' },
+      { value: 'chest', label: 'Poitrine', icon: 'dumbbell', color: '#5c7a8a' },
+      { value: 'back', label: 'Dos', icon: 'dumbbell', color: '#5c7a8a' },
+      { value: 'arms', label: 'Bras', icon: 'dumbbell', color: '#5c7a8a' },
+      { value: 'legs', label: 'Jambes', icon: 'dumbbell', color: '#5c7a8a' },
+      { value: 'shoulders', label: 'Épaules', icon: 'dumbbell', color: '#5c7a8a' },
+      { value: 'abs', label: 'Abdominaux', icon: 'flame', color: '#b2574a' },
       // Le catalogue renvoie indifferemment `abs` ou `core` pour la meme
       // zone : sans cette entree, la puce affichait « core » en clair.
-      { value: 'core', label: 'Abdominaux', icon: 'flame', color: '#ff9f40' },
-      { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#ff6384' },
-      { value: 'mobility', label: 'Mobilité', icon: 'refresh', color: '#c9cbcf' },
+      { value: 'core', label: 'Abdominaux', icon: 'flame', color: '#b2574a' },
+      { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#b2574a' },
+      { value: 'mobility', label: 'Mobilité', icon: 'refresh', color: '#8a7aa8' },
       {
         value: 'flexibility',
         label: 'Flexibilité',
         icon: 'refresh',
-        color: '#a29bfe',
+        color: '#8a7aa8',
       },
     ],
     DIFFICULTIES: [
-      { value: 'beginner', label: 'Débutant', icon: 'circle', color: '#4caf50' },
+      { value: 'beginner', label: 'Débutant', icon: 'circle', color: '#6b8a5a' },
       {
         value: 'intermediate',
         label: 'Intermédiaire',
         icon: 'bolt',
-        color: '#fdba74',
+        color: '#c9a227',
       },
-      { value: 'advanced', label: 'Avancé', icon: 'flame', color: '#fc8181' },
+      { value: 'advanced', label: 'Avancé', icon: 'flame', color: '#b23a2a' },
     ],
     CATEGORIES: [
-      { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#ff6384' },
-      { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#36a2eb' },
+      { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#5c7a8a' },
+      { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#b2574a' },
       {
         value: 'flexibility',
         label: 'Flexibilité',
         icon: 'refresh',
-        color: '#ffce56',
+        color: '#8a7aa8',
       },
-      { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9966ff' },
-      { value: 'yoga', label: 'Yoga', icon: 'moon', color: '#4bc0c0' },
-      { value: 'mobility', label: 'Mobilité', icon: 'refresh', color: '#74b9ff' },
+      { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9c4823' },
+      { value: 'yoga', label: 'Yoga', icon: 'moon', color: '#8a7aa8' },
+      { value: 'mobility', label: 'Mobilité', icon: 'refresh', color: '#8a7aa8' },
     ],
     DURATIONS: [
       { value: 'short', label: '≤ 15 min', min: 5, max: 15 },
@@ -97,21 +105,21 @@ export const APP_CONFIG = {
 
   // Workout Categories - ICÔNES CORRIGÉES
   WORKOUT_CATEGORIES: [
-    { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#ff6384' },
-    { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#36a2eb' },
+    { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#5c7a8a' },
+    { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#b2574a' },
     {
       value: 'flexibility',
       label: 'Flexibilité',
       icon: 'refresh',
-      color: '#ffce56',
+      color: '#8a7aa8',
     },
-    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9966ff' },
+    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9c4823' },
   ],
 
   DIFFICULTY_LEVELS: [
-    { value: 'beginner', label: 'Débutant', color: '#4caf50' },
-    { value: 'intermediate', label: 'Intermédiaire', color: '#fdba74' },
-    { value: 'advanced', label: 'Avancé', color: '#fc8181' },
+    { value: 'beginner', label: 'Débutant', color: '#6b8a5a' },
+    { value: 'intermediate', label: 'Intermédiaire', color: '#c9a227' },
+    { value: 'advanced', label: 'Avancé', color: '#b23a2a' },
   ],
 
   // Pagination

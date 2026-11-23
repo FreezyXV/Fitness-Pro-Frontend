@@ -214,11 +214,6 @@
   box-shadow: $shadow-md;
   transition: all 0.3s ease;
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: $shadow-lg;
-  }
-
   .stat-value {
     font-size: 1.75rem;
     font-weight: 800;
@@ -572,7 +567,7 @@
     width: 20px;
     height: 20px;
     border: $border-width solid $border-strong;
-    border-radius: 18px;
+    border-radius: $radius-sm;
     background-color: $surface-tertiary;
     display: grid;
     place-content: center;

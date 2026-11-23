@@ -200,10 +200,15 @@ h1 { font-size: clamp(1.5rem, 3.2vw, 1.875rem); font-weight: 700; }
 // ecran — plutot qu'a h1 en general, qui porte aussi des titres de contenu
 // (nom d'exercice, de programme...) ou l'alterne rendrait la lecture plus
 // difficile plutot que plus nette.
+//
+// Echelle agrandie par rapport au h1 generique : un titre de page affirme sa
+// place en haut de l'ecran, il ne doit pas se confondre avec un intitule de
+// carte.
 .page-title {
   font-family: $font-family-display;
+  font-size: clamp(1.75rem, 4.2vw, 2.5rem);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
 }
 h2 { font-size: clamp(1.25rem, 2.4vw, 1.375rem); font-weight: 650; }

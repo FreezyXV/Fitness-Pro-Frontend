@@ -557,7 +557,7 @@ $forest-gradient: $gradient-forest;
               $warning-color 85%,
               $danger-color 100%
             );
-            border-radius: 18px;
+            border-radius: $radius-pill;
             margin-bottom: 0.75rem;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 
@@ -831,29 +831,10 @@ $forest-gradient: $gradient-forest;
           position: relative;
           overflow: hidden;
 
-          &::before {
-            @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s ease);
-          }
-
-          &:hover {
-            background: rgba($surface-secondary, 0.95);
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-
-            &::before {
-              left: 100%;
-            }
-
-            .summary-icon {
-              transform: scale(1.1);
-              animation: iconBounce 0.6s ease;
-            }
-
-            .summary-number {
-              @include text-gradient($primary-dark);
-            }
-          }
-
+          // Ces 4 tuiles n'ouvrent rien au clic : simple lecture d'une
+          // valeur. Le rebond + icone qui saute + chiffre qui change de
+          // couleur au survol n'avait donc aucune fonction, seulement un
+          // reflexe "chaque carte doit reagir".
           .summary-icon {
             width: 64px;
             height: 64px;
@@ -1412,7 +1393,7 @@ $forest-gradient: $gradient-forest;
             width: 60px;
             height: 60px;
             background: $surface-secondary;
-            border-radius: 18px;
+            border-radius: $radius-2xl;
             top: 35%;
             right: 65%;
           }

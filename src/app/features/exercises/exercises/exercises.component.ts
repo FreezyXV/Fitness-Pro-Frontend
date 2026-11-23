@@ -411,8 +411,8 @@ export class ExercisesComponent implements OnInit, OnDestroy {
     return (
       this.bodyParts.find((bp: { value: string; label: string; icon?: string; color?: string }) => bp.value === bodyPart) || {
         label: bodyPart,
-        icon: '💪',
-        color: '#gray',
+        icon: 'dumbbell',
+        color: '#5c7a8a',
       }
     );
   }
@@ -430,8 +430,8 @@ export class ExercisesComponent implements OnInit, OnDestroy {
     return (
       this.difficulties.find((d: { value: string; label: string; icon?: string; color?: string }) => d.value === difficulty) || {
         label: difficulty,
-        icon: '⚪',
-        color: '#gray',
+        icon: 'circle',
+        color: '#5c7a8a',
       }
     );
   }
