@@ -25,7 +25,7 @@
             ],
             "tsConfig": "tsconfig.json",
             "assets": [
-              "src/favicon.ico",
+              { "glob": "favicon.ico", "input": "public", "output": "/" },
               "src/assets",
               "src/icons",
               "src/manifest.webmanifest",
@@ -101,7 +101,7 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              "src/favicon.ico",
+              { "glob": "favicon.ico", "input": "public", "output": "/" },
               "src/assets",
               "src/icons",
               "src/manifest.webmanifest",

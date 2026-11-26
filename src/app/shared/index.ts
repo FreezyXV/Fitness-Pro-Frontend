@@ -92,7 +92,7 @@ export const APP_CONFIG = {
         icon: 'refresh',
         color: '#8a7aa8',
       },
-      { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9c4823' },
+      { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#405d1a' },
       { value: 'yoga', label: 'Yoga', icon: 'moon', color: '#8a7aa8' },
       { value: 'mobility', label: 'Mobilité', icon: 'refresh', color: '#8a7aa8' },
     ],
@@ -113,7 +113,7 @@ export const APP_CONFIG = {
       icon: 'refresh',
       color: '#8a7aa8',
     },
-    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9c4823' },
+    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#405d1a' },
   ],
 
   DIFFICULTY_LEVELS: [

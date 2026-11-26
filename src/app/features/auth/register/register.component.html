@@ -1,23 +1,11 @@
 <!-- Enhanced register.component.html -->
-<div class="register-wrapper">
-  <!-- Floating orbs for enhanced visual appeal -->
-  <div class="floating-orb"></div>
-  <div class="floating-orb"></div>
-  <div class="floating-orb"></div>
-  
-  <div class="register-card">
+<main class="account-layout">
+  <div class="account-card">
     <!-- Enhanced logo section -->
     <div class="logo-section">
-      <div class="logo-icon">
-        <!-- Meme marque que la barre laterale et la page de connexion : le
-             trace de pouls, plutot que la lettre « F ». -->
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-        </svg>
-      </div>
-      <h2>Créer un compte</h2>
-      <p class="subtitle">Rejoignez la communauté FitnessPro</p>
+      <a routerLink="/login" aria-label="FitnessPro, connexion"><app-brand /></a>
+      <h1>Créer un compte</h1>
+      <p class="subtitle">Crée ton carnet d’entraînement.</p>
     </div>
 
     <!-- Enhanced registration form -->
@@ -27,17 +15,17 @@
         <div class="form-group">
           <label for="firstName">Prénom</label>
           <div class="input-wrapper">
-            <input 
-              id="firstName" 
-              formControlName="firstName" 
-              type="text" 
+            <input
+              id="firstName"
+              formControlName="firstName" autocomplete="given-name"
+              type="text"
               placeholder="Votre prénom"
               [class.error]="isFieldInvalid('firstName')"
               [class.valid]="isFieldValid('firstName')"
             />
             <app-icon *ngIf="isFieldValid('firstName')" name="check" class="validation-icon valid"></app-icon>
           </div>
-          <div *ngIf="isFieldInvalid('firstName')" 
+          <div *ngIf="isFieldInvalid('firstName')"
                class="error-message">
             {{ getFieldError('firstName') }}
           </div>
@@ -46,17 +34,17 @@
         <div class="form-group">
           <label for="lastName">Nom</label>
           <div class="input-wrapper">
-            <input 
-              id="lastName" 
-              formControlName="lastName" 
-              type="text" 
+            <input
+              id="lastName"
+              formControlName="lastName" autocomplete="family-name"
+              type="text"
               placeholder="Votre nom"
               [class.error]="isFieldInvalid('lastName')"
               [class.valid]="isFieldValid('lastName')"
             />
             <app-icon *ngIf="isFieldValid('lastName')" name="check" class="validation-icon valid"></app-icon>
           </div>
-          <div *ngIf="isFieldInvalid('lastName')" 
+          <div *ngIf="isFieldInvalid('lastName')"
                class="error-message">
             {{ getFieldError('lastName') }}
           </div>
@@ -67,10 +55,10 @@
       <div class="form-group">
         <label for="email">Adresse email</label>
         <div class="input-wrapper">
-          <input 
-            id="email" 
-            formControlName="email" 
-            type="email" 
+          <input
+            id="email"
+            formControlName="email"
+            type="email" autocomplete="email"
             placeholder="exemple@email.com"
             [class.error]="isFieldInvalid('email')"
             [class.valid]="isFieldValid('email')"
@@ -78,7 +66,7 @@
           <app-icon *ngIf="isFieldValid('email')" name="check" class="validation-icon valid"></app-icon>
           <app-icon *ngIf="isFieldInvalid('email')" name="close" class="validation-icon invalid"></app-icon>
         </div>
-        <div *ngIf="isFieldInvalid('email')" 
+        <div *ngIf="isFieldInvalid('email')"
              class="error-message">
           {{ getFieldError('email') }}
         </div>
@@ -88,37 +76,31 @@
       <div class="form-group">
         <label for="password">Mot de passe</label>
         <div class="input-wrapper">
-          <input 
-            id="password" 
-            formControlName="password" 
+          <input
+            id="password"
+            formControlName="password" autocomplete="new-password"
             [type]="showPassword ? 'text' : 'password'"
             placeholder="Choisissez un mot de passe"
             [class.error]="isFieldInvalid('password')"
             [class.valid]="isFieldValid('password')"
             (input)="checkPasswordStrength()"
           />
-          <div *ngIf="passwordStrength && registerForm.get('password')?.value" 
-               class="password-strength-indicator" 
-               [class]="passwordStrength">
-            {{ getPasswordStrengthIcon() }}
-          </div>
-          <app-icon class="input-icon"
-                    [name]="showPassword ? 'eye-off' : 'eye'"
-                    (click)="togglePasswordVisibility()"
-                    [style.right.rem]="passwordStrength ? 3.5 : 1"
-                    style="cursor: pointer;"></app-icon>
+          <button type="button" class="input-icon password-toggle" (click)="togglePasswordVisibility()"
+                    [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'">
+            <app-icon [name]="showPassword ? 'eye-off' : 'eye'" />
+          </button>
         </div>
-        
+
         <!-- Indicateurs de force du mot de passe -->
-        <div *ngIf="showPasswordRequirements" 
+        <div *ngIf="showPasswordRequirements"
              class="password-requirements">
-          <div class="requirement" 
+          <div class="requirement"
                *ngFor="let requirement of passwordRequirements; let i = index">
             <!-- Le repere « non satisfait » etait le caractere ○, dont le
                  dessin et la chasse varient d'une police a l'autre : la liste
                  de criteres n'etait donc pas alignee. Il est desormais dessine
                  en CSS (voir .check-icon), comme le reste du systeme. -->
-            <span class="check-icon" 
+            <span class="check-icon"
                   [class.valid]="requirement.isValid"
                   [class.invalid]="!requirement.isValid"
                   aria-hidden="true">
@@ -132,7 +114,7 @@
           </div>
         </div>
 
-        <div *ngIf="isFieldInvalid('password')" 
+        <div *ngIf="isFieldInvalid('password')"
              class="error-message">
           {{ getFieldError('password') }}
         </div>
@@ -142,9 +124,9 @@
       <div class="form-group">
         <label for="passwordConfirmation">Confirmer le mot de passe</label>
         <div class="input-wrapper">
-          <input 
-            id="passwordConfirmation" 
-            formControlName="passwordConfirmation" 
+          <input
+            id="passwordConfirmation"
+            formControlName="passwordConfirmation" autocomplete="new-password"
             type="password"
             placeholder="Confirmez votre mot de passe"
             [class.error]="isFieldInvalid('passwordConfirmation')"
@@ -153,7 +135,7 @@
           <app-icon *ngIf="isFieldValid('passwordConfirmation')" name="check" class="validation-icon valid"></app-icon>
           <app-icon *ngIf="isFieldInvalid('passwordConfirmation')" name="close" class="validation-icon invalid"></app-icon>
         </div>
-        <div *ngIf="isFieldInvalid('passwordConfirmation')" 
+        <div *ngIf="isFieldInvalid('passwordConfirmation')"
              class="error-message">
           {{ getFieldError('passwordConfirmation') }}
         </div>
@@ -164,23 +146,23 @@
         <div class="checkbox-wrapper">
           <input type="checkbox" id="terms" formControlName="acceptTerms" />
           <label for="terms">
-            J'accepte les <a href="#" target="_blank">conditions d'utilisation</a> 
+            J'accepte les <a href="#" target="_blank">conditions d'utilisation</a>
             et la <a href="#" target="_blank">politique de confidentialité</a>
           </label>
         </div>
-        <div *ngIf="isFieldInvalid('acceptTerms')" 
+        <div *ngIf="isFieldInvalid('acceptTerms')"
              class="error-message">
           {{ getFieldError('acceptTerms') }}
         </div>
       </div>
 
       <!-- Message d'erreur global -->
-      <div *ngIf="errorMessage" class="global-error">
+      <div *ngIf="errorMessage" class="global-error" role="alert">
         {{ errorMessage }}
       </div>
 
       <!-- Bouton de soumission amélioré -->
-      <button 
+      <button
         type="submit"
         [disabled]="registerForm.invalid || isLoading"
         [class.loading]="isLoading"
@@ -195,4 +177,4 @@
       <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">Se connecter</a>
     </div>
   </div>
-</div>
+</main>

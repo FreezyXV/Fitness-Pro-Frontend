@@ -1,3 +1,4 @@
+@use 'workspace-page';
 // src/app/nutrition/nutrition.component.scss - VERSION COMPLÈTE CORRIGÉE
 @use "sass:color";
 @use 'variables' as *;
@@ -6034,3 +6035,5 @@ textarea:focus {
 .nutrition-container .achievements-preview .database {
   display: none;
 }
+
+.workspace-note { color: $text-muted; margin: 0 0 10px; font-size: .82rem; }

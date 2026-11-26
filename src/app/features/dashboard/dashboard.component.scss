@@ -1,2182 +1,247 @@
-/* =============================================
- * DASHBOARD COMPONENT - OPTIMIZED WITH UNIFIED DESIGN SYSTEM
- * Using centralized variables and utility mixins
- * ============================================= */
-
-// Import unified design system
 @use 'variables' as *;
-@use 'design-system' as *;
 
-// =============================================
-// COMPONENT SPECIFIC DESIGN TOKENS
-// =============================================
-
-// Enhanced gradients for dashboard icons
-$fire-gradient: $gradient-fire;
-$ocean-gradient: $gradient-ocean;
-$sunset-gradient: $gradient-sunset;
-$forest-gradient: $gradient-forest;
-
-// =============================================
-// DASHBOARD LAYOUT COMPONENTS
-// =============================================
-
-.dashboard-container {
-
-  border-radius: $border-radius;
-  min-height: 100vh;
-  background: $bg-primary;
-  animation: none;
-  position: relative;
-  overflow-x: hidden;
+:host { display: block; }
+.training-home { display: grid; gap: clamp(24px, 3vw, 36px); }
+.home-heading, .section-heading {
   display: flex;
-  padding: 0rem 1rem 1rem 1rem;
-  flex-direction: column;
   align-items: center;
-
-  // Background pattern using mixin approach
-  &::before,
-  &::after {
-    display: none;
-  }
+  justify-content: space-between;
+  gap: 12px;
+}
+.home-date {
+  margin: 0 0 5px;
+  color: $text-secondary;
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.home-heading h1 {
+  margin: 0;
+  color: $text-primary;
+  font: 700 clamp(2.8rem, 5.4vw, 4.55rem)/.93 $font-family-display;
+  text-transform: uppercase;
+  letter-spacing: -.012em;
+  text-wrap: pretty;
+}
+.text-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-block-size: 44px;
+  color: $text-secondary;
+  font-size: .82rem;
+  font-weight: 650;
+  white-space: nowrap;
+  border: 0;
+  &:hover { color: $primary-light; }
+}
+.heading-link {
+  padding: 0 13px;
+  border: 1px solid $border-color;
+  border-radius: 8px;
 }
 
-.hero-section {
+.training-feature {
+  isolation: isolate;
   position: relative;
-  z-index: $z-normal;
-  margin: 1rem;
-  margin-bottom: 1.5rem;
-  width: 100%;
-  // max-width: 1600px;
-  @include glass-effect(0.96);
-  
-  padding: $card-padding-xl;
   overflow: hidden;
-
-  &:hover {
-    transform: $transform-hover;
-    transition: $card-transition;
-    box-shadow: $shadow-3xl;
-  }
-
-  .hero-background {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
-    border-radius: 0 $border-radius-2xl $border-radius-2xl 0;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 20%;
-      right: 20%;
-      width: 120px;
-      height: 120px;
-      background: $primary-alpha-15;
-      border-radius: 50%;
-      @include floating-animation(8s);
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 30%;
-      right: 40%;
-      width: 80px;
-      height: 80px;
-      background: $secondary-alpha-10;
-      border-radius: 50%;
-      @include floating-animation(10s, 2s);
-    }
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 3rem;
-    align-items: start;
-
-    @include respond-below(lg) {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 2rem;
-    }
-  }
-
-  .profile-section {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    .profile-avatar {
-      position: relative;
-      width: fit-content;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-
-      &:hover {
-        transform: scale(1.05) rotate(2deg);
-
-        .profile-overlay {
-          opacity: 1;
-        }
-
-        .avatar-img {
-          border: $border-width solid $border-color;
-        }
-      }
-
-      &:focus-visible {
-        outline: 1px solid rgba($primary-color, 0.4);
-        outline-offset: 1px;
-        border-radius: 50%;
-      }
-
-      .avatar-img {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: $border-width solid $border-color;
-        box-shadow: $shadow-xl;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .status-indicator {
-        position: absolute;
-        bottom: 8px;
-        right: 8px;
-        width: 20px;
-        height: 20px;
-        background: $primary-dark;
-        border: $border-width solid $border-color;
-        border-radius: 50%;
-        animation: smoothPulse 3s infinite;
-        box-shadow: 0 2px 8px rgba($c-green-brand, 0.4);
-      }
-
-      .profile-overlay {
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        right: 2px;
-        bottom: 12px;
-        background: rgba($c-green-brand, 0.85);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        color: $on-primary;
-
-        svg {
-          transform: scale(1.1);
-          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-      }
-    }
-
-    .welcome-text {
-      .greeting {
-        font-size: clamp(2rem, 4vw, 2.5rem);
-        font-weight: 800;
-        color: $gray-900;
-        margin: 0 0 0.5rem 0;
-        line-height: 1.1;
-
-        .greeting-time {
-          display: block;
-          font-size: clamp(1rem, 2.5vw, 1.25rem);
-          color: $text-primary;
-          font-weight: 600;
-          margin-bottom: 0.25rem;
-          opacity: 0.9;
-        }
-
-        .user-name {
-          @include text-gradient($primary-dark);
-          font-weight: 800;
-        }
-      }
-
-      .welcome-subtitle {
-        color: $text-primary;
-        font-size: clamp(1rem, 2.5vw, 1.125rem);
-        margin: 0 0 1.5rem 0;
-        font-weight: 500;
-        line-height: 1.5;
-      }
-    }
-
-    .quick-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-
-      .action-btn {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 1rem 2rem;
-        border: none;
-        border-radius: $border-radius-2xl;
-        font-weight: 700;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        text-decoration: none;
-        position: relative;
-        overflow: hidden;
-        min-height: 48px;
-
-        &::before {
-          @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.8s ease);
-        }
-
-        &:focus-visible {
-          outline: 3px solid rgba($primary-color, 0.4);
-          outline-offset: 2px;
-        }
-
-        &:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-          transform: none !important;
-        }
-
-        &.primary {
-          // Etait $primary-dark (#a1d428) : l'action principale de l'accueil
-          // paraissait desactivee a cote du lime de la barre de navigation.
-          // Le CTA le plus important de l'app doit porter la couleur de marque.
-          background: $primary-color;
-          color: $on-primary;
-          box-shadow: 0 8px 25px rgba($primary-color, 0.3);
-
-          &:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 35px rgba($primary-color, 0.4);
-
-            &::before {
-              left: 100%;
-            }
-          }
-
-          &:active {
-            transform: translateY(-1px) scale(0.98);
-          }
-        }
-
-        &.secondary {
-          background: transparent;
-          border: $border-width solid $border-strong;
-          color: $text-primary;
-
-          &:hover:not(:disabled) {
-            background: rgba($primary-color, 0.08);
-            border: $border-width solid $border-color;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 35px rgba($primary-color, 0.15);
-          }
-        }
-
-        svg {
-          transition: transform 0.3s ease;
-          flex-shrink: 0;
-        }
-
-        &:hover svg {
-          transform: scale(1.1) rotate(3deg);
-        }
-      }
-    }
-  }
-
-  .calendar-section {
-    @include glass-effect-dark(0.08);
-    border-radius: $border-radius-xl;
-
-    border: $border-width solid $border-color;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background: rgba($surface-secondary, 0.12);
-      box-shadow: $shadow-md;
-    }
-  }
-}
-
-// Loading et Error states améliorés
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  text-align: center;
-  color: $text-primary;
-
-  .loading-spinner {
-    width: 48px;
-    height: 48px;
-    border: 2px solid rgba($primary-color, 0.15);
-    border-top-color: $primary-color;
-    border-radius: 50%;
-    animation: spin 0.65s linear infinite;
-    margin-bottom: 1.5rem;
-  }
-
-  p {
-    font-size: 1.125rem;
-    font-weight: 500;
-    margin: 0;
-  }
-}
-
-.error-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  text-align: center;
-  @include glass-effect(0.9);
-  border-radius: $border-radius-xl;
-  border: $border-width solid $border-color;
-  margin: 2rem;
-
-  .error-icon {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-    opacity: 0.8;
-  }
-
-  h3 {
-    color: $danger-color;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    color: $text-primary;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-  }
-
-  .retry-btn {
-    background: $gradient-danger;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: $border-radius-lg;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba($danger-color, 0.3);
-    }
-  }
-}
-
-// Stats Grid amélioré
-.stats-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem;
-  width: 100%;
-  margin: 0 2rem $block-spacing 2rem;
-  // width: 100%;
-  // max-width: 1600px;
-  position: relative;
-  z-index: $z-normal;
-
-  .stat-card {
-
-    @include card-base($card-padding-lg, $border-radius-xl);
-    @include shimmer-effect;
-    & {
-    }
-    &:focus-within {
-      outline: 3px solid $primary-alpha-30;
-      outline-offset: 2px;
-    }
-
-    // Staggered animation delays
-    &:nth-child(1) {
-      padding: 1rem;
-    }
-    &:nth-child(2) {
-    }
-    &:nth-child(3) {
-    }
-    &:nth-child(4) {
-    }
-    &:nth-child(5) {
-    }
-
-    .card-header {
-      @include card-header;
-      .header-actions {
-        .edit-btn {
-          background: $glass-white-90;
-          border: none;
-          color: $text-muted;
-          cursor: pointer;
-          padding: 0.75rem;
-          border-radius: 50%;
-          transition: $transition-smooth;
-          min-width: 40px;
-          min-height: 40px;
-
-          &:hover {
-            color: $primary-color;
-            background: $primary-alpha-10;
-            transform: scale(1.02) rotate(5deg);
-          }
-
-          &:focus-visible {
-            outline: 2px solid $primary-alpha-40;
-            outline-offset: 2px;
-          }
-        }
-      }
-    }
-
-    // Physical Stats Card amélioré
-    &.physical-stats {
-      .stats-grid-inner {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem;
-
-        // Chaque tuile combinait une icone de 56px, 1,5rem de rembourrage de
-        // chaque cote et 1rem d'ecart, soit 104px de decor avant le premier
-        // caractere. Dans une colonne de moitie de carte, il ne restait pas de
-        // quoi ecrire « 74.5 kg » : `word-break: break-word` coupait alors la
-        // valeur en « 74. » et « 5kg », et « 63-79 kg » sur trois lignes.
-        // L'icone et les marges se resserrent, la valeur cesse d'etre cassee.
-        .stat-item,
-        .stat-card {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          padding: 0.875rem;
-          background: rgba(237, 232, 224, 0.03);
-          border-radius: $radius-lg;
-          border: $border-width solid $border-color;
-
-          .stat-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: $radius-sm;
-            background: rgba(237, 232, 224, 0.06);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: $text-secondary;
-            flex-shrink: 0;
-
-            svg { width: 18px; height: 18px; }
-          }
-
-          .stat-content {
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-
-            .stat-label {
-              font-size: 0.75rem;
-              color: $text-muted;
-              font-weight: 500;
-              letter-spacing: 0;
-              margin-bottom: 0.125rem;
-              @include text-ellipsis(1);
-            }
-
-            .stat-value {
-              font-size: 1.125rem;
-              font-weight: 650;
-              color: $text-primary;
-              line-height: 1.2;
-              white-space: nowrap;
-              font-variant-numeric: tabular-nums;
-
-              small {
-                font-size: 0.8125rem;
-                color: $text-muted;
-                font-weight: 500;
-                margin-left: 0.125rem;
-              }
-            }
-          }
-        }
-      }
-
-      .bmi-section {
-        margin-top: 2rem;
-
-        .bmi-card {
-          background: rgba($surface-secondary, 0.7);
-          border-radius: $border-radius-lg;
-          padding: 2rem;
-          border: $border-width solid $border-color;
-
-          .bmi-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-
-            .bmi-title {
-              font-weight: 700;
-              color: $gray-700;
-              font-size: 1rem;
-            }
-
-            .bmi-value {
-              font-size: 1.5rem;
-              font-weight: 800;
-              @include text-gradient($primary-dark);
-            }
-          }
-
-          .bmi-bar {
-            position: relative;
-            height: 12px;
-            background: linear-gradient(
-              to right,
-              $warning-color 0%,
-              $success-color 30%,
-              $success-color 70%,
-              $warning-color 85%,
-              $danger-color 100%
-            );
-            border-radius: $radius-pill;
-            margin-bottom: 0.75rem;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-
-            .bmi-indicator {
-              position: absolute;
-              top: -6px;
-              width: 24px;
-              height: 24px;
-              background: $surface-secondary;
-              border: $border-width solid $border-color;
-              border-radius: 50%;
-              transform: translateX(-50%);
-              box-shadow: 0 4px 12px rgba($primary-color, 0.4);
-              animation: smoothPulse 3s infinite;
-              transition: left 0.5s ease;
-            }
-          }
-
-          .bmi-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: $text-muted;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-          }
-
-          .bmi-status {
-            text-align: center;
-            font-weight: 700;
-            color: $gray-700;
-            margin: 0;
-            font-size: 1rem;
-          }
-        }
-      }
-    }
-
-    // Today's Workout Card amélioré
-    &.todays-workout {
-      background: linear-gradient(
-        135deg,
-        rgba($primary-color, 0.08) 0%,
-        rgba($secondary-color, 0.04) 100%
-      );
-      border: $border-width solid $border-color;
-
-      .workout-content {
-        .workout-info {
-          margin-bottom: 2rem;
-
-          h4 {
-            font-size: 1.375rem;
-            font-weight: 800;
-            color: $gray-900;
-            margin: 0 0 0.75rem 0;
-            line-height: 1.3;
-          }
-
-          p {
-            color: $text-primary;
-            margin: 0 0 1.5rem 0;
-            font-weight: 500;
-            line-height: 1.6;
-          }
-
-          .workout-stats {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-
-            .stat {
-              display: flex;
-              align-items: center;
-              gap: 0.5rem;
-              font-size: 0.875rem;
-              color: $text-primary;
-              font-weight: 600;
-
-              svg {
-                color: $text-primary;
-                flex-shrink: 0;
-              }
-            }
-          }
-        }
-
-        .start-workout-btn {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.75rem;
-          padding: 1.25rem;
-          background: $gradient-success;
-          color: $on-primary;
-          border: none;
-          border-radius: $border-radius-lg;
-          font-weight: 700;
-          font-size: 1.125rem;
-          cursor: pointer;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          position: relative;
-          overflow: hidden;
-          min-height: 48px;
-
-          &::before {
-            @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.8s ease);
-          }
-
-          &:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 35px rgba($success-color, 0.4);
-
-            &::before {
-              left: 100%;
-            }
-          }
-
-          &:focus-visible {
-            outline: 3px solid rgba($success-color, 0.4);
-            outline-offset: 2px;
-          }
-        }
-      }
-    }
-
-    // Calories Card amélioré
-    &.calories-card {
-      .calories-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem;
-
-        .calories-circle {
-          position: relative;
-          width: 140px;
-          height: 140px;
-
-          .calories-svg {
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-
-            .calories-bg {
-              fill: none;
-              stroke: rgba(237, 232, 224, 0.08);
-              stroke-width: 8;
-              stroke-linecap: round;
-            }
-
-            // Le trace utilisait un degrade rose -> corail defini dans le
-            // gabarit, la seule occurrence de ces deux teintes dans toute
-            // l'application. Aplat de la couleur de marque, anneau affine.
-            .calories-progress {
-              fill: none;
-              stroke: $primary-color;
-              stroke-width: 8;
-              stroke-linecap: round;
-            }
-          }
-
-          .calories-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-
-            .calories-burned {
-              display: block;
-              font-size: 2rem;
-              font-weight: 800;
-              @include text-gradient($gradient-warning);
-            }
-
-            .calories-goal {
-              font-size: 0.875rem;
-              color: $text-primary;
-              font-weight: 600;
-            }
-          }
-        }
-
-        .calories-info {
-          width: 100%;
-          text-align: center;
-
-          // La barre reprenait la meme grandeur que l'anneau juste au-dessus,
-          // dans une couleur differente (ambre contre lime) : deux lectures
-          // pour une seule donnee. Meme couleur, et piste affinee.
-          .progress-bar {
-            height: 6px;
-            background: rgba(237, 232, 224, 0.08);
-            border-radius: $radius-pill;
-            overflow: hidden;
-            margin-bottom: 0.75rem;
-
-            .progress-fill {
-              height: 100%;
-              background: $primary-color;
-              border-radius: $radius-pill;
-            }
-          }
-
-          .progress-text {
-            font-size: 0.875rem;
-            color: $text-primary;
-            margin: 0;
-            font-weight: 600;
-          }
-        }
-      }
-    }
-
-    // =============================================
-    // WORKOUT SUMMARY CARD - VERSION AMÉLIORÉE
-    // =============================================
-    &.workout-summary {
-      padding: 1rem;
-      background: linear-gradient(
-        135deg,
-        rgba($surface-secondary, 0.95) 0%,
-        rgba($surface-secondary, 0.85) 100%
-      );
-      border: $border-width solid $border-color;
-      position: relative;
-      overflow: hidden;
-
-      // Décoration d'arrière-plan
-      &::before {
-        content: "";
-        position: absolute;
-        top: -20%;
-        right: -20%;
-        width: 120px;
-        height: 120px;
-        background: radial-gradient(
-          circle,
-          rgba($primary-color, 0.08),
-          transparent 70%
-        );
-        border-radius: 50%;
-        z-index: 0;
-      }
-
-      .summary-stats {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1.5rem;
-        position: relative;
-        z-index: 1;
-
-        @include respond-above(md) {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 1rem;
-        }
-
-        .summary-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          padding: 1.5rem 1rem;
-          background: rgba($surface-secondary, 0.8);
-          border-radius: $border-radius-lg;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          border: $border-width solid $border-color;
-          position: relative;
-          overflow: hidden;
-
-          // Ces 4 tuiles n'ouvrent rien au clic : simple lecture d'une
-          // valeur. Le rebond + icone qui saute + chiffre qui change de
-          // couleur au survol n'avait donc aucune fonction, seulement un
-          // reflexe "chaque carte doit reagir".
-          .summary-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: $border-radius-lg;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: $on-primary;
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-            position: relative;
-            flex-shrink: 0;
-
-            // Couleurs specifiques par type d'icone : aplat + ombre assortie,
-            // a la place des 4 degrades (rouge-rose/bleu/violet-rose/vert
-            // nettement decoratifs) qui etaient deja retombes a une couleur
-            // de fond unique mais gardaient leur halo neon d'origine.
-            &.total-workouts {
-              background: $primary-color;
-              box-shadow: 0 8px 20px rgba($primary-color, 0.3);
-            }
-
-            &.total-minutes {
-              background: $secondary-color;
-              box-shadow: 0 8px 20px rgba($secondary-color, 0.3);
-            }
-
-            &.current-streak {
-              background: $accent-color;
-              box-shadow: 0 8px 20px rgba($accent-color, 0.3);
-            }
-
-            &.weekly-workouts {
-              background: $success-color;
-              box-shadow: 0 8px 20px rgba($success-color, 0.3);
-            }
-
-            svg {
-              width: 28px;
-              height: 28px;
-              filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-            }
-          }
-
-          .summary-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 0;
-
-            .summary-number {
-              font-size: 2rem;
-              font-weight: 800;
-              color: $gray-900;
-              line-height: 1;
-              margin-bottom: 0.5rem;
-              transition: all 0.3s ease;
-
-              @include respond-below(md) {
-                font-size: 1.75rem;
-              }
-            }
-
-            .summary-label {
-              font-size: 0.75rem;
-              color: $text-primary;
-              letter-spacing: 0.08em;
-              font-weight: 700;
-              line-height: 1.2;
-              text-align: center;
-
-              @include respond-below(md) {
-                font-size: 0.7rem;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // =============================================
-    // PERFORMANCE CHART CARD - VERSION RÉVOLUTIONNÉE
-    // =============================================
-    &.performance-chart {
-      padding: 1rem;
-      grid-column: 1 / -1;
-
-      border: $border-width solid $border-color;
-      position: relative;
-      overflow: hidden;
-
-      // Éléments décoratifs d'arrière-plan
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-
-        z-index: 1;
-      }
-
-      &::after {
-        content: "";
-        position: absolute;
-        bottom: -30%;
-        left: -30%;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(
-          circle,
-          rgba($secondary-color, 0.05),
-          transparent 70%
-        );
-        border-radius: 50%;
-        z-index: 0;
-      }
-
-      .card-header {
-        @include card-header;
-      }
-
-      .chart-container {
-        position: relative;
-        z-index: 1;
-
-        .empty-chart-state {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 4rem 2rem;
-          text-align: center;
-          background: linear-gradient(
-            135deg,
-            rgba($surface-secondary, 0.8) 0%,
-            rgba($surface-secondary, 0.6) 100%
-          );
-          border-radius: $border-radius-xl;
-          border: $border-width solid $border-color;
-          position: relative;
-          overflow: hidden;
-
-          &::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(
-              circle at center,
-              rgba($primary-color, 0.02) 0%,
-              transparent 50%
-            );
-            animation: rotateGently 30s linear infinite;
-          }
-
-          .empty-chart-icon {
-            margin-bottom: 2rem;
-            color: $text-muted;
-            position: relative;
-            z-index: 1;
-
-            svg {
-              filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-            }
-          }
-
-          .empty-chart-content {
-            position: relative;
-            z-index: 1;
-
-            h4 {
-              font-size: 1.5rem;
-              font-weight: 800;
-              color: $gray-700;
-              margin: 0 0 1rem 0;
-              @include text-gradient($gradient-secondary);
-            }
-
-            p {
-              color: $text-primary;
-              font-size: 1rem;
-              margin: 0 0 2rem 0;
-              max-width: 400px;
-              line-height: 1.6;
-              font-weight: 500;
-            }
-
-            .btn {
-              display: inline-flex;
-              align-items: center;
-              gap: 0.75rem;
-              padding: 1.25rem 2.5rem;
-              background: $primary-dark;
-              color: $on-primary;
-              border: none;
-              border-radius: $border-radius-xl;
-              font-weight: 700;
-              font-size: 1.125rem;
-              cursor: pointer;
-              transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-              box-shadow: 0 8px 25px rgba($primary-color, 0.3);
-              min-height: 56px;
-              position: relative;
-              overflow: hidden;
-
-              &::before {
-                @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.8s ease);
-              }
-
-              &:hover {
-                transform: translateY(-3px) scale(1.05);
-                box-shadow: 0 15px 35px rgba($primary-color, 0.4);
-
-                &::before {
-                  left: 100%;
-                }
-
-                svg {
-                  transform: scale(1.1) rotate(5deg);
-                }
-              }
-
-              &:focus-visible {
-                outline: 3px solid rgba($primary-color, 0.4);
-                outline-offset: 3px;
-              }
-            }
-          }
-        }
-
-        .chart-placeholder {
-          background: linear-gradient(
-            135deg,
-            rgba($surface-secondary, 0.9) 0%,
-            rgba($surface-secondary, 0.7) 100%
-          );
-          border-radius: $border-radius-xl;
-          padding: 2.5rem;
-          border: $border-width solid $border-color;
-          position: relative;
-          overflow: hidden;
-
-          &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                90deg,
-                transparent 0%,
-                rgba($surface-secondary, 0.1) 50%,
-                transparent 100%
-              ),
-              linear-gradient(
-                0deg,
-                transparent 0%,
-                rgba($primary-color, 0.02) 50%,
-                transparent 100%
-              );
-            pointer-events: none;
-          }
-
-          svg {
-            border-radius: $border-radius-lg;
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
-            position: relative;
-            z-index: 1;
-
-            // Animation pour les lignes du graphique
-            path[stroke] {
-              stroke-dasharray: 1000;
-              stroke-dashoffset: 1000;
-              animation: chartLineDraw 2s ease-out forwards;
-            }
-
-            // Animation pour les points
-            circle {
-              opacity: 0;
-              animation: fadeInScale 0.6s ease-out forwards;
-
-              &:nth-child(1) {
-              }
-              &:nth-child(2) {
-              }
-              &:nth-child(3) {
-              }
-              &:nth-child(4) {
-              }
-              &:nth-child(5) {
-              }
-              &:nth-child(6) {
-              }
-              &:nth-child(7) {
-              }
-              &:nth-child(8) {
-              }
-              &:nth-child(9) {
-              }
-              &:nth-child(10) {
-              }
-            }
-          }
-        }
-
-        // Légende du graphique améliorée
-        .chart-legend {
-          display: flex;
-          justify-content: center;
-          gap: 2rem;
-          margin-top: 1.5rem;
-          flex-wrap: wrap;
-
-          .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: $text-primary;
-            font-weight: 600;
-
-            .legend-color {
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-
-              &.performance {
-                background: $primary-dark;
-              }
-              &.calories {
-                background: $gradient-warning;
-              }
-              &.duration {
-                background: $gradient-info;
-              }
-            }
-          }
-        }
-
-        // Statistiques du graphique
-        .chart-stats {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
-          gap: 1rem;
-          margin-top: 2rem;
-          padding-top: 2rem;
-          border-top: $border-width solid $border-color;
-
-          .chart-stat {
-            text-align: center;
-
-            .stat-value {
-              font-size: 1.25rem;
-              font-weight: 800;
-              color: $gray-900;
-              margin-bottom: 0.25rem;
-            }
-
-            .stat-label {
-              font-size: 0.75rem;
-              color: $text-primary;
-              letter-spacing: 0.05em;
-              font-weight: 600;
-            }
-          }
-        }
-      }
-    }
+  align-items: center;
+  min-height: 243px;
+  padding: clamp(24px, 3.3vw, 44px);
+  border-radius: 14px;
+  background: #eee6d7;
+  color: #211b17;
+}
+.training-content { position: relative; z-index: 1; max-width: 63%; }
+.feature-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 14px;
+  color: #446114;
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.training-content h2 {
+  margin: 0 0 8px;
+  color: inherit;
+  font: 700 clamp(2.65rem, 5vw, 4.75rem)/.93 $font-family-display;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.feature-detail { margin: 0 0 21px; color: #54483e; font-size: .91rem; }
+.feature-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 45px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #251e19;
+  color: #fff3e7;
+  font-size: .83rem;
+  font-weight: 700;
+  &:hover { background: #2e3a1c; color: white; border-color: transparent; }
+  &:focus-visible { outline-color: #355316; }
+}
+.arrow { color: #c5ff3d; font-size: 1.16rem; line-height: 1; }
+
+.plate-art {
+  position: absolute;
+  z-index: 0;
+  right: -25px;
+  top: 50%;
+  width: min(38%, 410px);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  border: 1px solid #b8a894;
+  background: repeating-radial-gradient(circle, transparent 0 24px, #cbbba6 25px 26px, transparent 27px 34px);
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    inset: 17%;
+    border-radius: 50%;
+    border: 1px solid #e8ffb4;
+    background: #c5ff3d;
+  }
+  &::after { inset: 22%; border: 2px solid #627e2d; background: transparent; }
+  span {
+    position: absolute;
+    z-index: 1;
+    inset: 36%;
+    border: 9px solid #8ab32d;
+    border-radius: 50%;
+    background: #eee6d7;
   }
 }
 
-// Section motivation améliorée
-.motivation-section {
-
-  width: 100%;
-
-  position: relative;
-  z-index: 1;
-
-  .motivation-card {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    background: $surface-secondary;
-    background-size: 400% 400%;
-    border-radius: $border-radius-2xl;
-    padding: 3rem 2rem;
-    text-align: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    box-shadow: $shadow-2xl;
-
-    // Éléments décoratifs flottants
-    &::before {
-      content: "";
-      position: absolute;
-      top: 20%;
-      left: 10%;
-      width: 120px;
-      height: 120px;
-      background: radial-gradient(
-        circle,
-        rgba($surface-secondary, 0.1),
-        transparent 70%
-      );
-      border-radius: 50%;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 20%;
-      right: 10%;
-      width: 160px;
-      height: 160px;
-      background: radial-gradient(
-        circle,
-        rgba($surface-secondary, 0.08),
-        transparent 70%
-      );
-      border-radius: 50%;
-    }
-
-    .motivation-content {
-      position: relative;
-      z-index: 2;
-
-      .motivation-title {
-        font-size: clamp(1.875rem, 5vw, 2.25rem);
-        font-weight: 800;
-        margin-bottom: 1.5rem;
-        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        line-height: 1.2;
-      }
-
-      .motivation-text {
-        font-size: clamp(1.125rem, 3vw, 1.25rem);
-        margin-bottom: 3rem;
-        opacity: 0.95;
-        line-height: 1.7;
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-        font-weight: 500;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .motivation-actions {
-        display: flex;
-        gap: 1.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
-
-        .btn-motivation {
-          padding: 1.25rem 2.5rem;
-          border-radius: $border-radius-lg;
-          font-weight: 700;
-          font-size: 1.125rem;
-          cursor: pointer;
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          text-decoration: none;
-          position: relative;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          min-height: 48px;
-
-          &::before {
-            @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.8s ease);
-          }
-
-          &:focus-visible {
-            outline: 3px solid rgba($surface-secondary, 0.4);
-            outline-offset: 2px;
-          }
-
-          &.primary {
-            
-            
-            border: none;
-            box-shadow: $shadow-xl;
-
-            &:hover {
-              transform: translateY(-3px) scale(1.02);
-              box-shadow: $shadow-2xl;
-             
-
-              &::before {
-                left: 100%;
-              }
-            }
-          }
-
-          &.secondary {
-            background: transparent;
-            border: $border-width solid $border-strong;
-            color: $text-primary;
-
-            &:hover {
-              background: rgba($surface-secondary, 0.1);
-              border-color: white;
-              transform: translateY(-3px) scale(1.02);
-
-              &::before {
-                left: 100%;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .motivation-visual {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-
-      .floating-shapes {
-        position: relative;
-        width: 100%;
-        height: 100%;
-
-        .shape {
-          position: absolute;
-          opacity: 0.1;
-
-          &.circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: $surface-secondary;
-            top: 15%;
-            right: 15%;
-          }
-
-          &.triangle {
-            width: 0;
-            height: 0;
-            border-left: $border-width solid $border-color;
-            border-right: $border-width solid $border-color;
-            border-bottom: $border-width solid $border-color;
-            top: 65%;
-            right: 5%;
-          }
-
-          &.square {
-            width: 60px;
-            height: 60px;
-            background: $surface-secondary;
-            border-radius: $radius-2xl;
-            top: 35%;
-            right: 65%;
-          }
-        }
-      }
-    }
+.section-heading h2 { margin: 0; font-size: 1.12rem; font-weight: 750; }
+.section-heading p { margin: 4px 0 0; font-size: .8rem; color: $text-muted; }
+.week-section .section-heading { margin-bottom: 6px; }
+.week-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  background: $surface-primary;
+  > div {
+    min-width: 0;
+    padding: 17px clamp(9px, 2.1vw, 24px);
+    + div { border-left: 1px solid $border-color; }
   }
+  dt {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: $text-secondary;
+    font-size: .77rem;
+    font-weight: 650;
+    app-icon { color: $primary-light; }
+  }
+  dd {
+    margin: 6px 0 0;
+    font: 700 clamp(1.65rem, 3vw, 2.7rem)/1 $font-family-display;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  small { font: 650 .8rem $font-family-base; color: $text-muted; white-space: nowrap; }
 }
 
-
-// Responsive Design amélioré
-@include respond-below(xl) {
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-    
-  }
+.home-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(255px, .85fr); gap: 16px; align-items: start; }
+.home-panel {
+  min-width: 0;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: clamp(16px, 2vw, 24px);
+  background: $surface-primary;
 }
-
-@include respond-below(lg) {
-  .dashboard-container {
-    &::before,
-    &::after {
-      opacity: 0.3;
-    }
-  }
-
-  // .hero-section,
-  // .stats-grid,
-  // .motivation-section {
-  //   margin: 1rem;
-  //   width: calc(100% - 2rem);
-  // }
-
-  .hero-section {
-    padding: 2rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
-  }
-
-  .motivation-card {
-    padding: 2rem 1.5rem;
-
-    .motivation-title {
-      font-size: 1.875rem;
-    }
-
-    .motivation-text {
-      font-size: 1.125rem;
-    }
-
-    .motivation-actions {
-      flex-direction: column;
-      align-items: center;
-    }
-  }
-}
-
-@include respond-below(md) {
-  // .dashboard-container {
-  //   padding: 0.5rem;
-  // }
-  .hero-section {
-    // padding: 1.5rem;
-
-    .dashboard-container {
-      padding: 0.5rem;
-    }
-
-    .profile-section {
-      .welcome-text .greeting {
-        text-align: center;
-        font-size: 2rem;
-
-        .greeting-time {
-          font-size: 1.125rem;
-        }
-      }
-
-      .quick-actions {
-        .action-btn {
-          flex: 1;
-          justify-content: center;
-          padding: 1rem 1.5rem;
-          font-size: 0.9rem;
-        }
-      }
-    }
-  }
-
-  .stat-card {
-    padding: 1rem;
-
-    &.physical-stats .stats-grid-inner {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    &.workout-summary .summary-stats {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-    }
-  }
-
-  .motivation-card {
-    padding: 2rem 1.5rem;
-
-    .motivation-title {
-      font-size: 1.5rem;
-    }
-
-    .motivation-text {
-      font-size: 1rem;
-    }
-  }
-}
-
-@include respond-below(xs) {
-  // .hero-section,
-  // .stats-grid,
-  // .motivation-section {
-  //   margin: 0.5rem;
-  //   width: 100%;
-  // }
-
-  .dashboard-container {
-    padding: 0.5rem;
-  }
-
-  .hero-section {
-    padding: 1rem;
-  }
-
-  .stat-card {
-    padding: 1rem;
-
-    &.workout-summary .summary-stats {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
-
-  .motivation-card {
-    padding: 2rem 1rem;
-  }
-
-  .quick-actions {
-    flex-direction: column;
-    gap: 0.75rem;
-
-    .action-btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-}
-
-/* =============================================
- * DARK NEON DASHBOARD OVERRIDES
- * ============================================= */
-
-.dashboard-container {
-  color: $text-primary;
-}
-
-.dashboard-container * {
-  box-shadow: none !important;
-}
-
-.dashboard-container .hero-section,
-.dashboard-container [class*='card'],
-.dashboard-container [class*='panel'],
-.dashboard-container [class*='module'] {
-  
-
-}
-
-.dashboard-container .stat-value,
-.dashboard-container .highlight-value {
-  color: $text-primary;
-}
-
-.dashboard-container .progress-bar {
-  background: rgba($primary-color, 0.2);
-
-  &::after {
-    background: $primary-color;
-  }
-}
-
-.dashboard-container .btn-motivation,
-.dashboard-container .action-btn {
-  background: $primary-color;
-  color: $text-inverse;
-  border: $border-width solid $border-color;
-}
-
-.dashboard-container .action-btn.secondary {
-  background: rgba($primary-color, 0.15);
-  color: $text-primary;
-}
-
-// Mode réduit mouvement pour accessibilité
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-// Mode contraste élevé
-@media (prefers-contrast: high) {
-  .stat-card {
-    border: $border-width solid $border-color;
-    padding: 1rem;
-  }
-
-  .action-btn,
-  .btn-motivation {
-    border: $border-width solid $border-color;
-  }
-}
-
-// Support pour les utilisateurs qui préfèrent un mouvement réduit
-@media (prefers-reduced-motion: reduce) {
-  .dashboard-container::before,
-  .dashboard-container::after,
-  .hero-background::before,
-  .hero-background::after,
-  .motivation-card::before,
-  .motivation-card::after,
-  .floating-shapes .shape {
-    animation: none;
-  }
-}
-
-
-// =============================================
-// EN-TETE D'ECRAN — TRAITEMENT COMPACT
-// =============================================
-//
-// L'ecran s'ouvrait sur un bloc centre : pictogramme, titre sur deux lignes,
-// phrase d'accroche, puis des cartes de statistiques de 150 px de haut. Sur
-// telephone l'ensemble remplissait le premier ecran et repoussait le contenu
-// reel — liste, recherche, filtres — sous la ligne de flottaison.
-//
-// Les selecteurs ci-dessous reprennent la profondeur des regles d'origine,
-// qui descendent jusqu'a cinq niveaux et vivent en partie dans des media
-// queries. Une media query n'ajoute pas de specificite : a egalite, la
-// derniere regle du fichier l'emporte.
-
-.dashboard-container {
-  .hero-section {
-    padding: 1.25rem 0 0.5rem;
-    margin: 0;
-    border: 0;
-    background: none;
-    text-align: left;
-
-    .hero-background { display: none; }
-
-    .hero-content {
-      display: block;
-      padding: 0;
-      gap: 0;
-      text-align: left;
-
-      .title-section {
-        display: flex;
-        // row explicite : plusieurs ecrans forcaient la colonne, ce qui
-        // laissait le pictogramme seul et centre au-dessus du titre.
-        flex-direction: row;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 0.75rem;
-        padding: 0;
-        margin: 0 0 1rem;
-        text-align: left;
-
-        .title-icon {
-          display: grid;
-          place-items: center;
-          width: 34px;
-          height: 34px;
-          min-width: 34px;
-          min-height: 34px;
-          flex-shrink: 0;
-          margin: 0;
-          padding: 0;
-          border-radius: $radius-md;
-          background: rgba($primary-color, 0.12);
-          color: $text-primary;
-          font-size: 1rem;
-
-          app-icon { width: 18px; height: 18px; }
-        }
-
-        .title-content {
-          flex: 1;
-          min-width: 0;
-          text-align: left;
-
-          .page-title {
-            margin: 0;
-            font-size: clamp(1.25rem, 4.5vw, 1.5rem);
-            font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-            color: $text-primary;
-            text-align: left;
-          }
-
-          .page-subtitle {
-            margin: 0.125rem 0 0;
-            font-size: 0.8125rem;
-            font-weight: 400;
-            line-height: 1.45;
-            color: $text-secondary;
-            text-align: left;
-          }
-        }
-      }
-
-      // --- Statistiques : une ligne dense, pas des cartes ---
-      .quick-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
-        gap: 0.5rem;
-        margin: 0 0 1.25rem;
-        padding: 0;
-
-        .stat-item,
-        .stat-card {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: center;
-          gap: 0;
-
-          min-height: 0;
-          height: auto;
-          padding: 0.625rem 0.75rem;
-
-          border: $border-width solid $border-color;
-          border-radius: $radius-lg;
-          background: $surface-secondary;
-          text-align: left;
-
-          &::before, &::after { display: none; }
-          &:hover { transform: none; background: $surface-secondary; }
-
-          // Une icone n'apporte rien a cote d'un chiffre et de son libelle.
-          .stat-icon { display: none; }
-
-          .stat-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0;
-            text-align: left;
-
-            .stat-value {
-              font-size: 1.0625rem;
-              font-weight: 700;
-              line-height: 1.2;
-              color: $text-primary;
-              font-variant-numeric: tabular-nums;
-            }
-
-            .stat-label {
-              font-size: 0.6875rem;
-              font-weight: 500;
-              line-height: 1.3;
-              text-transform: none;
-              letter-spacing: 0;
-              color: $text-secondary;
-            }
-          }
-        }
-      }
-    }
-
-    // Variante sans .hero-content, presente sur certains ecrans.
-    > .title-section {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 0 0 1rem;
-      text-align: left;
-    }
-  }
-}
-
-
-// =============================================
-// ACCUEIL — SALUTATION COMPACTE
-// =============================================
-//
-// Le dashboard n'utilise pas la structure .title-section des autres ecrans :
-// il a son propre bloc de bienvenue, centre, avec le prenom en lime et de
-// tres grande taille. C'etait le premier ecran de l'app et il ne repondait
-// pas a la question « qu'est-ce que je fais aujourd'hui ».
-
-.dashboard-container .hero-section .hero-content .profile-section {
-  display: block;
+.panel-icon { color: $primary-light; }
+.activity-chart {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  list-style: none;
+  margin: 24px 0 20px;
   padding: 0;
-  text-align: left;
-
-  .welcome-text {
-    margin: 0 0 1rem;
-    text-align: left;
-
-    .greeting {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: baseline;
-      gap: 0.35rem;
-      margin: 0;
-      // Une salutation n'est pas un titre de page : elle situe, sans dominer.
-      font-size: clamp(1.25rem, 4.5vw, 1.5rem);
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      text-align: left;
-
-      .greeting-time {
-        font-size: inherit;
-        font-weight: 400;
-        color: $text-secondary;
-        -webkit-text-fill-color: currentColor;
-      }
-
-      .user-name {
-        font-size: inherit;
-        font-weight: 700;
-        color: $text-primary;
-        -webkit-text-fill-color: currentColor;
-      }
-    }
-
-    .welcome-subtitle {
-      margin: 0.125rem 0 0;
-      font-size: 0.8125rem;
-      font-weight: 400;
-      line-height: 1.45;
-      color: $text-secondary;
-      text-align: left;
-    }
-  }
+  li { display: grid; justify-items: center; gap: 7px; }
+}
+.bar-track {
+  display: flex;
+  align-items: end;
+  width: min(100%, 46px);
+  height: 92px;
+  overflow: hidden;
+  border-radius: 5px 5px 2px 2px;
+  border-bottom: 2px solid $border-strong;
+  background: $surface-tertiary;
+  &.empty { background: transparent; border-bottom-color: #54473d; }
+}
+.bar-fill { width: 100%; background: #897d6d; border-radius: 4px 4px 0 0; }
+.current .bar-fill { background: $primary-light; }
+.bar-count { font-weight: 750; font-size: .84rem; font-variant-numeric: tabular-nums; }
+.bar-label { font-size: .7rem; color: $text-muted; text-align: center; }
+.current .bar-label { color: $primary-light; }
+.latest-session {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-block-size: 51px;
+  padding-top: 12px;
+  border-top: 1px solid $border-color;
+  font-size: .8rem;
+  color: $text-secondary;
+  app-icon { color: $text-muted; flex: none; }
+  strong { display: block; margin-top: 3px; color: $text-primary; overflow-wrap: anywhere; }
+}
+.training-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  margin: 20px 0 11px;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  li { min-width: 0; display: grid; justify-items: center; gap: 4px; padding: 5px 1px; border: 1px solid transparent; border-radius: 6px; }
+  span { color: $text-muted; font-size: .64rem; text-transform: capitalize; }
+  strong { font-size: .85rem; font-variant-numeric: tabular-nums; }
+  i { height: 5px; width: 5px; border-radius: 50%; }
+  .recorded i { background: $primary-light; }
+  .today { background: #273218; border-color: #495b2a; }
+  .today strong { color: #d3ff68; }
+}
+.planning-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: $text-muted;
+  font-size: .76rem;
+  i { width: 6px; height: 6px; background: $primary-light; border-radius: 50%; }
+}
+.calendar-link {
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 14px;
+  border-top: 1px solid $border-color;
 }
 
-/* =============================================
- * TABLEAU DE BORD — MISE EN PAGE FAISANT AUTORITE
- * =============================================
- *
- * Bloc final : le fichier empile plusieurs generations de regles, dont un
- * passage « en-tete compact » (.dashboard-container > .hero-section >
- * .hero-content, specificite 0-3-0) ecrit pour un balisage .title-section /
- * .quick-stats que ce composant n'utilise pas. Il est donc en grande partie
- * mort — mais son `display: block` etait bien actif, et c'est lui qui
- * ecrasait la grille a deux colonnes de l'accueil.
- */
-
-.dashboard-container {
-
-  // ------------------------------------------------------- en-tete d'accueil
-  //
-  // L'en-tete ne contient plus que l'accueil, les deux actions et la citation.
-  // Le calendrier, qui occupait sa colonne droite, est passe dans la grille de
-  // cartes : mis en face d'un bloc de 250 px, ses 600 px de haut laissaient un
-  // vide de 350 px que rien ne pouvait remplir.
-  > .hero-section > .hero-content {
-    display: block;
-  }
-
-  .profile-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .welcome-text {
-    .greeting {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.375rem;
-      margin: 0;
-      font-size: clamp(1.375rem, 2.6vw, 1.625rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-
-      .greeting-time { color: $text-secondary; font-weight: 500; }
-      .user-name     { color: $text-primary; }
-    }
-
-    .welcome-subtitle {
-      margin: 0.125rem 0 0;
-      font-size: 0.875rem;
-      color: $text-secondary;
-    }
-  }
-
-  .quick-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0;
-  }
-
-  // ------------------------------------------------------- carte de citation
-  //
-  // Une citation centree en 2rem de haut, avec deux boutons sous elle et
-  // 308 px de hauteur totale, pour un contenu d'une phrase. C'est le premier
-  // bloc de l'ecran alors que ce n'est pas la premiere information utile.
-  .motivation-section { margin: 0; }
-
-  .motivation-card {
-    display: block !important;
-    padding: 1rem 1.25rem !important;
-    border-radius: $radius-lg;
-    background: rgba(237, 232, 224, 0.03);
-    border: $border-width solid $border-color;
-    text-align: left !important;
-
-    .motivation-visual { display: none !important; }
-
-    .motivation-title {
-      margin: 0 0 0.25rem !important;
-      font-size: 0.6875rem !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: $text-muted !important;
-      text-align: left !important;
-    }
-
-    .motivation-text {
-      margin: 0 !important;
-      font-size: 0.9375rem !important;
-      line-height: 1.5;
-      color: $text-primary !important;
-      text-align: left !important;
-    }
-
-    // Les deux boutons de la citation dupliquaient « Voir mes objectifs » et
-    // « Nouveau defi », deja atteignables depuis la navigation laterale.
-    .motivation-actions { display: none !important; }
-  }
-
-  // Le calendrier est desormais une carte de la grille, au meme format que
-  // les autres. Il faisait 1 014 px de large pour un contenu de 320 px.
-  .stats-grid .stat-card.calendar-section {
-    padding: 0.75rem !important;
-
-    app-mini-calendar { display: block; }
-  }
-
-  // ------------------------------------------------------------- cartes
-  .stats-grid {
-    gap: 1rem !important;
-    margin: 0 0 1rem !important;
-    align-items: start;
-
-    // Placement explicite sur grand ecran.
-    //
-    // En placement automatique, le calendrier (le plus haut) fixait la
-    // hauteur de la premiere rangee, le resume se retrouvait seul sur la
-    // deuxieme et le graphique, pleine largeur, partait sur la troisieme :
-    // les deux tiers droits de la rangee 2 restaient vides.
-    @include respond-above(lg) {
-      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-
-      // Le calendrier tient sur deux rangees, en face des cartes courtes.
-      .calendar-section { grid-row: span 2; }
-
-      // Le resume occupe les deux colonnes restantes de la rangee 2.
-      .workout-summary { grid-column: span 2; }
-
-      .performance-chart { grid-column: 1 / -1; }
-    }
-  }
-
-  .stats-grid .stat-card {
-    padding: 1.25rem !important;
-    border-radius: $radius-xl !important;
-
-    .card-header {
-      margin-bottom: 1rem !important;
-      padding-bottom: 0 !important;
-      border-bottom: 0 !important;
-
-      h3 {
-        font-size: 0.9375rem !important;
-        font-weight: 650 !important;
-        margin: 0 !important;
-      }
-    }
-  }
-
-  // ------------------------------------------------- graphique de performance
-  //
-  // Le bloc faisait 621 px de haut pour une courbe de 280. Le SVG a un
-  // `viewBox` de 500x280 etire sur toute la largeur, ce qui deformait le
-  // trace ; le rembourrage de 2,5rem et le fond en degrade ajoutaient une
-  // carte a l'interieur de la carte.
-  .stats-grid .stat-card.performance-chart {
-    .chart-container { margin: 0; }
-
-    .chart-placeholder {
-      padding: 0 !important;
-      background: none !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-
-      &::before, &::after { display: none !important; }
-
-      // Le gabarit laissait `preserveAspectRatio` a sa valeur par defaut : le
-      // viewBox 500x280 etait donc mis a l'echelle en mode « meet », centre et
-      // cale sur la hauteur. La courbe occupait ~320 px au milieu d'un bloc de
-      // 1 000, le reste etant du vide. L'attribut passe a "none" dans le
-      // gabarit, le trace remplit desormais la largeur.
-      svg {
-        display: block;
-        width: 100%;
-        height: 200px;
-      }
-    }
-
-    .chart-legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin: 0.75rem 0 0 !important;
-      padding: 0 !important;
-      border: 0 !important;
-
-      .legend-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.375rem;
-        font-size: 0.75rem;
-        color: $text-secondary;
-      }
-
-      .legend-color { width: 8px; height: 8px; border-radius: 50%; }
-    }
-
-    .chart-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
-      gap: 0.75rem;
-      margin-top: 1rem !important;
-      padding-top: 1rem !important;
-      border-top: $border-width solid $border-color !important;
-
-      .chart-stat {
-        text-align: left;
-
-        .stat-value {
-          font-size: 1.125rem !important;
-          font-weight: 650 !important;
-          color: $text-primary !important;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .stat-label {
-          font-size: 0.75rem !important;
-          font-weight: 500 !important;
-          color: $text-muted !important;
-        }
-      }
-    }
-  }
-
-  // ------------------------------------------------------------ calories
-  //
-  // La carte etait deux fois plus haute que son contenu : anneau, barre et
-  // libelle occupaient 300 px dans un bloc de 600.
-  .stats-grid .stat-card.calories-card {
-    .calories-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .calories-circle {
-      width: 140px !important;
-      height: 140px !important;
-      margin: 0 !important;
-    }
-
-    .calories-info { width: 100%; }
-
-    .progress-text {
-      margin: 0.5rem 0 0 !important;
-      font-size: 0.8125rem !important;
-      font-weight: 500 !important;
-      color: $text-secondary !important;
-    }
-  }
-
-  // -------------------------------------------------- resume d'entrainement
-  //
-  // Prefixe `.stats-grid .stat-card` : les regles d'origine sont imbriquees
-  // jusqu'a `.stats-grid > .stat-card.workout-summary > .summary-stats`
-  // (specificite 0-4-0). Sans ce prefixe, ce bloc pese 0-3-0 et n'a aucun
-  // effet — c'est ce qui laissait les tuiles en deux colonnes, avec des
-  // libelles plus larges que la demi-carte et donc tronques.
-  .stats-grid .stat-card.workout-summary {
-    .summary-stats {
-      display: grid;
-      // Une seule colonne : « Total entrainements » et « Minutes d'exercice »
-      // ne tiennent pas en demi-largeur de carte, et deux colonnes de tuiles
-      // tronquees se lisent moins bien qu'une liste.
-      grid-template-columns: minmax(0, 1fr);
-      gap: 0.5rem;
-    }
-
-    .summary-item {
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: center;
-      gap: 0.625rem;
-      padding: 0.75rem !important;
-      border-radius: $radius-lg !important;
-      background: rgba(237, 232, 224, 0.03) !important;
-      border: $border-width solid $border-color !important;
-      text-align: left !important;
-    }
-
-    .summary-icon {
-      width: 32px !important;
-      height: 32px !important;
-      margin: 0 !important;
-      border-radius: $radius-sm !important;
-      flex-shrink: 0;
-
-      svg { width: 16px; height: 16px; }
-    }
-
-    // `flex-direction` et `align-items` portent un `!important` : la regle
-    // d'origine est imbriquee jusqu'a
-    // `.stats-grid > .stat-card.workout-summary > .summary-stats
-    //  .summary-item .summary-content` (specificite 0-6-0) et remet la
-    // colonne centree. Sans cette marque, le libelle restait centre au milieu
-    // de la ligne et la valeur passait DESSOUS, a droite : « Total
-    // entrainements » au centre, « 128 » a la ligne suivante, colle au bord.
-    .summary-content {
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: baseline !important;
-      justify-content: flex-start !important;
-      gap: 0.5rem;
-      min-width: 0;
-      flex: 1;
-      text-align: left !important;
-    }
-
-    .summary-number {
-      order: 2;
-      margin-left: auto;
-      font-size: 1.0625rem !important;
-      font-weight: 650 !important;
-      color: $text-primary !important;
-      line-height: 1.2;
-      font-variant-numeric: tabular-nums;
-    }
-
-    // Les libelles etaient coupes en deux par un <br> : « Total<br>
-    // Entrainements » sur deux lignes centrees dans une tuile carree.
-    .summary-label {
-      order: 1;
-      flex: 1;
-      min-width: 0;
-      font-size: 0.8125rem !important;
-      font-weight: 500 !important;
-      color: $text-secondary !important;
-      line-height: 1.3;
-      text-align: left !important;
-    }
-  }
+@media (max-width: 1080px) and (min-width: 821px), (max-width: 650px) {
+  .home-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 650px) {
+  .heading-link { display: none; }
+  .training-feature { min-height: 221px; }
+  .training-content { max-width: 85%; }
+  .plate-art { right: -78px; width: 200px; opacity: .58; }
+  .week-metrics dt app-icon { display: none; }
 }

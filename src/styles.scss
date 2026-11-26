@@ -11,8 +11,19 @@
 @use './variables.scss' as *;
 @use './design-system' as *;
 
-// La police est declarée dans index.html : un @import ici retarde sa
-// decouverte d'une vague de requetes complete (voir le commentaire du <head>).
+@font-face {
+  font-family: Archivo;
+  src: url('./assets/fonts/archivo-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  src: url('./assets/fonts/barlow-condensed-latin-700-normal.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
 
 // =============================================
 // GLOBAL RESET & BASE STYLES
@@ -28,7 +39,7 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: visible;
   transition: var(--transition-base);
 
@@ -47,7 +58,7 @@ app-root {
 
 /* Empêcher le défilement horizontal global */
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
 }
 
@@ -57,20 +68,20 @@ html {
 }
 // Modern Design System Variables
 :root {
-  --sidebar-width: 320px;
+  --sidebar-width: 228px;
   --sidebar-collapsed-width: 80px;
   --sidebar-mobile-width: 100vw;
 
-  --color-bg: #0a0a0b;
-  --color-surface: #141416;
-  --color-surface-strong: #1c1c20;
-  --color-surface-soft: #1c1c20;
-  --color-surface-raised: #26262b;
-  --color-text: #f4f4f5;
-  --color-text-secondary: #d4d4d8;
-  --color-text-muted: #a8a8b0;
-  --color-primary: #d4ff3d;
-  --color-primary-contrast: #050505;
+  --color-bg: #{$bg-primary};
+  --color-surface: #{$surface-primary};
+  --color-surface-strong: #{$surface-tertiary};
+  --color-surface-soft: #{$surface-primary};
+  --color-surface-raised: #{$surface-raised};
+  --color-text: #{$text-primary};
+  --color-text-secondary: #{$text-secondary};
+  --color-text-muted: #{$text-muted};
+  --color-primary: #{$primary-light};
+  --color-primary-contrast: #{$text-inverse};
   // --color-secondary et --color-accent valaient le meme lime que la couleur
   // primaire : tout ce qui s'en servait pour se distinguer de l'action
   // principale rendait en fait exactement la meme teinte. Elles designent
@@ -149,7 +160,7 @@ body {
   background: $bg-primary !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   overflow-y: visible;
   transition: var(--transition-base);
   margin: 0;
@@ -195,15 +206,7 @@ h1, h2, h3, h4, h5, h6 {
 // donnaient a chaque en-tete de carte la taille d'un titre de page.
 h1 { font-size: clamp(1.5rem, 3.2vw, 1.875rem); font-weight: 700; }
 
-// Titre de page (classe .page-title, reprise par la plupart des ecrans) :
-// estampille en Big Shoulders Stencil. Reservee a ce seul intitule — un par
-// ecran — plutot qu'a h1 en general, qui porte aussi des titres de contenu
-// (nom d'exercice, de programme...) ou l'alterne rendrait la lecture plus
-// difficile plutot que plus nette.
-//
-// Echelle agrandie par rapport au h1 generique : un titre de page affirme sa
-// place en haut de l'ecran, il ne doit pas se confondre avec un intitule de
-// carte.
+// Typographie sportive réservée aux titres de page.
 .page-title {
   font-family: $font-family-display;
   font-size: clamp(1.75rem, 4.2vw, 2.5rem);
@@ -1848,4 +1851,15 @@ textarea {
 [class*='-track']:has(> [class*='fill']) {
   background: rgba(237, 232, 224, 0.09) !important;
   background-image: none !important;
+}
+
+:where(button, input, textarea, select, a, [tabindex], summary):focus-visible {
+  outline: 2px solid $primary-light;
+  outline-offset: 3px;
+}
+
+html:has(.mobile-nav-sheet[open]) { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }

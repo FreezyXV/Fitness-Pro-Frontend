@@ -1,11 +1,15 @@
 <div class="app-container">
-  <!-- Desktop : navigation laterale. Masquee sous le point de rupture md. -->
-  <app-sidebar></app-sidebar>
+  <app-sidebar />
 
-  <main class="main-content">
-    <router-outlet></router-outlet>
-  </main>
+  <div class="workspace-content">
+    <header class="mobile-header">
+      <a routerLink="/dashboard" aria-label="FitnessPro, accueil"><app-brand /></a>
+    </header>
 
-  <!-- Mobile : barre d'onglets basse. Masquee au-dessus de md. -->
-  <app-bottom-nav></app-bottom-nav>
+    <main class="main-content">
+      <router-outlet />
+    </main>
+  </div>
+
+  <app-bottom-nav />
 </div>

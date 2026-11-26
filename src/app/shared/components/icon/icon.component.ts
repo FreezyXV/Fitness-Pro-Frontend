@@ -23,7 +23,7 @@ export type IconName =
   | 'star' | 'droplet' | 'close' | 'user' | 'users' | 'edit' | 'video'
   | 'bulb' | 'tag' | 'utensils' | 'search' | 'plus' | 'leaf' | 'logout'
   | 'lock' | 'link' | 'eye' | 'globe' | 'settings' | 'refresh' | 'moon'
-  | 'clock' | 'book' | 'circle' | 'mail' | 'eye-off';
+  | 'clock' | 'book' | 'circle' | 'mail' | 'eye-off' | 'home' | 'more' | 'arrow-up-right';
 
 /** Primitive de dessin. Uniquement des contours : ni aplat, ni couleur. */
 type Shape =
@@ -37,6 +37,9 @@ const r = (x: number, y: number, w: number, h: number, rx = 2): Shape => ({ t: '
 
 /** Traces en 24x24, meme grille et meme graisse pour tout le jeu. */
 const PATHS: Record<IconName, Shape[]> = {
+  'arrow-up-right': [p('M6 18 18 6M8 6h10v10')],
+  home:           [p('M3 11.5 12 4l9 7.5M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9')],
+  more:           [c(5, 12, 1), c(12, 12, 1), c(19, 12, 1)],
   target:        [c(12, 12, 9), c(12, 12, 5), c(12, 12, 1.5)],
   dumbbell:      [p('M6.5 6.5v11M17.5 6.5v11M3.5 9.5v5M20.5 9.5v5M6.5 12h11')],
   chart:         [p('M3 3v18h18'), r(7, 12, 3, 6, 1), r(12, 8, 3, 10, 1), r(17, 5, 3, 13, 1)],

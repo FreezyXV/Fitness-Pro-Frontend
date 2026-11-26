@@ -1,19 +1,16 @@
 <div class="progress-page">
 
-  <header class="page-head">
+  <header class="workspace-page-head">
     <div>
       <h1>Progression</h1>
-      <p class="page-sub">Ce que disent réellement tes séances.</p>
+      <p class="page-sub">Séances, volume et charges enregistrés.</p>
     </div>
 
-    <!-- Selecteur de periode : un vrai groupe de boutons radio, pas des divs
-         cliquables, pour que la selection soit annoncee et navigable. -->
-    <div class="period-switch" role="radiogroup" aria-label="Période analysée">
+    <div class="period-switch" role="group" aria-label="Période analysée">
       <button
         *ngFor="let option of periods"
         type="button"
-        role="radio"
-        [attr.aria-checked]="period().weeks === option.weeks"
+        [attr.aria-pressed]="period().weeks === option.weeks"
         [class.is-active]="period().weeks === option.weeks"
         (click)="selectPeriod(option)"
       >{{ option.label }}</button>
@@ -29,11 +26,9 @@
         <path d="M7 15l4-4 3 3 5-6" />
       </svg>
     </div>
-    <h2>Ta progression commence à la première séance</h2>
+    <h2>Aucune séance enregistrée</h2>
     <p>
-      Dès que tu termines une séance, les charges et le volume que tu as
-      réellement travaillés apparaissent ici. Rien n'est simulé : tant que tu
-      n'as pas soulevé, il n'y a rien à montrer.
+      Termine une séance pour retrouver tes charges et ton volume ici.
     </p>
     <a routerLink="/workouts" class="btn-primary">Voir mes programmes</a>
   </section>

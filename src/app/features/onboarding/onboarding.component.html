@@ -39,6 +39,7 @@
         type="button"
         class="ob-choice"
         [class.is-selected]="goal() === choice.value"
+        [attr.aria-pressed]="goal() === choice.value"
         (click)="chooseGoal(choice.value)"
       >
         <span class="ob-choice-label">{{ choice.label }}</span>
@@ -53,6 +54,7 @@
         type="button"
         class="ob-choice"
         [class.is-selected]="level() === choice.value"
+        [attr.aria-pressed]="level() === choice.value"
         (click)="chooseLevel(choice.value)"
       >
         <span class="ob-choice-label">{{ choice.label }}</span>
@@ -67,6 +69,7 @@
         type="button"
         class="ob-choice"
         [class.is-selected]="frequency() === choice.value"
+        [attr.aria-pressed]="frequency() === choice.value"
         (click)="chooseFrequency(choice.value)"
       >
         <span class="ob-choice-label">{{ choice.label }}</span>
@@ -81,6 +84,7 @@
         type="button"
         class="ob-choice"
         [class.is-selected]="equipment() === choice.value"
+        [attr.aria-pressed]="equipment() === choice.value"
         (click)="chooseEquipment(choice.value)"
       >
         <span class="ob-choice-label">{{ choice.label }}</span>
@@ -131,6 +135,7 @@
           type="button"
           class="ob-pill"
           [class.is-selected]="gender() === choice.value"
+        [attr.aria-pressed]="gender() === choice.value"
           (click)="chooseGender(choice.value)"
         >{{ choice.label }}</button>
       </fieldset>

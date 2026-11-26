@@ -77,12 +77,11 @@ class FormUtils {
 }
 
 import { ReminderService, ReminderSettings } from '@core/services/reminder.service';
-import { IconComponent } from '@app/shared/components/icon/icon.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IconComponent],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
   animations: [

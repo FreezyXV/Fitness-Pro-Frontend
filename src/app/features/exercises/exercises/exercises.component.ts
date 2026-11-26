@@ -5,6 +5,8 @@ import {
   OnDestroy,
   ChangeDetectorRef,
   HostListener,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -521,19 +523,29 @@ export class ExercisesComponent implements OnInit, OnDestroy {
     this.applyFiltersWithPerformance();
   }
 
-  // Panneau de filtres mobile : masque par defaut, ouvert par le bouton
-  // flottant "Filtrer", ferme en revalidant (les filtres s'appliquent deja
-  // en direct via onFilterChange, "Appliquer" ne fait que revenir au resultat).
+  @ViewChild('filterTrigger') private filterTrigger?: ElementRef<HTMLButtonElement>;
+  @ViewChild('filterDismiss') private filterDismiss?: ElementRef<HTMLButtonElement>;
+
   showMobileFilters = false;
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
     BodyScrollLock.lock();
+    this.cdr.detectChanges();
+    this.filterDismiss?.nativeElement.focus({ preventScroll: true });
   }
 
+  @HostListener('document:keydown.escape')
   closeMobileFilters(): void {
+    if (!this.showMobileFilters) return;
     this.showMobileFilters = false;
     BodyScrollLock.unlock();
+    this.filterTrigger?.nativeElement.focus({ preventScroll: true });
+  }
+
+  @HostListener('window:resize')
+  closeFiltersOnDesktop(): void {
+    if (window.innerWidth > 768) this.closeMobileFilters();
   }
 
   clearAllFilters(): void {

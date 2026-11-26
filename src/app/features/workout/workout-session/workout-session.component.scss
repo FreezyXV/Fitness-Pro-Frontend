@@ -19,6 +19,8 @@
 }
 
 .session {
+  width: min(100%, 660px);
+  margin-inline: auto;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -94,9 +96,7 @@
 }
 
 .stage-exercise {
-  font-size: clamp(1.5rem, 6vw, 2.25rem);
-  font-weight: 800;
-  line-height: 1.15;
+  font: 700 clamp(2.4rem, 7vw, 3.6rem)/1 $font-family-display;
   margin: 0;
 }
 
@@ -260,8 +260,8 @@
   min-height: 68px;
   border: none;
   border-radius: $border-radius-xl;
-  background: $primary-color;
-  color: $bg-primary;
+  background: $primary-light;
+  color: #211610;
   font-size: 1.25rem;
   font-weight: 800;
   cursor: pointer;
@@ -295,7 +295,7 @@
 }
 
 .ready-eyebrow { @include label-caps($text-secondary); }
-.ready-count { font-size: clamp(3.5rem, 18vw, 5.5rem); font-weight: 800; color: $primary-color; line-height: 1; }
+.ready-count { font-size: clamp(3.5rem, 18vw, 5.5rem); font-weight: 800; color: $primary-light; line-height: 1; }
 .ready-label { @include label-caps($text-secondary); margin-bottom: 1rem; }
 
 .ready-list {
@@ -333,8 +333,7 @@
   // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
   // elle ne rivalise pas avec la donnee qu'elle accompagne.
   background: rgba($primary-color, 0.12);
-  color: $text-primary;
-  color: $bg-primary;
+  color: $primary-light;
   font-size: 2.5rem;
   font-weight: 800;
 }

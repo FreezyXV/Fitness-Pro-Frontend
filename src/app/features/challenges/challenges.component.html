@@ -1,71 +1,20 @@
 <!-- src/app/challenges/challenges.component.html - Enhanced Dashboard Style -->
 
 <div class="challenges-container">
-  <!-- Hero Section - Enhanced Workout Style -->
-  <div class="hero-section">
-    <div class="hero-background"></div>
-    <div class="hero-content">
-      <div class="title-section">
-        <div class="title-icon"><app-icon name="trophy"></app-icon></div>
-        <div class="title-content">
-          <h1 class="page-title">Défis et Challenges</h1>
-          <p class="page-subtitle">Relevez des défis et battez vos records !</p>
-        </div>
-      </div>
-      
-      <!-- Enhanced Quick Stats -->
-      <div class="quick-stats">
-        <div class="stat-item">
-          <div class="stat-icon"><app-icon name="target"></app-icon></div>
-          <div class="stat-content">
-            <span class="stat-value">{{getActiveChallengesCount()}}</span>
-            <span class="stat-label">En cours</span>
-          </div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-icon"><app-icon name="trophy"></app-icon></div>
-          <div class="stat-content">
-            <span class="stat-value">{{getCompletedChallengesCount()}}</span>
-            <span class="stat-label">Terminés</span>
-          </div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-icon"><app-icon name="star"></app-icon></div>
-          <div class="stat-content">
-            <span class="stat-value">{{getTotalPoints()}}</span>
-            <span class="stat-label">Points</span>
-          </div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-icon"><app-icon name="trophy"></app-icon></div>
-          <div class="stat-content">
-            <span class="stat-value">#{{getCurrentUserRank()}}</span>
-            <span class="stat-label">Rang</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Enhanced Quick Actions -->
-      <div class="quick-actions">
-        <button class="action-btn primary" (click)="createCustomChallenge()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="5" x2="12" y2="19"/>
-            <line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          <span>Créer un défi</span>
-        </button>
-        
-        <button class="action-btn secondary" (click)="openLeaderboard()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
-            <path d="M14 15V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2z"/>
-            <path d="M18 9h1.5a2.5 2.5 0 0 1 0 5H18"/>
-          </svg>
-          <span>Classement</span>
-        </button>
-      </div>
+  <header class="workspace-page-head">
+    <div>
+      <h1>Défis</h1>
+      <p>{{ getActiveChallengesCount() }} en cours · {{ getCompletedChallengesCount() }} terminés</p>
     </div>
-  </div>
+    <div class="workspace-actions">
+      <button type="button" class="workspace-button is-primary" (click)="createCustomChallenge()">
+        <app-icon name="plus" [size]="17" /> Créer un défi
+      </button>
+      <button type="button" class="workspace-button" (click)="openLeaderboard()">
+        <app-icon name="trophy" [size]="17" /> Classement
+      </button>
+    </div>
+  </header>
 
   <!-- Enhanced Filters Section -->
   <div class="filters-section">

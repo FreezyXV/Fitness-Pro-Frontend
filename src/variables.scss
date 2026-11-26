@@ -4,34 +4,20 @@
 // =============================================
 
 // =============================================
-// CORE COLOR PALETTE — « FONTE & CRAIE »
+// PALETTE — charbon, craie et vert fluo
 // =============================================
-//
-// L'ancienne palette (fond noir + un seul accent vert acide) est le cliché
-// le plus cité pour une interface generee automatiquement. Celle-ci part des
-// objets reels d'une salle de musculation plutot que d'un kit de couleurs :
-//   - la fonte des disques (rouille, acier brosse) pour l'accent de marque ;
-//   - la craie de magnesie et le sol caoutchouc pour les neutres ;
-//   - le code couleur reel des disques de competition (rouge/bleu/jaune/vert)
-//     pour les statuts, qui restent donc FONCTIONNELS plutot que decoratifs.
-// Aucune de ces teintes n'est fluorescente : elles sont toutes materiaux,
-// pas neon.
 
-// Accent de marque — rouille d'un disque en fonte. $primary-color est deja
-// le ton utilise en APLAT (boutons), choisi pour rester lisible avec un
-// texte clair (5,6:1) sans etre eclatant.
-$primary-color: #9c4823;
-$primary-light: #cc7a52;
-$primary-dark: #70341a;
-$primary-darker: #4f2412;
-$primary-lighter: #e8c7b4;
+$primary-color: #405d1a;
+$primary-light: #c5ff3d;
+$primary-dark: #334a17;
+$primary-darker: #22310e;
+$primary-lighter: #e8ffb4;
 
-// Primary variants for consistency
-$primary-400: #b5552b;
-$primary-500: #9c4823;
-$primary-600: #823a1c;
-$primary-700: #682d16;
-$primary-800: #4f2412;
+$primary-400: #a7d83e;
+$primary-500: $primary-color;
+$primary-600: #3a5517;
+$primary-700: #2d4313;
+$primary-800: $primary-darker;
 
 // Secondaire — acier galvanise des structures de rack et de barre.
 $secondary-color: #5c7a8a;
@@ -104,18 +90,18 @@ $gray-900: #ede8e0;
 // l'accent de marque — pas un hasard colorimetrique, la meme famille.
 //
 // Trois niveaux, pas plus : fond de page, carte, element sureleve.
-$bg-primary: #17161a;
-$bg-secondary: #17161a;
-$bg-tertiary: #1e1c20;
-$bg-dark: #100f12;
+$bg-primary: #181512;
+$bg-secondary: #181512;
+$bg-tertiary: #24201c;
+$bg-dark: #12100e;
 $bg-color: $bg-primary;
-$surface-primary: #1e1c20;
-$surface-secondary: #1e1c20;
-$surface-tertiary: #26232a;
+$surface-primary: #211d19;
+$surface-secondary: #211d19;
+$surface-tertiary: #2b2621;
 // Quatrieme cran, uniquement pour les etats de survol : sans lui, survoler un
 // bouton pose sur $surface-tertiary ne produisait aucun retour visuel une fois
 // les deplacements et les halos supprimes.
-$surface-raised: #312d35;
+$surface-raised: #39312b;
 
 // =============================================
 // TEXTE
@@ -123,13 +109,13 @@ $surface-raised: #312d35;
 //
 // Craie sur beton : blanc chaud plutot que blanc neutre, meme logique de
 // trois niveaux (principal, secondaire, attenue).
-$text-primary: #ede8e0;
-$text-secondary: #b8b2a8;
+$text-primary: #f2ebe1;
+$text-secondary: #c4b8aa;
 // Verifie a 5,5:1 sur $bg-primary et 4,7:1 sur $surface-tertiary — au-dessus
 // du seuil AA de 4,5:1 dans les deux cas.
-$text-muted: #938d82;
+$text-muted: #aa9d8f;
 $text-light: #f7f3ec;
-$text-inverse: #17161a;
+$text-inverse: #181512;
 
 // Couleur du texte POSE SUR un aplat de la couleur de marque (boutons
 // d'action principale). Rapport de contraste sur $primary-color : 5,6:1.
@@ -139,19 +125,11 @@ $on-primary: #f7f3ec;
 // TYPOGRAPHY
 // =============================================
 
-// Inter/Poppins/Roboto sont les polices par defaut d'a peu pres tous les
-// generateurs d'interface — c'est a elles seules qu'on reconnaît un gabarit.
-// Trois registres distincts, choisis pour le sujet plutot que par defaut :
-//   - Archivo (grotesque) pour le texte courant et l'interface ;
-//   - Big Shoulders Stencil pour les titres et les grands chiffres — dessinee
-//     pour la signaletique industrielle de Chicago, elle lit comme poinçonnee
-//     sur une plaque de fonte plutot que generee par un kit UI ;
-//   - JetBrains Mono pour les valeurs tabulaires (charges, series, minuteur),
-//     deja prevue comme repli mais jamais chargee jusqu'ici.
-$font-family-display: 'Big Shoulders Stencil', 'Archivo', -apple-system, sans-serif;
+// Titres condensés et texte courant en Archivo.
+$font-family-display: 'Barlow Condensed', 'Archivo', -apple-system, sans-serif;
 $font-family-sans-serif: $font-family-display;
 $font-family-base: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-$font-family-mono: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace;
+$font-family-mono: ui-monospace, 'SFMono-Regular', Consolas, monospace;
 $font-family: $font-family-base;
 
 $font-size-xs: 0.75rem;   // 12px

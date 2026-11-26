@@ -1,3 +1,4 @@
+@use 'workspace-page';
 /* src/app/workout/workout.component.scss - Enhanced Dashboard Style */
 @use 'variables' as *;
 @use 'design-system' as *;
@@ -1490,3 +1491,6 @@ padding: 0.25rem;
   }
 }
 
+
+.history-empty { margin: 0; color: $text-muted; font-size: .87rem; }
+#history-heading { scroll-margin-block: 1.5rem; }

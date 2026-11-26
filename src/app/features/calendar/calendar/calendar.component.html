@@ -1,40 +1,23 @@
 <!-- Enhanced Calendar with Modern Design -->
 <div class="calendar-container">
-  <!-- Enhanced Hero Section -->
-  <div class="hero-section">
-    <div class="hero-content">
-      <!-- Breadcrumb -->
-      <nav class="breadcrumb">
-        <a routerLink="/dashboard" class="breadcrumb-item">
-
-          <span>Dashboard</span>
-        </a>
-        <span class="breadcrumb-separator">/</span>
-        <span class="breadcrumb-item active">Calendrier</span>
-      </nav>
-
-      <!-- Title Section -->
-      <div class="title-section">
-        <div class="title-wrapper">
-          <h1 class="page-title">Calendrier d'entraînement</h1>
-          <p class="page-subtitle">Planifiez et suivez vos séances d'entraînement</p>
-        </div>
-        <div class="title-actions">
-          <button class="btn btn-primary" (click)="addNewEvent()">
-
-            Nouvel événement
-          </button>
-        </div>
-      </div>
+  <header class="workspace-page-head">
+    <div>
+      <h1>Calendrier</h1>
+      <p>Les événements sont des exemples. Les modifications sont conservées pendant la session.</p>
     </div>
-  </div>
+    <div class="workspace-actions">
+      <button type="button" class="workspace-button is-primary" (click)="addNewEvent()">
+        <app-icon name="plus" [size]="17" /> Nouvel événement
+      </button>
+    </div>
+  </header>
 
   <!-- Main Content Grid -->
   <div class="main-content">
     <!-- Calendar Navigation Card -->
     <div class="nav-card">
       <div class="nav-controls">
-        <button class="nav-btn" (click)="previousMonth()">
+        <button class="nav-btn" (click)="previousMonth()" aria-label="Mois précédent">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="15 18 9 12 15 6"/>
           </svg>
@@ -54,7 +37,7 @@
           </div>
         </div>
         
-        <button class="nav-btn" (click)="nextMonth()">
+        <button class="nav-btn" (click)="nextMonth()" aria-label="Mois suivant">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="9 18 15 12 9 6"/>
           </svg>
@@ -72,17 +55,17 @@
         
         <div class="view-toggle">
           <button class="toggle-btn" 
-                  [class.active]="currentView === 'month'"
+                  [class.active]="currentView === 'month'" [attr.aria-pressed]="currentView === 'month'"
                   (click)="changeView('month')">
             Mois
           </button>
           <button class="toggle-btn" 
-                  [class.active]="currentView === 'week'"
+                  [class.active]="currentView === 'week'" [attr.aria-pressed]="currentView === 'week'"
                   (click)="changeView('week')">
             Semaine
           </button>
           <button class="toggle-btn" 
-                  [class.active]="currentView === 'day'"
+                  [class.active]="currentView === 'day'" [attr.aria-pressed]="currentView === 'day'"
                   (click)="changeView('day')">
             Jour
           </button>

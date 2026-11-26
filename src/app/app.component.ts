@@ -16,41 +16,18 @@ import { ExercisesService } from './services/exercises.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <!-- Reveil du serveur. Prioritaire sur le spinner generique : il explique
-         une attente longue au lieu de la subir. -->
-    <div class="wake-overlay" *ngIf="showWakeOverlay()" role="status" aria-live="polite">
-      <div class="wake-card">
-        <div class="wake-bar"><div class="wake-fill" [style.width.%]="wakeProgress()"></div></div>
-        <h2>Réveil du serveur</h2>
-        <p>
-          L'hébergement gratuit met le serveur en veille après un moment
-          d'inactivité. Le redémarrage prend environ {{ expectedWakeSeconds }} secondes.
-        </p>
-        <p class="wake-timer">{{ wake.elapsed() }} s</p>
-        <button type="button" class="banner-dismiss wake-skip" (click)="wake.dismiss()">
-          Continuer sans attendre
-        </button>
+    <aside class="wake-notice" *ngIf="showWakeNotice() || (wake.failed() && !wake.dismissed() && isOnline)"
+           aria-label="État du serveur">
+      <div role="status">
+        <strong>{{ wake.failed() ? 'Serveur injoignable' : 'Connexion au serveur…' }}</strong>
+        <span>{{ wake.failed() ? 'Les fonctions en ligne sont indisponibles.' : 'Les fonctions en ligne peuvent prendre quelques secondes.' }}</span>
       </div>
-    </div>
-
-    <div class="wake-overlay" *ngIf="wake.failed() && !wake.dismissed()" role="alert">
-      <div class="wake-card">
-        <h2>Serveur injoignable</h2>
-        <p>
-          Le serveur n'a pas répondu. Tes séances enregistrées sur l'appareil
-          restent consultables.
-        </p>
-        <div class="wake-actions">
-          <button type="button" class="banner-action" (click)="wake.retry()">Réessayer</button>
-          <button type="button" class="banner-dismiss wake-skip" (click)="wake.dismiss()">
-            Continuer hors ligne
-          </button>
-        </div>
-      </div>
-    </div>
+      <button *ngIf="wake.failed()" type="button" class="banner-action" (click)="wake.retry()">Réessayer</button>
+      <button type="button" class="banner-dismiss" (click)="wake.dismiss()" aria-label="Fermer l’avis">×</button>
+    </aside>
 
     <!-- Loading Overlay -->
-    <div class="loading-overlay" *ngIf="isLoading && !showWakeOverlay()">
+    <div class="loading-overlay" *ngIf="isLoading">
       <div class="loading-spinner">
         <div class="spinner"></div>
         <p>Chargement...</p>
@@ -183,7 +160,7 @@ import { ExercisesService } from './services/exercises.service';
       padding: 0 0.875rem;
       border: 0;
       border-radius: 6px;
-      background: #9c4823;
+      background: #405d1a;
       color: #f7f3ec;
       font: inherit;
       font-weight: 600;
@@ -204,78 +181,33 @@ import { ExercisesService } from './services/exercises.service';
 
     .banner-action:focus-visible,
     .banner-dismiss:focus-visible {
-      outline: 2px solid #9c4823;
+      outline: 2px solid #405d1a;
       outline-offset: 2px;
     }
 
-    .wake-overlay {
+    .wake-notice {
       position: fixed;
-      inset: 0;
-      z-index: 10000;
-      display: grid;
-      place-items: center;
-      padding: 1.5rem;
-      background: #17161a;
-    }
-
-    .wake-card {
-      width: min(420px, 100%);
-      text-align: center;
-      color: #ede8e0;
-    }
-
-    .wake-card h2 {
-      margin: 1.25rem 0 0.5rem;
-      font-size: 1.125rem;
-      font-weight: 650;
-    }
-
-    .wake-card p {
-      margin: 0;
-      color: #b8b2a8;
-      font-size: 0.9375rem;
-      line-height: 1.6;
-    }
-
-    .wake-bar {
-      height: 4px;
-      border-radius: 2px;
-      background: rgba(237, 232, 224, 0.09);
-      overflow: hidden;
-    }
-
-    .wake-fill {
-      height: 100%;
-      background: #9c4823;
-      border-radius: 2px;
-      transition: width 1s linear;
-    }
-
-    .wake-actions {
+      z-index: 90;
+      right: 16px;
+      bottom: 16px;
       display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
       align-items: center;
-      margin-top: 1.25rem;
+      gap: 8px;
+      width: min(410px, calc(100% - 32px));
+      padding: 8px 8px 8px 13px;
+      border: 1px solid #495b2a;
+      border-radius: 9px;
+      background: #211d19;
+      color: #f2ebe1;
     }
 
-    .wake-skip {
-      width: auto;
-      height: auto;
-      min-height: 44px;
-      padding: 0 1rem;
-      font-size: 0.875rem;
-      text-decoration: underline;
-    }
+    .wake-notice div { flex: 1; display: grid; line-height: 1.35; }
+    .wake-notice strong { font-size: .85rem; }
+    .wake-notice span { color: #c4b8aa; font-size: .75rem; }
+    .wake-notice .banner-dismiss { flex: none; width: 44px; height: 44px; }
 
-    .wake-timer {
-      margin-top: 1rem !important;
-      font-size: 1.75rem !important;
-      font-weight: 700;
-      /* Un compte a rebours est une valeur, pas une action : il ne prend pas
-         la couleur d'accent. */
-      color: #ede8e0 !important;
-      font-variant-numeric: tabular-nums;
+    @media (max-width: 820px) {
+      .wake-notice { bottom: calc(70px + env(safe-area-inset-bottom)); }
     }
   `]
 })
@@ -305,20 +237,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.wake.warm();
   }
 
-  readonly expectedWakeSeconds = EXPECTED_WAKE_SECONDS;
-
-  /** Progression indicative : plafonnee a 95 % tant que le serveur n'a pas repondu. */
-  wakeProgress(): number {
-    return Math.min(95, (this.wake.elapsed() / EXPECTED_WAKE_SECONDS) * 100);
-  }
-
-  /**
-   * L'ecran d'attente ne doit jamais enfermer l'utilisateur. Il disparait des
-   * qu'il le demande, et de lui-meme au-dela du temps de reveil annonce : au
-   * dela, l'attente n'est plus explicable et mieux vaut rendre la main. Le ping
-   * continue en arriere-plan pendant ce temps.
-   */
-  showWakeOverlay(): boolean {
+  showWakeNotice(): boolean {
     return (
       this.wake.waking() &&
       this.isOnline &&

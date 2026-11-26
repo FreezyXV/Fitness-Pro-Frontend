@@ -1,79 +1,33 @@
 @use 'variables' as *;
-@use 'design-system' as *;
 
 .app-container {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-
-  @include respond-below(md) {
-    flex-direction: column;
-  }
-}
-
-// =============================================
-// ZONE DE CONTENU
-// =============================================
-//
-// Elle combinait `margin-left: 350px` et `width: 100%`, ce qui donnait une
-// largeur de « 100 % de la fenetre, decalee de 350px » : tout le contenu
-// depassait donc de 350px a droite, et `overflow-x: hidden` se contentait de
-// masquer la partie perdue. C'est ce qui coupait la troisieme colonne de la
-// grille des programmes, le bord droit des cartes d'objectifs et les champs
-// du profil, sur TOUTES les pages.
-//
-// Le conteneur etant deja `display: flex`, `flex: 1` avec `min-width: 0`
-// suffit : la zone occupe exactement la place restante. Le `min-width: 0` est
-// indispensable, un enfant flex ayant par defaut `min-width: auto`, ce qui
-// l'empeche de retrecir sous la largeur de son contenu — une grille large
-// repousserait sinon a nouveau la mise en page.
-.main-content {
-  flex: 1;
-  min-width: 0;
-  min-height: 100vh;
-  color: $text-primary;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  min-height: 100dvh;
   background: $bg-primary;
-
-  // La bordure et le rayon dessinaient un cadre autour de la zone de contenu,
-  // visible comme un rectangle arrondi flottant a droite de la barre laterale.
-  // Le contenu d'une page n'est pas une carte.
-
-  @include respond-above(md) {
-    // Largeur de la barre laterale (320px) + ses marges laterales de 1rem.
-    padding-left: calc(var(--sidebar-width) + 2rem);
-    padding-right: 2rem;
-    padding-top: 1.75rem;
-    padding-bottom: 3rem;
-  }
-
-  @include respond-below(md) {
-    width: 100%;
-    padding: 0.5rem;
-    // Reserve la hauteur de la barre d'onglets (56px) et l'encoche gestuelle :
-    // sans cela le dernier bloc de chaque page passe dessous.
-    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px) + 1rem);
-  }
 }
+.workspace-content { min-width: 0; }
+.main-content {
+  max-width: 1272px;
+  margin: 0 auto;
+  padding: 34px clamp(24px, 3.4vw, 52px) 48px;
+}
+.mobile-header, app-bottom-nav { display: none; }
 
-// =============================================
-// LARGEUR DE LECTURE
-// =============================================
-//
-// La zone de contenu occupait toute la place restante, sans plafond. Sur un
-// ecran de 1920 px cela donne une colonne utile de 1536 px : les grilles a
-// trois colonnes y produisaient des cartes de 500 px de large pour trois
-// lignes de texte, les formulaires du profil des champs de 700 px, et les
-// en-tetes de page laissaient le titre a gauche et l'action a 1,5 m de la.
-//
-// Le plafond ci-dessous n'a aucun effet en dessous de 1500 px de fenetre :
-// il ne change rien sur un portable, et empeche l'etalement au-dela.
-.main-content > *:not(router-outlet) {
-  display: block;
-  width: 100%;
-
-  @include respond-above(lg) {
-    max-width: 1180px;
-    margin-inline: auto;
+@media (max-width: 820px) {
+  .app-container { display: block; }
+  app-sidebar { display: none; }
+  app-bottom-nav { display: block; }
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    min-height: calc(59px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 16px 0;
+    border-bottom: 1px solid $border-color;
+    background: $bg-dark;
+    a { display: inline-flex; align-items: center; min-height: 44px; border: 0; }
+  }
+  .main-content {
+    padding: 18px clamp(14px, 3vw, 26px) calc(80px + env(safe-area-inset-bottom));
   }
 }

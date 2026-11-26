@@ -6,12 +6,13 @@ import {
   ChangeDetectorRef,
   ViewChild,
   ElementRef,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WorkoutPlanCardComponent } from './workout-plan-card/workout-plan-card.component';
 import { Router } from '@angular/router';
-import { Subject, BehaviorSubject, of, timer } from 'rxjs';
+import { Subject, BehaviorSubject, of } from 'rxjs';
 import {
   takeUntil,
   debounceTime,
@@ -83,7 +84,7 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   readonly categories = [
     { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#5c7a8a' },
     { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#b2574a' },
-    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#9c4823' },
+    { value: 'hiit', label: 'HIIT', icon: 'bolt', color: '#405d1a' },
     {
       value: 'flexibility',
       label: 'Flexibilité',
@@ -110,17 +111,6 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     { value: 'created_at', label: 'Date de création' },
   ];
 
-  // Motivational content
-  motivationalQuote = '';
-  private motivationalQuotes = [
-    "La seule mauvaise séance d'entraînement est celle que vous n'avez pas faite.",
-    "Votre corps peut le faire. C'est votre tête qu'il faut convaincre.",
-    "Les champions s'entraînent, les légendes s'entraînent plus dur.",
-    "La douleur est temporaire, l'abandon est permanent.",
-    'Chaque expert était autrefois un débutant.',
-    "La motivation vous fait commencer, l'habitude vous fait continuer.",
-  ];
-
   constructor(
     private workoutService: WorkoutService,
     private userService: UserService,
@@ -135,7 +125,6 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeComponent();
     this.loadInitialData();
-    this.rotateMotivationalQuote();
   }
 
   ngOnDestroy(): void {
@@ -305,19 +294,29 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     this.searchSubject.next(value);
   }
 
-  // Panneau de filtres mobile : masque par defaut, ouvert par le bouton
-  // flottant "Filtrer", ferme en revalidant (les filtres s'appliquent deja
-  // en direct, "Appliquer" ne fait que revenir au resultat).
+  @ViewChild('filterTrigger') private filterTrigger?: ElementRef<HTMLButtonElement>;
+  @ViewChild('filterDismiss') private filterDismiss?: ElementRef<HTMLButtonElement>;
+
   showMobileFilters = false;
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
     BodyScrollLock.lock();
+    this.cdr.detectChanges();
+    this.filterDismiss?.nativeElement.focus({ preventScroll: true });
   }
 
+  @HostListener('document:keydown.escape')
   closeMobileFilters(): void {
+    if (!this.showMobileFilters) return;
     this.showMobileFilters = false;
     BodyScrollLock.unlock();
+    this.filterTrigger?.nativeElement.focus({ preventScroll: true });
+  }
+
+  @HostListener('window:resize')
+  closeFiltersOnDesktop(): void {
+    if (window.innerWidth > 768) this.closeMobileFilters();
   }
 
   setFilter(filter: string): void {
@@ -607,16 +606,6 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     this.router.navigate(['/workouts/create']);
   }
 
-  viewWorkoutHistory(): void {
-    console.log('Viewing workout session history');
-    this.router.navigate(['/workouts/history']);
-  }
-
-  viewWorkoutStats(): void {
-    console.log('Viewing workout statistics');
-    this.router.navigate(['/workouts/stats']);
-  }
-
   refreshData(): void {
     console.log('Refreshing workout data');
     this.loadInitialData();
@@ -685,19 +674,6 @@ export class WorkoutComponent implements OnInit, OnDestroy {
     if (diffDays < 7) return `Il y a ${diffDays} jours`;
     if (diffDays < 30) return `Il y a ${Math.floor(diffDays / 7)} semaines`;
     return `Il y a ${Math.floor(diffDays / 30)} mois`;
-  }
-
-  private rotateMotivationalQuote(): void {
-    const randomIndex = Math.floor(
-      Math.random() * this.motivationalQuotes.length
-    );
-    this.motivationalQuote = this.motivationalQuotes[randomIndex];
-
-    timer(30000)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.rotateMotivationalQuote();
-      });
   }
 
   // =============================================

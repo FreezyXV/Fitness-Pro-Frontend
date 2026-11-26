@@ -168,8 +168,8 @@ const GOAL_CATEGORIES: CategoryInfo[] = [
     value: 'fitness',
     label: 'Fitness',
     icon: 'dumbbell',
-    color: '#9c4823',
-    gradient: '#9c4823',
+    color: '#405d1a',
+    gradient: '#405d1a',
   },
   {
     value: 'nutrition',
@@ -249,7 +249,7 @@ const STATUS_CONFIG = {
   },
   active: {
     label: 'Actif',
-    color: '#9c4823',
+    color: '#405d1a',
     icon: 'bolt',
   },
   paused: {
@@ -951,7 +951,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
    */
   private getProgressColor(progress: number, status: string): string {
     if (status === 'paused') return '#a8a8b0';
-    return '#9c4823';
+    return '#405d1a';
   }
 
   private calculateStats(): void {

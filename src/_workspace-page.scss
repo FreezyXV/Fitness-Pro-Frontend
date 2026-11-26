@@ -1,0 +1,77 @@
+@use 'variables' as *;
+@use 'design-system' as *;
+
+.workspace-page-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  margin: 0 0 22px;
+  padding: 0 0 18px;
+  border-bottom: 1px solid $border-color;
+  text-align: left;
+
+  h1 {
+    margin: 0 0 5px;
+    color: $text-primary;
+    font: 700 clamp(2.8rem, 5.4vw, 4.55rem)/.93 $font-family-display;
+    text-transform: uppercase;
+    text-wrap: pretty;
+    letter-spacing: -.012em;
+  }
+  p { margin: 0; color: $text-secondary; font-size: .89rem; }
+}
+.workspace-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+.workspace-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 6px 11px;
+  border: 1px solid $border-strong;
+  border-radius: 8px;
+  background: $surface-primary;
+  color: $text-primary;
+  font: 680 .8rem $font-family-base;
+  cursor: pointer;
+  &:hover { background: $surface-raised; }
+  &:disabled { opacity: .55; cursor: not-allowed; }
+  &.is-primary {
+    border-color: transparent;
+    background: $primary-light;
+    color: #211610;
+    &:hover { background: #dcff82; }
+  }
+}
+
+.mobile-search { display: none; }
+
+@include respond-above(md) {
+  .filters-card .filters-mobile-header,
+  .filters-card .filters-apply-btn { display: none; }
+}
+@include respond-below(md) {
+  .workspace-page-head { align-items: start; margin-bottom: 15px; padding-bottom: 14px; }
+  .workspace-actions { width: 100%; }
+  .mobile-search {
+    display: flex;
+    min-width: 0;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .mobile-search input {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 10px;
+    border: 1px solid $border-strong;
+    border-radius: 8px;
+    background: $surface-primary;
+    color: $text-primary;
+    font: 500 1rem $font-family-base;
+    &::placeholder { color: $text-muted; }
+  }
+}
