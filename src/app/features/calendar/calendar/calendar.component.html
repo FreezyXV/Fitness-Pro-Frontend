@@ -344,7 +344,7 @@
   </div>
 
   <!-- Enhanced Event Modal -->
-<div *ngIf="showEventModal" class="modal-overlay" (click)="closeEventModal()" [@overlayAnimation]>
+<dialog appDialog *ngIf="showEventModal" class="modal-overlay app-dialog" data-dialog-size="form" (dismissed)="closeEventModal()">
   <div class="modal modal-lg" (click)="$event.stopPropagation()" [@modalAnimation]>
     <div class="modal-header">
         <div class="modal-title">
@@ -354,7 +354,7 @@
           </svg>
           {{isEditingEvent ? 'Modifier l\'événement' : 'Nouvel événement'}}
         </div>
-        <button class="btn-close" (click)="closeEventModal()">
+        <button class="btn-close" (click)="closeEventModal()" aria-label="Fermer la fenêtre">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
@@ -461,7 +461,7 @@
         </div>
       </div>
   </div>
-</div>
+</dialog>
 
   <!-- Floating Action Button (Mobile) -->
   <button class="fab" (click)="addNewEvent()" title="Ajouter événement">

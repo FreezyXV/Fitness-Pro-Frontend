@@ -25,7 +25,7 @@
 
 // Glassmorphism Effect Mixin
 @mixin glass-effect($opacity: 0.95, $blur: 0px, $border-opacity: 0.45) {
-  background-color: rgba($surface-secondary, $opacity);
+  background-color: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -80,7 +80,7 @@
 
 
 @mixin glass-effect-dark($opacity: 0.1, $blur: 20px) {
-  background: rgba($surface-primary, $opacity + 0.2);
+  background: tint($surface-primary, $opacity + 0.2);
   border: $border-width solid $border-color;
 }
 
@@ -237,11 +237,11 @@
   // la souris. Seule la surface change.
   &:hover {
     color: $text-primary;
-    background: rgba(237, 232, 224, 0.04);
+    background: tint($text-primary, 0.04);
   }
 
   &.active {
-    background: rgba(237, 232, 224, 0.06);
+    background: tint($text-primary, 0.06);
     color: $text-primary;
     font-weight: 600;
   }
@@ -354,7 +354,7 @@ $breakpoints: (
     border-radius: $radius-md;
     // Pastille neutre. Une icone lime par en-tete de carte faisait 27 aplats
     // fluo sur un meme ecran.
-    background: rgba(237, 232, 224, 0.06);
+    background: tint($text-primary, 0.06);
     color: $text-secondary;
     font-size: $icon-size * 0.42;
   }
@@ -450,7 +450,7 @@ $breakpoints: (
 
   &:hover:not(.active):not([aria-selected='true']) {
     color: $text-primary;
-    background: rgba(237, 232, 224, 0.04);
+    background: tint($text-primary, 0.04);
   }
 
   &.active,

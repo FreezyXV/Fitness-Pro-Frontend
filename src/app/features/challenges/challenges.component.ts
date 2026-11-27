@@ -87,27 +87,27 @@ interface ChallengeStats {
 // Configuration constants
 // `icon` designe une entree du jeu d'icones de l'application (IconName).
 const CHALLENGE_CATEGORIES = [
-  { value: 'fitness', label: 'Fitness', icon: 'dumbbell', color: '#fc8181' },
-  { value: 'wellness', label: 'Bien-être', icon: 'moon', color: '#86efac' },
-  { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#fdba74' },
-  { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#6ee7b7' },
-  { value: 'nutrition', label: 'Nutrition', icon: 'utensils', color: '#7ecbff' },
-  { value: 'mindfulness', label: 'Méditation', icon: 'bulb', color: '#c4b5fd' },
-  { value: 'social', label: 'Social', icon: 'users', color: '#fdba74' }
+  { value: 'fitness', label: 'Fitness', icon: 'dumbbell', color: '#444d43' },
+  { value: 'wellness', label: 'Bien-être', icon: 'moon', color: '#405d1a' },
+  { value: 'cardio', label: 'Cardio', icon: 'flame', color: '#444d43' },
+  { value: 'strength', label: 'Force', icon: 'dumbbell', color: '#405d1a' },
+  { value: 'nutrition', label: 'Nutrition', icon: 'utensils', color: '#444d43' },
+  { value: 'mindfulness', label: 'Méditation', icon: 'bulb', color: '#444d43' },
+  { value: 'social', label: 'Social', icon: 'users', color: '#444d43' }
 ];
 
 const DIFFICULTY_LEVELS = [
-  { value: 'all', label: 'Toutes', emoji: '🌟', color: '#7ecbff' },
-  { value: 'easy', label: 'Facile', emoji: '🟢', color: '#86efac' },
-  { value: 'medium', label: 'Moyen', emoji: '🟡', color: '#fdba74' },
-  { value: 'hard', label: 'Difficile', emoji: '🔴', color: '#fc8181' }
+  { value: 'all', label: 'Toutes', emoji: '🌟', color: '#444d43' },
+  { value: 'easy', label: 'Facile', emoji: '🟢', color: '#405d1a' },
+  { value: 'medium', label: 'Moyen', emoji: '🟡', color: '#444d43' },
+  { value: 'hard', label: 'Difficile', emoji: '🔴', color: '#444d43' }
 ];
 
 const STATUS_CONFIG = {
-  available: { label: 'Disponible', emoji: '🚀', color: '#7ecbff', icon: 'fas fa-play-circle' },
-  active: { label: 'En cours', emoji: '⚡', color: '#fdba74', icon: 'fas fa-clock' },
-  completed: { label: 'Terminé', emoji: '✅', color: '#6ee7b7', icon: 'fas fa-check-circle' },
-  expired: { label: 'Expiré', emoji: '⏰', color: '#a8a8b0', icon: 'fas fa-times-circle' }
+  available: { label: 'Disponible', emoji: '🚀', color: '#444d43', icon: 'fas fa-play-circle' },
+  active: { label: 'En cours', emoji: '⚡', color: '#444d43', icon: 'fas fa-clock' },
+  completed: { label: 'Terminé', emoji: '✅', color: '#405d1a', icon: 'fas fa-check-circle' },
+  expired: { label: 'Expiré', emoji: '⏰', color: '#444d43', icon: 'fas fa-times-circle' }
 };
 
 // Utility classes (simplified for standalone component)
@@ -142,10 +142,12 @@ class StorageUtils {
   }
 }
 
+import { DialogDirective } from '@app/shared/components/dialog/dialog.directive';
+
 @Component({
   selector: 'app-challenges',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
+  imports: [DialogDirective, CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
   templateUrl: './challenges.component.html',
   styleUrls: ['./challenges.component.scss']
 })
@@ -1285,12 +1287,12 @@ export class ChallengesComponent implements OnInit, OnDestroy {
 
   getStatusColor(status: string): string {
     const statusColors: { [key: string]: string } = {
-      'available': '#7ecbff',
-      'active': '#6ee7b7',
-      'completed': '#a8a8b0',
-      'expired': '#fc8181',
-      'pending': '#fdba74'
+      'available': '#444d43',
+      'active': '#405d1a',
+      'completed': '#444d43',
+      'expired': '#444d43',
+      'pending': '#444d43'
     };
-    return statusColors[status] || '#a8a8b0';
+    return statusColors[status] || '#444d43';
   }
 }

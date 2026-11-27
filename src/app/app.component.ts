@@ -1,10 +1,11 @@
 // app.component.ts - VERSION CORRIGÉE
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { AppearanceService } from './core/services/appearance.service';
 import { AuthService } from './services/auth.service';
 import { PwaService } from './core/services/pwa.service';
 import { ReminderService } from './core/services/reminder.service';
@@ -39,7 +40,7 @@ import { ExercisesService } from './services/exercises.service';
 
     <!-- Connection Status -->
     <div class="connection-status" [class.offline]="!isOnline" *ngIf="!isOnline">
-      <span>⚠️ Hors ligne — tes séances restent enregistrées sur l'appareil</span>
+      <span>Hors ligne · tes séances restent sur cet appareil</span>
     </div>
 
     <!-- Mise a jour disponible. On ne recharge jamais sans l'accord de
@@ -82,9 +83,9 @@ import { ExercisesService } from './services/exercises.service';
        styles inline d'un composant en SCSS. Les valeurs reprennent donc a la
        main les tokens de variables.scss (palette "Fonte & Craie"). */
     .loading-spinner {
-      background: #1e1c20;
-      border: 1px solid rgba(237, 232, 224, 0.10);
-      color: #ede8e0;
+      background: var(--fp-surface);
+      border: 1px solid var(--fp-line);
+      color: var(--fp-ink);
       padding: 2rem;
       border-radius: 12px;
       text-align: center;
@@ -93,8 +94,8 @@ import { ExercisesService } from './services/exercises.service';
     .spinner {
       width: 28px;
       height: 28px;
-      border: 2px solid rgba(237, 232, 224, 0.14);
-      border-top-color: #b8b2a8;
+      border: 2px solid var(--fp-line);
+      border-top-color: var(--fp-ink-secondary);
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       margin: 0 auto 1rem;
@@ -117,16 +118,16 @@ import { ExercisesService } from './services/exercises.service';
       max-width: calc(100vw - 2rem);
       padding: 0.5rem 0.875rem;
 
-      background: #1e1c20;
-      border: 1px solid rgba(237, 232, 224, 0.10);
+      background: var(--fp-surface);
+      border: 1px solid var(--fp-line);
       border-radius: 10px;
-      color: #b8b2a8;
+      color: var(--fp-ink-secondary);
       font-size: 0.8125rem;
     }
 
     .connection-status.offline {
-      border-color: rgba(178, 58, 42, 0.4);
-      color: #e0a99a;
+      border-color: var(--fp-control-line);
+      color: var(--fp-ink);
     }
 
     .app-banner {
@@ -144,12 +145,12 @@ import { ExercisesService } from './services/exercises.service';
       width: min(520px, calc(100vw - 2rem));
       padding: 0.75rem 0.75rem 0.75rem 1rem;
 
-      background: #1e1c20;
-      border: 1px solid rgba(237, 232, 224, 0.12);
+      background: var(--fp-surface);
+      border: 1px solid var(--fp-line);
       border-radius: 12px;
-      color: #ede8e0;
+      color: var(--fp-ink);
       font-size: 0.875rem;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      box-shadow: var(--fp-elevation);
     }
 
     .app-banner span { flex: 1; }
@@ -160,8 +161,8 @@ import { ExercisesService } from './services/exercises.service';
       padding: 0 0.875rem;
       border: 0;
       border-radius: 6px;
-      background: #405d1a;
-      color: #f7f3ec;
+      background: var(--fp-accent);
+      color: var(--fp-on-accent);
       font: inherit;
       font-weight: 600;
       cursor: pointer;
@@ -174,14 +175,14 @@ import { ExercisesService } from './services/exercises.service';
       border: 0;
       border-radius: 6px;
       background: none;
-      color: #b8b2a8;
+      color: var(--fp-ink-secondary);
       font-size: 1rem;
       cursor: pointer;
     }
 
     .banner-action:focus-visible,
     .banner-dismiss:focus-visible {
-      outline: 2px solid #405d1a;
+      outline: 2px solid var(--fp-green-ink);
       outline-offset: 2px;
     }
 
@@ -195,15 +196,15 @@ import { ExercisesService } from './services/exercises.service';
       gap: 8px;
       width: min(410px, calc(100% - 32px));
       padding: 8px 8px 8px 13px;
-      border: 1px solid #495b2a;
+      border: 1px solid var(--fp-line);
       border-radius: 9px;
-      background: #211d19;
-      color: #f2ebe1;
+      background: var(--fp-surface);
+      color: var(--fp-ink);
     }
 
     .wake-notice div { flex: 1; display: grid; line-height: 1.35; }
     .wake-notice strong { font-size: .85rem; }
-    .wake-notice span { color: #c4b8aa; font-size: .75rem; }
+    .wake-notice span { color: var(--fp-ink-secondary); font-size: .75rem; }
     .wake-notice .banner-dismiss { flex: none; width: 44px; height: 44px; }
 
     @media (max-width: 820px) {
@@ -230,6 +231,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private reminders: ReminderService,
     public wake: BackendWakeService
   ) {
+    inject(AppearanceService);
     this.setupOnlineStatusMonitoring();
 
     // Des le constructeur : le reveil du conteneur se deroule alors en

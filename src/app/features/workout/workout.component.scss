@@ -6,13 +6,13 @@
 
 // Enhanced glassmorphism effects
 @mixin glass-card($opacity: 0.95) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin glass-card-dark($opacity: 0.1) {
-  background: rgba($surface-tertiary, $opacity + 0.2);
+  background: tint($surface-tertiary, $opacity + 0.2);
   border: $border-width solid $border-color;
 }
 
@@ -239,7 +239,7 @@ padding: 0.25rem;
       display: flex;
       align-items: center;
       gap: 1rem;
-      background: rgba($surface-secondary, 0.6);
+      background: tint($surface-secondary, 0.6);
       border: $border-width solid $border-color;
       border-radius: $border-radius-xl;
       padding: 1.5rem;
@@ -314,7 +314,7 @@ padding: 0.25rem;
         color: $text-primary;
 
         &:hover {
-          background: rgba(237, 232, 224, 0.05);
+          background: tint($text-primary, 0.05);
           border-color: $border-strong;
         }
       }
@@ -440,7 +440,7 @@ padding: 0.25rem;
         font-size: 1rem;
         font-family: inherit;
         transition: all 0.3s ease;
-        background: rgba($surface-secondary, 0.9);
+        background: tint($surface-secondary, 0.9);
 
         &:focus {
           @include focus-ring;
@@ -454,7 +454,7 @@ padding: 0.25rem;
       .clear-search-btn {
         position: absolute;
         right: 1rem;
-        background: rgba($gray-500, 0.1);
+        background: tint($gray-500, 0.1);
         border: none;
         border-radius: 50%;
         width: 32px;
@@ -467,7 +467,7 @@ padding: 0.25rem;
         color: $text-muted;
 
         &:hover {
-          background: rgba($gray-500, 0.2);
+          background: tint($gray-500, 0.2);
           color: $gray-700;
           transform: scale(1.1);
         }
@@ -506,7 +506,7 @@ padding: 0.25rem;
         padding: 0.875rem 1rem;
         border: $border-width solid $border-color;
         border-radius: $border-radius;
-        background: rgba($surface-secondary, 0.9);
+        background: tint($surface-secondary, 0.9);
         font-size: 0.875rem;
         font-family: inherit;
         transition: all 0.3s ease;
@@ -720,7 +720,7 @@ padding: 0.25rem;
         border: $border-width solid $border-color;
         border-radius: $border-radius;
         overflow: hidden;
-        background: rgba($surface-secondary, 0.9);
+        background: tint($surface-secondary, 0.9);
 
         .view-mode-btn {
           background: transparent;
@@ -955,14 +955,14 @@ padding: 0.25rem;
   }
 
   .session-card {
-    background: rgba($surface-secondary, 0.6);
+    background: tint($surface-secondary, 0.6);
     border: $border-width solid $border-color;
     border-radius: $border-radius-xl;
     padding: 1.5rem;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
     &:hover {
-      background: rgba($surface-secondary, 0.8);
+      background: tint($surface-secondary, 0.8);
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
@@ -1036,7 +1036,7 @@ padding: 0.25rem;
     overflow: hidden;
 
     &::before {
-      @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+      @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
     }
 
     &.primary {
@@ -1074,7 +1074,7 @@ padding: 0.25rem;
   overflow: hidden;
 
   &::before {
-    @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+    @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
   }
 
   &:hover {
@@ -1106,12 +1106,12 @@ padding: 0.25rem;
   }
 
   &.btn-outline {
-    background: rgba($surface-secondary, 0.9);
+    background: tint($surface-secondary, 0.9);
     color: $gray-700;
     border: $border-width solid $border-color;
 
     &:hover {
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border-color: $primary-color;
       color: $primary-color;
     }
@@ -1311,8 +1311,8 @@ padding: 0.25rem;
 
 .workout-container .action-btn,
 .workout-container .cta-button {
-  background: $primary-color;
-  color: $text-inverse;
+  background: $brand;
+  color: $on-brand;
   border: $border-width solid $border-color;
 }
 

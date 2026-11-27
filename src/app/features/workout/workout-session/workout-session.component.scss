@@ -32,6 +32,8 @@
 // ---------------------------------------------------------------- en-tête
 
 .session-top {
+  padding-bottom: 10px;
+  border-bottom: 1px solid $border-color;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -96,7 +98,9 @@
 }
 
 .stage-exercise {
-  font: 700 clamp(2.4rem, 7vw, 3.6rem)/1 $font-family-display;
+  font: 760 clamp(1.75rem, 6vw, 2.75rem)/1.08 $font-family-base;
+  letter-spacing: -.04em;
+  overflow-wrap: anywhere;
   margin: 0;
 }
 
@@ -149,8 +153,8 @@
   }
 
   &:active {
-    background: $primary-color;
-    color: $bg-primary;
+    background: $brand;
+    color: $on-brand;
   }
 }
 
@@ -216,8 +220,8 @@
   // carre aux angles arrondis sur un element de cette taille, pas un disque.
   border-radius: 50%;
   background: conic-gradient(
-    $primary-color calc(var(--fraction) * 360deg),
-    $surface-secondary 0
+    $green-ink calc(var(--fraction) * 360deg),
+    $surface-tertiary 0
   );
   mask: radial-gradient(circle, transparent 58%, #000 59%);
   -webkit-mask: radial-gradient(circle, transparent 58%, #000 59%);
@@ -260,8 +264,8 @@
   min-height: 68px;
   border: none;
   border-radius: $border-radius-xl;
-  background: $primary-light;
-  color: #211610;
+  background: $brand;
+  color: $on-brand;
   font-size: 1.25rem;
   font-weight: 800;
   cursor: pointer;
@@ -294,9 +298,13 @@
   text-align: center;
 }
 
-.ready-eyebrow { @include label-caps($text-secondary); }
-.ready-count { font-size: clamp(3.5rem, 18vw, 5.5rem); font-weight: 800; color: $primary-light; line-height: 1; }
-.ready-label { @include label-caps($text-secondary); margin-bottom: 1rem; }
+.ready-title {
+  margin: 0;
+  font: 760 clamp(1.8rem, 6vw, 2.9rem)/1.08 $font-family-base;
+  letter-spacing: -.04em;
+  overflow-wrap: anywhere;
+}
+.ready-label { color: $text-muted; margin-bottom: .8rem; }
 
 .ready-list {
   list-style: none;
@@ -333,7 +341,7 @@
   // Teinte discrete plutot qu'un aplat : la pastille situe l'icone,
   // elle ne rivalise pas avec la donnee qu'elle accompagne.
   background: rgba($primary-color, 0.12);
-  color: $primary-light;
+  color: $green-ink;
   font-size: 2.5rem;
   font-weight: 800;
 }

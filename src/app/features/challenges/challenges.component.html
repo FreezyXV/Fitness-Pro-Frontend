@@ -13,13 +13,17 @@
       <button type="button" class="workspace-button" (click)="openLeaderboard()">
         <app-icon name="trophy" [size]="17" /> Classement
       </button>
+      <button type="button" class="workspace-button workspace-filter" (click)="openMobileFilters()"
+              aria-controls="secondary-page-filters" [attr.aria-expanded]="showMobileFilters">
+        Filtres
+      </button>
     </div>
   </header>
 
   <!-- Enhanced Filters Section -->
   <div class="filters-section">
     <div class="filters-backdrop" *ngIf="showMobileFilters" (click)="closeMobileFilters()"></div>
-    <div class="filters-card" [class.mobile-open]="showMobileFilters">
+    <div class="filters-card" id="secondary-page-filters" [class.mobile-open]="showMobileFilters">
       <div class="filters-mobile-header">
         <h3>Filtres</h3>
         <button type="button" class="filters-close-btn" (click)="closeMobileFilters()" aria-label="Fermer les filtres">
@@ -107,14 +111,7 @@
     </div>
   </div>
 
-  <button type="button" class="mobile-filter-trigger" (click)="openMobileFilters()" *ngIf="!showMobileFilters">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="4" y1="6" x2="20" y2="6"/>
-      <line x1="7" y1="12" x2="17" y2="12"/>
-      <line x1="10" y1="18" x2="14" y2="18"/>
-    </svg>
-    <span>Filtrer</span>
-  </button>
+
 
   <!-- Enhanced Challenge Cards Grid -->
   <div class="challenges-content">
@@ -319,11 +316,11 @@
 
 
   <!-- Modal Détails du défi -->
-  <div class="modal-overlay" *ngIf="showChallengeDetails && selectedChallenge" (click)="closeChallengeDetails()">
+  <dialog appDialog class="modal-overlay app-dialog" data-dialog-size="wide" *ngIf="showChallengeDetails && selectedChallenge" (dismissed)="closeChallengeDetails()">
     <div class="modal modal-lg" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{selectedChallenge.title}}</h2>
-        <button class="btn-close" (click)="closeChallengeDetails()">
+        <button class="btn-close" (click)="closeChallengeDetails()" aria-label="Fermer la fenêtre">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
@@ -459,10 +456,10 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Modal Création de défi -->
-  <div class="modal-overlay" *ngIf="showCreateModal" (click)="closeCreateModal()">
+  <dialog appDialog class="modal-overlay app-dialog" data-dialog-size="form" *ngIf="showCreateModal" (dismissed)="closeCreateModal()">
     <div class="modal modal-lg" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>
@@ -472,7 +469,7 @@
           </svg>
           Créer un nouveau défi
         </h2>
-        <button class="btn-close" (click)="closeCreateModal()">
+        <button class="btn-close" (click)="closeCreateModal()" aria-label="Fermer la fenêtre">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
@@ -480,8 +477,8 @@
         </button>
       </div>
 
-      <div class="modal-body">
-        <form [formGroup]="challengeForm" (ngSubmit)="saveChallenge()" class="challenge-form">
+      <form [formGroup]="challengeForm" (ngSubmit)="saveChallenge()" class="challenge-form">
+        <div class="modal-body">
           <div class="form-group">
             <label for="title">Titre du défi <span class="required">*</span></label>
             <input id="title" type="text" formControlName="title" placeholder="Ex: Défi 30 jours de méditation"
@@ -598,20 +595,20 @@
             <label for="isPublic">Rendre ce défi public</label>
           </div>
 
-          <div class="form-actions">
+        </div>
+        <div class="modal-footer form-actions">
             <button type="button" class="btn btn-outline" (click)="closeCreateModal()">Annuler</button>
             <button type="submit" class="btn btn-primary" [disabled]="challengeForm.invalid || isCreating">
               <span *ngIf="!isCreating">Créer le défi</span>
               <span *ngIf="isCreating">Création en cours...</span>
             </button>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
-  </div>
+  </dialog>
 
   <!-- Modal Classement -->
-  <div class="modal-overlay" *ngIf="showLeaderboard" (click)="closeLeaderboard()">
+  <dialog appDialog class="modal-overlay app-dialog" data-dialog-size="wide" *ngIf="showLeaderboard" (dismissed)="closeLeaderboard()">
     <div class="modal modal-md" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>
@@ -622,7 +619,7 @@
           </svg>
           Classement général
         </h2>
-        <button class="btn-close" (click)="closeLeaderboard()">
+        <button class="btn-close" (click)="closeLeaderboard()" aria-label="Fermer la fenêtre">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
@@ -678,5 +675,5 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 </div>

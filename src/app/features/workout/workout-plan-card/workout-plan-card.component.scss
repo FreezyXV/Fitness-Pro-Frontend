@@ -5,13 +5,13 @@
 
 // Enhanced glassmorphism effects (same as dashboard)
 @mixin glass-card($opacity: 0.95) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin glass-card-dark($opacity: 0.1) {
-  background: rgba($surface-tertiary, $opacity + 0.2);
+  background: tint($surface-tertiary, $opacity + 0.2);
   border: $border-width solid $border-color;
 }
 
@@ -146,7 +146,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba($surface-secondary, 0.1),
+      tint($surface-secondary, 0.1),
       transparent
     );
     transition: left 0.6s;
@@ -269,7 +269,7 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem 1.25rem;
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border-radius: $radius-pill;
       font-size: 0.9rem;
       font-weight: 800;
@@ -280,7 +280,7 @@
       overflow: hidden;
 
       &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+        @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -423,7 +423,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.75rem 1.25rem;
-        background: rgba($surface-secondary, 0.8);
+        background: tint($surface-secondary, 0.8);
         border: $border-width solid $border-color;
         border-radius: $radius-pill;
         font-size: 0.9rem;
@@ -434,7 +434,7 @@
         overflow: hidden;
 
         &::before {
-          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+          @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -564,7 +564,7 @@
         letter-spacing: 0.05em;
 
         &::before {
-          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+          @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -735,7 +735,7 @@
           background: linear-gradient(
             90deg,
             transparent,
-            rgba($surface-secondary, 0.4),
+            tint($surface-secondary, 0.4),
             transparent
           );
         }
@@ -775,7 +775,7 @@
     .quick-action {
       width: 60px;
       height: 60px;
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border: $border-width solid $border-color;
       border-radius: 50%;
       display: flex;
@@ -789,7 +789,7 @@
       overflow: hidden;
 
       &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
+        @include shimmer-overlay(tint($surface-secondary, 0.4), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -962,8 +962,8 @@
   }
 
   .plan-actions .btn {
-    background: $primary-color;
-    color: $text-inverse;
+    background: $brand;
+    color: $on-brand;
     border: $border-width solid $border-color;
   }
 
@@ -1031,7 +1031,7 @@
     letter-spacing: 0 !important;
     line-height: 1.4;
     white-space: nowrap;
-    background: rgba(237, 232, 224, 0.05) !important;
+    background: tint($text-primary, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
     box-shadow: none !important;
@@ -1111,7 +1111,7 @@
       gap: 0.3125rem;
       padding: 0.1875rem 0.5rem !important;
       border-radius: $radius-xs !important;
-      background: rgba(237, 232, 224, 0.04) !important;
+      background: tint($text-primary, 0.04) !important;
       border: 0 !important;
       color: $text-secondary !important;
       font-size: 0.75rem !important;
@@ -1171,7 +1171,7 @@
       color: $text-secondary !important;
 
       &:hover:not(:disabled) {
-        background: rgba(237, 232, 224, 0.05) !important;
+        background: tint($text-primary, 0.05) !important;
         color: $text-primary !important;
       }
     }
@@ -1244,7 +1244,7 @@
       height: 4px !important;
       margin: 0 !important;
       border-radius: $radius-pill !important;
-      background: rgba(237, 232, 224, 0.09) !important;
+      background: tint($text-primary, 0.09) !important;
       overflow: hidden;
 
       .progress-fill {

@@ -3,6 +3,7 @@
 
 import {
   Component,
+  HostListener,
   OnInit,
   OnDestroy,
   ChangeDetectorRef,
@@ -168,65 +169,65 @@ const GOAL_CATEGORIES: CategoryInfo[] = [
     value: 'fitness',
     label: 'Fitness',
     icon: 'dumbbell',
-    color: '#405d1a',
-    gradient: '#405d1a',
+    color: 'var(--fp-green-ink)',
+    gradient: 'var(--fp-green-ink)',
   },
   {
     value: 'nutrition',
     label: 'Nutrition',
     icon: 'utensils',
-    color: '#7ecbff',
-    gradient: '#7ecbff',
+    color: 'var(--fp-ink-muted)',
+    gradient: 'var(--fp-ink-muted)',
   },
   {
     value: 'wellness',
     label: 'Bien-être',
     icon: 'moon',
-    color: '#c4b5fd',
-    gradient: '#c4b5fd',
+    color: 'var(--fp-ink-muted)',
+    gradient: 'var(--fp-ink-muted)',
   },
   {
     value: 'cardio',
     label: 'Cardio',
     icon: 'flame',
-    color: '#fc8181',
-    gradient: '#fc8181',
+    color: 'var(--fp-ink-secondary)',
+    gradient: 'var(--fp-ink-secondary)',
   },
   {
     value: 'strength',
     label: 'Force',
     icon: 'bolt',
-    color: '#fdba74',
-    gradient: '#fdba74',
+    color: 'var(--fp-ink-secondary)',
+    gradient: 'var(--fp-ink-secondary)',
   },
   {
     value: 'flexibility',
     label: 'Flexibilité',
     icon: 'leaf',
-    color: '#6ee7b7',
-    gradient: '#6ee7b7',
+    color: 'var(--fp-green-ink)',
+    gradient: 'var(--fp-green-ink)',
   },
   {
     value: 'mental',
     label: 'Mental',
     icon: 'bulb',
-    color: '#67e8f9',
-    gradient: '#67e8f9',
+    color: 'var(--fp-ink-muted)',
+    gradient: 'var(--fp-ink-muted)',
   },
   {
     value: 'weight',
     label: 'Poids',
     icon: 'chart',
-    color: '#86efac',
-    gradient: '#86efac',
+    color: 'var(--fp-green-ink)',
+    gradient: 'var(--fp-green-ink)',
   },
 ];
 
 // `icon` designe une entree du jeu d'icones de l'application (IconName).
 const PRIORITY_LEVELS: PriorityInfo[] = [
-  { value: 'low', label: 'Basse', color: '#6ee7b7', icon: 'circle' },
-  { value: 'medium', label: 'Moyenne', color: '#fdba74', icon: 'target' },
-  { value: 'high', label: 'Haute', color: '#fc8181', icon: 'flame' },
+  { value: 'low', label: 'Basse', color: 'var(--fp-green-ink)', icon: 'circle' },
+  { value: 'medium', label: 'Moyenne', color: 'var(--fp-ink-secondary)', icon: 'target' },
+  { value: 'high', label: 'Haute', color: 'var(--fp-ink-secondary)', icon: 'flame' },
 ];
 
 const STATUS_FILTERS: StatusFilter[] = [
@@ -244,22 +245,22 @@ const STATUS_FILTERS: StatusFilter[] = [
 const STATUS_CONFIG = {
   'not-started': {
     label: 'Non commencé',
-    color: '#a8a8b0',
+    color: 'var(--fp-ink-muted)',
     icon: 'circle',
   },
   active: {
     label: 'Actif',
-    color: '#405d1a',
+    color: 'var(--fp-green-ink)',
     icon: 'bolt',
   },
   paused: {
     label: 'En pause',
-    color: '#fdba74',
+    color: 'var(--fp-ink-secondary)',
     icon: 'clock',
   },
   completed: {
     label: 'Terminé',
-    color: '#7ecbff',
+    color: 'var(--fp-ink-muted)',
     icon: 'check-circle',
   },
 };
@@ -340,10 +341,12 @@ class StorageUtils {
    ENHANCED COMPONENT WITH ANIMATIONS
    ============================================= */
 
+import { DialogDirective } from '@app/shared/components/dialog/dialog.directive';
+
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
+  imports: [DialogDirective, CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
   templateUrl: './goals.component.html',
   styleUrls: ['./goals.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -517,7 +520,6 @@ export class GoalsComponent implements OnInit, OnDestroy {
       console.log('AuthService is initialized, loading goals.');
       this.loadGoals();
     });
-    this.setupKeyboardShortcuts();
   }
 
   ngOnDestroy(): void {
@@ -583,25 +585,19 @@ export class GoalsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private setupKeyboardShortcuts(): void {
-    document.addEventListener('keydown', (event) => {
-      if (event.ctrlKey || event.metaKey) {
-        switch (event.key) {
-          case 'n':
-            event.preventDefault();
-            this.openAddGoal();
-            break;
-          case 'f':
-            event.preventDefault();
-            this.focusSearchInput();
-            break;
-        }
+  @HostListener('document:keydown', ['$event'])
+  onKeyboardShortcut(event: KeyboardEvent): void {
+    if (document.querySelector('dialog[open]')) return;
+    if (event.ctrlKey || event.metaKey) {
+      if (event.key === 'n') {
+        event.preventDefault();
+        this.openAddGoal();
+      } else if (event.key === 'f') {
+        event.preventDefault();
+        this.focusSearchInput();
       }
-
-      if (event.key === 'Escape') {
-        this.closeAllModals();
-      }
-    });
+    }
+    if (event.key === 'Escape') this.closeAllModals();
   }
 
   private setupViewModeFromStorage(): void {
@@ -907,7 +903,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
       progressColor: this.getProgressColor(progressPercentage, goal.status),
       statusColor:
         this.statusConfig[goal.status as keyof typeof this.statusConfig]
-          ?.color || '#a8a8b0',
+          ?.color || 'var(--fp-ink-muted)',
       isOnFire: progressPercentage >= 80 && daysSinceCreated >= 7,
       progressTrend,
       velocityScore,
@@ -950,8 +946,8 @@ export class GoalsComponent implements OnInit, OnDestroy {
    * la progression : atteint, et en pause.
    */
   private getProgressColor(progress: number, status: string): string {
-    if (status === 'paused') return '#a8a8b0';
-    return '#405d1a';
+    if (status === 'paused') return 'var(--fp-ink-muted)';
+    return 'var(--fp-green-ink)';
   }
 
   private calculateStats(): void {
@@ -1158,10 +1154,10 @@ export class GoalsComponent implements OnInit, OnDestroy {
 
   startGoal(goal: EnhancedGoal): void {
     if (!goal.id) return;
-    
+
     this.setGoalLoading(goal.id, true);
     this.setGoalActionState(goal.id, 'starting');
-    
+
     this.goalsService
       .activateGoal(goal.id)
       .pipe(
@@ -1200,10 +1196,10 @@ export class GoalsComponent implements OnInit, OnDestroy {
 
   completeGoal(goal: EnhancedGoal): void {
     if (!goal.id) return;
-    
+
     this.setGoalLoading(goal.id, true);
     this.setGoalActionState(goal.id, 'completing');
-    
+
     this.goalsService
       .markComplete(goal.id)
       .pipe(
@@ -1244,16 +1240,16 @@ export class GoalsComponent implements OnInit, OnDestroy {
     if (!confirm(`Êtes-vous sûr de vouloir recommencer l'objectif "${goal.title}" ? Cette action remettra le progrès à zéro et changera le statut en "non commencé".`)) {
       return;
     }
-    
+
     this.directResetGoal(goal);
   }
 
   directResetGoal(goal: EnhancedGoal): void {
     if (!goal.id) return;
-    
+
     this.setGoalLoading(goal.id, true);
     this.setGoalActionState(goal.id, 'resetting');
-    
+
     // Improved reset approach inspired by challenges component
     // First update goal to reset progress and status
     const resetData = {
@@ -1261,7 +1257,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
       status: 'not-started' as const,
       progress_percentage: 0
     };
-    
+
     this.goalsService
       .updateGoal(goal.id, resetData)
       .pipe(
@@ -1296,7 +1292,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
             this.applyFilters();
             this.calculateStats();
           }
-          
+
           this.showNotification(
             `🔄 Objectif "${resetGoal.title}" complètement réinitialisé et prêt à recommencer!`
           );
@@ -1318,14 +1314,14 @@ export class GoalsComponent implements OnInit, OnDestroy {
     const goal = this.goalToReset;
     this.setGoalLoading(goal.id!, true);
     this.setGoalActionState(goal.id!, 'resetting');
-    
+
     // Use the same improved approach as directResetGoal
     const resetData = {
       current_value: 0,
       status: 'not-started' as const,
       progress_percentage: 0
     };
-    
+
     this.goalsService
       .updateGoal(goal.id!, resetData)
       .pipe(
@@ -1358,7 +1354,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
             this.applyFilters();
             this.calculateStats();
           }
-          
+
           this.showNotification(
             `🔄 Objectif "${resetGoal.title}" complètement réinitialisé et prêt à recommencer!`
           );
@@ -1402,7 +1398,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
     const newStatus = goal.status === 'active' ? 'paused' : 'active';
     this.setGoalLoading(goal.id, true);
     this.setGoalActionState(goal.id, newStatus === 'active' ? 'starting' : 'pausing');
-    
+
     let statusUpdateObservable: Observable<Goal>; // Explicitly type Observable as Goal
 
     if (newStatus === 'active') {
@@ -1438,7 +1434,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
             this.applyFilters();
             this.calculateStats();
           }
-          
+
           const statusIcon =
             this.statusConfig[
               updatedGoal.status as keyof typeof this.statusConfig
@@ -2056,7 +2052,7 @@ export class GoalsComponent implements OnInit, OnDestroy {
   getStatusColor(status: string): string {
     return (
       this.statusConfig[status as keyof typeof this.statusConfig]?.color ||
-      '#a8a8b0'
+      'var(--fp-ink-muted)'
     );
   }
 

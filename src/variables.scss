@@ -1,125 +1,88 @@
-// =============================================
-// UNIFIED DESIGN SYSTEM - FITNESS APP
-// Centralized variables for consistent UX/UI
-// =============================================
+// Couleurs sémantiques communes aux thèmes clair et sombre.
+@function tint($color, $opacity) {
+  @return color-mix(in srgb, #{$color} #{$opacity * 100%}, transparent);
+}
 
-// =============================================
-// PALETTE — charbon, craie et vert fluo
-// =============================================
+$brand: var(--fp-accent);
+$brand-hover: var(--fp-accent-hover);
+$on-brand: var(--fp-on-accent);
+$green-ink: var(--fp-green-ink);
+$selected: var(--fp-selected);
 
+// Aplats de compatibilité pour les anciens boutons à texte blanc.
 $primary-color: #405d1a;
 $primary-light: #c5ff3d;
 $primary-dark: #334a17;
 $primary-darker: #22310e;
 $primary-lighter: #e8ffb4;
-
 $primary-400: #a7d83e;
 $primary-500: $primary-color;
 $primary-600: #3a5517;
 $primary-700: #2d4313;
 $primary-800: $primary-darker;
 
-// Secondaire — acier galvanise des structures de rack et de barre.
-$secondary-color: #5c7a8a;
-$secondary-light: #82a0ae;
-$secondary-dark: #3f5661;
-$secondary-darker: #2b3d45;
-$secondary-500: #5c7a8a;
-$secondary-600: #4c6775;
+$secondary-color: #606c5d;
+$secondary-light: #a4b09f;
+$secondary-dark: #485245;
+$secondary-darker: #343c31;
+$secondary-500: $secondary-color;
+$secondary-600: $secondary-dark;
 
-// Accent tertiaire — craie de magnesie, reserve aux signalements ponctuels
-// (« nouveau », mise en avant). Jamais applique en grande surface.
-$accent-color: #c9a227;
+$accent-color: #5c7838;
+$accent-400: #8cac68;
+$accent-500: $accent-color;
+$accent-600: #486329;
 
-// Accent variants
-$accent-400: #d9bc5c;
-$accent-500: #c9a227;
-$accent-600: #a6841e;
+$success-color: #517036;
+$success-light: #7f9e63;
+$success-dark: #344e22;
+$warning-color: #626762;
+$warning-light: #9aa19a;
+$warning-dark: #3d443d;
+$error-color: #4a504a;
+$danger-color: $error-color;
+$error-light: #929b92;
+$error-dark: #333a33;
+$info-color: #5c6c57;
+$info-light: #92a28e;
+$info-dark: #3c4938;
 
-// Statuts — repris du code couleur reel des disques de competition
-// (25 kg rouge, 20 kg bleu, 15 kg jaune, 10 kg vert) : une convention qui
-// existe deja dans le monde du sujet, pas une palette inventee.
-$success-color: #6b8a5a;
-$success-light: #8fae7c;
-$success-dark: #4d6640;
-$warning-color: #c9a227;
-$warning-light: #d9bc5c;
-$warning-dark: #a6841e;
-$error-color: #b23a2a;
-$danger-color: #b23a2a;
-$error-light: #d16856;
-$error-dark: #7a2a1e;
-$info-color: #5c7a8a;
-$info-light: #82a0ae;
-$info-dark: #3f5661;
-
-// IMPORTANT: Keep these aliases for component compatibility
 $success: $success-color;
 $warning: $warning-color;
 $error: $error-color;
 $info: $info-color;
 $danger: $danger-color;
 
-// Additional color aliases for compatibility
-$light: #f7f3ec;
-$dark: #0e0d10;
+$light: #fff;
+$dark: #131713;
+$gray-25: var(--fp-canvas);
+$gray-50: var(--fp-canvas);
+$gray-100: var(--fp-surface);
+$gray-200: var(--fp-surface-subtle);
+$gray-300: var(--fp-surface-hover);
+$gray-400: var(--fp-gray-400);
+$gray-500: var(--fp-gray-500);
+$gray-600: var(--fp-ink-muted);
+$gray-700: var(--fp-ink-secondary);
+$gray-800: var(--fp-ink-secondary);
+$gray-900: var(--fp-ink);
 
-// Gris chauds — meme echelle de luminosite que l'ancienne, mais virant vers
-// le beton et la poussiere de craie plutot que vers un gris neutre/bleute.
-$gray-25: #0e0d10;
-$gray-50: #121114;
-$gray-100: #17161a;
-$gray-200: #1e1c20;
-$gray-300: #26232a;
-$gray-400: #322e35;
-$gray-500: #4a4650;
-// $gray-600 a $gray-900 servent de couleur de TEXTE dans plusieurs dizaines
-// de fichiers (descriptions, libelles) : verifiees individuellement contre
-// $bg-primary, elles restent toutes au-dessus du seuil AA (5,5:1 a 14,8:1).
-$gray-600: #938d82;
-$gray-700: #c7c1b6;
-$gray-800: #dad5cb;
-$gray-900: #ede8e0;
-
-// =============================================
-// SURFACES
-// =============================================
-//
-// Beton et sol caoutchouc plutot que noir neutre : la teinte de fond porte un
-// leger sous-ton chaud (brun-rouille a peine perceptible), coherent avec
-// l'accent de marque — pas un hasard colorimetrique, la meme famille.
-//
-// Trois niveaux, pas plus : fond de page, carte, element sureleve.
-$bg-primary: #181512;
-$bg-secondary: #181512;
-$bg-tertiary: #24201c;
-$bg-dark: #12100e;
+$bg-primary: var(--fp-canvas);
+$bg-secondary: var(--fp-canvas);
+$bg-tertiary: var(--fp-surface-subtle);
+$bg-dark: var(--fp-surface);
 $bg-color: $bg-primary;
-$surface-primary: #211d19;
-$surface-secondary: #211d19;
-$surface-tertiary: #2b2621;
-// Quatrieme cran, uniquement pour les etats de survol : sans lui, survoler un
-// bouton pose sur $surface-tertiary ne produisait aucun retour visuel une fois
-// les deplacements et les halos supprimes.
-$surface-raised: #39312b;
+$surface-primary: var(--fp-surface);
+$surface-secondary: var(--fp-surface);
+$surface-tertiary: var(--fp-surface-subtle);
+$surface-raised: var(--fp-surface-hover);
 
-// =============================================
-// TEXTE
-// =============================================
-//
-// Craie sur beton : blanc chaud plutot que blanc neutre, meme logique de
-// trois niveaux (principal, secondaire, attenue).
-$text-primary: #f2ebe1;
-$text-secondary: #c4b8aa;
-// Verifie a 5,5:1 sur $bg-primary et 4,7:1 sur $surface-tertiary — au-dessus
-// du seuil AA de 4,5:1 dans les deux cas.
-$text-muted: #aa9d8f;
-$text-light: #f7f3ec;
-$text-inverse: #181512;
-
-// Couleur du texte POSE SUR un aplat de la couleur de marque (boutons
-// d'action principale). Rapport de contraste sur $primary-color : 5,6:1.
-$on-primary: #f7f3ec;
+$text-primary: var(--fp-ink);
+$text-secondary: var(--fp-ink-secondary);
+$text-muted: var(--fp-ink-muted);
+$text-light: #fff;
+$text-inverse: #171a16;
+$on-primary: #fff;
 
 // =============================================
 // TYPOGRAPHY
@@ -221,9 +184,9 @@ $border-width-thick: 1px;
 
 // Ligne de craie : blanc chaud a faible opacite, pas la couleur de marque.
 // Une bordure sert a separer, pas a decorer.
-$border-color: rgba(237, 232, 224, 0.10);
-$border-strong: rgba(237, 232, 224, 0.18);
-$border-color-focus: rgba(204, 122, 82, 0.65);
+$border-color: var(--fp-line);
+$border-strong: var(--fp-control-line);
+$border-color-focus: $green-ink;
 
 // Border radius system
 // Le rayon unique de 18px sur CHAQUE bloc, bouton et champ — quelle que soit
@@ -366,11 +329,11 @@ $transform-focus: none;
 // ocre — ces teintes codent toujours une categorie, mais en restent a des
 // tons MATERIAUX.
 $workout-color: $primary-color;
-$cardio-color: #b2574a;      // brique — effort cardio-vasculaire
+$cardio-color: #59734c;      // brique — effort cardio-vasculaire
 $strength-color: $secondary-color; // acier
-$flexibility-color: #8a7aa8; // violet-gris sourd
+$flexibility-color: #657361; // violet-gris sourd
 $nutrition-color: $warning-color;  // ocre
-$rest-color: #6b665c;
+$rest-color: #696e69;
 
 // Difficulty Colors
 $difficulty-beginner: $success-color;
@@ -380,7 +343,7 @@ $difficulty-advanced: $error-color;
 // Nutrition colors — meme logique : des conventions lisibles (vert =
 // recuperation, ocre = energie dense) rendues en tons materiaux plutot
 // qu'en neon alimentaire.
-$calories-color: #b2574a;
+$calories-color: #59734c;
 $protein-color: $success-color;
 $carbs-color: $secondary-color;
 $fat-color: $warning-color;
@@ -429,7 +392,7 @@ $card-premium-border: $border-width solid $border-color;
 $card-border-radius-enhanced: $border-radius-2xl;
 
 // Additional card variables
-$card-bg-glass: rgba($surface-secondary, 0.04);
+$card-bg-glass: tint($surface-secondary, 0.04);
 $card-bg-glass-dark: rgba(0, 0, 0, 0.4);
 $card-border-glass: $border-width solid $border-color;
 $card-padding-sm: 1rem;
@@ -447,7 +410,7 @@ $form-input-padding-x: 0.75rem;
 $form-input-padding-y: 0.5rem;
 
 // Enhanced Form Variables (for auth pages only)
-$form-input-bg-enhanced: rgba($surface-secondary, 0.08);
+$form-input-bg-enhanced: tint($surface-secondary, 0.08);
 // Resserre de 0.75rem/1rem a 0.625rem/0.875rem : sur un formulaire de six
 // champs (calendrier, objectifs, defis), l'ecart economise environ 70px et
 // evite le defilement dans la plupart des modales de saisie.
@@ -466,7 +429,7 @@ $nav-link-color: $text-secondary;
 $nav-link-active-color: $primary-color;
 
 // Additional navigation variables
-$nav-bg-glass: rgba($surface-secondary, 0.05);
+$nav-bg-glass: tint($surface-secondary, 0.05);
 $nav-link-hover-bg: rgba($primary-color, 0.12);
 $nav-link-active-bg: rgba($primary-color, 0.16);
 $nav-link-padding: 1rem 1.5rem;
@@ -564,9 +527,9 @@ $shadow-danger: $glow-danger-md;
 // Glassmorphism & Focus Shadows
 
 // Glassmorphism Variables
-$glass-bg: rgba($surface-secondary, 0.05);
-$glass-bg-light: rgba($surface-secondary, 0.08);
-$glass-bg-medium: rgba($surface-secondary, 0.12);
+$glass-bg: tint($surface-secondary, 0.05);
+$glass-bg-light: tint($surface-secondary, 0.08);
+$glass-bg-medium: tint($surface-secondary, 0.12);
 $glass-border: $border-width solid $border-color;
 $glass-border-light: $border-width solid $border-color;
 
@@ -619,14 +582,14 @@ $info-alpha-10: rgba($info-color, 0.1);
 $info-alpha-15: rgba($info-color, 0.15);
 
 // Glass Effect Colors  
-$glass-white-90: rgba($surface-secondary, 0.2);
-$glass-white-95: rgba($surface-secondary, 0.25);
-$glass-white-98: rgba($surface-secondary, 0.3);
-$glass-white-20: rgba($surface-secondary, 0.08);
-$glass-white-30: rgba($surface-secondary, 0.12);
-$glass-white-15: rgba($surface-secondary, 0.06);
-$glass-white-08: rgba($surface-secondary, 0.04);
-$glass-white-05: rgba($surface-secondary, 0.02);
+$glass-white-90: tint($surface-secondary, 0.2);
+$glass-white-95: tint($surface-secondary, 0.25);
+$glass-white-98: tint($surface-secondary, 0.3);
+$glass-white-20: tint($surface-secondary, 0.08);
+$glass-white-30: tint($surface-secondary, 0.12);
+$glass-white-15: tint($surface-secondary, 0.06);
+$glass-white-08: tint($surface-secondary, 0.04);
+$glass-white-05: tint($surface-secondary, 0.02);
 
 // Backwards compatibility aliases
 $primary-rgba-05: $primary-alpha-05;
@@ -664,17 +627,17 @@ $white-rgba-30: $glass-white-30;
 // Teintes claires, destinees au TEXTE sur fond sombre (verifiees AA, >=5:1).
 $c-red-300-on-dark:     $error-light;
 $c-orange-300-on-dark:  $warning-light;
-$c-orange-200-on-dark:  #e3d08a;
+$c-orange-200-on-dark:  #a8b1a7;
 $c-emerald-300-on-dark: $success-light;
 $c-green-300-on-dark:   $success-light;
-$c-violet-300-on-dark:  #b3a0b8;
+$c-violet-300-on-dark:  #a8b1a7;
 $c-cyan-300-on-dark:    $info-light;
 
 $c-red-500: $error-color;
-$c-red-600: #8f2e20;
+$c-red-600: #464e46;
 $c-red-bootstrap: $error-color;
 $c-red-300: $error-light;
-$c-red-100: #f0d9d2;
+$c-red-100: #edf1ec;
 
 // Verts / succes — fusionnes sur $success-color
 $c-green-500: $success-color;
@@ -686,22 +649,22 @@ $c-emerald-600: #556e47;
 
 // Oranges / ambre — fusionnes sur $warning-color (meme famille que l'accent,
 // qui reprend deja la teinte ocre des disques de competition)
-$c-orange-600: #a37f1f;
-$c-orange-700: #8a6218;
-$c-orange-900: #5c4712;
+$c-orange-600: #626762;
+$c-orange-700: #505850;
+$c-orange-900: #384438;
 $c-amber-500: $warning-color;
-$c-amber-600: #a37f1f;
+$c-amber-600: #626762;
 $c-amber-bootstrap: $warning-color;
 $c-amber-soft: $warning-light;
 $c-terracotta: $primary-light;
 
 // Bleus / violets — fusionnes sur $info-color (= $secondary-color, acier)
 $c-blue-500: $info-color;
-$c-cyan-600: #45606c;
+$c-cyan-600: #4e614b;
 $c-cyan-bootstrap: $info-color;
 $c-indigo-400: $secondary-color;
-$c-purple-500: #6b4f66;
-$c-violet-600: #5a4055;
+$c-purple-500: #566453;
+$c-violet-600: #40523e;
 
 // Neutres — alignes sur l'echelle de gris chaude plutot que sur un gris froid
 $c-slate-500: $gray-600;

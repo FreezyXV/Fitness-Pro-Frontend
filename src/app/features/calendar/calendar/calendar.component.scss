@@ -4,13 +4,13 @@
 @use 'design-system' as *;
 
 @mixin glass-morphism($opacity: 0.95) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin dark-glass-morphism($opacity: 0.9) {
-  background: rgba($surface-tertiary, $opacity);
+  background: tint($surface-tertiary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -21,7 +21,7 @@
   &:hover {
     transform: translateY(-4px);
     box-shadow: none;
-    background: color.adjust($surface-secondary, $lightness: 2%);
+    background: $surface-raised;
   }
 }
 
@@ -777,7 +777,7 @@ padding: 0.25rem;
             color: white;
 
             &:hover {
-              background: rgba($surface-secondary, 0.1);
+              background: tint($surface-secondary, 0.1);
             }
 
             &.today {
@@ -882,7 +882,7 @@ padding: 0.25rem;
           gap: $space-4;
 
           .stat-chip {
-            background: rgba($surface-secondary, 0.2);
+            background: tint($surface-secondary, 0.2);
             padding: $space-1 $space-3;
             border-radius: $radius-lg;
             font-size: 0.875rem;
@@ -1261,7 +1261,7 @@ padding: 0.25rem;
   overflow: hidden;
 
   &::before {
-    @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s ease, $skew: null);
+    @include shimmer-overlay(tint($surface-secondary, 0.4), left 0.6s ease, $skew: null);
   }
 
   &:hover::before {
@@ -2205,7 +2205,7 @@ padding: 0.25rem;
 // colores de la page, poses sur une information de second plan que la carte
 // « Statistiques du mois » repete deja mot pour mot dans la colonne de droite.
 .calendar-container .period-stats .stat-badge {
-  background: rgba(237, 232, 224, 0.05) !important;
+  background: tint($text-primary, 0.05) !important;
   background-image: none !important;
   border: $border-width solid $border-color !important;
   border-radius: $radius-md !important;
@@ -2266,7 +2266,7 @@ padding: 0.25rem;
     // Le survol agrandissait la case de 2 % et la faisait passer au-dessus
     // de ses voisines : la grille entiere tremblait au passage de la souris.
     &:hover {
-      background: rgba(237, 232, 224, 0.04);
+      background: tint($text-primary, 0.04);
       transform: none;
       box-shadow: none;
     }

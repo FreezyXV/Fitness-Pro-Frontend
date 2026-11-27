@@ -7,7 +7,7 @@
   flex-direction: column;
   width: var(--sidebar-width);
   height: 100dvh;
-  padding: 24px 16px 16px;
+  padding: 22px 14px 14px;
   background: $bg-dark;
   border-right: 1px solid $border-color;
   overflow-y: auto;
@@ -18,7 +18,7 @@
   padding: 3px 5px;
   border: 0;
 }
-.sidebar-nav { display: grid; gap: 25px; margin: 32px 0 auto; }
+.sidebar-nav { display: grid; gap: 23px; margin: 30px 0 auto; }
 .nav-section { display: grid; gap: 3px; }
 .nav-section p {
   padding: 0 10px;
@@ -42,7 +42,7 @@
   font-size: .86rem;
   font-weight: 600;
   &:hover { background: $surface-primary; color: $text-primary; border-color: transparent; }
-  &.active { background: #273218; color: #d3ff68; border-color: #414f29; }
+  &.active { background: $selected; color: $green-ink; border-color: $border-color; }
 }
 
 .account {

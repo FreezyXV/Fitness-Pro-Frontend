@@ -1,82 +1,11 @@
 <!-- src/app/create-workout/create-workout.component.html - Style Dashboard -->
 <div class="create-workout-container">
-  <!-- Header -->
-  <div class="hero-header">
-    <div class="hero-content">
-      <div class="header-left">
-        <h1 class="page-title">
-          <div class="title-icon">
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="12" cy="12" r="10" *ngIf="!isEditMode" />
-              <line x1="12" y1="8" x2="12" y2="16" *ngIf="!isEditMode" />
-              <line x1="8" y1="12" x2="16" y2="12" *ngIf="!isEditMode" />
-              <path
-                d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
-                *ngIf="isEditMode"
-              />
-            </svg>
-          </div>
-          <span>{{ getPageTitle() }}</span>
-        </h1>
-        <p class="page-subtitle">
-          {{
-            isEditMode
-              ? "Modifiez votre programme d'entraînement"
-              : "Créez votre programme personnalisé"
-          }}
-        </p>
-      </div>
-
-      <div class="header-stats">
-        <div class="stat-pill">
-      
-          <span class="stat-value">{{ currentStep }}</span>
-          <span class="stat-label">Étape</span>
-        </div>
-        <div class="stat-pill">
-
-          <span class="stat-value">{{ selectedExercises.length }}</span>
-          <span class="stat-label">Exercices</span>
-        </div>
-        <div class="stat-pill" *ngIf="workoutSummary.estimatedDuration > 0">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <polyline points="12,6 12,12 16,14" />
-          </svg>
-          <span class="stat-value">{{ workoutSummary.estimatedDuration }}</span>
-          <span class="stat-label">Minutes</span>
-        </div>
-        <div class="stat-pill" *ngIf="workoutSummary.totalSets > 0">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-          </svg>
-          <span class="stat-value">{{ workoutSummary.totalSets }}</span>
-          <span class="stat-label">Séries</span>
-        </div>
-      </div>
+  <header class="workspace-page-head">
+    <div>
+      <h1>{{ getPageTitle() }}</h1>
+      <p>{{ currentStep }} / {{ steps.length }} · {{ steps[currentStep - 1].title }}</p>
     </div>
-  </div>
+  </header>
 
   <!-- Progress Steps -->
   <div class="progress-steps">
@@ -84,7 +13,7 @@
       <div
         class="step-item"
         *ngFor="let step of steps; let i = index"
-        [class.active]="currentStep >= i + 1"
+        [class.active]="currentStep === i + 1" [attr.aria-current]="currentStep === i + 1 ? 'step' : null"
         [class.completed]="currentStep > i + 1"
       >
         <div class="step-circle">
@@ -107,45 +36,6 @@
           <h4>{{ step.title }}</h4>
           <p>{{ step.description }}</p>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Debug Section (développement) -->
-  <div class="debug-section" *ngIf="error || isLoading">
-    <div class="debug-card">
-      <div class="debug-controls">
-        <button (click)="testExerciseAPI()" class="btn btn-outline btn-sm">
-          Test API
-        </button>
-        <button (click)="loadInitialData()" class="btn btn-outline btn-sm">
-          Recharger
-        </button>
-        <button (click)="clearDraft()" class="btn btn-outline btn-sm">
-          Vider brouillon
-        </button>
-      </div>
-
-      <div class="debug-info">
-        <p>
-          <strong>Status:</strong>
-          <span
-            [class]="
-              isLoading
-                ? 'status-loading'
-                : error
-                ? 'status-error'
-                : 'status-success'
-            "
-          >
-            {{ isLoading ? "Chargement..." : error ? "Erreur" : "OK" }}
-          </span>
-        </p>
-        <p>
-          <strong>Exercices disponibles:</strong>
-          {{ availableExercises.length }}
-        </p>
-        <p><strong>Mode:</strong> {{ isEditMode ? "Édition" : "Création" }}</p>
       </div>
     </div>
   </div>
@@ -992,22 +882,7 @@
         Il semble qu'aucun exercice ne soit disponible dans la base de données.
       </p>
       <div class="help-actions">
-        <button (click)="testExerciseAPI()" class="btn btn-primary">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-            <line x1="9" y1="9" x2="9.01" y2="9" />
-            <line x1="15" y1="9" x2="15.01" y2="9" />
-          </svg>
-          <span>Tester la connexion</span>
-        </button>
+        <button type="button" (click)="loadInitialData()" class="btn btn-primary">Réessayer</button>
       </div>
     </div>
   </div>

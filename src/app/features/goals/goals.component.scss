@@ -31,7 +31,7 @@
 }
 
 @mixin glass-card($opacity: 0.95, $blur: 20px) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -83,7 +83,7 @@ padding: 0.5rem;
 
 .hero-section {
   width: 100%;
-  background: rgba($surface-secondary, 0.95);
+  background: tint($surface-secondary, 0.95);
   @include glass-card(0.98, 28px);
   border-radius: $border-radius-3xl;
   padding: 1rem;
@@ -173,7 +173,7 @@ padding: 0.5rem;
 ;
     align-items: center;
     gap: 1rem;
-    background: rgba($surface-secondary, 0.6);
+    background: tint($surface-secondary, 0.6);
     border: $border-width solid $border-color;
     border-radius: $radius-md;
     padding: 1.5rem;
@@ -230,7 +230,7 @@ padding: 0.5rem;
     overflow: hidden;
 
     &::before {
-      @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+      @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
     }
 
     &.primary {
@@ -282,7 +282,7 @@ padding: 0.5rem;
 
       &:hover {
         transform: translateY(-3px);
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 
         &::before {
@@ -358,7 +358,7 @@ padding: 0.5rem;
       padding: 1.25rem 1rem;
       border: $border-width solid $border-color;
       border-radius: $border-radius-3xl;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
       font-size: 0.875rem;
       font-family: inherit;
       transition: all 0.3s ease;
@@ -493,7 +493,7 @@ padding: 0.5rem;
     background: linear-gradient(
       90deg,
       transparent,
-      rgba($surface-secondary, 0.1),
+      tint($surface-secondary, 0.1),
       transparent
     );
     transition: left 0.6s;
@@ -617,7 +617,7 @@ padding: 0.5rem;
       align-items: center;
       gap: 0.5rem;
       padding: 0.75rem 1.25rem;
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border-radius: $radius-pill;
       font-size: 0.9rem;
       font-weight: 800;
@@ -628,7 +628,7 @@ padding: 0.5rem;
       overflow: hidden;
 
       &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+        @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -879,7 +879,7 @@ padding: 0.5rem;
             background: linear-gradient(
               90deg,
               transparent,
-              rgba($surface-secondary, 0.3),
+              tint($surface-secondary, 0.3),
               transparent
             );
           }
@@ -922,7 +922,7 @@ padding: 0.5rem;
         min-height: 56px;
 
         &::before {
-          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+          @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover:not(:disabled) {
@@ -1108,7 +1108,7 @@ padding: 0.5rem;
     .quick-action {
       width: 60px;
       height: 60px;
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border: $border-width solid $border-color;
       border-radius: 50%;
       display: flex;
@@ -1122,7 +1122,7 @@ padding: 0.5rem;
       overflow: hidden;
 
       &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
+        @include shimmer-overlay(tint($surface-secondary, 0.4), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -1148,7 +1148,7 @@ padding: 0.5rem;
     align-items: center;
     gap: 0.5rem;
     padding: 1rem;
-    background: rgba($surface-secondary, 0.95);
+    background: tint($surface-secondary, 0.95);
     border-radius: $border-radius-xl;
     border: $border-width solid $border-color;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -1244,7 +1244,7 @@ padding: 0.5rem;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba($surface-secondary, 0.03);
+    background: tint($surface-secondary, 0.03);
     background-size: 50px 50px;
     opacity: 0.8;
     z-index: 0;
@@ -1303,7 +1303,7 @@ padding: 0.5rem;
         background: linear-gradient(
           135deg,
           rgba(178, 58, 42, 0.1) 0%,
-          rgba($surface-secondary, 0.05) 100%
+          tint($surface-secondary, 0.05) 100%
         );
         border-bottom: $border-width solid $border-color;
         
@@ -1371,7 +1371,7 @@ padding: 0.5rem;
           font-weight: 400;
 
           &:hover {
-            background: rgba(237, 232, 224, 0.06);
+            background: tint($text-primary, 0.06);
             color: $text-primary;
           }
         }
@@ -1438,7 +1438,7 @@ padding: 0.5rem;
         justify-content: center;
 
         &:hover {
-          background: rgba(237, 232, 224, 0.06);
+          background: tint($text-primary, 0.06);
           color: $text-primary;
         }
       }
@@ -1472,7 +1472,7 @@ padding: 0.5rem;
 
           .details-section {
             padding: 0.875rem 1rem;
-            background: rgba(237, 232, 224, 0.03);
+            background: tint($text-primary, 0.03);
             border-radius: $radius-lg;
             border: $border-width solid $border-color;
 
@@ -1528,7 +1528,7 @@ padding: 0.5rem;
                   border-radius: $radius-md;
                   font-weight: 600;
                   font-size: 0.8125rem;
-                  background: rgba(237, 232, 224, 0.05);
+                  background: tint($text-primary, 0.05);
                   border: $border-width solid $border-color;
 
                   .category-icon,
@@ -1548,7 +1548,7 @@ padding: 0.5rem;
                 // aplat : sans cette regle, le libelle heritait du blanc
                 // par defaut et devenait illisible dessus.
                 .category-display {
-                  background: rgba(237, 232, 224, 0.05) !important;
+                  background: tint($text-primary, 0.05) !important;
                   color: $text-primary;
                 }
               }
@@ -1559,7 +1559,7 @@ padding: 0.5rem;
               .large-progress-bar {
                 width: 100%;
                 height: 6px;
-                background: rgba(237, 232, 224, 0.09);
+                background: tint($text-primary, 0.09);
                 border-radius: $radius-pill;
                 overflow: hidden;
                 box-shadow: none;
@@ -1585,7 +1585,7 @@ padding: 0.5rem;
                 .progress-stat {
                   text-align: center;
                   padding: 0.625rem;
-                  background: rgba(237, 232, 224, 0.04);
+                  background: tint($text-primary, 0.04);
                   border-radius: $radius-md;
                   border: $border-width solid $border-color;
 
@@ -1618,7 +1618,7 @@ padding: 0.5rem;
                 align-items: center;
                 gap: 0.625rem;
                 padding: 0.5rem 0.625rem;
-                background: rgba(237, 232, 224, 0.04);
+                background: tint($text-primary, 0.04);
                 border-radius: $radius-md;
                 border: $border-width solid $border-color;
 
@@ -1626,7 +1626,7 @@ padding: 0.5rem;
                   font-size: 0.9375rem;
                   width: 30px;
                   height: 30px;
-                  background: rgba(237, 232, 224, 0.06);
+                  background: tint($text-primary, 0.06);
                   color: $text-secondary;
                   border-radius: 50%;
                   display: flex;
@@ -1670,7 +1670,7 @@ padding: 0.5rem;
               font-size: 0.875rem;
               line-height: 1.6;
               color: $text-secondary;
-              background: rgba(237, 232, 224, 0.03);
+              background: tint($text-primary, 0.03);
               padding: 0.75rem 0.875rem;
               border-radius: $radius-md;
               border: $border-width solid $border-color;
@@ -1805,7 +1805,7 @@ padding: 0.5rem;
       border-radius: $border-radius-xl;
       font-size: 1rem;
       font-family: inherit;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       color: $gray-900;
       position: relative;
@@ -1814,7 +1814,7 @@ padding: 0.5rem;
         outline: none;
         border-color: $primary-color;
         box-shadow: 0 0 0 4px rgba($primary-color, 0.15);
-        background: rgba($surface-secondary, 1);
+        background: tint($surface-secondary, 1);
         transform: translateY(-1px);
       }
 
@@ -1891,7 +1891,7 @@ padding: 0.5rem;
     // Un lime a 5 % sur la surface sombre de la modale donne un olive terne :
     // le bloc etait le seul element teinte du formulaire, pour un simple
     // rappel des deux valeurs saisies juste au-dessus.
-    background: rgba(237, 232, 224, 0.04);
+    background: tint($text-primary, 0.04);
     border-radius: $radius-lg;
     border: $border-width solid $border-color;
     margin-top: 0;
@@ -1934,7 +1934,7 @@ padding: 0.5rem;
       height: 4px;
       // La piste etait un lime a 15 % : la barre paraissait a moitie pleine
       // meme a 0 %.
-      background: rgba(237, 232, 224, 0.09);
+      background: tint($text-primary, 0.09);
       border-radius: $radius-pill;
       overflow: hidden;
 
@@ -1955,7 +1955,7 @@ padding: 0.5rem;
           background: linear-gradient(
             90deg,
             transparent,
-            rgba($surface-secondary, 0.4),
+            tint($surface-secondary, 0.4),
             transparent
           );
         }
@@ -1987,7 +1987,7 @@ padding: 0.5rem;
   min-height: 48px;
 
   &::before {
-    @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+    @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
   }
 
   &:hover:not(:disabled) {
@@ -2054,7 +2054,7 @@ padding: 0.5rem;
   }
 
   &.btn-outline {
-    background: rgba($surface-secondary, 0.9);
+    background: tint($surface-secondary, 0.9);
     color: $gray-700;
     border: $border-width solid $border-color;
     flex: 1;
@@ -2075,7 +2075,7 @@ padding: 0.5rem;
     letter-spacing: 0.05em;
 
     &:hover:not(:disabled) {
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border-color: $primary-color;
       color: $primary-color;
     }
@@ -2310,7 +2310,7 @@ padding: 0.5rem;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba($surface-secondary, 0.03);
+    background: tint($surface-secondary, 0.03);
     background-size: 50px 50px;
     opacity: 0.8;
     z-index: 0;
@@ -2453,7 +2453,7 @@ padding: 0.5rem;
         justify-content: center;
 
         &:hover {
-          background: rgba(237, 232, 224, 0.06);
+          background: tint($text-primary, 0.06);
           color: $text-primary;
         }
       }
@@ -2472,7 +2472,7 @@ padding: 0.5rem;
       }
       
       &::-webkit-scrollbar-track {
-        background: rgba($surface-secondary, 0.1);
+        background: tint($surface-secondary, 0.1);
         border-radius: $radius-pill;
       }
       
@@ -2550,7 +2550,7 @@ padding: 0.5rem;
       border-radius: $border-radius;
       font-size: 1rem;
       font-family: inherit;
-      background-color: rgba($surface-secondary, 0.8);
+      background-color: tint($surface-secondary, 0.8);
       color: $text-primary;
 
       // Le focus passait le fond au blanc pur sans changer la couleur du
@@ -2649,7 +2649,7 @@ padding: 0.5rem;
   overflow: hidden;
 
   &::before {
-    @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+    @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
   }
 
   &:hover {
@@ -2702,12 +2702,12 @@ padding: 0.5rem;
   }
 
   &.btn-outline {
-    background: rgba($surface-secondary, 0.9);
+    background: tint($surface-secondary, 0.9);
     color: $gray-700;
     border: $border-width solid $border-color;
 
     &:hover {
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border-color: $primary-color;
       color: $primary-color;
     }
@@ -2944,7 +2944,7 @@ padding: 0.5rem;
       border-radius: $border-radius;
       font-size: 1rem;
       font-family: inherit;
-      background-color: rgba($surface-secondary, 0.8);
+      background-color: tint($surface-secondary, 0.8);
       color: $text-primary;
 
       // Le focus passait le fond au blanc pur sans changer la couleur du
@@ -3007,7 +3007,7 @@ padding: 0.5rem;
         background: linear-gradient(
           90deg,
           transparent,
-          rgba($surface-secondary, 0.1),
+          tint($surface-secondary, 0.1),
           transparent
         );
         transition: left 0.6s;
@@ -3131,7 +3131,7 @@ padding: 0.5rem;
           align-items: center;
           gap: 0.5rem;
           padding: 0.75rem 1.25rem;
-          background: rgba($surface-secondary, 0.95);
+          background: tint($surface-secondary, 0.95);
           border-radius: $radius-pill;
           font-size: 0.9rem;
           font-weight: 800;
@@ -3142,7 +3142,7 @@ padding: 0.5rem;
           overflow: hidden;
 
           &::before {
-            @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+            @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -3394,7 +3394,7 @@ padding: 0.5rem;
                 background: linear-gradient(
                   90deg,
                   transparent,
-                  rgba($surface-secondary, 0.3),
+                  tint($surface-secondary, 0.3),
                   transparent
                 );
               }
@@ -3437,7 +3437,7 @@ padding: 0.5rem;
             min-height: 56px;
 
             &::before {
-              @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+              @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
             }
 
             &:hover:not(:disabled) {
@@ -3577,7 +3577,7 @@ padding: 0.5rem;
         .quick-action {
           width: 60px;
           height: 60px;
-          background: rgba($surface-secondary, 0.95);
+          background: tint($surface-secondary, 0.95);
           border: $border-width solid $border-color;
           border-radius: 50%;
           display: flex;
@@ -3591,7 +3591,7 @@ padding: 0.5rem;
           overflow: hidden;
 
           &::before {
-            @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
+            @include shimmer-overlay(tint($surface-secondary, 0.4), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -3645,7 +3645,7 @@ padding: 0.5rem;
         align-items: center;
         gap: 0.5rem;
         padding: 1rem;
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         border-radius: $border-radius-xl;
         border: $border-width solid $border-color;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -3793,8 +3793,8 @@ padding: 0.5rem;
 .goals-container .action-button,
 .goals-container .goal-actions button,
 .goals-container .cta-button {
-  background: $primary-color;
-  color: $text-inverse;
+  background: $brand;
+  color: $on-brand;
   border: $border-width solid $border-color;
 }
 
@@ -4106,7 +4106,7 @@ padding: 0.5rem;
   }
 
   .category-badge {
-    background: rgba(237, 232, 224, 0.06) !important;
+    background: tint($text-primary, 0.06) !important;
     border: $border-width solid $border-color;
   }
 
@@ -4120,7 +4120,7 @@ padding: 0.5rem;
   // Convention retenue pour tout fond sombre : fond teinte tres discret,
   // TEXTE dans la teinte claire.
   .status-badge {
-    background: rgba(237, 232, 224, 0.05) !important;
+    background: tint($text-primary, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
 
@@ -4194,7 +4194,7 @@ padding: 0.5rem;
       padding: 0.25rem 0.5rem !important;
       min-height: 0 !important;
       border-radius: $radius-xs !important;
-      background: rgba(237, 232, 224, 0.04) !important;
+      background: tint($text-primary, 0.04) !important;
       border: 0 !important;
       color: $text-secondary !important;
       font-size: 0.75rem !important;
@@ -4239,7 +4239,7 @@ padding: 0.5rem;
     .progress-bar {
       height: 4px !important;
       border-radius: $radius-pill !important;
-      background: rgba(237, 232, 224, 0.09) !important;
+      background: tint($text-primary, 0.09) !important;
       overflow: hidden;
 
       .progress-fill {
@@ -4306,7 +4306,7 @@ padding: 0.5rem;
       color: $text-secondary !important;
 
       &:hover:not(:disabled) {
-        background: rgba(237, 232, 224, 0.05) !important;
+        background: tint($text-primary, 0.05) !important;
         color: $text-primary !important;
       }
     }

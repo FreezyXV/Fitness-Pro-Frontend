@@ -1,92 +1,67 @@
 @use 'variables' as *;
 @use 'design-system' as *;
 
-.chart {
-  margin: 0;
-  width: 100%;
+:host { display: block; min-width: 0; }
+.chart { margin: 0; }
+
+.chart-reading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 12px;
+  flex-wrap: wrap;
+  min-height: 38px;
+  margin-bottom: 4px;
+  padding: 5px 9px;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  background: $surface-tertiary;
+  color: $text-secondary;
+  font: 540 .81rem/1.4 $font-family-base;
+  strong { color: $text-primary; font-size: .96rem; font-weight: 750; font-variant-numeric: tabular-nums; }
+  small { font-size: .75rem; font-weight: 550; }
 }
 
 .chart-svg {
   display: block;
   width: 100%;
   height: auto;
-  // Le trace ne doit pas s'epaissir quand le SVG est etire.
-  vector-effect: non-scaling-stroke;
   touch-action: pan-y;
+  overflow: visible;
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
-    outline-offset: 4px;
-    border-radius: $radius-lg;
+    outline: 2px solid $green-ink;
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 }
 
-.grid line {
-  stroke: rgba(237, 232, 224, 0.07);
-  stroke-width: 1;
-}
-
-.axis-label {
-  fill: $text-secondary;
-  font-size: 11px;
-  font-weight: 500;
-}
-
-.area {
-  fill: rgba($primary-color, 0.12);
-}
+.grid line { stroke: $border-color; stroke-width: 1; }
+.axis-label { fill: $text-secondary; font: 530 11px $font-family-base; }
+.area { fill: tint($green-ink, .09); }
 
 .line {
   fill: none;
-  stroke: $primary-color;
-  stroke-width: 2.5;
+  stroke: $green-ink;
+  stroke-width: 2;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
-
 .dot {
-  fill: $bg-primary;
-  stroke: $primary-color;
-  stroke-width: 2;
-  transition: r 0.15s ease;
-
-  &.is-active {
-    r: 5.5;
-    fill: $primary-color;
-  }
+  fill: $surface-primary;
+  stroke: $green-ink;
+  stroke-width: 1.5;
+  &.is-active { r: 5; fill: $green-ink; }
 }
-
 .bar {
-  fill: rgba($primary-color, 0.55);
-  transition: fill 0.15s ease;
-
-  &.is-active {
-    fill: $primary-color;
-  }
+  fill: tint($green-ink, .62);
+  &.is-active { fill: $green-ink; }
 }
-
-.tooltip-guide {
-  stroke: rgba($primary-color, 0.4);
+.chart-guide {
+  stroke: $border-strong;
   stroke-width: 1;
   stroke-dasharray: 3 3;
-}
-
-.tooltip-box {
-  fill: $surface-secondary;
-  stroke: $border-color;
-  stroke-width: 1;
-}
-
-.tooltip-title {
-  fill: $text-secondary;
-  font-size: 10px;
-  font-weight: 600;
-}
-
-.tooltip-value {
-  fill: $text-primary;
-  font-size: 13px;
-  font-weight: 800;
+  pointer-events: none;
 }
 
 // =============================================

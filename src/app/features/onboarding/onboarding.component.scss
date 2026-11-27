@@ -39,7 +39,7 @@
   svg { width: 20px; height: 20px; }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
+    outline: 2px solid $green-ink;
     outline-offset: -2px;
   }
 }
@@ -51,7 +51,7 @@
   // Piste NEUTRE. Elle etait un lime a 15 % : sur le fond noir, la piste
   // entiere se lisait comme un remplissage olive, si bien que la barre
   // paraissait presque pleine des la premiere des cinq questions.
-  background: rgba(237, 232, 224, 0.09);
+  background: tint($text-primary, 0.09);
   overflow: hidden;
 }
 
@@ -89,8 +89,7 @@
 
 .ob-title {
   margin: 0;
-  font: 700 clamp(2.6rem, 7vw, 4rem)/.95 $font-family-display;
-  text-transform: uppercase;
+  font: 760 clamp(1.95rem, 5.8vw, 3rem)/1.06 $font-family-base;
   letter-spacing: -0.02em;
   color: $text-primary;
   text-align: center;
@@ -143,7 +142,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
+    outline: 2px solid $green-ink;
     outline-offset: 2px;
   }
 }
@@ -277,7 +276,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
+    outline: 2px solid $green-ink;
     outline-offset: 2px;
   }
 }
@@ -300,8 +299,8 @@
   appearance: none;
   border: 0;
   border-radius: 8px;
-  background: $primary-light;
-  color: #211610;
+  background: $brand;
+  color: $on-brand;
   font: inherit;
   font-size: 1rem;
   font-weight: 800;
@@ -313,7 +312,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
+    outline: 2px solid $green-ink;
     outline-offset: 3px;
   }
 }
@@ -331,7 +330,7 @@
   cursor: pointer;
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
+    outline: 2px solid $green-ink;
     outline-offset: 2px;
     border-radius: $radius-sm;
   }

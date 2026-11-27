@@ -17,13 +17,12 @@
   <ng-container *ngIf="phase() === 'ready'">
     <header class="session-top">
       <button class="icon-btn" (click)="quit()" aria-label="Quitter"><app-icon name="close"></app-icon></button>
-      <span class="top-title">{{ workoutName() }}</span>
+      <span class="top-title">Séance</span>
     </header>
 
     <div class="ready">
-      <p class="ready-eyebrow">Prêt à commencer</p>
-      <p class="ready-count">{{ totalSets() }}</p>
-      <p class="ready-label">séries au programme</p>
+      <h1 class="ready-title">{{ workoutName() }}</h1>
+      <p class="ready-label">{{ totalSets() }} {{ totalSets() === 1 ? 'série au programme' : 'séries au programme' }}</p>
 
       <ul class="ready-list">
         <li *ngFor="let s of plan(); let i = index"
@@ -113,7 +112,7 @@
     </header>
 
     <main class="stage rest">
-      <p class="stage-eyebrow">Repos</p>
+      <h1 class="stage-eyebrow">Repos</h1>
       <div class="rest-dial">
         <div class="rest-ring" [style.--fraction]="restFraction()"></div>
         <span class="rest-time">{{ formatClock(restRemaining()) }}</span>

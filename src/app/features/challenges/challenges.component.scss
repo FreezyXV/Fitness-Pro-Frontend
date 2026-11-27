@@ -5,13 +5,13 @@
 
 // Enhanced glassmorphism effects (same as dashboard)
 @mixin glass-card($opacity: 0.95) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin glass-card-dark($opacity: 0.1) {
-  background: rgba($surface-tertiary, $opacity + 0.2);
+  background: tint($surface-tertiary, $opacity + 0.2);
   border: $border-width solid $border-color;
 }
 
@@ -208,7 +208,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
-      background: rgba($surface-secondary, 0.6);
+      background: tint($surface-secondary, 0.6);
       border: $border-width solid $border-color;
       border-radius: $border-radius-xl;
       padding: 1.5rem;
@@ -265,7 +265,7 @@
       overflow: hidden;
 
       &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+        @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
       }
 
       &.primary {
@@ -352,7 +352,7 @@
         padding: 0.625rem 0.875rem;
         border: $border-width solid $border-color;
         border-radius: $border-radius;
-        background: rgba($surface-secondary, 0.9);
+        background: tint($surface-secondary, 0.9);
         font-size: 0.875rem;
         font-family: inherit;
         transition: all 0.3s ease;
@@ -427,7 +427,7 @@
         background: linear-gradient(
           90deg,
           transparent,
-          rgba($surface-secondary, 0.1),
+          tint($surface-secondary, 0.1),
           transparent
         );
         transition: left 0.6s;
@@ -515,7 +515,7 @@
           align-items: center;
           gap: 0.5rem;
           padding: 0.75rem 1.25rem;
-          background: rgba($surface-secondary, 0.95);
+          background: tint($surface-secondary, 0.95);
           border-radius: $radius-pill;
           font-size: 0.9rem;
           font-weight: 800;
@@ -526,7 +526,7 @@
           overflow: hidden;
 
           &::before {
-            @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+            @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -778,7 +778,7 @@
                 background: linear-gradient(
                   90deg,
                   transparent,
-                  rgba($surface-secondary, 0.3),
+                  tint($surface-secondary, 0.3),
                   transparent
                 );
               }
@@ -820,7 +820,7 @@
             letter-spacing: 0.05em;
 
             &::before {
-              @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+              @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
             }
 
             &:hover {
@@ -907,7 +907,7 @@
         .quick-action {
           width: 60px;
           height: 60px;
-          background: rgba($surface-secondary, 0.95);
+          background: tint($surface-secondary, 0.95);
           border: $border-width solid $border-color;
           border-radius: 50%;
           display: flex;
@@ -921,7 +921,7 @@
           overflow: hidden;
 
           &::before {
-            @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
+            @include shimmer-overlay(tint($surface-secondary, 0.4), left 0.6s, $skew: null);
           }
 
           &:hover {
@@ -1029,7 +1029,7 @@
     overflow: hidden;
 
     &::before {
-      @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+      @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
     }
 
     &.primary {
@@ -1111,7 +1111,7 @@
         width: 40px;
         height: 40px;
         border: none;
-        background: rgba($gray-500, 0.1);
+        background: tint($gray-500, 0.1);
         border-radius: 50%;
         color: $text-primary;
         cursor: pointer;
@@ -1121,7 +1121,7 @@
         transition: all 0.3s ease;
 
         &:hover {
-          background: rgba($gray-500, 0.2);
+          background: tint($gray-500, 0.2);
           color: $gray-800;
           transform: scale(1.1);
         }
@@ -1181,7 +1181,7 @@
               align-items: center;
               gap: 0.75rem;
               padding: 0.75rem;
-              background: rgba($gray-100, 0.5);
+              background: tint($gray-100, 0.5);
               border-radius: $border-radius;
               font-size: 0.875rem;
               color: $gray-700;
@@ -1265,7 +1265,7 @@
               display: flex;
               gap: 1rem;
               padding: 1rem;
-              background: rgba($gray-100, 0.3);
+              background: tint($gray-100, 0.3);
               border-radius: $border-radius;
               transition: all 0.3s ease;
 
@@ -1329,7 +1329,7 @@
           margin-bottom: 0.5rem;
 
           &:hover {
-            background: rgba($gray-100, 0.3);
+            background: tint($gray-100, 0.3);
           }
 
           &.current-user {
@@ -1361,8 +1361,8 @@
             }
 
             &.rank-3 {
-              background: $primary-light;
-              color: $gray-100;
+              background: $brand;
+              color: $on-brand;
             }
           }
 
@@ -1436,7 +1436,7 @@
   overflow: hidden;
 
   &::before {
-    @include shimmer-overlay(rgba($surface-secondary, 0.2), left 0.6s, $skew: null);
+    @include shimmer-overlay(tint($surface-secondary, 0.2), left 0.6s, $skew: null);
   }
 
   &:hover {
@@ -1488,12 +1488,12 @@
   }
 
   &.btn-outline {
-    background: rgba($surface-secondary, 0.9);
+    background: tint($surface-secondary, 0.9);
     color: $gray-700;
     border: $border-width solid $border-color;
 
     &:hover {
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border-color: $primary-color;
       color: $primary-color;
     }
@@ -1724,7 +1724,7 @@ gap: 1rem;
       border-radius: $border-radius;
       font-size: 1rem;
       font-family: inherit;
-      background-color: rgba($surface-secondary, 0.8);
+      background-color: tint($surface-secondary, 0.8);
       color: $text-primary;
 
       // Meme bug que le formulaire d'objectif : le fond passait au blanc pur
@@ -1822,8 +1822,8 @@ gap: 1rem;
 }
 
 .challenges-container .cta-button {
-  background: $primary-color;
-  color: $text-inverse;
+  background: $brand;
+  color: $on-brand;
   border: $border-width solid $border-color;
 }
 
@@ -2055,7 +2055,7 @@ gap: 1rem;
     letter-spacing: 0 !important;
     line-height: 1.4;
     white-space: nowrap;
-    background: rgba(237, 232, 224, 0.05) !important;
+    background: tint($text-primary, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
     box-shadow: none !important;
@@ -2088,7 +2088,7 @@ gap: 1rem;
     &.active {
       background: rgba($primary-color, 0.14) !important;
       border-color: rgba($primary-color, 0.3) !important;
-      color: $primary-light !important;
+      color: $green-ink !important;
     }
   }
 
@@ -2131,7 +2131,7 @@ gap: 1rem;
       padding: 0.25rem 0.5rem !important;
       min-height: 0 !important;
       border-radius: $radius-xs !important;
-      background: rgba(237, 232, 224, 0.04) !important;
+      background: tint($text-primary, 0.04) !important;
       border: 0 !important;
       color: $text-secondary !important;
       font-size: 0.75rem !important;
@@ -2167,7 +2167,7 @@ gap: 1rem;
     .progress-bar {
       height: 4px !important;
       border-radius: $radius-pill !important;
-      background: rgba(237, 232, 224, 0.09) !important;
+      background: tint($text-primary, 0.09) !important;
       overflow: hidden;
 
       .progress-fill {

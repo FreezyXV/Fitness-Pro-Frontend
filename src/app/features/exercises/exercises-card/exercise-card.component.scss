@@ -2,13 +2,13 @@
 @use 'design-system' as *;
 
 @mixin glass-card($opacity: 0.95) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
 
 @mixin glass-card-dark($opacity: 0.1) {
-  background: rgba($surface-tertiary, $opacity + 0.2);
+  background: tint($surface-tertiary, $opacity + 0.2);
   border: $border-width solid $border-color;
 }
 
@@ -139,7 +139,7 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba($surface-secondary, 0.1),
+      tint($surface-secondary, 0.1),
       transparent
     );
     transition: left 0.6s;
@@ -160,11 +160,6 @@
       left: 100%;
     }
 
-    .card-actions-overlay {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
     .exercise-title {
       background-size: 400% 400%;
     }
@@ -173,7 +168,7 @@
   .card-header {
     @include card-header;
     .favorite-btn {
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       border: $border-width solid $border-color;
       border-radius: 50%;
       width: 48px;
@@ -204,7 +199,7 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem 1.25rem;
-      background: rgba($surface-secondary, 0.8);
+      background: tint($surface-secondary, 0.8);
       border: $border-width solid $border-color;
       border-radius: $radius-pill;
       font-size: 0.9rem;
@@ -215,7 +210,7 @@
       overflow: hidden;
 
       &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+        @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
       }
 
       &:hover {
@@ -300,46 +295,36 @@
 
       .video-overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 0.3s ease;
-        opacity: 1;
+        inset: 0;
+        pointer-events: none;
+        transition: opacity .16s ease;
 
-        &.hidden {
+        &.hidden:not(:focus-within) {
           opacity: 0;
-          pointer-events: none;
+          .play-button { pointer-events: none; }
         }
 
         .play-button {
-          background: rgba($surface-secondary, 0.2);
-          border: $border-width solid $border-color;
-          border-radius: 50%;
-          width: 70px;
-          height: 70px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          position: absolute;
+          left: 9px;
+          bottom: 9px;
+          display: grid;
+          place-items: center;
+          width: 34px;
+          height: 34px;
+          padding: 0;
+          border: 1px solid rgb(255 255 255 / 26%);
+          border-radius: 7px;
+          background: rgb(9 13 8 / 86%);
+          color: #fff;
           cursor: pointer;
-          transition: all 0.3s ease;
-          color: $on-primary;
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+          pointer-events: auto;
 
-          &:hover {
-            background: rgba($surface-secondary, 0.3);
-            transform: scale(1.1);
-          }
+          &:hover { background: #111710; }
+          &:focus-visible { outline-color: $brand; }
+          svg { width: 16px; height: 16px; }
 
-          svg {
-            width: 36px;
-            height: 36px;
-          }
+          @media (pointer: coarse) { width: 44px; height: 44px; }
         }
 
         .video-info {
@@ -374,7 +359,7 @@
         left: 0;
         width: 100%;
         height: 5px;
-        background: rgba($surface-secondary, 0.2);
+        background: tint($surface-secondary, 0.2);
 
         .progress-bar {
           height: 100%;
@@ -444,7 +429,7 @@
       height: 100%;
       // Meme correction que .video-container ci-dessus : $gray-800 est une
       // couleur de TEXTE clair, pas une surface.
-      background: rgba(237, 232, 224, 0.04);
+      background: tint($text-primary, 0.04);
       color: $text-muted;
       display: flex;
       align-items: center;
@@ -522,7 +507,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0.75rem 1.25rem;
-        background: rgba($surface-secondary, 0.8);
+        background: tint($surface-secondary, 0.8);
         border: $border-width solid $border-color;
         border-radius: $radius-pill;
         font-size: 0.9rem;
@@ -533,7 +518,7 @@
         overflow: hidden;
 
         &::before {
-          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+          @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -678,7 +663,7 @@
         letter-spacing: 0.05em;
 
         &::before {
-          @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+          @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
         }
 
         &:hover {
@@ -770,7 +755,7 @@
           background: linear-gradient(
             90deg,
             transparent,
-            rgba($surface-secondary, 0.4),
+            tint($surface-secondary, 0.4),
             transparent
           );
         }
@@ -794,54 +779,9 @@
     }
   }
 
-  .card-actions-overlay {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 20;
-
-    .quick-action {
-      width: 60px;
-      height: 60px;
-      background: rgba($surface-secondary, 0.95);
-      border: $border-width solid $border-color;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      color: $text-primary;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      position: relative;
-      overflow: hidden;
-
-      &::before {
-        @include shimmer-overlay(rgba($surface-secondary, 0.4), left 0.6s, $skew: null);
-      }
-
-      &:hover {
-        background: $surface-secondary;
-        color: $primary-color;
-        transform: scale(1.15);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-
-        &::before {
-          left: 100%;
-        }
-      }
-    }
-  }
-
   .performance-indicators {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
+    padding: 0 12px 10px;
+    flex-wrap: wrap;
     display: flex;
     gap: 0.5rem;
     z-index: 10;
@@ -903,9 +843,7 @@
       }
     }
 
-    .card-actions-overlay {
-      display: none;
-    }
+
   }
 }
 
@@ -1027,7 +965,7 @@
     letter-spacing: 0 !important;
     line-height: 1.4;
     white-space: nowrap;
-    background: rgba(237, 232, 224, 0.05) !important;
+    background: tint($text-primary, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
     box-shadow: none !important;
@@ -1072,7 +1010,7 @@
   }
 
   .no-media-placeholder {
-    background: rgba(237, 232, 224, 0.04) !important;
+    background: tint($text-primary, 0.04) !important;
 
     .placeholder-icon svg { width: 22px; height: 22px; }
 
@@ -1134,7 +1072,7 @@
       padding: 0.1875rem 0.5rem !important;
       min-height: 0 !important;
       border-radius: $radius-xs !important;
-      background: rgba(237, 232, 224, 0.04) !important;
+      background: tint($text-primary, 0.04) !important;
       border: 0 !important;
       color: $text-secondary !important;
       font-size: 0.75rem !important;
@@ -1173,7 +1111,7 @@
     // cran en dessous du contour d'accent employe par « Démarrer » et
     // « Rejoindre » sur les deux autres grilles.
     .btn-primary {
-      background: rgba(237, 232, 224, 0.04) !important;
+      background: tint($text-primary, 0.04) !important;
       border: $border-width solid $border-color !important;
       color: $text-primary !important;
 
@@ -1202,4 +1140,44 @@
 // `has-video` est deja posee par le gabarit sur la racine de la carte.
 .exercise-card-enhanced:not(.has-video) .video-container {
   display: none !important;
+}
+
+.exercise-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid $border-color;
+}
+
+.exercise-tools { display: inline-flex; align-items: center; gap: 3px; }
+
+.exercise-detail-link, .exercise-tools .quick-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 0 5px;
+  border: 0;
+  border-radius: 6px;
+  color: $text-secondary;
+  background: transparent;
+  font: 650 .78rem/1.2 $font-family-base;
+  cursor: pointer;
+
+  &:hover { background: $surface-tertiary; color: $text-primary; }
+}
+.exercise-tools .quick-action { width: 36px; }
+.exercise-detail-link { color: $green-ink; }
+
+@media (pointer: coarse) {
+  .exercise-detail-link, .exercise-tools .quick-action { min-height: 44px; }
+  .exercise-tools .quick-action { width: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exercise-card-enhanced .video-overlay { transition: none; }
 }

@@ -156,10 +156,12 @@ interface SearchFilters {
   excludeAllergens?: string[];
 }
 
+import { DialogDirective } from '@app/shared/components/dialog/dialog.directive';
+
 @Component({
   selector: 'app-nutrition',
   standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe, BarcodeScannerComponent, IconComponent],
+  imports: [DialogDirective, CommonModule, FormsModule, FilterPipe, BarcodeScannerComponent, IconComponent],
   templateUrl: './nutrition.component.html',
   styleUrls: ['./nutrition.component.scss'],
 })
@@ -172,6 +174,21 @@ export class NutritionComponent implements OnInit, OnDestroy {
 
   // ===== PROPRIÉTÉS PRINCIPALES =====
   activeTab = 'dashboard';
+
+  readonly journalSections = [
+    { id: 'dashboard', label: 'Journal' },
+    { id: 'database', label: 'Aliments' },
+    { id: 'meals', label: 'Repas' },
+    { id: 'diets', label: 'Régimes' },
+    { id: 'insights', label: 'Analyses' },
+  ];
+
+  readonly journalMetrics = [
+    { key: 'calories', label: 'Énergie', unit: 'kcal' },
+    { key: 'protein', label: 'Protéines', unit: 'g' },
+    { key: 'carbs', label: 'Glucides', unit: 'g' },
+    { key: 'fat', label: 'Lipides', unit: 'g' },
+  ] as const;
   selectedDate = new Date();
   workoutContext!: WorkoutContext;
 
@@ -1371,15 +1388,7 @@ export class NutritionComponent implements OnInit, OnDestroy {
     return Math.min((current / goal) * 100, 100);
   }
 
-  getProgressColor(current: number, goal: number): string {
-    const percentage = this.getProgressPercentage(current, goal);
 
-    if (percentage < 25) return '#fc8181';
-    if (percentage < 50) return '#fdba74';
-    if (percentage < 75) return '#eab308';
-    if (percentage < 100) return '#6ee7b7';
-    return '#67e8f9';
-  }
 
   getRemainingNutrient(current: number, goal: number): number {
     return Math.max(goal - current, 0);

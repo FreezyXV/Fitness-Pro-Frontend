@@ -85,14 +85,6 @@
             </div>
           </div>
           
-          <div class="stat-card" *ngIf="hasVideo">
-            <div class="stat-icon"><app-icon name="video"></app-icon></div>
-            <div class="stat-content">
-              <span class="stat-value">HD</span>
-              <span class="stat-label">vidéo</span>
-            </div>
-          </div>
-
           <div class="stat-card" *ngIf="exercise.estimatedCaloriesPerMinute">
             <div class="stat-icon"><app-icon name="flame"></app-icon></div>
             <div class="stat-content">
@@ -117,12 +109,11 @@
               <span class="title-icon"><app-icon name="video"></app-icon></span>
               <span>Démonstration vidéo</span>
             </h2>
-            <div class="video-status" *ngIf="exercise.videoUrl">
+            <div class="video-status" *ngIf="exercise.videoUrl && (videoError || videoLoading)">
               <div class="status-indicator" 
                    [class.error]="videoError" 
                    [class.loading]="videoLoading"
                    [class.success]="!videoError && !videoLoading && hasVideo">
-                <span *ngIf="!videoError && !videoLoading && hasVideo">Vidéo HD</span>
                 <span *ngIf="videoError">Erreur de lecture</span>
                 <span *ngIf="videoLoading">Chargement…</span>
               </div>
@@ -137,6 +128,7 @@
                        [poster]="videoPoster"
                        preload="metadata"
                        playsinline
+                       controls
                        class="main-video"
                        [class.playing]="isPlaying"
                        (loadedmetadata)="onVideoLoaded()"
@@ -149,77 +141,8 @@
                        (canplay)="onVideoCanPlay()"
                        (waiting)="onVideoWaiting()"
                        (playing)="onVideoPlaying()"
-                       (click)="togglePlayPause()"
                        [attr.aria-label]="'Démonstration vidéo de ' + exercise.name">
                 </video>
-
-                <!-- Enhanced Video Controls -->
-                <div class="video-overlay" 
-                     [class.hidden]="isPlaying && !showControls"
-                     (mouseenter)="showVideoControls()"
-                     (mouseleave)="scheduleHideControls()">
-                  
-                  <div class="center-play-button" *ngIf="!isPlaying || showControls">
-                    <button class="play-button" 
-                            [class.playing]="isPlaying"
-                            (click)="togglePlayPause()">
-                      <svg *ngIf="!isPlaying" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M8 5v14l11-7z"/>
-                      </svg>
-                      <svg *ngIf="isPlaying" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                      </svg>
-                    </button>
-                  </div>
-
-                  <div class="video-controls" *ngIf="showControls">
-                    <div class="progress-container">
-                      <div class="progress-bar" 
-                           (click)="seekVideo($event)"
-                           #progressBar>
-                        <div class="progress-track"></div>
-                        <div class="progress-played" 
-                             [style.width.%]="videoDuration > 0 ? (currentTime / videoDuration) * 100 : 0"></div>
-                      </div>
-                      <div class="time-display">
-                        <span>{{ formatTime(currentTime) }} / {{ formatTime(videoDuration) }}</span>
-                      </div>
-                    </div>
-
-                    <div class="control-buttons">
-                      <button class="control-btn" (click)="togglePlayPause()">
-                        <svg *ngIf="!isPlaying" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M8 5v14l11-7z"/>
-                        </svg>
-                        <svg *ngIf="isPlaying" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                        </svg>
-                      </button>
-                      <button class="control-btn" (click)="toggleMute()">
-                        <svg *ngIf="!isMuted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-                        </svg>
-                        <svg *ngIf="isMuted" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-                          <line x1="23" y1="9" x2="17" y2="15"/>
-                          <line x1="17" y1="9" x2="23" y2="15"/>
-                        </svg>
-                      </button>
-                      <button class="control-btn" (click)="restartVideo()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <polyline points="23 4 23 10 17 10"/>
-                          <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4a9 9 0 0 1-14.85 4.36L23 14"/>
-                        </svg>
-                      </button>
-                      <button class="control-btn" (click)="toggleFullscreen()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
 
                 <div class="loading-overlay" *ngIf="videoLoading">
                   <div class="loading-spinner"></div>
@@ -240,7 +163,6 @@
                   <h3 *ngIf="videoError">Erreur de chargement vidéo</h3>
                   <h3 *ngIf="!exercise.videoUrl && !videoError">Démonstration vidéo non disponible</h3>
                   <p *ngIf="videoError">La vidéo n'a pas pu être chargée. Vérifiez votre connexion.</p>
-                  <p *ngIf="!exercise.videoUrl && !videoError">La démonstration vidéo sera bientôt disponible.</p>
                   <div class="no-video-actions">
                     <button class="btn btn-primary" (click)="retryVideo()" *ngIf="videoError">
                       <span>Réessayer</span>

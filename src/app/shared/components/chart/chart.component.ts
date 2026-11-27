@@ -1,13 +1,9 @@
-// chart.component.ts - Graphique cartesien minimal, sans dependance.
-//
-// Le projet n'embarque aucune librairie de graphiques : le "graphe de
-// performance" du dashboard etait une <polyline> ecrite en dur, sans axes ni
-// echelle, donc illisible. Plutot que d'ajouter 40 a 200 ko de dependance
-// pour deux courbes, ce composant fournit ce qui manque reellement : une
-// echelle calculee, des graduations lisibles, un survol qui donne la valeur
-// exacte, et un equivalent clavier + lecteur d'ecran.
 import {
   Component,
+  AfterViewInit,
+  DestroyRef,
+  ElementRef,
+  inject,
   ChangeDetectionStrategy,
   Input,
   computed,
@@ -23,14 +19,13 @@ export interface ChartPoint {
   label?: string;
 }
 
-// Repere interne fixe : le SVG est ensuite mis a l'echelle en CSS
-// (width: 100%), ce qui evite de recalculer la geometrie au redimensionnement.
-const VIEW_W = 600;
-const VIEW_H = 260;
-const PAD_LEFT = 46;
-const PAD_RIGHT = 14;
-const PAD_TOP = 18;
-const PAD_BOTTOM = 30;
+const PAD_LEFT = 43;
+const PAD_RIGHT = 20;
+const PLOT_TOP = 14;
+const PLOT_BOTTOM = 180;
+const HEIGHT = 206;
+const exactNumber = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
+const compactNumber = new Intl.NumberFormat('fr-FR', { notation: 'compact', maximumFractionDigits: 1 });
 
 @Component({
   selector: 'app-chart',
@@ -40,7 +35,10 @@ const PAD_BOTTOM = 30;
   styleUrls: ['./chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartComponent {
+export class ChartComponent implements AfterViewInit {
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly width = signal(600);
   private readonly _points = signal<ChartPoint[]>([]);
   private readonly _type = signal<'line' | 'bar'>('line');
 
@@ -62,11 +60,20 @@ export class ChartComponent {
   /** Point survole ou selectionne au clavier. */
   readonly activeIndex = signal<number | null>(null);
 
-  readonly viewBox = `0 0 ${VIEW_W} ${VIEW_H}`;
+  readonly viewBox = computed(() => `0 0 ${this.width()} ${HEIGHT}`);
   readonly plotLeft = PAD_LEFT;
-  readonly plotRight = VIEW_W - PAD_RIGHT;
-  readonly plotTop = PAD_TOP;
-  readonly plotBottom = VIEW_H - PAD_BOTTOM;
+  readonly plotRight = computed(() => this.width() - PAD_RIGHT);
+  readonly plotTop = PLOT_TOP;
+  readonly plotBottom = PLOT_BOTTOM;
+
+  ngAfterViewInit(): void {
+    const observer = new ResizeObserver(([entry]) => {
+      const width = Math.round(entry.contentRect.width);
+      if (width > 0) this.width.set(Math.max(200, width));
+    });
+    observer.observe(this.host.nativeElement);
+    this.destroyRef.onDestroy(() => observer.disconnect());
+  }
 
   readonly data = computed(() => this._points());
   readonly chartType = computed(() => this._type());
@@ -85,7 +92,9 @@ export class ChartComponent {
 
     if (rawMax <= 0) return { min: 0, max: 1, step: 1 };
 
-    const step = niceStep(rawMax / 4);
+    const step = this._points().every(p => Number.isInteger(p.y))
+      ? Math.max(1, niceStep(rawMax / 4))
+      : niceStep(rawMax / 4);
     const max = Math.ceil(rawMax / step) * step;
     return { min: 0, max, step };
   });
@@ -99,21 +108,24 @@ export class ChartComponent {
     return ticks;
   });
 
-  /**
-   * Graduations de l'axe X. On en affiche au plus 5 : au-dela les libelles se
-   * chevauchent sur un ecran de telephone.
-   */
   readonly xTicks = computed(() => {
-    const pts = this._points();
-    if (!pts.length) return [];
+    const points = this._points();
+    if (!points.length) return [];
 
-    const maxLabels = 5;
-    const stride = Math.max(1, Math.ceil(pts.length / maxLabels));
+    const maxLabels = this.width() >= 520 ? 6 : 4;
+    const stride = Math.max(1, Math.ceil((points.length - 1) / (maxLabels - 1)));
+    const last = points.length - 1;
+    const labels: { x: number; text: string }[] = [];
 
-    return pts
-      .map((p, i) => ({ i, p }))
-      .filter(({ i }) => i % stride === 0 || i === pts.length - 1)
-      .map(({ i, p }) => ({ x: this.toX(i), text: formatShortDate(p.x) }));
+    for (let i = 0; i < last; i += stride) {
+      const x = this.toX(i);
+      const previous = labels.at(-1);
+      if (this.toX(last) - x >= 44 && (!previous || x - previous.x >= 44)) {
+        labels.push({ x, text: formatShortDate(points[i].x) });
+      }
+    }
+    labels.push({ x: this.toX(last), text: formatShortDate(points[last].x) });
+    return labels;
   });
 
   // ------------------------------------------------------------------ tracés
@@ -144,10 +156,10 @@ export class ChartComponent {
     const pts = this._points();
     if (!pts.length) return [];
 
-    const span = this.plotRight - this.plotLeft;
+    const span = this.plotRight() - this.plotLeft;
     // 0.62 : laisse une gouttiere lisible entre deux barres sans les rendre
     // filiformes quand la serie est longue (52 semaines).
-    const width = Math.max(2, (span / pts.length) * 0.62);
+    const width = Math.min(34, (span / pts.length) * 0.66);
 
     return pts.map((p, i) => {
       const y = this.toY(p.y);
@@ -163,29 +175,16 @@ export class ChartComponent {
     });
   });
 
-  // ---------------------------------------------------------------- infobulle
-
-  readonly active = computed(() => {
-    const i = this.activeIndex();
-    const pts = this._points();
-    if (i === null || !pts[i]) return null;
-
-    const p = pts[i];
-    const x = this.toX(i);
-    const y = this.toY(p.y);
-
-    // L'infobulle bascule a gauche du point quand elle sortirait du cadre.
-    const boxWidth = 118;
-    const flip = x + boxWidth + 10 > this.plotRight;
+  readonly selection = computed(() => {
+    const points = this._points();
+    const index = this.activeIndex() ?? points.length - 1;
+    const point = points[index];
+    if (!point) return null;
 
     return {
-      x,
-      y,
-      boxX: flip ? x - boxWidth - 8 : x + 8,
-      boxY: Math.max(this.plotTop, y - 44),
-      boxWidth,
-      title: p.label ?? formatLongDate(p.x),
-      value: `${formatNumber(p.y)}${this.unit ? ' ' + this.unit : ''}`,
+      x: this.toX(index),
+      title: point.label ?? formatLongDate(point.x),
+      value: exactNumber.format(point.y),
     };
   });
 
@@ -205,7 +204,7 @@ export class ChartComponent {
     return (
       `${this.caption} : ${pts.length} points, du ${formatLongDate(pts[0].x)} ` +
       `au ${formatLongDate(pts[pts.length - 1].x)}. ` +
-      `Minimum ${formatNumber(min)} ${this.unit}, maximum ${formatNumber(max)} ${this.unit}, ` +
+      `Minimum ${exactNumber.format(min)} ${this.unit}, maximum ${exactNumber.format(max)} ${this.unit}, ` +
       `tendance ${trend}.`
     );
   });
@@ -225,17 +224,22 @@ export class ChartComponent {
     if (!pts.length) return;
 
     const rect = svg.getBoundingClientRect();
-    const ratio = VIEW_W / rect.width;
-    const localX = (event.clientX - rect.left) * ratio;
-
-    const span = this.plotRight - this.plotLeft;
-    const stepX = pts.length > 1 ? span / (pts.length - 1) : span;
-    const index = Math.round((localX - this.plotLeft) / stepX);
-
-    this.activeIndex.set(Math.min(pts.length - 1, Math.max(0, index)));
+    if (!rect.width) return;
+    const localX = (event.clientX - rect.left) * this.width() / rect.width;
+    let nearest = 0;
+    let distance = Infinity;
+    for (let i = 0; i < pts.length; i++) {
+      const delta = Math.abs(this.toX(i) - localX);
+      if (delta < distance) {
+        nearest = i;
+        distance = delta;
+      }
+    }
+    this.activeIndex.set(nearest);
   }
 
-  onPointerLeave(): void {
+  onPointerLeave(event?: PointerEvent): void {
+    if (event?.pointerType === 'touch') return;
     this.activeIndex.set(null);
   }
 
@@ -263,7 +267,7 @@ export class ChartComponent {
   // ------------------------------------------------------------------ helpers
 
   formatTick(value: number): string {
-    return formatNumber(value);
+    return compactNumber.format(value);
   }
 
   /** Libelle du tableau accessible. */
@@ -272,10 +276,15 @@ export class ChartComponent {
   }
 
   private toX(index: number): number {
-    const count = this._points().length;
-    const span = this.plotRight - this.plotLeft;
-    if (count <= 1) return this.plotLeft + span / 2;
-    return this.plotLeft + (index / (count - 1)) * span;
+    const points = this._points();
+    const span = this.plotRight() - this.plotLeft;
+    if (this._type() === 'bar') return this.plotLeft + ((index + 0.5) / points.length) * span;
+    if (points.length <= 1) return this.plotLeft + span / 2;
+    const start = points[0].x.getTime();
+    const end = points[points.length - 1].x.getTime();
+    const time = points[index].x.getTime();
+    const fraction = end > start ? (time - start) / (end - start) : index / (points.length - 1);
+    return this.plotLeft + fraction * span;
   }
 
   private toY(value: number): number {
@@ -294,12 +303,6 @@ function niceStep(rough: number): number {
 
   const factor = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 5 ? 5 : 10;
   return factor * magnitude;
-}
-
-function formatNumber(value: number): string {
-  if (Math.abs(value) >= 10000) return `${Math.round(value / 1000)}k`;
-  if (Number.isInteger(value)) return value.toString();
-  return value.toFixed(1);
 }
 
 function formatShortDate(date: Date): string {

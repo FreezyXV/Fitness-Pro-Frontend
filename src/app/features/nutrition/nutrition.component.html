@@ -62,120 +62,13 @@
   </div>
 
   <!-- ===== NAVIGATION ÉTENDUE ===== -->
-  <nav class="main-navigation">
-    <div class="nav-container">
-      <button
-        class="nav-tab"
-        [class.active]="activeTab === 'dashboard'"
-        (click)="setActiveTab('dashboard')"
-      >
-        <div class="nav-icon">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="3" y="3" width="7" height="9" />
-            <rect x="14" y="3" width="7" height="5" />
-            <rect x="14" y="12" width="7" height="9" />
-            <rect x="3" y="16" width="7" height="5" />
-          </svg>
-        </div>
-        <span>Journal</span>
-      </button>
-
-      <button
-        class="nav-tab"
-        [class.active]="activeTab === 'database'"
-        (click)="setActiveTab('database')"
-      >
-        <div class="nav-icon">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <ellipse cx="12" cy="5" rx="9" ry="3" />
-            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
-            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
-          </svg>
-        </div>
-        <span>Aliments</span>
-      </button>
-
-      <button
-        class="nav-tab"
-        [class.active]="activeTab === 'meals'"
-        (click)="setActiveTab('meals')"
-      >
-        <div class="nav-icon">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5" />
-            <path d="M3 17h18v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2z" />
-          </svg>
-        </div>
-        <span>Repas</span>
-      </button>
-
-      <button
-        class="nav-tab"
-        [class.active]="activeTab === 'diets'"
-        (click)="setActiveTab('diets')"
-      >
-        <div class="nav-icon">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
-            <line x1="16" y1="8" x2="2" y2="22" />
-            <line x1="17.5" y1="15" x2="9" y2="15" />
-          </svg>
-        </div>
-        <span>Régimes</span>
-      </button>
-
-      <button
-        class="nav-tab"
-        [class.active]="activeTab === 'insights'"
-        (click)="setActiveTab('insights')"
-      >
-        <div class="nav-icon">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M3 3v18h18" />
-            <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
-          </svg>
-        </div>
-        <span>Analyses</span>
-      </button>
-    </div>
+  <nav class="journal-navigation" aria-label="Rubriques de nutrition">
+    <button *ngFor="let item of journalSections" type="button"
+            [attr.aria-pressed]="activeTab === item.id" (click)="setActiveTab(item.id)">
+      {{ item.label }}
+    </button>
   </nav>
 
-  <!-- ===== CONTENU DYNAMIQUE ===== -->
   <div class="content-wrapper">
     <!-- ===== ONGLET BASE DE DONNÉES D'ALIMENTS ===== -->
     <div class="tab-content" *ngIf="activeTab === 'database'">
@@ -756,7 +649,7 @@
         <div class="card-header">
           <div class="header-icon"><app-icon name="dumbbell"></app-icon></div>
           <div class="header-content">
-            <h3>{{ workoutContext.workoutType }} prévu</h3>
+            <h3>{{ workoutContext.workoutType }} · exemple de séance</h3>
             <p>
               {{ workoutContext.workoutDuration }}min -
               {{ workoutContext.estimatedCaloriesBurned }}cal
@@ -805,198 +698,26 @@
         </div>
       </div>
 
-      <!-- Macronutriments principaux -->
-      <div class="macros-overview-card">
-        <div class="card-header">
-          <div class="header-icon"><app-icon name="chart"></app-icon></div>
-          <div class="header-content">
-            <h3>Macronutriments</h3>
-            <p>Suivi quotidien de vos apports</p>
+      <section class="nutrition-summary" aria-labelledby="nutrition-summary-title">
+        <header>
+          <h2 id="nutrition-summary-title">Apports du jour</h2>
+          <p>Consommé / objectif</p>
+        </header>
+        <div class="nutrition-metrics">
+          <div class="nutrition-metric" *ngFor="let metric of journalMetrics">
+            <div class="metric-heading">
+              <h3>{{ metric.label }}</h3>
+              <span>{{ getProgressPercentage(dailyNutrition[metric.key], dailyGoals[metric.key]) | number:'1.0-0' }} %</span>
+            </div>
+            <p class="metric-reading">
+              <strong>{{ dailyNutrition[metric.key] | number:'1.0-1' }}</strong>
+              <span> / {{ dailyGoals[metric.key] | number:'1.0-1' }} {{ metric.unit }}</span>
+            </p>
+            <progress [value]="getProgressPercentage(dailyNutrition[metric.key], dailyGoals[metric.key])"
+                      max="100" [attr.aria-label]="metric.label"></progress>
           </div>
         </div>
-        <div class="macros-grid">
-          <!-- Calories -->
-          <div class="macro-card calories">
-            <div class="macro-header">
-              <div class="macro-icon"><app-icon name="flame"></app-icon></div>
-              <div class="macro-info">
-                <h4>Calories</h4>
-                <div class="macro-values">
-                  <span class="current">{{ dailyNutrition.calories }}</span>
-                  <span class="separator">/</span>
-                  <span class="goal">{{ dailyGoals.calories }}</span>
-                </div>
-              </div>
-              <div class="macro-percentage">
-                {{
-                  Math.round(
-                    getProgressPercentage(
-                      dailyNutrition.calories,
-                      dailyGoals.calories
-                    )
-                  )
-                }}%
-              </div>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  [style.width.%]="
-                    getProgressPercentage(
-                      dailyNutrition.calories,
-                      dailyGoals.calories
-                    )
-                  "
-                  [style.background-color]="
-                    getProgressColor(
-                      dailyNutrition.calories,
-                      dailyGoals.calories
-                    )
-                  "
-                ></div>
-              </div>
-              <div class="remaining-info" *ngIf="dailyGoals.caloriesBurned">
-                <small
-                  >Nettes:
-                  {{
-                    dailyNutrition.calories - (dailyGoals.caloriesBurned || 0)
-                  }}cal</small
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- Protéines -->
-          <div class="macro-card protein">
-            <div class="macro-header">
-              <div class="macro-icon"><app-icon name="dumbbell"></app-icon></div>
-              <div class="macro-info">
-                <h4>Protéines</h4>
-                <div class="macro-values">
-                  <span class="current">{{ dailyNutrition.protein }}g</span>
-                  <span class="separator">/</span>
-                  <span class="goal">{{ dailyGoals.protein }}g</span>
-                </div>
-              </div>
-              <div class="macro-percentage">
-                {{
-                  Math.round(
-                    getProgressPercentage(
-                      dailyNutrition.protein,
-                      dailyGoals.protein
-                    )
-                  )
-                }}%
-              </div>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  [style.width.%]="
-                    getProgressPercentage(
-                      dailyNutrition.protein,
-                      dailyGoals.protein
-                    )
-                  "
-                ></div>
-              </div>
-              <small class="remaining"
-                >Restant:
-                {{
-                  getRemainingNutrient(
-                    dailyNutrition.protein,
-                    dailyGoals.protein
-                  )
-                }}g</small
-              >
-            </div>
-          </div>
-
-          <!-- Glucides -->
-          <div class="macro-card carbs">
-            <div class="macro-header">
-              <div class="macro-icon"><app-icon name="bolt"></app-icon></div>
-              <div class="macro-info">
-                <h4>Glucides</h4>
-                <div class="macro-values">
-                  <span class="current">{{ dailyNutrition.carbs }}g</span>
-                  <span class="separator">/</span>
-                  <span class="goal">{{ dailyGoals.carbs }}g</span>
-                </div>
-              </div>
-              <div class="macro-percentage">
-                {{
-                  Math.round(
-                    getProgressPercentage(
-                      dailyNutrition.carbs,
-                      dailyGoals.carbs
-                    )
-                  )
-                }}%
-              </div>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  [style.width.%]="
-                    getProgressPercentage(
-                      dailyNutrition.carbs,
-                      dailyGoals.carbs
-                    )
-                  "
-                ></div>
-              </div>
-              <small class="remaining"
-                >Restant:
-                {{
-                  getRemainingNutrient(dailyNutrition.carbs, dailyGoals.carbs)
-                }}g</small
-              >
-            </div>
-          </div>
-
-          <!-- Lipides -->
-          <div class="macro-card fat">
-            <div class="macro-header">
-              <div class="macro-icon"><app-icon name="leaf"></app-icon></div>
-              <div class="macro-info">
-                <h4>Lipides</h4>
-                <div class="macro-values">
-                  <span class="current">{{ dailyNutrition.fat }}g</span>
-                  <span class="separator">/</span>
-                  <span class="goal">{{ dailyGoals.fat }}g</span>
-                </div>
-              </div>
-              <div class="macro-percentage">
-                {{
-                  Math.round(
-                    getProgressPercentage(dailyNutrition.fat, dailyGoals.fat)
-                  )
-                }}%
-              </div>
-            </div>
-            <div class="progress-container">
-              <div class="progress-bar">
-                <div
-                  class="progress-fill"
-                  [style.width.%]="
-                    getProgressPercentage(dailyNutrition.fat, dailyGoals.fat)
-                  "
-                ></div>
-              </div>
-              <small class="remaining"
-                >Restant:
-                {{
-                  getRemainingNutrient(dailyNutrition.fat, dailyGoals.fat)
-                }}g</small
-              >
-            </div>
-          </div>
-        </div>
-      </div>
+      </section>
 
       <!-- Suivi du régime actuel -->
       <div class="current-diet-card" *ngIf="currentlyFollowedDiet">
@@ -1100,9 +821,9 @@
                 step="0.1"
                 min="0"
                 max="2"
-            aria-label="0.0"
+                aria-label="Quantité d’eau en litres"
           />
-              <button class="water-add-btn" (click)="addCustomWater()">
+              <button type="button" class="water-add-btn" (click)="addCustomWater()" aria-label="Ajouter la quantité d’eau">
                 <svg
                   width="16"
                   height="16"
@@ -1421,15 +1142,15 @@
   <!-- ===== MODALES ===== -->
 
   <!-- Modal Ajout Aliment -->
-  <div
-    class="modal-overlay"
+  <dialog appDialog
+    class="modal-overlay app-dialog" data-dialog-size="form"
     *ngIf="showAddFoodModal"
-    (click)="closeAddFoodModal()"
+    (dismissed)="closeAddFoodModal()"
   >
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>Ajouter un Aliment</h2>
-        <button class="close-btn" (click)="closeAddFoodModal()">×</button>
+        <button class="close-btn" (click)="closeAddFoodModal()" aria-label="Fermer la fenêtre">×</button>
       </div>
 
       <div class="modal-body">
@@ -1525,18 +1246,18 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Modal Création Régime -->
-  <div
-    class="modal-overlay"
+  <dialog appDialog
+    class="modal-overlay app-dialog" data-dialog-size="wide"
     *ngIf="showCreateDietModal"
-    (click)="closeCreateDietModal()"
+    (dismissed)="closeCreateDietModal()"
   >
     <div class="modal-content large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>Créer un Régime Personnalisé</h2>
-        <button class="close-btn" (click)="closeCreateDietModal()">×</button>
+        <button class="close-btn" (click)="closeCreateDietModal()" aria-label="Fermer la fenêtre">×</button>
       </div>
 
       <div class="modal-body">
@@ -1707,18 +1428,18 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Modal Templates de Repas -->
-  <div
-    class="modal-overlay"
+  <dialog appDialog
+    class="modal-overlay app-dialog" data-dialog-size="wide"
     *ngIf="showMealTemplatesModal"
-    (click)="closeMealTemplatesModal()"
+    (dismissed)="closeMealTemplatesModal()"
   >
     <div class="modal-content large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>Templates de Repas</h2>
-        <button class="close-btn" (click)="closeMealTemplatesModal()">×</button>
+        <button class="close-btn" (click)="closeMealTemplatesModal()" aria-label="Fermer la fenêtre">×</button>
       </div>
 
       <div class="modal-body">
@@ -1787,18 +1508,18 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- ===== MODAL DÉTAILS RÉGIME ===== -->
-  <div
-    class="modal-overlay"
+  <dialog appDialog
+    class="modal-overlay app-dialog" data-dialog-size="wide"
     *ngIf="showDietDetailsModal"
-    (click)="closeDietDetailsModal()"
+    (dismissed)="closeDietDetailsModal()"
   >
     <div class="modal-content large" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h2>{{ selectedDiet?.name }}</h2>
-        <button class="close-btn" (click)="closeDietDetailsModal()">×</button>
+        <button class="close-btn" (click)="closeDietDetailsModal()" aria-label="Fermer la fenêtre">×</button>
       </div>
 
       <div class="modal-body" *ngIf="selectedDiet">
@@ -2009,13 +1730,13 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- ===== MODAL INFORMATIONS ALIMENT ===== -->
-  <div
-    class="modal-overlay"
+  <dialog appDialog
+    class="modal-overlay app-dialog" data-dialog-size="wide"
     *ngIf="showFoodInfoModal"
-    (click)="closeFoodInfoModal()"
+    (dismissed)="closeFoodInfoModal()"
   >
     <div class="modal-content large" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -2038,7 +1759,7 @@
             </p>
           </div>
         </div>
-        <button class="close-btn" (click)="closeFoodInfoModal()">×</button>
+        <button class="close-btn" (click)="closeFoodInfoModal()" aria-label="Fermer la fenêtre">×</button>
       </div>
 
       <div class="modal-body" *ngIf="selectedFoodForInfo">
@@ -2235,7 +1956,7 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
 
 

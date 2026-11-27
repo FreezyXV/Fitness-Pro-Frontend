@@ -17,11 +17,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     :host { display: inline-flex; align-items: center; gap: 9px; color: inherit; }
     .brand-mark {
       display: grid; place-items: center; width: 35px; height: 35px;
-      background: #c5ff3d; color: #221713; border-radius: 8px;
+      background: var(--fp-accent); color: var(--fp-on-accent); border-radius: 8px;
     }
     svg { width: 22px; height: 22px; }
     .brand-word { font: 800 1.12rem/1 Archivo, sans-serif; letter-spacing: -.055em; }
-    .brand-word span { color: var(--brand-accent, #c5ff3d); }
+    .brand-word span { color: var(--fp-green-ink); }
   `,
 })
 export class BrandComponent {}

@@ -6,7 +6,7 @@
 
 // Enhanced Mixins
 @mixin enhanced-glass-card($opacity: 0.98, $blur: 28px) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -320,7 +320,7 @@ padding: 0.25rem;
           left: -100%;
           width: 100%;
           height: 100%;
-          background: rgba($surface-secondary, 0.4);
+          background: tint($surface-secondary, 0.4);
         }
       }
     }
@@ -354,7 +354,7 @@ padding: 0.25rem;
       padding: 1.25rem 2.5rem;
       border-radius: $radius-sm;
       border: none;
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       color: $gray-700;
       font-weight: 700;
       text-decoration: none;
@@ -366,7 +366,7 @@ padding: 0.25rem;
         color: $primary-color;
         border: $border-width solid $border-color;
         transform: translateX(-6px);
-        background: rgba($surface-secondary, 1);
+        background: tint($surface-secondary, 1);
         box-shadow: 0 12px 32px rgba($primary-color, 0.15);
       }
 
@@ -385,7 +385,7 @@ padding: 0.25rem;
         height: 60px;
         border-radius: 50%;
         border: none;
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         color: $text-primary;
         display: flex;
         align-items: center;
@@ -444,7 +444,7 @@ padding: 0.25rem;
         border-radius: $radius-pill;
         font-weight: 800;
         letter-spacing: 0.05em;
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         border: $border-width solid $border-color;
 
@@ -705,7 +705,7 @@ padding: 0.25rem;
           padding: 0.875rem 1.5rem;
           border-radius: $radius-sm;
           border: none;
-          background: rgba($surface-secondary, 0.95);
+          background: tint($surface-secondary, 0.95);
           color: $gray-700;
           font-weight: 700;
           cursor: pointer;
@@ -875,7 +875,7 @@ padding: 0.25rem;
                   white-space: nowrap;
 
                   &.status-not_started {
-                    background: rgba($gray-400, 0.1);
+                    background: tint($gray-400, 0.1);
                     color: $text-primary;
                     border: $border-width solid $border-color;
                   }
@@ -1016,7 +1016,7 @@ padding: 0.25rem;
                   align-items: center;
                   gap: 1rem;
                   padding: 1.5rem;
-                  background: rgba($surface-secondary, 0.9);
+                  background: tint($surface-secondary, 0.9);
                   border-radius: $radius-md;
                   border: $border-width solid $border-color;
                   transition: all 0.3s ease;
@@ -1074,7 +1074,7 @@ padding: 0.25rem;
                   align-items: center;
                   gap: 1rem;
                   padding: 1.25rem;
-                  background: rgba($surface-secondary, 0.8);
+                  background: tint($surface-secondary, 0.8);
                   border-radius: $radius-md;
 
                   .meta-icon {
@@ -1160,7 +1160,7 @@ padding: 0.25rem;
               align-items: center;
 
               .action-btn {
-                @include enhanced-button(rgba($surface-secondary, 0.95), $gray-700, small);
+                @include enhanced-button(tint($surface-secondary, 0.95), $gray-700, small);
                 border: $border-width solid $border-color;
 
                 &.view-details {
@@ -1184,7 +1184,7 @@ padding: 0.25rem;
                 }
 
                 &.reset-exercise {
-                  @include enhanced-button(rgba($gray-500, 0.1), $gray-700, small);
+                  @include enhanced-button(tint($gray-500, 0.1), $gray-700, small);
                   border: $border-width solid $border-color;
                 }
 
@@ -1296,7 +1296,7 @@ padding: 0.25rem;
       gap: 1.5rem;
       padding: 1.5rem;
       border-radius: $radius-md;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -1383,7 +1383,7 @@ padding: 0.25rem;
       gap: 1.5rem;
       padding: 1.5rem;
       border-radius: $radius-md;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -1433,27 +1433,27 @@ padding: 0.25rem;
 
       // Specific styling for different overview types
       &:nth-child(1) .overview-icon {
-        background: #FF6B6B;
+        background: $selected;
       }
       
       &:nth-child(2) .overview-icon {
-        background: #4ECDC4;
+        background: $selected;
       }
       
       &:nth-child(3) .overview-icon {
-        background: #45B7D1;
+        background: $selected;
       }
       
       &:nth-child(4) .overview-icon {
-        background: #96CEB4;
+        background: $selected;
       }
       
       &:nth-child(5) .overview-icon {
-        background: #FFEAA7;
+        background: $selected;
       }
       
       &:nth-child(6) .overview-icon {
-        background: #DDA0DD;
+        background: $selected;
       }
     }
   }
@@ -1550,7 +1550,7 @@ padding: 0.25rem;
         align-items: center;
         gap: 1rem;
         padding: 1rem;
-        background: rgba($surface-secondary, 0.8);
+        background: tint($surface-secondary, 0.8);
         border-radius: $radius-lg;
         border: $border-width solid $border-color;
 
@@ -1600,7 +1600,7 @@ padding: 0.25rem;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba($surface-secondary, 0.98);
+  background: tint($surface-secondary, 0.98);
   border-top: $border-width solid $border-color;
   border-radius: $radius-4xl;
   padding: 2.5rem;
@@ -1666,11 +1666,11 @@ padding: 0.25rem;
     .secondary-action-btn,
     .tertiary-action-btn,
     .edit-action-btn {
-      @include enhanced-button(rgba(237, 232, 224, 0.04), $text-secondary, medium);
+      @include enhanced-button(tint($text-primary, 0.04), $text-secondary, medium);
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba(237, 232, 224, 0.07);
+        background: tint($text-primary, 0.07);
         border-color: $border-strong;
         color: $text-primary;
       }
@@ -1750,7 +1750,7 @@ padding: 0.25rem;
       width: 100%;
       height: 8px;
       border-radius: $radius-lg;
-      background: rgba($gray-200, 0.8);
+      background: tint($gray-200, 0.8);
       overflow: hidden;
       margin: 2rem 0;
 
@@ -1760,7 +1760,7 @@ padding: 0.25rem;
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba($gray-200, 0.8);
+        background: tint($gray-200, 0.8);
         border-radius: $radius-pill;
       }
 
@@ -1843,7 +1843,7 @@ padding: 0.25rem;
         @include enhanced-button($primary-dark, white, medium);
 
         &.btn-secondary {
-          @include enhanced-button(rgba($surface-secondary, 0.95), $gray-700, medium);
+          @include enhanced-button(tint($surface-secondary, 0.95), $gray-700, medium);
           border: $border-width solid $border-color;
         }
       }
@@ -1991,8 +1991,8 @@ padding: 0.25rem;
 
 .workout-detail-container .detail-button,
 .workout-detail-container .plan-action {
-  background: $primary-color;
-  color: $text-inverse;
+  background: $brand;
+  color: $on-brand;
   
 }
 
@@ -2195,7 +2195,7 @@ padding: 0.25rem;
   // rapport avec le reste — elle redevient neutre.
   .status-badge {
     color: $text-secondary !important;
-    background: rgba(237, 232, 224, 0.05) !important;
+    background: tint($text-primary, 0.05) !important;
   }
 
   // Les puces occupaient chacune la moitie de la largeur de l'en-tete :
@@ -2329,7 +2329,7 @@ padding: 0.25rem;
         width: 32px !important;
         height: 32px !important;
         font-size: 0.9375rem !important;
-        background: rgba(237, 232, 224, 0.08) !important;
+        background: tint($text-primary, 0.08) !important;
         color: $text-secondary !important;
         box-shadow: none !important;
       }
@@ -2436,7 +2436,7 @@ padding: 0.25rem;
     width: 30px !important;
     height: 30px !important;
     border-radius: $radius-sm !important;
-    background: rgba(237, 232, 224, 0.06) !important;
+    background: tint($text-primary, 0.06) !important;
     background-image: none !important;
     color: $text-secondary !important;
     font-size: 0.8125rem !important;
@@ -2465,7 +2465,7 @@ padding: 0.25rem;
     .meta-item {
       padding: 0.125rem 0.5rem !important;
       border-radius: $radius-xs !important;
-      background: rgba(237, 232, 224, 0.04) !important;
+      background: tint($text-primary, 0.04) !important;
       border: 0 !important;
       font-size: 0.75rem !important;
       font-weight: 500 !important;
@@ -2502,7 +2502,7 @@ padding: 0.25rem;
       height: 32px !important;
       flex-shrink: 0;
       border-radius: $radius-sm !important;
-      background: rgba(237, 232, 224, 0.06) !important;
+      background: tint($text-primary, 0.06) !important;
       color: $text-secondary !important;
 
       svg { width: 16px; height: 16px; }
@@ -2532,6 +2532,31 @@ padding: 0.25rem;
   // jaune…) : cinq aplats vifs choisis par RANG, sans rapport avec ce qu'ils
   // illustrent.
   .overview-item:nth-child(n) .overview-icon {
-    background: rgba(237, 232, 224, 0.06) !important;
+    background: tint($text-primary, 0.06) !important;
   }
+}
+
+.workout-detail-container {
+  padding-inline: 0;
+
+  .hero-content .title-section .plan-title {
+    font: 760 clamp(1.85rem, 4vw, 3rem)/1.08 $font-family-base;
+    letter-spacing: -.035em;
+    overflow-wrap: anywhere;
+  }
+  .navigation-header { gap: 8px; flex-wrap: wrap; }
+  .quick-stats-grid { min-width: 0; }
+}
+
+.workout-detail-container .exercises-card .card-header {
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+.workout-detail-container .exercises-card .section-controls {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.workout-detail-container .exercise-header:focus-visible {
+  outline-offset: -3px;
 }

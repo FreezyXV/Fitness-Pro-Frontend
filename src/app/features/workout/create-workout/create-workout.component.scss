@@ -1,3 +1,4 @@
+@use 'workspace-page';
 /* src/app/workout/create-workout.component.scss - Enhanced Dashboard Style */
 
 @use "sass:color";
@@ -6,7 +7,7 @@
 
 // Enhanced glassmorphism effects
 @mixin glass-card($opacity: 0.95) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -207,7 +208,7 @@
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  background: rgba($surface-secondary, 0.6);
+  background: tint($surface-secondary, 0.6);
   border: $border-width solid $border-color;
   border-radius: $border-radius-xl;
   min-width: 80px;
@@ -349,7 +350,7 @@
   max-width: 1600px;
 
   .debug-card {
-    background: rgba($surface-secondary, 0.1);
+    background: tint($surface-secondary, 0.1);
     border-radius: $border-radius-xl;
     padding: 1.5rem;
     border: $border-width solid $border-color;
@@ -508,7 +509,7 @@
   border-radius: $border-radius;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: rgba($surface-secondary, 0.7);
+  background: tint($surface-secondary, 0.7);
 
   &:focus {
     outline: none;
@@ -638,7 +639,7 @@
       font-size: 1rem;
       font-family: inherit;
       transition: all 0.3s ease;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
 
       &:focus {
         @include focus-ring;
@@ -652,7 +653,7 @@
     .clear-search-btn {
       position: absolute;
       right: 1rem;
-      background: rgba($gray-500, 0.1);
+      background: tint($gray-500, 0.1);
       border: none;
       border-radius: $border-radius-full;
       width: 32px;
@@ -665,7 +666,7 @@
       color: $text-muted;
 
       &:hover {
-        background: rgba($gray-500, 0.2);
+        background: tint($gray-500, 0.2);
         color: $gray-700;
         transform: scale(1.1);
       }
@@ -701,7 +702,7 @@
       padding: 0.875rem 1rem;
       border: $border-width solid $border-color;
       border-radius: $border-radius;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
       font-size: 0.875rem;
       font-family: inherit;
       transition: all 0.3s ease;
@@ -768,7 +769,7 @@
   align-items: center;
   gap: 1rem;
   padding: 0.75rem;
-  background: rgba($surface-secondary, 0.8);
+  background: tint($surface-secondary, 0.8);
   border-radius: $border-radius-lg;
   border: $border-width solid $border-color;
   box-shadow: $shadow-sm;
@@ -815,7 +816,7 @@
     gap: 0.5rem;
 
     .move-btn {
-      background: rgba($gray-400, 0.1);
+      background: tint($gray-400, 0.1);
       border: none;
       border-radius: $border-radius-full;
       width: 32px;
@@ -828,7 +829,7 @@
       transition: all 0.3s ease;
 
       &:hover {
-        background: rgba($gray-400, 0.2);
+        background: tint($gray-400, 0.2);
         color: $gray-800;
       }
 
@@ -1086,7 +1087,7 @@
   border: $border-width solid $border-color;
   border-radius: $border-radius;
   font-size: 0.875rem;
-  background: rgba($surface-secondary, 0.7);
+  background: tint($surface-secondary, 0.7);
 
   &:focus {
     outline: none;
@@ -1123,7 +1124,7 @@
 .summary-stat {
   text-align: center;
   padding: 1rem;
-  background: rgba($surface-secondary, 0.8);
+  background: tint($surface-secondary, 0.8);
   border-radius: $border-radius-lg;
   border: $border-width solid $border-color;
   box-shadow: $shadow-sm;
@@ -1243,7 +1244,7 @@
   letter-spacing: 0.05em;
 
   &::before {
-    @include shimmer-overlay(rgba($surface-secondary, 0.3), left 0.6s, $skew: null);
+    @include shimmer-overlay(tint($surface-secondary, 0.3), left 0.6s, $skew: null);
   }
 
   &:hover {
@@ -1739,8 +1740,8 @@
 
 .create-workout-container .action-btn,
 .create-workout-container .save-btn {
-  background: $primary-color;
-  color: $text-inverse;
+  background: $brand;
+  color: $on-brand;
   border: $border-width solid $border-color;
 }
 
@@ -1790,4 +1791,14 @@
     font-size: 0.875rem !important;
     margin: 0 0 1.25rem !important;
   }
+}
+
+.create-workout-container {
+  padding: 0;
+  border: 0;
+
+  > .workspace-page-head { width: 100%; }
+  > .progress-steps, > .main-content { width: 100%; max-width: 900px; }
+  .step-item.completed .step-circle { background: $selected; color: $green-ink; }
+  .save-btn, .action-btn.primary { background: $brand; color: $on-brand; }
 }

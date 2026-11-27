@@ -54,15 +54,15 @@
         <!-- Enhanced Video Overlay -->
         <div class="video-overlay" [class.hidden]="isPlaying && !showControls">
           <!-- Main Play Button -->
-          <button class="play-button" 
+          <button type="button" class="play-button"
                   [class.playing]="isPlaying"
                   (click)="toggleVideo($event)"
-                  [attr.aria-label]="isPlaying ? 'Pause la vidéo' : 'Jouer la vidéo'"
+                  [attr.aria-label]="isPlaying ? 'Mettre la vidéo en pause' : 'Lire la vidéo'"
                   title="{{ isPlaying ? 'Pause' : 'Lecture' }}">
-            <svg *ngIf="!isPlaying" width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+            <svg *ngIf="!isPlaying" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M8 5v14l11-7z"/>
             </svg>
-            <svg *ngIf="isPlaying" width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+            <svg *ngIf="isPlaying" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
             </svg>
           </button>
@@ -190,7 +190,7 @@
           <path d="M23 7l-7 5 7 5V7z"/>
           <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
         </svg>
-        <span>Vidéo HD</span>
+        <span>Vidéo</span>
       </div>
 
       <!-- Muscle Groups Indicator -->
@@ -217,22 +217,44 @@
       </div>
     </div>
 
-    <!-- Enhanced Action Buttons -->
-    <div class="action-buttons">
-      <button class="btn btn-primary" 
-              (click)="navigateToDetail($event)"
-              [attr.aria-label]="'Voir le détail de ' + exercise.name"
-              title="Voir tous les détails de cet exercice">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-        <span>Voir détails</span>
+    <div class="exercise-card-footer">
+      <button type="button" class="exercise-detail-link" (click)="navigateToDetail($event)"
+              [attr.aria-label]="'Voir le détail de ' + exercise.name">
+        Voir la fiche <app-icon name="arrow-up-right" [size]="14" />
       </button>
+      <div class="exercise-tools" role="group" aria-label="Actions de l’exercice">
+        <button type="button" class="quick-action"
+                (click)="addToWorkout($event)"
+                [attr.aria-label]="'Ajouter ' + exercise.name + ' au programme'"
+                title="Ajouter au programme d'entraînement">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
 
-      
+        <button type="button" class="quick-action"
+                (click)="shareExercise($event)"
+                [attr.aria-label]="'Partager ' + exercise.name"
+                title="Partager cet exercice">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+            <polyline points="16,6 12,2 8,6"/>
+            <line x1="12" y1="2" x2="12" y2="15"/>
+          </svg>
+        </button>
+
+        <button type="button" class="quick-action"
+                (click)="createTimer($event)"
+                [attr.aria-label]="'Minuteur pour ' + exercise.name"
+                title="Créer un minuteur">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12,6 12,12 16,14"/>
+          </svg>
+        </button>
+      </div>
     </div>
-
   </div>
 
   <!-- Enhanced Progress Indicator -->
@@ -241,40 +263,6 @@
       <div class="progress-fill" [style.width.%]="exercise.progress"></div>
     </div>
     <span class="progress-text">{{ exercise.progress | number:'1.0-0' }}% complété</span>
-  </div>
-
-  <!-- Enhanced Card Actions Overlay -->
-  <div class="card-actions-overlay">
-    <button class="quick-action" 
-            (click)="addToWorkout($event)"
-            [attr.aria-label]="'Ajouter ' + exercise.name + ' au workout'"
-            title="Ajouter au programme d'entraînement">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="5" x2="12" y2="19"/>
-        <line x1="5" y1="12" x2="19" y2="12"/>
-      </svg>
-    </button>
-
-    <button class="quick-action" 
-            (click)="shareExercise($event)"
-            [attr.aria-label]="'Partager ' + exercise.name"
-            title="Partager cet exercice">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-        <polyline points="16,6 12,2 8,6"/>
-        <line x1="12" y1="2" x2="12" y2="15"/>
-      </svg>
-    </button>
-
-    <button class="quick-action" 
-            (click)="createTimer($event)"
-            [attr.aria-label]="'Timer pour ' + exercise.name"
-            title="Créer un timer personnalisé">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/>
-        <polyline points="12,6 12,12 16,14"/>
-      </svg>
-    </button>
   </div>
 
   <!-- Performance Indicators -->

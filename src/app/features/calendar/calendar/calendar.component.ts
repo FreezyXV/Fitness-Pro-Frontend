@@ -56,20 +56,22 @@ const EVENT_META: Record<CalendarTask['task_type'], {
   icon: string;
 }> = {
   // `icon` designe une entree du jeu d'icones de l'application (IconName).
-  workout: { color: '#405d1a', icon: 'dumbbell' },
-  goal: { color: '#7ecbff', icon: 'target' },
-  rest: { color: '#d4d4d8', icon: 'moon' },
-  nutrition: { color: '#ffd860', icon: 'utensils' },
-  meal: { color: '#ffd860', icon: 'utensils' },
-  reminder: { color: '#c4b5fd', icon: 'clock' },
-  other: { color: '#a8a8b0', icon: 'clipboard' }
+  workout: { color: 'var(--fp-green-ink)', icon: 'dumbbell' },
+  goal: { color: 'var(--fp-ink-muted)', icon: 'target' },
+  rest: { color: 'var(--fp-ink-secondary)', icon: 'moon' },
+  nutrition: { color: 'var(--fp-ink-secondary)', icon: 'utensils' },
+  meal: { color: 'var(--fp-ink-secondary)', icon: 'utensils' },
+  reminder: { color: 'var(--fp-ink-muted)', icon: 'clock' },
+  other: { color: 'var(--fp-ink-muted)', icon: 'clipboard' }
 };
 
+
+import { DialogDirective } from '@app/shared/components/dialog/dialog.directive';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
+  imports: [DialogDirective, CommonModule, FormsModule, ReactiveFormsModule, RouterModule, IconComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   animations: [
@@ -99,23 +101,23 @@ const EVENT_META: Record<CalendarTask['task_type'], {
 })
 export class CalendarComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  
+
   // Calendar state
   currentDate = new Date();
   selectedDate = new Date();
   currentView: 'month' | 'week' | 'day' = 'month';
-  
+
   // Calendar data
   monthNames = [
     'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
     'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
   ];
-  
+
   dayNames = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-  
+
   calendarDays: CalendarDay[] = [];
   weekDays: CalendarDay[] = [];
-  
+
   // UI state
   showEventModal = false;
   isEditingEvent = false;
@@ -123,14 +125,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   isSaving = false;
   isLoading = false;
   draggedEvent: CalendarTask | null = null;
-  
+
   // Forms
   eventForm!: FormGroup;
-  
+
   // Data
   events: CalendarTask[] = [];
   workoutPlans: Workout[] = [];
-  
+
   // Stats
   monthStats: MonthStats = {
     totalWorkouts: 0,
@@ -356,7 +358,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   private getEventsForDate(date: Date): CalendarTask[] {
-    return this.events.filter(event => 
+    return this.events.filter(event =>
       this.isSameDate(new Date(event.task_date), date)
     );
   }
@@ -419,7 +421,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (e) {
       e.stopPropagation();
     }
-    
+
     this.isEditingEvent = true;
     this.currentEvent = event;
     this.populateEventForm(event);
@@ -434,7 +436,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     this.isSaving = true;
     const formValue = this.eventForm.value;
-    
+
     // Simulate API call delay
     setTimeout(() => {
       if (this.isEditingEvent && this.currentEvent) {
@@ -442,7 +444,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       } else {
         this.createEvent(formValue);
       }
-      
+
       this.handleSaveSuccess(
         this.isEditingEvent ? 'Événement mis à jour avec succès' : 'Événement créé avec succès'
       );
@@ -544,11 +546,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   onDrop(event: DragEvent, day: CalendarDay): void {
     event.preventDefault();
-    
+
     if (this.draggedEvent && !this.isSameDate(new Date(this.draggedEvent.task_date), day.date)) {
       this.moveEventToDate(this.draggedEvent, day.date);
     }
-    
+
     this.draggedEvent = null;
   }
 
@@ -587,7 +589,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.monthStats = {
       totalWorkouts: workoutEvents.length,
       totalHours: Math.round(totalMinutes / 60),
-      completionRate: monthEvents.length > 0 
+      completionRate: monthEvents.length > 0
         ? Math.round((completedEvents.length / monthEvents.length) * 100)
         : 0,
       totalEvents: monthEvents.length,
@@ -617,19 +619,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   getEventsForDayAndHour(hour: number): CalendarTask[] {
     const selectedDateEvents = this.getSelectedDateEvents();
-    
+
     return selectedDateEvents.filter(event => {
       if (!event.reminder_time) return false;
-      
+
       try {
         let eventHour: number;
-        
+
         if (event.reminder_time.includes(':')) {
           eventHour = parseInt(event.reminder_time.split(':')[0], 10);
         } else {
           return false;
         }
-        
+
         return eventHour === hour;
       } catch (error) {
         return false;
@@ -647,7 +649,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   formatSelectedDate(): string {
-    return new Intl.DateTimeFormat('fr-FR', { 
+    return new Intl.DateTimeFormat('fr-FR', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
@@ -665,7 +667,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   formatTime(time?: string): string {
     if (!time) return '';
-    
+
     try {
       if (time.includes(':')) {
         return time.substring(0, 5); // Return HH:MM format
@@ -677,7 +679,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getEventTypeColor(type: CalendarTask['task_type']): string {
-    return EVENT_META[type]?.color || '#a8a8b0';
+    return EVENT_META[type]?.color || 'var(--fp-ink-muted)';
   }
 
   getEventIcon(type: CalendarTask['task_type']): string {

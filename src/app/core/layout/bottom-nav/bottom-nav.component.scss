@@ -8,7 +8,7 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
   min-height: calc(61px + env(safe-area-inset-bottom));
   padding: 3px max(4px, env(safe-area-inset-left)) env(safe-area-inset-bottom) max(4px, env(safe-area-inset-right));
-  border-top: 1px solid $border-strong;
+  border-top: 1px solid $border-color;
   background: $bg-dark;
 }
 
@@ -34,8 +34,8 @@
     height: 27px;
     border-radius: 6px;
   }
-  &.is-active { color: #d3ff68; }
-  &.is-active app-icon { background: #273218; }
+  &.is-active { color: $green-ink; }
+  &.is-active app-icon { background: $selected; }
   &:focus-visible { outline-offset: -2px; }
 }
 
@@ -51,7 +51,7 @@
   border-radius: 15px 15px 0 0;
   background: $surface-primary;
   color: $text-primary;
-  &::backdrop { background: rgb(12 10 9 / 72%); }
+  &::backdrop { background: var(--fp-scrim); }
 }
 .sheet-content {
   width: min(100%, 500px);
@@ -62,7 +62,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  h2 { margin: 0; font: 700 2rem/1 $font-family-display; }
+  h2 { margin: 0; font: 730 1.25rem/1.2 $font-family-base; }
 }
 .close-button, .sheet-logout {
   display: inline-flex;
@@ -86,7 +86,7 @@
   border-bottom: 1px solid $border-color;
   color: $text-primary;
   font-weight: 650;
-  &.is-active { color: $primary-light; }
+  &.is-active { color: $green-ink; }
 }
 .chevron { color: $text-muted; font-size: 1.15rem; }
 .sheet-logout { padding: 0; }

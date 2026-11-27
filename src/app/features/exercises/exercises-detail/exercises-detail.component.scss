@@ -6,7 +6,7 @@
 
 // Enhanced Mixins
 @mixin enhanced-glass-card($opacity: 0.98, $blur: 28px) {
-  background: rgba($surface-secondary, $opacity);
+  background: tint($surface-secondary, $opacity);
   border: $border-width solid $border-color;
   box-shadow: none;
 }
@@ -246,7 +246,7 @@ padding: 0.25rem;
       padding: 1.25rem 2.5rem;
       border-radius: $radius-sm;
       border: none;
-      background: rgba($surface-secondary, 0.95);
+      background: tint($surface-secondary, 0.95);
       color: $gray-700;
       font-weight: 700;
       text-decoration: none;
@@ -258,7 +258,7 @@ padding: 0.25rem;
         color: $primary-color;
         border: $border-width solid $border-color;
         transform: translateX(-6px);
-        background: rgba($surface-secondary, 1);
+        background: tint($surface-secondary, 1);
         box-shadow: 0 12px 32px rgba($primary-color, 0.15);
       }
 
@@ -285,7 +285,7 @@ padding: 0.25rem;
         height: 60px;
         border-radius: 50%;
         border: none;
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         color: $text-primary;
         display: flex;
         align-items: center;
@@ -354,7 +354,7 @@ padding: 0.25rem;
         border-radius: $radius-pill;
         font-weight: 800;
         letter-spacing: 0.05em;
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         border: $border-width solid $border-color;
 
@@ -713,7 +713,7 @@ padding: 0.25rem;
             height: 100px;
             border-radius: 50%;
             border: none;
-            background: rgba($surface-secondary, 0.95);
+            background: tint($surface-secondary, 0.95);
             color: $text-primary;
             display: flex;
             align-items: center;
@@ -755,7 +755,7 @@ padding: 0.25rem;
               position: relative;
               height: 8px;
               border-radius: $radius-pill;
-              background: rgba($surface-secondary, 0.2);
+              background: tint($surface-secondary, 0.2);
               cursor: pointer;
               margin-bottom: 1rem;
               overflow: hidden;
@@ -766,7 +766,7 @@ padding: 0.25rem;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba($surface-secondary, 0.3);
+                background: tint($surface-secondary, 0.3);
                 border-radius: $radius-pill;
               }
 
@@ -799,7 +799,7 @@ padding: 0.25rem;
               height: 48px;
               border-radius: 50%;
               border: none;
-              background: rgba($surface-secondary, 0.2);
+              background: tint($surface-secondary, 0.2);
               color: $on-primary;
               display: flex;
               align-items: center;
@@ -808,7 +808,7 @@ padding: 0.25rem;
               transition: all 0.3s ease;
 
               &:hover {
-                background: rgba($surface-secondary, 0.3);
+                background: tint($surface-secondary, 0.3);
                 transform: scale(1.05);
               }
             }
@@ -853,7 +853,7 @@ padding: 0.25rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(237, 232, 224, 0.03);
+      background: tint($text-primary, 0.03);
       border-radius: $radius-lg;
       border: $border-width solid $border-color;
 
@@ -945,7 +945,7 @@ padding: 0.25rem;
         padding: 0.875rem 1.5rem;
         border-radius: $radius-sm;
         border: none;
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         color: $gray-700;
         font-weight: 700;
         cursor: pointer;
@@ -980,7 +980,7 @@ padding: 0.25rem;
         gap: 2rem;
         padding: 2rem;
         border-radius: $radius-lg;
-        background: rgba($surface-secondary, 0.9);
+        background: tint($surface-secondary, 0.9);
         border: $border-width solid $border-color;
         cursor: pointer;
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1105,7 +1105,7 @@ padding: 0.25rem;
       border-top: $border-width solid $border-color;
 
       .nav-btn {
-        @include enhanced-button(rgba($surface-secondary, 0.95), $gray-700, small);
+        @include enhanced-button(tint($surface-secondary, 0.95), $gray-700, small);
         border: $border-width solid $border-color;
 
         &:hover:not(:disabled) {
@@ -1122,7 +1122,7 @@ padding: 0.25rem;
       .step-counter {
         padding: 1rem 2rem;
         border-radius: $radius-pill;
-        background: rgba($surface-secondary, 0.95);
+        background: tint($surface-secondary, 0.95);
         color: $gray-700;
         font-weight: 700;
         border: $border-width solid $border-color;
@@ -1210,7 +1210,7 @@ width: 100%;
       gap: 1.5rem;
       padding: 1.5rem;
       border-radius: $radius-md;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -1327,7 +1327,7 @@ width: 100%;
         align-items: center;
         justify-content: center;
         font-size: 1.125rem;
-        background: rgba(237, 232, 224, 0.08) !important;
+        background: tint($text-primary, 0.08) !important;
         color: $text-primary !important;
         box-shadow: none !important;
         flex-shrink: 0;
@@ -1472,7 +1472,7 @@ width: 100%;
       gap: 2rem;
       padding: 1rem;
       border-radius: $radius-lg;
-      background: rgba($surface-secondary, 0.9);
+      background: tint($surface-secondary, 0.9);
       border: $border-width solid $border-color;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1555,7 +1555,7 @@ width: 100%;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba($surface-secondary, 0.98);
+  background: tint($surface-secondary, 0.98);
   border-top: $border-width solid $border-color;
   border-radius: $radius-4xl;
   padding: 2rem;
@@ -1616,11 +1616,11 @@ width: 100%;
     }
 
     .tertiary-action-btn {
-      @include enhanced-button(rgba($surface-secondary, 0.95), $gray-700, medium);
+      @include enhanced-button(tint($surface-secondary, 0.95), $gray-700, medium);
       border: $border-width solid $border-color;
 
       &:hover {
-        background: rgba($gray-100, 0.8);
+        background: tint($gray-100, 0.8);
         border: $border-width solid $border-color;
       }
     }
@@ -1694,7 +1694,7 @@ width: 100%;
       width: 100%;
       height: 8px;
       border-radius: $radius-lg;
-      background: rgba($gray-200, 0.8);
+      background: tint($gray-200, 0.8);
       overflow: hidden;
       margin: 2rem 0;
 
@@ -1704,7 +1704,7 @@ width: 100%;
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba($gray-200, 0.8);
+        background: tint($gray-200, 0.8);
         border-radius: $radius-pill;
       }
 
@@ -1788,7 +1788,7 @@ width: 100%;
 
         &.btn-secondary {
           @include enhanced-button(
-            rgba($surface-secondary, 0.95),
+            tint($surface-secondary, 0.95),
             $gray-700,
             medium
           );
@@ -1873,8 +1873,8 @@ width: 100%;
 
 .exercise-detail-container .detail-button,
 .exercise-detail-container .action-button {
-  background: $primary-color;
-  color: $text-inverse;
+  background: $brand;
+  color: $on-brand;
  
 }
 
@@ -2197,7 +2197,7 @@ width: 100%;
         width: 44px !important;
         height: 44px !important;
         border-radius: $radius-md !important;
-        background: rgba(237, 232, 224, 0.08) !important;
+        background: tint($text-primary, 0.08) !important;
         color: $text-secondary !important;
         box-shadow: none !important;
 
@@ -2225,7 +2225,7 @@ width: 100%;
 :host {
   .instruction-step {
     .step-indicator {
-      background: rgba(237, 232, 224, 0.08) !important;
+      background: tint($text-primary, 0.08) !important;
       background-image: none !important;
       color: $text-secondary !important;
       box-shadow: none !important;
@@ -2236,7 +2236,7 @@ width: 100%;
     // ailleurs dans l'application, plutot que par un aplat teinte.
     &.active,
     &.current {
-      background: rgba(237, 232, 224, 0.04) !important;
+      background: tint($text-primary, 0.04) !important;
       background-image: none !important;
       border-color: rgba($primary-color, 0.45) !important;
 
@@ -2248,7 +2248,7 @@ width: 100%;
   }
 
   .muscle-tags .muscle-tag {
-    background: rgba(237, 232, 224, 0.05) !important;
+    background: tint($text-primary, 0.05) !important;
     border: $border-width solid $border-color !important;
     color: $text-secondary !important;
   }
@@ -2256,7 +2256,7 @@ width: 100%;
   // La pastille des informations laterales : meme menthe, meme absence de
   // sens porte.
   .info-item .info-icon {
-    background: rgba(237, 232, 224, 0.06) !important;
+    background: tint($text-primary, 0.06) !important;
     background-image: none !important;
     color: $text-secondary !important;
     box-shadow: none !important;
@@ -2339,4 +2339,28 @@ width: 100%;
       color: $text-secondary;
     }
   }
+}
+
+.exercise-detail-container {
+  padding-inline: 0;
+
+  .hero-content .title-section .exercise-title {
+    font: 760 clamp(1.85rem, 4vw, 3rem)/1.08 $font-family-base;
+    letter-spacing: -.035em;
+    overflow-wrap: anywhere;
+  }
+  .navigation-header { gap: 8px; flex-wrap: wrap; }
+  .quick-stats-grid { min-width: 0; }
+}
+
+.exercise-detail-container .main-video {
+  display: block;
+  max-width: 100%;
+  color-scheme: dark;
+  background: #090b09;
+}
+.exercise-detail-container .instructions-section-card .card-header { flex-wrap: wrap; gap: 8px; }
+.exercise-detail-container .instruction-controls { flex-wrap: wrap; max-width: 100%; }
+.exercise-detail-container .hero-section .exercise-meta-info .difficulty-badge[data-level] .badge-text {
+  color: $text-secondary;
 }

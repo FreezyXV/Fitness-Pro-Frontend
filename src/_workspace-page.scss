@@ -7,7 +7,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 14px 24px;
-  margin: 0 0 22px;
+  margin: 0 0 20px;
   padding: 0 0 18px;
   border-bottom: 1px solid $border-color;
   text-align: left;
@@ -15,10 +15,9 @@
   h1 {
     margin: 0 0 5px;
     color: $text-primary;
-    font: 700 clamp(2.8rem, 5.4vw, 4.55rem)/.93 $font-family-display;
-    text-transform: uppercase;
+    font: 760 clamp(2rem, 4vw, 3.25rem)/1.06 $font-family-base;
     text-wrap: pretty;
-    letter-spacing: -.012em;
+    letter-spacing: -.045em;
   }
   p { margin: 0; color: $text-secondary; font-size: .89rem; }
 }
@@ -30,7 +29,7 @@
   gap: 7px;
   min-height: 44px;
   padding: 6px 11px;
-  border: 1px solid $border-strong;
+  border: 1px solid $border-color;
   border-radius: 8px;
   background: $surface-primary;
   color: $text-primary;
@@ -40,9 +39,9 @@
   &:disabled { opacity: .55; cursor: not-allowed; }
   &.is-primary {
     border-color: transparent;
-    background: $primary-light;
-    color: #211610;
-    &:hover { background: #dcff82; }
+    background: $brand;
+    color: $on-brand;
+    &:hover { background: $brand-hover; }
   }
 }
 
@@ -74,4 +73,9 @@
     font: 500 1rem $font-family-base;
     &::placeholder { color: $text-muted; }
   }
+}
+
+.workspace-filter { display: none; }
+@include respond-below(md) {
+  .workspace-filter { display: inline-flex; }
 }

@@ -7,9 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Suis tes séances, tes charges et ta nutrition. Fonctionne hors ligne à la salle.">
 
+  <script>
+    try {
+      const appearance = localStorage.getItem('fitnesspro.appearance');
+      if (appearance === 'light' || appearance === 'dark') {
+        document.documentElement.dataset.theme = appearance;
+      }
+    } catch {}
+  </script>
+
   <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#181512">
+  <meta name="theme-color" content="#0e100e">
 
   <!-- iOS n'implemente pas le manifest : ces balises sont le seul moyen
        d'obtenir une icone et un affichage plein ecran a l'ajout a l'accueil. -->

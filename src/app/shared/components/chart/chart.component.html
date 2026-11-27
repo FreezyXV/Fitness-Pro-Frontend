@@ -1,16 +1,21 @@
 <figure class="chart" *ngIf="!isEmpty(); else empty">
+  <div class="chart-reading" *ngIf="selection() as point" aria-live="polite">
+    <span>{{ point.title }}</span>
+    <strong>{{ point.value }}<small *ngIf="unit"> {{ unit }}</small></strong>
+  </div>
   <!-- role="img" + aria-label : le graphique est annonce comme une image
        porteuse de sens, avec son resume chiffre. Le tableau ci-dessous prend
        le relais pour qui veut les valeurs exactes. -->
   <svg
     #svg
     class="chart-svg"
-    [attr.viewBox]="viewBox"
+    [attr.viewBox]="viewBox()"
     role="img"
     [attr.aria-label]="summary()"
     tabindex="0"
     (pointermove)="onPointerMove($event, svg)"
-    (pointerleave)="onPointerLeave()"
+    (pointerdown)="onPointerMove($event, svg)"
+    (pointerleave)="onPointerLeave($event)"
     (blur)="onPointerLeave()"
     (keydown)="onKeydown($event)"
   >
@@ -18,7 +23,7 @@
     <g class="grid">
       <g *ngFor="let tick of yTicks()">
         <line
-          [attr.x1]="plotLeft" [attr.x2]="plotRight"
+          [attr.x1]="plotLeft" [attr.x2]="plotRight()"
           [attr.y1]="tick.y"   [attr.y2]="tick.y"
         />
         <text
@@ -68,17 +73,8 @@
       />
     </ng-container>
 
-    <!-- Infobulle -->
-    <g class="tooltip" *ngIf="active() as a">
-      <line class="tooltip-guide"
-            [attr.x1]="a.x" [attr.x2]="a.x"
-            [attr.y1]="plotTop" [attr.y2]="plotBottom" />
-      <rect class="tooltip-box"
-            [attr.x]="a.boxX" [attr.y]="a.boxY"
-            [attr.width]="a.boxWidth" height="40" rx="8" />
-      <text class="tooltip-title" [attr.x]="a.boxX + 10" [attr.y]="a.boxY + 16">{{ a.title }}</text>
-      <text class="tooltip-value" [attr.x]="a.boxX + 10" [attr.y]="a.boxY + 32">{{ a.value }}</text>
-    </g>
+    <line *ngIf="activeIndex() !== null && selection() as point" class="chart-guide"
+          [attr.x1]="point.x" [attr.x2]="point.x" [attr.y1]="plotTop" [attr.y2]="plotBottom" />
   </svg>
 
   <!-- Equivalent textuel : seule facon fiable de restituer des valeurs

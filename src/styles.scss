@@ -8,6 +8,8 @@
 // que des variables et des mixins.
 
 @use 'sass:map';
+@use './appearance';
+@use './dialogs';
 @use './variables.scss' as *;
 @use './design-system' as *;
 
@@ -68,10 +70,7 @@ html {
 }
 // Modern Design System Variables
 :root {
-  --sidebar-width: 228px;
-  --sidebar-collapsed-width: 80px;
-  --sidebar-mobile-width: 100vw;
-
+  --sidebar-width: 218px;
   --color-bg: #{$bg-primary};
   --color-surface: #{$surface-primary};
   --color-surface-strong: #{$surface-tertiary};
@@ -80,53 +79,36 @@ html {
   --color-text: #{$text-primary};
   --color-text-secondary: #{$text-secondary};
   --color-text-muted: #{$text-muted};
-  --color-primary: #{$primary-light};
-  --color-primary-contrast: #{$text-inverse};
-  // --color-secondary et --color-accent valaient le meme lime que la couleur
-  // primaire : tout ce qui s'en servait pour se distinguer de l'action
-  // principale rendait en fait exactement la meme teinte. Elles designent
-  // desormais des NEUTRES, ce qu'elles etaient en pratique.
-  --color-secondary: #a1a1aa;
-  --color-accent: #f4f4f5;
-
-  // Neutres. Aucune teinte coloree : le lime est reserve a l'accent.
-  --gray-50: #0f0f10;
-  --gray-100: #141416;
-  --gray-200: #1c1c20;
-  --gray-300: #26262b;
-  --gray-400: #3f3f46;
-  --gray-500: #52525b;
-  --gray-600: #a8a8b0;
-  --gray-700: #d4d4d8;
-  --gray-800: #d4d4d8;
-  --gray-900: #f4f4f5;
-
-  // Couleurs de statut, volontairement desaturees : elles portent un sens,
-  // elles ne decorent pas.
-  --success-color: #4ade80;
-  --warning-color: #fbbf24;
-  --danger-color: #f87171;
-  --info-color: #60a5fa;
-
-  --border-radius-sm: 18px;
-  --border-radius: 18px;
-  --border-radius-lg: 18px;
-  --border-radius-xl: 18px;
-  --border-radius-2xl: 18px;
+  --color-primary: #{$green-ink};
+  --color-primary-contrast: #{$on-brand};
+  --color-secondary: #{$text-secondary};
+  --color-accent: #{$green-ink};
+  --gray-50: #{$gray-50};
+  --gray-100: #{$gray-100};
+  --gray-200: #{$gray-200};
+  --gray-300: #{$gray-300};
+  --gray-400: #{$gray-400};
+  --gray-500: #{$gray-500};
+  --gray-600: #{$gray-600};
+  --gray-700: #{$gray-700};
+  --gray-800: #{$gray-800};
+  --gray-900: #{$gray-900};
+  --success-color: #{$green-ink};
+  --warning-color: #{$text-secondary};
+  --danger-color: #{$text-primary};
+  --info-color: #{$text-secondary};
+  --border-radius-sm: 6px;
+  --border-radius: 8px;
+  --border-radius-lg: 10px;
+  --border-radius-xl: 12px;
+  --border-radius-2xl: 14px;
   --border-radius-pill: 999px;
-
-  // Bordure NEUTRE. Elle valait rgba(212, 255, 61, .35) : toutes les cartes
-  // de l'app etaient cerclees de lime.
-  --border-color: rgba(237, 232, 224, 0.10);
-
-  // Une seule elevation, pour ce qui flotte au-dessus du contenu.
+  --border-color: #{$border-color};
   --shadow-sm: none;
   --shadow: none;
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.55);
-  --shadow-2xl: 0 16px 40px rgba(0, 0, 0, 0.55);
-
-  // Conservees comme tokens (une centaine d'appelants) mais neutralisees.
+  --shadow-lg: var(--fp-elevation);
+  --shadow-xl: var(--fp-elevation);
+  --shadow-2xl: var(--fp-elevation);
   --transition-base: none;
   --transition-fast: none;
 }
@@ -208,7 +190,7 @@ h1 { font-size: clamp(1.5rem, 3.2vw, 1.875rem); font-weight: 700; }
 
 // Typographie sportive réservée aux titres de page.
 .page-title {
-  font-family: $font-family-display;
+  font-family: $font-family-base;
   font-size: clamp(1.75rem, 4.2vw, 2.5rem);
   font-weight: 700;
   letter-spacing: 0.01em;
@@ -280,8 +262,8 @@ a {
     border-color: transparent;
 
     &:hover:not(:disabled) {
-      background: $primary-light;
-      color: $on-primary;
+      background: $brand;
+      color: $on-brand;
       border-color: transparent;
     }
   }
@@ -338,7 +320,7 @@ a {
     border: $border-width solid $border-color;
 
     &:hover:not(:disabled) {
-      background: rgba(237, 232, 224, 0.05);
+      background: tint($text-primary, 0.05);
       color: $text-primary;
       border-color: $border-strong;
     }
@@ -363,7 +345,7 @@ a {
     border-color: transparent;
 
     &:hover:not(:disabled) {
-      background: rgba(237, 232, 224, 0.05);
+      background: tint($text-primary, 0.05);
       color: $text-primary;
       border-color: transparent;
     }
@@ -549,7 +531,7 @@ a {
   line-height: 1.4;
   letter-spacing: 0;
   border: $border-width solid $border-color;
-  background: rgba(237, 232, 224, 0.05);
+  background: tint($text-primary, 0.05);
   color: $text-secondary;
 
   @mixin badge-tone($hue, $ink) {
@@ -564,7 +546,7 @@ a {
   &.badge-danger    { @include badge-tone($danger-color,  $error-light);   }
   &.badge-info      { @include badge-tone($info-color,    $info-light);    }
   &.badge-secondary {
-    background: rgba(237, 232, 224, 0.06);
+    background: tint($text-primary, 0.06);
     border-color: $border-color;
     color: $text-secondary;
   }
@@ -576,7 +558,7 @@ a {
   // 12px de haut avec un fond lime a 15 % : la barre paraissait a moitie
   // pleine meme a 0 %. Piste neutre et fine, remplissage lime.
   height: 6px;
-  background: rgba(237, 232, 224, 0.09);
+  background: tint($text-primary, 0.09);
   border-radius: $radius-pill;
   overflow: hidden;
 
@@ -660,7 +642,7 @@ a {
       cursor: pointer;
 
       &:hover {
-        background: rgba(237, 232, 224, 0.06);
+        background: tint($text-primary, 0.06);
         color: $text-primary;
       }
     }
@@ -722,7 +704,7 @@ a {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid rgba(237, 232, 224, 0.14);
+  border: 2px solid tint($text-primary, 0.14);
   border-top-color: $text-secondary;
   animation: spin 0.7s linear infinite;
 }
@@ -744,11 +726,11 @@ a {
 // Le curseur etait lime : chaque zone defilante ajoutait une barre fluo a
 // l'ecran. Neutre.
 ::-webkit-scrollbar-thumb {
-  background: rgba(237, 232, 224, 0.14);
+  background: tint($text-primary, 0.14);
   border-radius: $radius-pill;
 
   &:hover {
-    background: rgba(237, 232, 224, 0.24);
+    background: tint($text-primary, 0.24);
   }
 }
 
@@ -934,7 +916,7 @@ a {
 // .hover-lift n'ajoute plus de deplacement : les elements ne se soulevent
 // plus au passage de la souris. Conservee pour ses appelants.
 .hover-lift {
-  &:hover { background: rgba(237, 232, 224, 0.04); }
+  &:hover { background: tint($text-primary, 0.04); }
 }
 
 // Loading States
@@ -1289,7 +1271,7 @@ textarea:disabled {
 .nav-indicator,
 .nav-indicator.new,
 .nav-indicator.active {
-  background: rgba(237, 232, 224, 0.09) !important;
+  background: tint($text-primary, 0.09) !important;
   color: $text-secondary !important;
   border-color: transparent !important;
 }
@@ -1322,7 +1304,6 @@ textarea:disabled {
 // C'est le seul endroit du fichier qui en a besoin. Partout ailleurs le
 // simple `!important` suffit, les regles de composant n'etant pas elles-memes
 // marquees importantes.
-.modal-overlay.modal-overlay.modal-overlay,
 .modal-backdrop.modal-backdrop.modal-backdrop,
 [class*='-scrim'] {
   background: rgba(0, 0, 0, 0.72) !important;
@@ -1369,13 +1350,13 @@ textarea:disabled {
 // 200px le long du formulaire, l'element le plus voyant de la fenetre.
 ::-webkit-scrollbar-thumb,
 *::-webkit-scrollbar-thumb {
-  background: rgba(237, 232, 224, 0.14) !important;
+  background: tint($text-primary, 0.14) !important;
   border-radius: $radius-pill;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(237, 232, 224, 0.24) !important;
+  background: tint($text-primary, 0.24) !important;
 }
 
 ::-webkit-scrollbar-track,
@@ -1387,7 +1368,7 @@ textarea:disabled {
 //
 // Il etait redefini dans huit composants, dont deux avec une couleur plus
 // sombre que le fond du champ : `$on-primary` (#050505) sur la page Profil,
-// `rgba($surface-secondary, .7)` sur Nutrition. Les indications de saisie
+// `tint($surface-secondary, .7)` sur Nutrition. Les indications de saisie
 // etaient donc invisibles. Valeur unique, a 4,6:1 sur la surface des champs.
 input::placeholder,
 textarea::placeholder {
@@ -1559,13 +1540,13 @@ input[type='range'] {
   &::-webkit-slider-runnable-track {
     height: 4px;
     border-radius: $radius-pill;
-    background: rgba(237, 232, 224, 0.12);
+    background: tint($text-primary, 0.12);
   }
 
   &::-moz-range-track {
     height: 4px;
     border-radius: $radius-pill;
-    background: rgba(237, 232, 224, 0.12);
+    background: tint($text-primary, 0.12);
   }
 
   &::-webkit-slider-thumb {
@@ -1739,7 +1720,6 @@ textarea {
 // Le voile passe de 72 a 82 % : a 72 %, le bouton d'action lime de la page
 // restait parfaitement lisible derriere la modale et continuait d'attirer
 // l'oeil hors du formulaire ouvert.
-.modal-overlay.modal-overlay.modal-overlay,
 .modal-backdrop.modal-backdrop.modal-backdrop,
 [class*='-scrim'] {
   background: rgba(0, 0, 0, 0.82) !important;
@@ -1790,48 +1770,12 @@ textarea {
     font-size: 1rem;
 
     &:hover {
-      background: rgba(237, 232, 224, 0.06) !important;
+      background: tint($text-primary, 0.06) !important;
       color: $text-primary !important;
     }
   }
 }
 
-// Sur telephone, une modale devient une feuille ancree en bas : le pouce
-// atteint ses actions sans changer de prise, et elle ne flotte plus au milieu
-// de l'ecran en laissant voir la page de part et d'autre. C'est deja ce que
-// fait le mixin `modal-panel` du systeme ; les modales baties sur
-// `.modal-content` ne le suivaient pas.
-@include respond-below(sm) {
-  // `!important` sur l'ancrage : plusieurs composants declarent leur propre
-  // `.modal-overlay { align-items: center }` dans une media query, plus
-  // specifique que ce selecteur. Sans cela, la feuille restait centree, avec
-  // une bande de page visible au-dessus ET en dessous, et ses quatre coins
-  // arrondis — ni fenetre, ni feuille.
-  // Selecteurs repetes, comme pour le voile plus haut : les regles d'origine
-  // sont marquees `!important` ET encapsulees par Angular (0-2-0), donc
-  // injectees apres cette feuille. Il faut passer devant en specificite.
-  .modal-overlay.modal-overlay.modal-overlay,
-  .modal-backdrop.modal-backdrop.modal-backdrop {
-    align-items: flex-end !important;
-    justify-content: center !important;
-    padding: 0 !important;
-  }
-
-  .modal.modal.modal,
-  .modal-content.modal-content.modal-content,
-  .modal-dialog.modal-dialog.modal-dialog {
-    width: 100% !important;
-    max-width: none !important;
-    max-height: 90vh;
-    // La marge de 0,5rem posee plus haut detachait la feuille du bord bas.
-    margin: 0 !important;
-    border-radius: $radius-2xl $radius-2xl 0 0 !important;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-}
-
-
-// =============================================
 // PISTES DE BARRE DE PROGRESSION
 // =============================================
 //
@@ -1849,17 +1793,27 @@ textarea {
 [class*='progress']:has(> [class*='fill']),
 [class*='-bar']:has(> [class*='fill']),
 [class*='-track']:has(> [class*='fill']) {
-  background: rgba(237, 232, 224, 0.09) !important;
+  background: tint($text-primary, 0.09) !important;
   background-image: none !important;
 }
 
 :where(button, input, textarea, select, a, [tabindex], summary):focus-visible {
-  outline: 2px solid $primary-light;
+  outline: 2px solid $green-ink;
   outline-offset: 3px;
 }
 
-html:has(.mobile-nav-sheet[open]) { overflow: hidden; }
+
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+.workspace-content > main > :not(router-outlet) > :is(
+  .nutrition-container, .workout-container, .exercises-container,
+  .goals-container, .challenges-container, .profile-container, .calendar-container,
+  .workout-detail-container, .exercise-detail-container
+) {
+  padding-inline: 0;
+  padding-block-start: 0;
+  min-width: 0;
 }

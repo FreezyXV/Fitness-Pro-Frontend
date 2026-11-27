@@ -148,7 +148,7 @@
           <div class="card-header">
             <h2 class="section-title">
               <span class="title-icon"><app-icon name="dumbbell"></app-icon></span>
-              <span class="title-text">Exercices du programme</span>
+              <span class="title-text">Exercices</span>
               <span class="exercise-counter">({{ workoutPlan.exercises?.length || 0 }})</span>
             </h2>
             <div class="section-controls">
@@ -185,7 +185,11 @@
                    [attr.data-exercise-index]="i">
                 
                 <!-- Enhanced Exercise Header -->
-                <div class="exercise-header" (click)="toggleExerciseExpansion(i)">
+                <div class="exercise-header" role="button" tabindex="0"
+                     [attr.aria-expanded]="expandedExercises.has(i)"
+                     (click)="toggleExerciseExpansion(i)"
+                     (keydown.enter)="toggleExerciseExpansion(i)"
+                     (keydown.space)="$event.preventDefault(); toggleExerciseExpansion(i)">
                   <div class="exercise-number-indicator">
                     <span class="exercise-number">{{ i + 1 }}</span>
                     <div class="status-ring" [class]="'status-' + getExerciseStatus(i)"></div>

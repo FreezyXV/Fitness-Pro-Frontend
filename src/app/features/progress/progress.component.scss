@@ -203,7 +203,7 @@
   }
 
   &.is-flat {
-    background: rgba($text-secondary, 0.15);
+    background: tint($text-secondary, 0.15);
     color: $text-secondary;
   }
 }

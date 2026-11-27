@@ -1,5 +1,5 @@
 // profile.component.ts - Clean and Updated Profile Component
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { Subject, takeUntil, of, catchError } from 'rxjs';
@@ -26,10 +26,10 @@ class BMIUtils {
   }
 
   static getColor(bmi: number): string {
-    if (bmi < 18.5) return '#7ecbff'; // underweight - blue
-    if (bmi < 25) return '#6ee7b7';   // normal - green
-    if (bmi < 30) return '#fdba74';   // overweight - orange
-    return '#fc8181';                  // obese - red
+    if (bmi < 18.5) return 'var(--fp-ink-muted)';
+    if (bmi < 25) return 'var(--fp-green-ink)';
+    if (bmi < 30) return 'var(--fp-ink-secondary)';
+    return 'var(--fp-ink-secondary)';
   }
 
   static getRecommendation(bmi: number): string {
@@ -62,7 +62,7 @@ class FormUtils {
 
   static validatePassword(password: string): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     if (password.length < 8) errors.push('8 caractères minimum');
     if (!/[A-Z]/.test(password)) errors.push('Une majuscule');
     if (!/[a-z]/.test(password)) errors.push('Une minuscule');
@@ -76,6 +76,7 @@ class FormUtils {
   }
 }
 
+import { Appearance, AppearanceService } from '@core/services/appearance.service';
 import { ReminderService, ReminderSettings } from '@core/services/reminder.service';
 
 @Component({
@@ -88,7 +89,7 @@ import { ReminderService, ReminderSettings } from '@core/services/reminder.servi
     trigger('slideUp', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(60px) scale(0.92)' }),
-        animate('600ms cubic-bezier(0.16, 1, 0.3, 1)', 
+        animate('600ms cubic-bezier(0.16, 1, 0.3, 1)',
           style({ opacity: 1, transform: 'translateY(0) scale(1)' })
         )
       ])
@@ -96,7 +97,7 @@ import { ReminderService, ReminderSettings } from '@core/services/reminder.servi
     trigger('fadeIn', [
       transition(':enter', [
         style({ opacity: 0, transform: 'scale(0.95)' }),
-        animate('500ms cubic-bezier(0.4, 0, 0.2, 1)', 
+        animate('500ms cubic-bezier(0.4, 0, 0.2, 1)',
           style({ opacity: 1, transform: 'scale(1)' })
         )
       ])
@@ -105,25 +106,37 @@ import { ReminderService, ReminderSettings } from '@core/services/reminder.servi
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  
+  readonly appearance = inject(AppearanceService);
+  readonly appearanceOptions: { value: Appearance; label: string }[] = [
+    { value: 'system', label: 'Automatique' },
+    { value: 'light', label: 'Clair' },
+    { value: 'dark', label: 'Sombre' },
+  ];
+
   // User data - initialized empty, loaded from API
   user: User | null = null;
-  
+
   // Component state
   activeTab: 'personal' | 'health' | 'security' | 'preferences' = 'personal';
+  readonly profileSections = [
+    { id: 'personal', label: 'Compte' },
+    { id: 'health', label: 'Santé' },
+    { id: 'preferences', label: 'Préférences' },
+    { id: 'security', label: 'Sécurité' },
+  ] as const;
   editMode = false;
   isLoading = false;
   showSuccessMessage = false;
   successMessage = '';
-  
+
   // Forms
   personalForm!: FormGroup;
   healthForm!: FormGroup;
   passwordForm!: FormGroup;
-  
+
   // Configuration
   bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-  
+
   genderOptions = [
     { value: 'male', label: 'Homme' },
     { value: 'female', label: 'Femme' },
@@ -258,12 +271,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private passwordMatchValidator(form: AbstractControl) {
     const newPassword = form.get('newPassword');
     const confirmPassword = form.get('confirmPassword');
-    
+
     if (newPassword && confirmPassword && newPassword.value !== confirmPassword.value) {
       confirmPassword.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
     }
-    
+
     return null;
   }
 
@@ -273,7 +286,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private loadUserProfile(): void {
     this.isLoading = true;
-    
+
     this.userService.getProfile()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -348,16 +361,16 @@ getBMIPosition(): number {
   if (!this.user?.height || !this.user?.weight) {
     return 0;
   }
-  
+
   try {
     const bmi = BMIUtils.calculate(this.user.height, this.user.weight);
-    
+
     // Position calculation based on BMI ranges
     // BMI < 18.5 = underweight (0-25% of bar)
-    // BMI 18.5-24.9 = normal (25-50% of bar)  
+    // BMI 18.5-24.9 = normal (25-50% of bar)
     // BMI 25-29.9 = overweight (50-75% of bar)
     // BMI >= 30 = obese (75-100% of bar)
-    
+
     if (bmi < 18.5) {
       // Underweight: 0-25% position
       return Math.max(0, Math.min(25, (bmi / 18.5) * 25));
@@ -380,7 +393,7 @@ getBMIPosition(): number {
     if (!this.user || !this.user.height || !this.user.weight || this.user.height <= 0 || this.user.weight <= 0) {
       return '-';
     }
-    
+
     try {
       const bmi = BMIUtils.calculate(this.user.height, this.user.weight);
       return bmi.toFixed(1);
@@ -393,7 +406,7 @@ getBMIPosition(): number {
     if (!this.user || !this.user.height || !this.user.weight) {
       return 'Non calculé';
     }
-    
+
     try {
       const bmi = BMIUtils.calculate(this.user.height, this.user.weight);
       return BMIUtils.getStatus(bmi);
@@ -404,14 +417,14 @@ getBMIPosition(): number {
 
   getBMIColor(): string {
     if (!this.user || !this.user.height || !this.user.weight) {
-      return '#d4d4d8'; // = $text-secondary, lisible sur fond sombre
+      return 'var(--fp-ink-secondary)'; // = $text-secondary, lisible sur fond sombre
     }
-    
+
     try {
       const bmi = BMIUtils.calculate(this.user.height, this.user.weight);
       return BMIUtils.getColor(bmi);
     } catch (error) {
-      return '#d4d4d8'; // = $text-secondary, lisible sur fond sombre
+      return 'var(--fp-ink-secondary)'; // = $text-secondary, lisible sur fond sombre
     }
   }
 
@@ -420,12 +433,12 @@ getBMIPosition(): number {
     if (bmiStr === '-') {
       return 'Renseignez votre taille et poids pour obtenir des recommandations personnalisées.';
     }
-    
+
     const bmi = parseFloat(bmiStr);
     if (isNaN(bmi)) {
       return 'Données insuffisantes pour calculer l\'IMC.';
     }
-    
+
     return BMIUtils.getRecommendation(bmi);
   }
 
@@ -444,19 +457,19 @@ getBMIPosition(): number {
 
   calculateAge(): number | null {
     if (!this.user || !this.user.dateOfBirth) return null;
-    
+
     try {
       const birthDate = new Date(this.user.dateOfBirth);
       if (isNaN(birthDate.getTime())) return null;
-      
+
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
-      
+
       if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
-      
+
       return age >= 0 && age <= 150 ? age : null;
     } catch (error) {
       return null;
@@ -465,7 +478,7 @@ getBMIPosition(): number {
 
   getMembershipDuration(): number {
     if (!this.user || !this.user.createdAt) return 4; // Default fallback
-    
+
     try {
       const createdDate = new Date(this.user.createdAt);
       const now = new Date();
@@ -492,7 +505,7 @@ getBMIPosition(): number {
         if (!confirmCancel) return;
       }
     }
-    
+
     this.editMode = false;
     this.populateForms();
   }
@@ -537,23 +550,23 @@ getBMIPosition(): number {
     }
 
     this.isLoading = true;
-    
+
     const formValue = this.personalForm.value;
-    
+
     // Prepare update data
     const updateData: any = {};
-    
+
     if (formValue.firstName?.trim() && formValue.lastName?.trim()) {
       updateData.name = FormUtils.formatUserName(
-        formValue.firstName.trim(), 
+        formValue.firstName.trim(),
         formValue.lastName.trim()
       );
     }
-    
+
     if (formValue.email?.trim()) {
       updateData.email = formValue.email.trim().toLowerCase();
     }
-    
+
     if (formValue.phone?.trim()) {
       updateData.phone = formValue.phone.trim();
     }
@@ -565,15 +578,15 @@ getBMIPosition(): number {
     if (formValue.gender !== undefined) {
       updateData.gender = formValue.gender;
     }
-    
+
     if (formValue.bloodGroup !== undefined) {
       updateData.bloodGroup = formValue.bloodGroup;
     }
-    
+
     if (formValue.location?.trim()) {
       updateData.location = formValue.location.trim();
     }
-    
+
     if (formValue.bio?.trim()) {
       updateData.bio = formValue.bio.trim();
     }
@@ -610,16 +623,16 @@ getBMIPosition(): number {
     }
 
     this.isLoading = true;
-    
+
     const formValue = this.healthForm.value;
-    
+
     // Prepare update data
     const updateData: any = {};
-    
+
     if (formValue.height && parseFloat(formValue.height) > 0) {
       updateData.height = parseFloat(formValue.height);
     }
-    
+
     if (formValue.weight && parseFloat(formValue.weight) > 0) {
       updateData.weight = parseFloat(formValue.weight);
     }
@@ -652,7 +665,7 @@ getBMIPosition(): number {
     }
 
     this.isLoading = true;
-    
+
     const formValue = this.passwordForm.value;
     const passwordData: PasswordChangeRequest = {
       currentPassword: formValue.currentPassword,
@@ -685,7 +698,7 @@ getBMIPosition(): number {
     Object.keys(formGroup.controls).forEach(key => {
       const control = formGroup.get(key);
       control?.markAsTouched();
-      
+
       if (control instanceof FormGroup) {
         this.markFormGroupTouched(control);
       }
@@ -734,7 +747,7 @@ getBMIPosition(): number {
   getPasswordStrength(): { score: number; label: string; color: string; requirements: any[] } {
     const password = this.passwordForm.get('newPassword')?.value || '';
     const validation = FormUtils.validatePassword(password);
-    
+
     let label = '';
     let color = '';
     const score = Math.max(0, 5 - validation.errors.length);
@@ -742,27 +755,27 @@ getBMIPosition(): number {
     switch (score) {
       case 5:
         label = 'Excellent';
-        color = '#6ee7b7';
+        color = 'var(--fp-green-ink)';
         break;
       case 4:
         label = 'Très fort';
-        color = '#6ee7b7';
+        color = 'var(--fp-green-ink)';
         break;
       case 3:
         label = 'Fort';
-        color = '#6ee7b7';
+        color = 'var(--fp-green-ink)';
         break;
       case 2:
         label = 'Moyen';
-        color = '#eab308';
+        color = 'var(--fp-ink-secondary)';
         break;
       case 1:
         label = 'Faible';
-        color = '#fdba74';
+        color = 'var(--fp-ink-secondary)';
         break;
       default:
         label = 'Très faible';
-        color = '#fc8181';
+        color = 'var(--fp-ink-secondary)';
     }
 
     const requirements = [
@@ -810,17 +823,17 @@ getBMIPosition(): number {
 
         const dataStr = JSON.stringify(exportData, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        
+
         const link = document.createElement('a');
         link.href = URL.createObjectURL(dataBlob);
         link.download = `fitnesspro-profil-${this.user.name?.replace(/\s+/g, '-').toLowerCase() || 'utilisateur'}-${new Date().toISOString().split('T')[0]}.json`;
-        
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         URL.revokeObjectURL(link.href);
-        
+
         this.isLoading = false;
         this.showSuccess('Données exportées avec succès');
       } catch (error) {

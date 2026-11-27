@@ -1,0 +1,44 @@
+@mixin light-appearance {
+  color-scheme: light;
+  --fp-canvas: #f7f8f6;
+  --fp-surface: #fff;
+  --fp-surface-subtle: #f0f2ee;
+  --fp-surface-hover: #e8ebe6;
+  --fp-ink: #171a16;
+  --fp-ink-secondary: #424841;
+  --fp-ink-muted: #5c645b;
+  --fp-line: #dce1da;
+  --fp-control-line: #838c81;
+  --fp-green-ink: #315719;
+  --fp-selected: #edf6d9;
+  --fp-elevation: 0 16px 48px rgb(13 19 12 / 16%);
+  --fp-gray-400: #c5ccc3;
+  --fp-gray-500: #8b9589;
+}
+
+:root {
+  color-scheme: dark;
+  --fp-canvas: #0e100e;
+  --fp-surface: #151815;
+  --fp-surface-subtle: #1d211d;
+  --fp-surface-hover: #272d27;
+  --fp-ink: #f4f6f2;
+  --fp-ink-secondary: #c4ccc3;
+  --fp-ink-muted: #a0aa9f;
+  --fp-line: #323a32;
+  --fp-control-line: #697668;
+  --fp-green-ink: #c5ff3d;
+  --fp-selected: #262f1a;
+  --fp-elevation: 0 16px 48px rgb(0 0 0 / 44%);
+  --fp-gray-400: #434c43;
+  --fp-gray-500: #657064;
+  --fp-accent: #c5ff3d;
+  --fp-accent-hover: #d5ff75;
+  --fp-on-accent: #19220e;
+  --fp-scrim: rgb(7 10 7 / 56%);
+}
+
+:root[data-theme='light'] { @include light-appearance; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) { @include light-appearance; }
+}
