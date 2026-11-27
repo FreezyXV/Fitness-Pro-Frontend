@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '@app/services/auth.service';
+import { AuthArtworkComponent } from '../artwork/auth-artwork.component';
 import { BrandComponent } from '@app/shared/components/brand/brand.component';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
 
@@ -12,7 +13,7 @@ import { IconComponent } from '@app/shared/components/icon/icon.component';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, IconComponent, BrandComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, IconComponent, BrandComponent, AuthArtworkComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

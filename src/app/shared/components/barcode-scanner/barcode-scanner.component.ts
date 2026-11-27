@@ -27,6 +27,7 @@ import { FormsModule } from '@angular/forms';
 import { OpenFoodFactsService } from '@app/services/open-food-facts.service';
 import { Food } from '@features/nutrition/food-database';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
+import { DialogDirective } from '@app/shared/components/dialog/dialog.directive';
 
 type ScannerState =
   | 'idle'
@@ -40,7 +41,7 @@ type ScannerState =
 @Component({
   selector: 'app-barcode-scanner',
   standalone: true,
-  imports: [CommonModule, FormsModule, IconComponent],
+  imports: [CommonModule, FormsModule, IconComponent, DialogDirective],
   templateUrl: './barcode-scanner.component.html',
   styleUrls: ['./barcode-scanner.component.scss'],
 })

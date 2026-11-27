@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '@app/services/auth.service';
 import { RegisterRequest } from '@shared';
+import { AuthArtworkComponent } from '../artwork/auth-artwork.component';
 import { BrandComponent } from '@app/shared/components/brand/brand.component';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
 
@@ -16,7 +17,7 @@ interface PasswordRequirement {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, IconComponent, BrandComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, IconComponent, BrandComponent, AuthArtworkComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })

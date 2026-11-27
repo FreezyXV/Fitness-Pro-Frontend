@@ -2539,12 +2539,26 @@ padding: 0.25rem;
 .workout-detail-container {
   padding-inline: 0;
 
-  .hero-content .title-section .plan-title {
-    font: 760 clamp(1.85rem, 4vw, 3rem)/1.08 $font-family-base;
-    letter-spacing: -.035em;
-    overflow-wrap: anywhere;
+  .hero-section {
+    padding-top: 0;
+
+    .navigation-header { gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .plan-meta-section { margin-bottom: 8px; }
+    .meta-badges { justify-content: flex-start; }
+
+    .hero-content .title-section {
+      display: block;
+
+      .plan-title {
+        font: 700 clamp(2.15rem, 4.5vw, 3.75rem)/1 $font-family-display !important;
+        letter-spacing: 0;
+        overflow-wrap: anywhere;
+      }
+
+      .plan-description { max-width: 66ch; }
+    }
   }
-  .navigation-header { gap: 8px; flex-wrap: wrap; }
+
   .quick-stats-grid { min-width: 0; }
 }
 

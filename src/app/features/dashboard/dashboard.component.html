@@ -9,54 +9,52 @@
     </a>
   </header>
 
-  <div class="overview-grid">
-    <section class="training-feature" aria-labelledby="training-title">
-      <div class="training-content">
-        <p class="feature-label"><app-icon name="dumbbell" [size]="18" /> Entraînement</p>
-        <ng-container *ngIf="plan() as current; else choosePlan">
-          <h2 id="training-title">{{ current.name }}</h2>
-          <p class="feature-detail" *ngIf="current.estimatedDuration || current.durationMinutes || current.description">
-            <span *ngIf="current.estimatedDuration || current.durationMinutes as minutes">{{ minutes }} min</span>
-            <span *ngIf="(current.estimatedDuration || current.durationMinutes) && current.description"> · </span>
-            {{ current.description }}
-          </p>
-          <div class="feature-actions">
-            <a class="feature-action" [routerLink]="['/workouts', current.id, 'session']">Démarrer la séance</a>
-            <a class="text-action" [routerLink]="['/workouts', current.id]">Ouvrir le programme</a>
-          </div>
-        </ng-container>
-        <ng-template #choosePlan>
-          <h2 id="training-title">Prochaine séance</h2>
-          <p class="feature-detail">Choisis un programme ou compose ta séance.</p>
-          <a class="feature-action" routerLink="/workouts">
-            Choisir un programme <app-icon class="arrow" name="arrow-up-right" [size]="17" />
-          </a>
-        </ng-template>
-      </div>
-      <div class="training-disc" aria-hidden="true"><span></span></div>
-    </section>
+  <section class="training-feature" aria-labelledby="training-title">
+    <div class="training-content">
+      <p class="feature-label"><app-icon name="dumbbell" [size]="18" /> {{ plan() ? 'Programme actif' : 'Entraînement' }}</p>
+      <ng-container *ngIf="plan() as current; else choosePlan">
+        <h2 id="training-title">{{ current.name }}</h2>
+        <p class="feature-detail" *ngIf="current.estimatedDuration || current.durationMinutes || current.description">
+          <span *ngIf="current.estimatedDuration || current.durationMinutes as minutes">{{ minutes }} min</span>
+          <span *ngIf="(current.estimatedDuration || current.durationMinutes) && current.description"> · </span>
+          {{ current.description }}
+        </p>
+        <div class="feature-actions">
+          <a class="feature-action" [routerLink]="['/workouts', current.id, 'session']">Démarrer la séance</a>
+          <a class="text-action" [routerLink]="['/workouts', current.id]">Ouvrir le programme</a>
+        </div>
+      </ng-container>
+      <ng-template #choosePlan>
+        <h2 id="training-title">Prochaine séance</h2>
+        <p class="feature-detail">Choisis un programme ou compose ta séance.</p>
+        <a class="feature-action" routerLink="/workouts">
+          Choisir un programme <app-icon class="arrow" name="arrow-up-right" [size]="17" />
+        </a>
+      </ng-template>
+    </div>
+    <div class="training-disc" aria-hidden="true"><span></span></div>
+  </section>
 
-    <section class="week-section" aria-labelledby="week-title">
-      <div class="section-heading">
-        <h2 id="week-title">Cette semaine</h2>
-        <a class="text-action" routerLink="/progress">Progression <app-icon name="arrow-up-right" [size]="16" /></a>
+  <section class="week-section" aria-labelledby="week-title">
+    <div class="section-heading">
+      <h2 id="week-title">Cette semaine</h2>
+      <a class="text-action" routerLink="/progress">Progression <app-icon name="arrow-up-right" [size]="16" /></a>
+    </div>
+    <dl class="week-metrics">
+      <div>
+        <dt><app-icon name="dumbbell" [size]="17" /> Séances</dt>
+        <dd>{{ week().sessions }}<small *ngIf="weeklyGoal() as target"> / {{ target }}</small></dd>
       </div>
-      <dl class="week-metrics">
-        <div>
-          <dt><app-icon name="dumbbell" [size]="17" /> Séances</dt>
-          <dd>{{ week().sessions }}<small *ngIf="weeklyGoal() as target"> / {{ target }}</small></dd>
-        </div>
-        <div>
-          <dt><app-icon name="clipboard" [size]="17" /> Séries</dt>
-          <dd>{{ week().sets }}</dd>
-        </div>
-        <div>
-          <dt><app-icon name="chart" [size]="17" /> Volume</dt>
-          <dd>{{ numberFormat.format(week().volumeKg) }}<small> kg</small></dd>
-        </div>
-      </dl>
-    </section>
-  </div>
+      <div>
+        <dt><app-icon name="clipboard" [size]="17" /> Séries</dt>
+        <dd>{{ week().sets }}</dd>
+      </div>
+      <div>
+        <dt><app-icon name="chart" [size]="17" /> Volume</dt>
+        <dd>{{ numberFormat.format(week().volumeKg) }}<small> kg</small></dd>
+      </div>
+    </dl>
+  </section>
 
   <div class="home-grid">
     <section class="home-panel activity-panel" aria-labelledby="activity-title">

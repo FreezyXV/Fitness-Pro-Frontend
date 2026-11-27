@@ -20,6 +20,8 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 0;
+  width: min(100%, 540px);
+  margin-inline: auto;
 }
 
 .ob-back {
@@ -58,7 +60,7 @@
 .ob-progress-fill {
   height: 100%;
   border-radius: $radius-pill;
-  background: $primary-color;
+  background: $green-ink;
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -78,21 +80,20 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 1.5rem;
+  justify-content: flex-start;
+  gap: clamp(1rem, 2.8vw, 1.5rem);
 
   width: 100%;
-  max-width: 520px;
+  max-width: 540px;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding: clamp(1rem, 8vh, 5.5rem) 0 2rem;
 }
 
 .ob-title {
   margin: 0;
-  font: 760 clamp(1.95rem, 5.8vw, 3rem)/1.06 $font-family-base;
-  letter-spacing: -0.02em;
+  font: 700 clamp(2.4rem, 6vw, 4.25rem)/1 $font-family-display;
   color: $text-primary;
-  text-align: center;
+  text-wrap: balance;
 }
 
 .ob-lead {
@@ -100,7 +101,6 @@
   color: $text-secondary;
   font-size: 0.9375rem;
   line-height: 1.6;
-  text-align: center;
 }
 
 // =============================================
@@ -137,8 +137,8 @@
   }
 
   &.is-selected {
-    border-color: $primary-color;
-    background: rgba($primary-color, 0.1);
+    border-color: $green-ink;
+    background: $selected;
   }
 
   &:focus-visible {

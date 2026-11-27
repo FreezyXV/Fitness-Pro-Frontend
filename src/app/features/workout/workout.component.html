@@ -338,7 +338,7 @@
 
   <!-- Error State -->
   <div *ngIf="error && !isLoading" class="error-section">
-    <div class="error-card">
+    <div class="error-card journal-state">
       <div class="error-icon">
         <svg
           width="64"
@@ -388,7 +388,7 @@
     "
     class="no-results-section"
   >
-    <div class="no-results-card">
+    <div class="no-results-card journal-state">
       <div class="no-results-icon">
         <svg
           width="80"
@@ -404,7 +404,7 @@
       </div>
       <h3 class="no-results-title">Aucun programme trouvé</h3>
       <p class="no-results-message">
-        Essayez de modifier vos critères de recherche ou vos filtres.
+        Essaie une autre recherche ou enlève un filtre.
       </p>
       <div class="no-results-actions">
         <button (click)="clearFilters()" class="btn btn-secondary">
@@ -444,12 +444,11 @@
     *ngIf="!isLoading && !error && workoutTemplates.length === 0"
     class="empty-section"
   >
-    <div class="empty-card">
+    <div class="empty-card journal-state">
       <div class="empty-icon"><app-icon name="dumbbell"></app-icon></div>
-      <h3 class="empty-title">Aucun programme d'entraînement</h3>
+      <h3 class="empty-title">Aucun programme</h3>
       <p class="empty-message">
-        Commencez par créer votre premier programme d'entraînement personnalisé
-        !
+        Compose ton premier programme à partir de la bibliothèque d’exercices.
       </p>
       <div class="empty-actions">
         <button (click)="createCustomWorkout()" class="btn btn-primary">
@@ -493,6 +492,7 @@
     [class.grid-view]="viewMode === 'grid'"
     [class.list-view]="viewMode === 'list'"
   >
+    <p class="catalog-summary" role="status">{{ filteredWorkoutTemplates.length }} {{ filteredWorkoutTemplates.length === 1 ? 'programme' : 'programmes' }}</p>
     <div class="workout-templates-grid">
       <app-workout-plan-card
         *ngFor="

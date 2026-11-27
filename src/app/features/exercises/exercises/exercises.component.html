@@ -251,7 +251,7 @@
 
   <!-- Error State -->
   <div *ngIf="error && !isLoading" class="error-section">
-    <div class="error-card">
+    <div class="error-card journal-state">
       <div class="error-icon">
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
@@ -276,7 +276,7 @@
   <!-- No Results State -->
   <div *ngIf="!isLoading && !error && filteredExercises.length === 0 && exercises.length > 0" 
        class="no-results-section">
-    <div class="no-results-card">
+    <div class="no-results-card journal-state">
       <div class="no-results-icon">
         <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="11" cy="11" r="8"/>
@@ -285,7 +285,7 @@
       </div>
       <h3 class="no-results-title">Aucun exercice trouvé</h3>
       <p class="no-results-message">
-        Essayez de modifier vos critères de recherche ou vos filtres.
+        Essaie une autre recherche ou enlève un filtre.
       </p>
       <div class="no-results-actions">
         <button (click)="clearAllFilters()" class="btn btn-secondary">
@@ -301,12 +301,11 @@
 
   <!-- Empty State -->
   <div *ngIf="!isLoading && !error && exercises.length === 0" class="empty-section">
-    <div class="empty-card">
+    <div class="empty-card journal-state">
       <div class="empty-icon"><app-icon name="dumbbell"></app-icon></div>
       <h3 class="empty-title">Aucun exercice disponible</h3>
       <p class="empty-message">
-        La base de données d'exercices semble être vide. 
-        Vérifiez que les exercices ont été importés correctement.
+Le catalogue est vide pour le moment.
       </p>
       <div class="empty-actions">
         <button (click)="refreshExercises()" class="btn btn-primary">
@@ -316,15 +315,7 @@
           </svg>
           <span>Actualiser</span>
         </button>
-        <button (click)="testConnection()" class="btn btn-secondary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-            <line x1="9" y1="9" x2="9.01" y2="9"/>
-            <line x1="15" y1="9" x2="15.01" y2="9"/>
-          </svg>
-          <span>Tester la connexion</span>
-        </button>
+
       </div>
     </div>
   </div>
@@ -333,6 +324,7 @@
   <div *ngIf="!isLoading && !error && filteredExercises.length > 0"
        class="exercises-content">
 
+    <p class="catalog-summary" role="status">{{ filteredExercises.length }} {{ filteredExercises.length === 1 ? 'exercice' : 'exercices' }}</p>
     <div class="exercises-grid">
       <app-exercise-card-enhanced
         *ngFor="let exercise of filteredExercises; trackBy: trackByExercise"

@@ -42,7 +42,21 @@
   font-size: .86rem;
   font-weight: 600;
   &:hover { background: $surface-primary; color: $text-primary; border-color: transparent; }
-  &.active { background: $selected; color: $green-ink; border-color: $border-color; }
+  &.active {
+    position: relative;
+    background: $selected;
+    color: $green-ink;
+    border-color: transparent;
+    font-weight: 700;
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 9px auto 9px 0;
+      width: 3px;
+      border-radius: 2px;
+      background: $green-ink;
+    }
+  }
 }
 
 .account {

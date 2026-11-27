@@ -1817,3 +1817,63 @@ textarea {
   padding-block-start: 0;
   min-width: 0;
 }
+
+/* Page states share a readable measure and the same action hierarchy. */
+:where(.workspace-content) .journal-state {
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  display: grid;
+  justify-items: start;
+  align-content: center;
+  gap: 10px;
+  padding: clamp(20px, 4.5vw, 46px);
+  border: 1px solid $border-color;
+  border-radius: 14px;
+  background: $surface-primary;
+  overflow: hidden;
+  text-align: start;
+
+  :is(h2, h3, p) { margin: 0; text-align: start; }
+  :is(h2, h3) {
+    color: $text-primary;
+    font: 700 clamp(1.8rem, 3.5vw, 2.6rem)/1 $font-family-display;
+    letter-spacing: -.012em;
+    text-wrap: pretty;
+  }
+  p { max-width: 47ch; color: $text-secondary; font-size: .9rem; }
+  :is(.empty-icon, .error-icon, .no-results-icon) {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin: 0;
+    border-radius: 8px;
+    background: $selected !important;
+    color: $green-ink !important;
+    svg { width: 19px; height: 19px; }
+  }
+  :is(.empty-actions, .error-actions, .no-results-actions) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 8px;
+    margin-top: 3px;
+  }
+
+  .btn.btn-primary:not(:disabled) {
+    min-height: 44px;
+    background: $brand !important;
+    border-color: transparent !important;
+    color: $on-brand !important;
+
+    &:hover { background: $brand-hover !important; }
+  }
+}
+
+.catalog-summary {
+  margin: 0 0 12px;
+  color: $text-muted;
+  font-size: .83rem;
+  font-weight: 650;
+}

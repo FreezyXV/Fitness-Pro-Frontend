@@ -2418,10 +2418,10 @@ padding: 0.25rem;
         .food-restrictions,
         .food-indicators,
         .preparation-tips {
-          border-radius: $radius-4xl;
-          border: 1px solid rgba($primary-color, 0.15);
-          background: tint($surface-primary, 0.78);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+          border-radius: $radius-md;
+          border: 1px solid $border-color;
+          background: $surface-primary;
+          box-shadow: none;
         }
 
         .food-overview {
@@ -2460,18 +2460,18 @@ padding: 0.25rem;
         }
 
         .complete-nutrition {
-          padding: 2rem;
+          padding: clamp(0.875rem, 3vw, 1.5rem);
 
           h3,
           h4,
           .category-title,
           .nutrient-name,
           .nutrient-value {
-            color: whitesmoke;
+            color: $text-primary;
           }
 
           .nutrient-unit {
-            color: white;
+            color: $text-secondary;
           }
 
           .nutrient-row {
@@ -2489,13 +2489,13 @@ padding: 0.25rem;
           padding: 1.75rem;
 
           h3 {
-            color: white;
+            color: $text-primary;
           }
 
           .allergen-tag,
           .indicator-card,
           .tips-list li {
-            color: white
+            color: $text-secondary;
           }
 
           .indicator-card {
@@ -5791,4 +5791,10 @@ textarea:focus {
 }
 @media (max-width: 730px) {
   .nutrition-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.nutrition-summary {
+  border-radius: 14px;
+  .nutrition-metrics { gap: clamp(10px, 2vw, 20px); }
+  .metric-reading strong { font: 700 clamp(1.44rem, 3vw, 2.2rem)/1 $font-family-display; }
 }

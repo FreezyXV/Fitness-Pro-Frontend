@@ -1,0 +1,26 @@
+.auth-layout {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  min-height: 100dvh;
+  background: #eee6d7;
+  color: #211b17;
+}
+
+.auth-layout app-auth-artwork { grid-column: 2; }
+.auth-paper {
+  color-scheme: light;
+  --fp-green-ink: #355316;
+  --fp-canvas: #eee6d7;
+  --fp-surface: #eee6d7;
+  --fp-surface-subtle: #e1d7c6;
+  --fp-surface-hover: #e1d7c6;
+  --fp-ink: #211b17;
+  --fp-ink-secondary: #60544b;
+  --fp-ink-muted: #76695f;
+  --fp-line: #d4c7b5;
+  --fp-control-line: #9a8c7c;
+}
+@media (max-width: 760px) {
+  .auth-layout { grid-template-columns: minmax(0, 1fr); grid-template-rows: 1fr auto; }
+  .auth-layout app-auth-artwork { grid-column: 1; }
+}

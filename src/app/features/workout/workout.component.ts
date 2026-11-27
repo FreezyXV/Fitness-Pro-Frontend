@@ -7,8 +7,10 @@ import {
   ViewChild,
   ElementRef,
   HostListener,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ConfirmationService } from '@app/shared/components/confirmation/confirmation.service';
 import { FormsModule } from '@angular/forms';
 import { WorkoutPlanCardComponent } from './workout-plan-card/workout-plan-card.component';
 import { Router } from '@angular/router';
@@ -50,6 +52,7 @@ interface WorkoutFilters {
   styleUrls: ['./workout.component.scss'],
 })
 export class WorkoutComponent implements OnInit, OnDestroy {
+  private readonly confirmation = inject(ConfirmationService);
   @ViewChild('searchInput', { static: false })
   searchInput!: ElementRef<HTMLInputElement>;
 
@@ -556,11 +559,15 @@ export class WorkoutComponent implements OnInit, OnDestroy {
   }
 
   deleteWorkoutTemplate(template: Workout): void {
-    const confirmed = confirm(
-      `Êtes-vous sûr de vouloir supprimer "${template.name}" ?`
-    );
-    if (!confirmed) return;
+    this.confirmation.open({
+      title: 'Supprimer ce programme ?',
+      message: `Le programme « ${template.name} » sera retiré de tes séances.`,
+      confirmLabel: 'Supprimer',
+      destructive: true,
+    }, () => this.removeWorkoutTemplate(template));
+  }
 
+  private removeWorkoutTemplate(template: Workout): void {
     this.workoutService
       .deleteWorkoutTemplate(template.id)
       .pipe(takeUntil(this.destroy$))

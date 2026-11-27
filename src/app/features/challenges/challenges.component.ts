@@ -1,6 +1,7 @@
 // src/app/challenges/challenges.component.ts - Enhanced Version
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ConfirmationService } from '@app/shared/components/confirmation/confirmation.service';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Subject, BehaviorSubject, timer, of } from 'rxjs';
@@ -152,6 +153,7 @@ import { DialogDirective } from '@app/shared/components/dialog/dialog.directive'
   styleUrls: ['./challenges.component.scss']
 })
 export class ChallengesComponent implements OnInit, OnDestroy {
+  private readonly confirmation = inject(ConfirmationService);
   private destroy$ = new Subject<void>();
   private searchSubject = new BehaviorSubject<string>('');
   private refreshTimer$ = new Subject<void>();
@@ -830,19 +832,29 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Panneau de filtres mobile : masque par defaut, ouvert par le bouton
-  // flottant "Filtrer", ferme en revalidant (les filtres s'appliquent deja
-  // en direct, "Appliquer" ne fait que revenir au resultat).
+  @ViewChild('filterTrigger') private filterTrigger?: ElementRef<HTMLButtonElement>;
+  @ViewChild('filterDismiss') private filterDismiss?: ElementRef<HTMLButtonElement>;
+
   showMobileFilters = false;
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
     BodyScrollLock.lock();
+    this.cdr.detectChanges();
+    this.filterDismiss?.nativeElement.focus({ preventScroll: true });
   }
 
+  @HostListener('document:keydown.escape')
   closeMobileFilters(): void {
+    if (!this.showMobileFilters) return;
     this.showMobileFilters = false;
     BodyScrollLock.unlock();
+    this.filterTrigger?.nativeElement.focus({ preventScroll: true });
+  }
+
+  @HostListener('window:resize')
+  closeFiltersOnDesktop(): void {
+    if (window.innerWidth > 768) this.closeMobileFilters();
   }
 
   clearFilters(): void {
@@ -951,11 +963,16 @@ export class ChallengesComponent implements OnInit, OnDestroy {
 
   leaveChallenge(challenge: EnhancedChallenge): void {
     if (!challenge.isJoined) return;
-    
-    if (!confirm('Êtes-vous sûr de vouloir abandonner ce défi ? Votre progression sera perdue.')) {
-      return;
-    }
-    
+    this.confirmation.open({
+      title: 'Abandonner ce défi ?',
+      message: `Ta progression dans « ${challenge.title} » sera perdue.`,
+      confirmLabel: 'Abandonner le défi',
+      destructive: true,
+    }, () => this.removeFromChallenge(challenge));
+  }
+
+  private removeFromChallenge(challenge: EnhancedChallenge): void {
+    if (this.selectedChallenge === challenge) this.closeChallengeDetails();
     challenge.isJoined = false;
     challenge.currentProgress = 0;
     challenge.progress = 0;

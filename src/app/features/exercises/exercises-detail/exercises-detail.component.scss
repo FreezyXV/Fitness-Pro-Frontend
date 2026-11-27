@@ -2344,12 +2344,20 @@ width: 100%;
 .exercise-detail-container {
   padding-inline: 0;
 
+  .hero-section {
+    padding-top: 0;
+
+    .navigation-header { gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .exercise-meta-info { margin-bottom: 8px; }
+    .exercise-meta-info .meta-badges { justify-content: flex-start; }
+  }
+
   .hero-content .title-section .exercise-title {
-    font: 760 clamp(1.85rem, 4vw, 3rem)/1.08 $font-family-base;
-    letter-spacing: -.035em;
+    font: 700 clamp(2.15rem, 4.5vw, 3.75rem)/1 $font-family-display !important;
+    letter-spacing: 0;
     overflow-wrap: anywhere;
   }
-  .navigation-header { gap: 8px; flex-wrap: wrap; }
+
   .quick-stats-grid { min-width: 0; }
 }
 

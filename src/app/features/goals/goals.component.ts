@@ -11,8 +11,10 @@ import {
   ViewChild,
   ElementRef,
   NgZone,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ConfirmationService } from '@app/shared/components/confirmation/confirmation.service';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -410,6 +412,7 @@ import { DialogDirective } from '@app/shared/components/dialog/dialog.directive'
   ],
 })
 export class GoalsComponent implements OnInit, OnDestroy {
+  private readonly confirmation = inject(ConfirmationService);
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
   loading = false;
@@ -1053,19 +1056,29 @@ export class GoalsComponent implements OnInit, OnDestroy {
     );
   }
 
-  // Panneau de filtres mobile : masque par defaut, ouvert par le bouton
-  // flottant "Filtrer", ferme en revalidant (les filtres s'appliquent deja
-  // en direct, "Appliquer" ne fait que revenir au resultat).
+  @ViewChild('filterTrigger') private filterTrigger?: ElementRef<HTMLButtonElement>;
+  @ViewChild('filterDismiss') private filterDismiss?: ElementRef<HTMLButtonElement>;
+
   showMobileFilters = false;
 
   openMobileFilters(): void {
     this.showMobileFilters = true;
     BodyScrollLock.lock();
+    this.cdr.detectChanges();
+    this.filterDismiss?.nativeElement.focus({ preventScroll: true });
   }
 
+  @HostListener('document:keydown.escape')
   closeMobileFilters(): void {
+    if (!this.showMobileFilters) return;
     this.showMobileFilters = false;
     BodyScrollLock.unlock();
+    this.filterTrigger?.nativeElement.focus({ preventScroll: true });
+  }
+
+  @HostListener('window:resize')
+  closeFiltersOnDesktop(): void {
+    if (window.innerWidth > 768) this.closeMobileFilters();
   }
 
   applyFilters(): void {
@@ -1237,14 +1250,11 @@ export class GoalsComponent implements OnInit, OnDestroy {
   }
 
   resetGoal(goal: EnhancedGoal): void {
-    if (!confirm(`Êtes-vous sûr de vouloir recommencer l'objectif "${goal.title}" ? Cette action remettra le progrès à zéro et changera le statut en "non commencé".`)) {
-      return;
-    }
-
-    this.directResetGoal(goal);
+    this.goalToReset = goal;
+    this.resetGoalConfirmation = true;
   }
 
-  directResetGoal(goal: EnhancedGoal): void {
+  private directResetGoal(goal: EnhancedGoal): void {
     if (!goal.id) return;
 
     this.setGoalLoading(goal.id, true);
@@ -1305,64 +1315,9 @@ export class GoalsComponent implements OnInit, OnDestroy {
   }
 
   confirmResetGoal(): void {
-    if (!this.goalToReset || this.goalToReset.id === undefined) {
-      this.showNotification('❌ Erreur: Objectif à réinitialiser non trouvé.');
-      this.closeResetGoalConfirmation();
-      return;
-    }
-
     const goal = this.goalToReset;
-    this.setGoalLoading(goal.id!, true);
-    this.setGoalActionState(goal.id!, 'resetting');
-
-    // Use the same improved approach as directResetGoal
-    const resetData = {
-      current_value: 0,
-      status: 'not-started' as const,
-      progress_percentage: 0
-    };
-
-    this.goalsService
-      .updateGoal(goal.id!, resetData)
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError((error) => {
-          console.error('Failed to reset goal:', error);
-          this.showNotification(
-            "❌ Erreur lors de la réinitialisation de l'objectif: " +
-              (error.message || 'Erreur inconnue')
-          );
-          this.setGoalLoading(goal.id!, false);
-          this.setGoalActionState(goal.id!, 'idle');
-          this.closeResetGoalConfirmation();
-          return of(null);
-        })
-      )
-      .subscribe((resetGoal: Goal | null) => {
-        if (resetGoal) {
-          // Update local goal data immediately
-          const index = this.goals.findIndex(g => g.id === resetGoal.id);
-          if (index > -1) {
-            const enhancedGoal = this.enhanceGoal({
-              ...resetGoal,
-              current_value: 0,
-              status: 'not-started',
-              progress_percentage: 0,
-              lastUpdateDate: new Date().toISOString()
-            });
-            this.goals[index] = enhancedGoal;
-            this.applyFilters();
-            this.calculateStats();
-          }
-
-          this.showNotification(
-            `🔄 Objectif "${resetGoal.title}" complètement réinitialisé et prêt à recommencer!`
-          );
-        }
-        this.setGoalLoading(goal.id!, false);
-        this.setGoalActionState(goal.id!, 'idle');
-        this.closeResetGoalConfirmation();
-      });
+    this.closeResetGoalConfirmation();
+    if (goal) this.directResetGoal(goal);
   }
 
   closeResetGoalConfirmation(): void {
@@ -1530,14 +1485,18 @@ export class GoalsComponent implements OnInit, OnDestroy {
   }
 
   deleteGoal(goal: EnhancedGoal): void {
-    const goalIcon = goal.icon || '🎯';
-    if (
-      !confirm(
-        `Êtes-vous sûr de vouloir supprimer "${goal.title}" ${goalIcon} ?`
-      )
-    )
-      return;
+    this.confirmation.open({
+      title: 'Supprimer cet objectif ?',
+      message: `L’objectif « ${goal.title} » et sa progression seront supprimés.`,
+      confirmLabel: 'Supprimer',
+      destructive: true,
+    }, () => {
+      this.closeGoalDetails();
+      this.removeGoal(goal);
+    });
+  }
 
+  private removeGoal(goal: EnhancedGoal): void {
     if (!goal.id) return;
     this.loading = true;
     this.goalsService

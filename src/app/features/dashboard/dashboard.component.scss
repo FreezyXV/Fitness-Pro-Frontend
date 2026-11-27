@@ -40,16 +40,16 @@
   color: $text-primary;
 }
 
-.overview-grid, .home-grid {
+.home-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.48fr) minmax(0, 1fr);
   gap: 16px;
 }
-.training-feature, .week-section, .home-panel {
+.week-section, .home-panel {
   min-width: 0;
-  padding: clamp(15px, 2.35vw, 26px);
+  padding: clamp(16px, 2.4vw, 28px);
   border: 1px solid $border-color;
-  border-radius: 12px;
+  border-radius: 14px;
   background: $surface-primary;
 }
 .training-feature {
@@ -57,75 +57,86 @@
   isolation: isolate;
   overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(85px, 27%);
+  grid-template-columns: minmax(0, 1fr) 39%;
   align-items: center;
-  min-height: 214px;
+  min-height: clamp(250px, 26vw, 360px);
+  padding: clamp(22px, 4vw, 54px);
+  border: 1px solid #333a2c;
+  border-radius: 16px;
+  background: #171b14;
+  color: #f4f7ef;
 }
 .training-content { position: relative; z-index: 1; }
 .training-disc {
   position: absolute;
   z-index: 0;
   top: 50%;
-  right: -40px;
-  transform: translateY(-50%) rotate(-18deg);
-  width: clamp(146px, 29%, 222px);
+  right: -4%;
+  transform: translateY(-50%);
+  width: clamp(230px, 49%, 520px);
   aspect-ratio: 1;
-  border: 1px solid $border-color;
+  border: 1px solid #596745;
   border-radius: 50%;
-  background: repeating-radial-gradient(circle, transparent 0 13px, $border-color 14px 15px);
+  background: repeating-radial-gradient(circle, transparent 0 17px, #39432d 18px 19px);
 }
 .training-disc span {
   position: absolute;
-  inset: 12%;
-  border: 1px solid tint($on-brand, .35);
+  inset: 14%;
+  border: 1px solid #defeb1;
   border-radius: 50%;
   background: $brand;
-  box-shadow: inset 0 0 0 5px $brand, inset 0 0 0 6px tint($on-brand, .52);
+  box-shadow: inset 0 0 0 7px $brand, inset 0 0 0 8px #86a53a;
   &::before {
     content: '';
     position: absolute;
-    inset: 35%;
-    border: 5px solid tint($on-brand, .33);
+    inset: 34%;
+    border: 7px solid #789335;
     border-radius: 50%;
-    background: $surface-primary;
+    background: #171b14;
   }
 }
 .feature-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 14px;
-  color: $green-ink;
-  font-size: .76rem;
+  margin: 0 0 15px;
+  color: $brand;
+  font-size: .79rem;
   font-weight: 700;
 }
 .training-content h2 {
-  margin: 0 0 6px;
-  font: 750 clamp(1.7rem, 2.8vw, 2.65rem)/1.04 $font-family-base;
-  letter-spacing: -.04em;
-  text-wrap: pretty;
+  max-width: 15ch;
+  margin: 0 0 9px;
+  color: inherit;
+  font: 700 clamp(3rem, 6vw, 6.1rem)/.9 $font-family-display;
+  text-transform: uppercase;
+  letter-spacing: -.022em;
+  text-wrap: balance;
   overflow-wrap: anywhere;
 }
 .feature-detail {
-  margin: 0 0 16px;
-  color: $text-secondary;
-  font-size: .91rem;
+  max-width: 54ch;
+  margin: 0 0 20px;
+  color: #c6cec0;
+  font-size: .94rem;
   overflow-wrap: anywhere;
 }
-.feature-actions { display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; }
+.feature-actions { display: flex; align-items: center; gap: 4px 16px; flex-wrap: wrap; }
+.feature-actions .text-action { color: #f4f7ef; }
 .feature-action {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 44px;
-  padding: 0 13px;
+  min-height: 46px;
+  padding: 0 15px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 8px;
   background: $brand;
   color: $on-brand;
-  font-size: .85rem;
+  font-size: .88rem;
   font-weight: 750;
   &:hover { background: $brand-hover; color: $on-brand; }
+  &:focus-visible { outline-color: #fff; }
 }
 
 .section-heading h2 { margin: 0; font-size: 1.12rem; font-weight: 720; }
@@ -133,26 +144,25 @@
 .week-section .section-heading { margin-block: -8px 8px; }
 .week-metrics {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0;
   > div {
     min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 8px 0;
-    + div { border-top: 1px solid $border-color; }
+    display: grid;
+    gap: 7px;
+    padding: 8px 16px;
+    + div { border-left: 1px solid $border-color; }
+    &:first-child { padding-left: 0; }
   }
-  dt { display: flex; align-items: center; gap: 8px; color: $text-secondary; font-size: .85rem; }
+  dt { display: flex; align-items: center; gap: 7px; color: $text-secondary; font-size: .86rem; }
   dd {
     margin: 0;
-    font: 720 clamp(1.25rem, 2vw, 1.65rem)/1.05 $font-family-base;
+    font: 720 clamp(1.3rem, 3.1vw, 2.55rem)/1.05 $font-family-base;
+    letter-spacing: -.035em;
     font-variant-numeric: tabular-nums;
-    text-align: end;
     overflow-wrap: anywhere;
   }
-  small { font-size: .72rem; font-weight: 550; color: $text-muted; white-space: nowrap; }
+  small { font: 550 .76rem $font-family-base; color: $text-muted; white-space: nowrap; }
 }
 .panel-icon { color: $text-muted; flex: none; }
 
@@ -233,27 +243,22 @@
   border-top: 1px solid $border-color;
 }
 @media (max-width: 1100px) and (min-width: 821px), (max-width: 670px) {
-  .overview-grid, .home-grid { grid-template-columns: 1fr; }
+  .home-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 670px) {
-  .training-home { gap: 14px; }
-  .overview-grid, .home-grid { gap: 12px; }
+  .training-home { gap: 13px; }
+  .home-grid { gap: 12px; }
   .heading-link { display: none; }
-  .training-feature { min-height: 0; grid-template-columns: minmax(0, 1fr); }
-  .training-disc { width: 124px; right: -57px; top: 39px; }
-  .training-content h2, .feature-detail { padding-right: 57px; }
-  .feature-actions { gap: 0 12px; }
-  .week-metrics {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    > div {
-      display: grid;
-      justify-content: start;
-      gap: 5px;
-      padding: 3px 7px 3px 10px;
-      + div { border-top: 0; border-left: 1px solid $border-color; }
-      &:first-child { padding-left: 0; }
-    }
-    dt { font-size: .76rem; app-icon { display: none; } }
-    dd { text-align: start; }
+  .training-feature {
+    min-height: 224px;
+    padding: 17px 15px;
+    grid-template-columns: minmax(0, 1fr);
   }
+  .training-disc { width: 190px; right: -90px; top: 68px; }
+  .training-content h2, .feature-detail { max-width: calc(100% - 67px); }
+  .training-content h2 { font-size: clamp(2.55rem, 9.5vw, 4rem); }
+  .feature-actions { gap: 0 11px; }
+  .feature-actions .text-action { font-size: .75rem; }
+  .week-metrics > div { padding-inline: 8px; }
+  .week-metrics dt { font-size: .73rem; app-icon { display: none; } }
 }

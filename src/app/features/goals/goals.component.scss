@@ -1386,14 +1386,11 @@ padding: 0.5rem;
         }
 
         .modal-actions {
-          flex-direction: column-reverse;
-          gap: 0.625rem;
+          justify-content: flex-end;
+          flex-wrap: wrap;
           width: 100%;
 
-          .btn {
-            width: 100%;
-            min-width: auto;
-          }
+          .btn { min-width: 0; }
         }
       }
     }
@@ -2396,14 +2393,11 @@ padding: 0.5rem;
         }
 
         .modal-actions {
-          flex-direction: column-reverse;
-          gap: 0.625rem;
+          justify-content: flex-end;
+          flex-wrap: wrap;
           width: 100%;
 
-          .btn {
-            width: 100%;
-            min-width: auto;
-          }
+          .btn { min-width: 0; }
         }
       }
     }
@@ -4108,6 +4102,9 @@ padding: 0.5rem;
   .category-badge {
     background: tint($text-primary, 0.06) !important;
     border: $border-width solid $border-color;
+    color: $text-secondary !important;
+
+    .category-text { color: inherit; }
   }
 
   // Puces d'etat.
@@ -4129,14 +4126,14 @@ padding: 0.5rem;
     &[data-level='easy'] {
       background: rgba($success-color, 0.12) !important;
       border-color: rgba($success-color, 0.28) !important;
-      color: $success-light !important;
+      color: $green-ink !important;
     }
 
     &.warning,
     &[data-level='medium'] {
       background: rgba($warning-color, 0.12) !important;
       border-color: rgba($warning-color, 0.28) !important;
-      color: $warning-light !important;
+      color: $text-secondary !important;
     }
 
     &.danger,
@@ -4144,7 +4141,7 @@ padding: 0.5rem;
     &[data-level='high'] {
       background: rgba($danger-color, 0.12) !important;
       border-color: rgba($danger-color, 0.28) !important;
-      color: $error-light !important;
+      color: $text-secondary !important;
     }
   }
 
@@ -4315,7 +4312,7 @@ padding: 0.5rem;
     .btn-completed {
       background: transparent !important;
       border: $border-width solid rgba($success-color, 0.3) !important;
-      color: $success-light !important;
+      color: $green-ink !important;
       opacity: 1 !important;
       cursor: default;
     }
@@ -4398,4 +4395,13 @@ padding: 0.5rem;
       border-color: rgba($primary-color, 0.75) !important;
     }
   }
+}
+
+.goals-container .goals-grid .goal-empty {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
 }

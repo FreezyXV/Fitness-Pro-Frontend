@@ -1,56 +1,7 @@
 @use 'variables' as *;
 @use 'design-system' as *;
 
-.scanner-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: $z-modal;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.scanner {
-  position: fixed;
-  z-index: $z-modal;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  width: min(440px, calc(100vw - 2rem));
-  max-height: min(680px, calc(100vh - 2rem));
-  overflow-y: auto;
-
-  border: $border-width solid $border-color;
-  border-radius: $radius-4xl;
-  background: $surface-secondary;
-
-  // Sur telephone la boite prend le bas de l'ecran : le pouce atteint les
-  // actions sans changer de prise.
-  @include respond-below(sm) {
-    top: auto;
-    bottom: 0;
-    transform: translateX(-50%);
-    width: 100vw;
-    max-height: 88vh;
-    border-radius: $radius-4xl $radius-4xl 0 0;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-}
-
-.scanner-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  border-bottom: $border-width solid $border-color;
-
-  h2 {
-    margin: 0;
-    font-size: 1.0625rem;
-    font-weight: 700;
-    color: $text-primary;
-  }
-}
+.scanner { background: $surface-primary; }
 
 .icon-btn {
   display: grid;
@@ -61,7 +12,7 @@
 
   appearance: none;
   border: 0;
-  border-radius: 999px;
+  border-radius: $radius-sm;
   background: none;
   color: $text-secondary;
   cursor: pointer;
@@ -69,7 +20,7 @@
   svg { width: 20px; height: 20px; }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
+    outline: 2px solid $green-ink;
     outline-offset: -2px;
   }
 }
@@ -139,7 +90,7 @@
   height: 96px;
   transform: translateY(-50%);
 
-  border: 2px solid $primary-color;
+  border: 2px solid $brand;
   border-radius: $radius-pill;
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
 }
@@ -183,7 +134,7 @@
     letter-spacing: 0.04em;
 
     &:focus-visible {
-      outline: 2px solid $primary-color;
+      outline: 2px solid $green-ink;
       outline-offset: 1px;
     }
   }
@@ -217,7 +168,7 @@
   svg { width: 20px; height: 20px; }
 
   &:focus-visible {
-    outline: 2px solid $primary-color;
+    outline: 2px solid $green-ink;
     outline-offset: 3px;
   }
 

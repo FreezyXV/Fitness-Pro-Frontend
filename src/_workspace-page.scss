@@ -7,19 +7,19 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 14px 24px;
-  margin: 0 0 20px;
-  padding: 0 0 18px;
+  margin: 0 0 22px;
+  padding: 0 0 20px;
   border-bottom: 1px solid $border-color;
   text-align: left;
 
   h1 {
     margin: 0 0 5px;
     color: $text-primary;
-    font: 760 clamp(2rem, 4vw, 3.25rem)/1.06 $font-family-base;
+    font: 700 clamp(2.65rem, 5.4vw, 4.4rem)/.96 $font-family-display;
     text-wrap: pretty;
-    letter-spacing: -.045em;
+    letter-spacing: -.012em;
   }
-  p { margin: 0; color: $text-secondary; font-size: .89rem; }
+  p { max-width: 56ch; margin: 0; color: $text-secondary; font-size: .9rem; }
 }
 .workspace-actions { display: flex; gap: 7px; flex-wrap: wrap; }
 .workspace-button {
@@ -33,7 +33,7 @@
   border-radius: 8px;
   background: $surface-primary;
   color: $text-primary;
-  font: 680 .8rem $font-family-base;
+  font: 680 .84rem $font-family-base;
   cursor: pointer;
   &:hover { background: $surface-raised; }
   &:disabled { opacity: .55; cursor: not-allowed; }

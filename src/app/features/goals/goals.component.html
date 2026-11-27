@@ -44,7 +44,7 @@
       </button>
       <button type="button" class="workspace-button" (click)="goalFile.click()">Importer</button>
       <input #goalFile type="file" accept=".json" (change)="importGoals($event)" hidden>
-      <button type="button" class="workspace-button workspace-filter" (click)="openMobileFilters()"
+      <button type="button" class="workspace-button workspace-filter" #filterTrigger (click)="openMobileFilters()"
               aria-controls="secondary-page-filters" [attr.aria-expanded]="showMobileFilters">
         Filtres
       </button>
@@ -54,10 +54,11 @@
   <!-- Enhanced Filters Section -->
   <div class="filters-section" [@cardAnimation]>
     <div class="filters-backdrop" *ngIf="showMobileFilters" (click)="closeMobileFilters()"></div>
-    <div class="filters-card" id="secondary-page-filters" [class.mobile-open]="showMobileFilters">
+    <div class="filters-card" id="secondary-page-filters" [class.mobile-open]="showMobileFilters"
+         [attr.role]="showMobileFilters ? 'dialog' : null" [attr.aria-label]="showMobileFilters ? 'Filtres' : null">
       <div class="filters-mobile-header">
         <h3>Filtres</h3>
-        <button type="button" class="filters-close-btn" (click)="closeMobileFilters()" aria-label="Fermer les filtres">
+        <button type="button" class="filters-close-btn" #filterDismiss (click)="closeMobileFilters()" aria-label="Fermer les filtres">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
@@ -158,18 +159,18 @@
     [@staggerAnimation]="filteredGoals.length"
   >
     <!-- Empty State -->
-    <div *ngIf="filteredGoals.length === 0 && !isLoading" class="empty-state">
-      <div class="empty-content">
+    <div *ngIf="filteredGoals.length === 0 && !isLoading" class="empty-state goal-empty">
+      <div class="empty-content journal-state">
         <div class="empty-icon"><app-icon name="target"></app-icon></div>
         <h3 *ngIf="!hasActiveFilters()">Aucun objectif pour le moment</h3>
         <h3 *ngIf="hasActiveFilters()">
           Aucun objectif ne correspond aux filtres
         </h3>
         <p *ngIf="!hasActiveFilters()">
-          Commencez votre parcours en créant votre premier objectif !
+          Choisis un objectif pour suivre ta progression au fil des semaines.
         </p>
         <p *ngIf="hasActiveFilters()">
-          Essayez de modifier vos critères de recherche
+          Essaie un autre filtre.
         </p>
 
         <div class="empty-actions">

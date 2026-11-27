@@ -1,7 +1,7 @@
 // app.component.ts - VERSION CORRIGÉE
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, RouterModule } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -11,11 +11,13 @@ import { PwaService } from './core/services/pwa.service';
 import { ReminderService } from './core/services/reminder.service';
 import { BackendWakeService, EXPECTED_WAKE_SECONDS } from './core/services/backend-wake.service';
 import { ExercisesService } from './services/exercises.service';
+import { ConfirmationComponent } from './shared/components/confirmation/confirmation.component';
+import { ConfirmationService } from './shared/components/confirmation/confirmation.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ConfirmationComponent],
   template: `
     <aside class="wake-notice" *ngIf="showWakeNotice() || (wake.failed() && !wake.dismissed() && isOnline)"
            aria-label="État du serveur">
@@ -37,6 +39,7 @@ import { ExercisesService } from './services/exercises.service';
 
     <!-- Main Router Outlet -->
     <router-outlet></router-outlet>
+    <app-confirmation />
 
     <!-- Connection Status -->
     <div class="connection-status" [class.offline]="!isOnline" *ngIf="!isOnline">
@@ -213,6 +216,7 @@ import { ExercisesService } from './services/exercises.service';
   `]
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private readonly confirmation = inject(ConfirmationService);
   private destroy$ = new Subject<void>();
 
   title = 'FitnessPro';
@@ -283,9 +287,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private trackRouteChanges(): void {
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
+      filter(event => event instanceof NavigationStart || event instanceof NavigationEnd),
       takeUntil(this.destroy$)
-    ).subscribe((event: NavigationEnd) => {
+    ).subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.confirmation.dismiss();
+        return;
+      }
       setTimeout(() => {
         this.currentRoute = event.url;
       });

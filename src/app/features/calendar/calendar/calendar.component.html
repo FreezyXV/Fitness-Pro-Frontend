@@ -25,16 +25,6 @@
         
         <div class="current-period">
           <h2 class="period-title">{{monthNames[currentDate.getMonth()]}} {{currentDate.getFullYear()}}</h2>
-          <div class="period-stats">
-            <span class="stat-badge success">
-              <span class="stat-value">{{monthStats.totalWorkouts}}</span>
-              <span class="stat-label">Entraînements</span>
-            </span>
-            <span class="stat-badge info">
-              <span class="stat-value">{{monthStats.completionRate}}%</span>
-              <span class="stat-label">Complétés</span>
-            </span>
-          </div>
         </div>
         
         <button class="nav-btn" (click)="nextMonth()" aria-label="Mois suivant">
@@ -101,7 +91,11 @@
                  [class.selected]="day.isSelected"
                  [class.has-events]="day.events.length > 0"
                  [class.completed-day]="getDayCompletionPercentage(day) === 100"
-                 (click)="selectDate(day)"
+                 role="button" tabindex="0"
+                 [attr.aria-label]="day.date | date:'dd/MM/yyyy'"
+                 [attr.aria-pressed]="day.isSelected"
+                 (click)="selectDate(day)" (keydown.enter)="selectDate(day)"
+                 (keydown.space)="$event.preventDefault(); selectDate(day)"
                  (dragover)="onDragOver($event)"
                  (drop)="onDrop($event, day)">
               
@@ -159,7 +153,7 @@
                       {{formatTime(event.reminder_time)}}
                     </div>
                     <div class="event-title">{{event.title}}</div>
-                    <div class="event-type">{{getEventIcon(event.task_type)}}</div>
+                    <app-icon class="event-type" [name]="getEventIcon(event.task_type)" [size]="14" />
                   </div>
                 </div>
                 <div class="empty-day-message" *ngIf="day.events.length === 0">
@@ -198,7 +192,8 @@
                       <app-icon class="event-icon" [name]="getEventIcon(event.task_type)" [size]="14"></app-icon>
                       <span class="event-title">{{event.title}}</span>
                       <div class="event-actions">
-                        <button class="action-btn" (click)="editEvent(event)">
+                        <button type="button" class="action-btn" (click)="editEvent(event)"
+                                [attr.aria-label]="'Modifier ' + event.title">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -291,14 +286,17 @@
                     <app-icon class="event-icon" [name]="getEventIcon(event.task_type)" [size]="14"></app-icon>
                     <span class="event-title">{{event.title}}</span>
                     <div class="event-actions">
-                      <button class="action-btn" 
+                      <button type="button" class="action-btn"
                               [class.active]="event.is_completed"
+                              [attr.aria-pressed]="event.is_completed"
+                              [attr.aria-label]="'Marquer comme terminé : ' + event.title"
                               (click)="toggleEventComplete(event, $event)">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                           <polyline points="20 6 9 17 4 12"/>
                         </svg>
                       </button>
-                      <button class="action-btn" (click)="editEvent(event)">
+                      <button type="button" class="action-btn" (click)="editEvent(event)"
+                              [attr.aria-label]="'Modifier ' + event.title">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
@@ -463,11 +461,5 @@
   </div>
 </dialog>
 
-  <!-- Floating Action Button (Mobile) -->
-  <button class="fab" (click)="addNewEvent()" title="Ajouter événement">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="12" y1="5" x2="12" y2="19"/>
-      <line x1="5" y1="12" x2="19" y2="12"/>
-    </svg>
-  </button>
+
 </div>

@@ -1,12 +1,14 @@
 <div class="app-container">
+  <a class="skip-content" href="#contenu-principal">Aller au contenu</a>
   <app-sidebar />
 
   <div class="workspace-content">
     <header class="mobile-header">
       <a routerLink="/dashboard" aria-label="FitnessPro, accueil"><app-brand /></a>
+      <a class="mobile-account" routerLink="/profile" aria-label="Mon profil"><app-icon name="user" [size]="20" /></a>
     </header>
 
-    <main class="main-content">
+    <main id="contenu-principal" class="main-content" tabindex="-1">
       <router-outlet />
     </main>
   </div>

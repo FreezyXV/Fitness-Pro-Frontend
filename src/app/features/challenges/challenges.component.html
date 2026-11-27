@@ -13,7 +13,7 @@
       <button type="button" class="workspace-button" (click)="openLeaderboard()">
         <app-icon name="trophy" [size]="17" /> Classement
       </button>
-      <button type="button" class="workspace-button workspace-filter" (click)="openMobileFilters()"
+      <button type="button" class="workspace-button workspace-filter" #filterTrigger (click)="openMobileFilters()"
               aria-controls="secondary-page-filters" [attr.aria-expanded]="showMobileFilters">
         Filtres
       </button>
@@ -23,10 +23,11 @@
   <!-- Enhanced Filters Section -->
   <div class="filters-section">
     <div class="filters-backdrop" *ngIf="showMobileFilters" (click)="closeMobileFilters()"></div>
-    <div class="filters-card" id="secondary-page-filters" [class.mobile-open]="showMobileFilters">
+    <div class="filters-card" id="secondary-page-filters" [class.mobile-open]="showMobileFilters"
+         [attr.role]="showMobileFilters ? 'dialog' : null" [attr.aria-label]="showMobileFilters ? 'Filtres' : null">
       <div class="filters-mobile-header">
         <h3>Filtres</h3>
-        <button type="button" class="filters-close-btn" (click)="closeMobileFilters()" aria-label="Fermer les filtres">
+        <button type="button" class="filters-close-btn" #filterDismiss (click)="closeMobileFilters()" aria-label="Fermer les filtres">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>
@@ -293,7 +294,7 @@
 
       <!-- Enhanced Empty State -->
       <div class="empty-state" *ngIf="filteredChallenges.length === 0">
-        <div class="empty-card">
+        <div class="empty-card journal-state">
           <div class="empty-icon"><app-icon name="trophy"></app-icon></div>
           <h3 class="empty-title">Aucun défi trouvé</h3>
           <p class="empty-message">
@@ -333,13 +334,11 @@
           <div class="detail-header">
             <div class="detail-info">
               <div class="detail-badges">
-                <span class="badge category" 
-                      [style.background-color]="getCategoryInfo(selectedChallenge.category).color">
+                <span class="badge category">
                   <span><app-icon [name]="getCategoryInfo(selectedChallenge.category).icon"></app-icon></span>
                   {{getCategoryInfo(selectedChallenge.category).label}}
                 </span>
-                <span class="badge difficulty" 
-                      [style.background-color]="getDifficultyInfo(selectedChallenge.difficulty).color">
+                <span class="badge difficulty">
                   {{getDifficultyInfo(selectedChallenge.difficulty).label}}
                 </span>
               </div>
@@ -447,7 +446,7 @@
         
         <button class="btn btn-danger" 
                 *ngIf="isUserInChallenge(selectedChallenge) && getUserChallengeData(selectedChallenge).status === 'active'"
-                (click)="leaveChallenge(selectedChallenge); closeChallengeDetails()">
+                (click)="leaveChallenge(selectedChallenge)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"/>
             <line x1="6" y1="6" x2="18" y2="18"/>

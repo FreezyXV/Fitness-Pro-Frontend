@@ -980,21 +980,21 @@
     &[data-level='debutant'] {
       background: rgba($success-color, 0.12) !important;
       border-color: rgba($success-color, 0.28) !important;
-      color: $success-light !important;
+      color: $green-ink !important;
     }
 
     &[data-level='intermediate'],
     &[data-level='intermediaire'] {
       background: rgba($warning-color, 0.12) !important;
       border-color: rgba($warning-color, 0.28) !important;
-      color: $warning-light !important;
+      color: $text-secondary !important;
     }
 
     &[data-level='advanced'],
     &[data-level='avance'] {
       background: rgba($danger-color, 0.12) !important;
       border-color: rgba($danger-color, 0.28) !important;
-      color: $error-light !important;
+      color: $text-secondary !important;
     }
   }
 
@@ -1180,4 +1180,17 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .exercise-card-enhanced .video-overlay { transition: none; }
+}
+
+.exercise-card-enhanced .card-content {
+  padding: 14px 16px 16px;
+  margin-top: 0;
+  .exercise-header {
+    gap: 8px;
+    .exercise-title {
+      font: 700 clamp(1.58rem, 3vw, 2.1rem)/1 $font-family-display;
+      text-wrap: pretty;
+    }
+  }
+  .exercise-stats .stat-item { padding: 4px 6px; }
 }

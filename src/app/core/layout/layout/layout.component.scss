@@ -21,13 +21,35 @@
   .mobile-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     min-height: calc(59px + env(safe-area-inset-top));
     padding: env(safe-area-inset-top) 16px 0;
     border-bottom: 1px solid $border-color;
     background: $bg-dark;
     a { display: inline-flex; align-items: center; min-height: 44px; border: 0; }
   }
+  .mobile-account {
+    justify-content: center;
+    min-width: 44px;
+    border-radius: 8px;
+    color: $text-secondary;
+    &:hover { background: $surface-tertiary; }
+  }
   .main-content {
     padding: 20px clamp(16px, 4vw, 26px) calc(80px + env(safe-area-inset-bottom));
   }
 }
+
+.skip-content {
+  position: fixed;
+  z-index: 200;
+  top: 10px;
+  left: 10px;
+  transform: translateY(calc(-100% - 20px));
+  padding: 8px 12px;
+  background: $brand;
+  color: $on-brand;
+  border-radius: 8px;
+  &:focus { transform: none; }
+}
+.main-content:focus:not(:focus-visible) { outline: 0; }

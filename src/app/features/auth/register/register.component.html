@@ -1,5 +1,6 @@
 <!-- Enhanced register.component.html -->
-<main class="account-layout">
+<main class="auth-layout account-layout">
+  <div class="auth-paper account-panel">
   <div class="account-card">
     <!-- Enhanced logo section -->
     <div class="logo-section">
@@ -177,4 +178,6 @@
       <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">Se connecter</a>
     </div>
   </div>
+  </div>
+  <app-auth-artwork />
 </main>

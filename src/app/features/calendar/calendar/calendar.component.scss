@@ -1151,12 +1151,11 @@ padding: 0.25rem;
           border: $border-width solid $border-color;
 
           &.completed {
-            opacity: 0.7;
             border: $border-width solid $border-color;
 
             .event-title {
               text-decoration: line-through;
-              color: $text-muted;
+              color: $text-secondary;
             }
           }
 
@@ -1313,8 +1312,8 @@ padding: 0.25rem;
 }
 
 .action-btn {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: transparent;
   border-radius: $radius-sm;
@@ -1323,7 +1322,7 @@ padding: 0.25rem;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: $text-muted;
+  color: $text-secondary;
 
   &:hover {
     background: rgba($primary-500, 0.1);
@@ -1332,8 +1331,13 @@ padding: 0.25rem;
   }
 
   &.active {
-    background: $success;
-    color: $on-primary;
+    background: $selected;
+    color: $green-ink;
+  }
+
+  @media (pointer: coarse) {
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -2378,4 +2382,41 @@ padding: 0.25rem;
 
     .view-toggle { flex: 1 1 100%; justify-content: center; }
   }
+}
+
+.calendar-container .nav-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px;
+  border-radius: 12px;
+}
+.calendar-container .nav-card .nav-controls {
+  display: grid;
+  grid-template-columns: 44px minmax(100px, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.calendar-container .nav-card .nav-btn {
+  width: 44px;
+  height: 44px;
+}
+.calendar-container .nav-card .period-title {
+  font: 700 clamp(1.32rem, 3vw, 1.8rem)/1 $font-family-display;
+}
+.calendar-container .nav-card .nav-actions { flex-wrap: wrap; gap: 7px; }
+.calendar-container .nav-card .toggle-btn[aria-pressed='true'] {
+  background: $selected;
+  color: $green-ink;
+}
+.calendar-container .calendar-day:focus-visible { outline-offset: -3px; }
+@media (max-width: 600px) {
+  .calendar-container .nav-card .nav-controls,
+  .calendar-container .nav-card .nav-actions { width: 100%; }
+  .calendar-container .nav-card .view-toggle { display: flex; flex: 1 1 62%; }
+  .calendar-container .nav-card .toggle-btn { flex: 1 1 0; padding-inline: 4px; min-height: 44px; }
+  .calendar-container .nav-card .nav-actions > .btn { min-height: 44px; }
 }

@@ -1,5 +1,6 @@
 // profile.component.ts - Clean and Updated Profile Component
 import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
+import { ConfirmationService } from '@app/shared/components/confirmation/confirmation.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { Subject, takeUntil, of, catchError } from 'rxjs';
@@ -106,6 +107,7 @@ import { ReminderService, ReminderSettings } from '@core/services/reminder.servi
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+  private readonly confirmation = inject(ConfirmationService);
   readonly appearance = inject(AppearanceService);
   readonly appearanceOptions: { value: Appearance; label: string }[] = [
     { value: 'system', label: 'Automatique' },
@@ -214,6 +216,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
+    if (this.confirmation.request()) return;
     // Handle keyboard shortcuts
     if (event.ctrlKey || event.metaKey) {
       switch (event.key) {
@@ -498,14 +501,21 @@ getBMIPosition(): number {
   }
 
   cancelEdit(): void {
-    if (this.editMode) {
-      const hasChanges = this.hasUnsavedChanges();
-      if (hasChanges) {
-        const confirmCancel = confirm('Annuler les modifications non sauvegardées?');
-        if (!confirmCancel) return;
-      }
+    if (this.hasUnsavedChanges()) {
+      this.confirmation.open({
+        title: 'Annuler les modifications ?',
+        message: 'Les changements sur ce formulaire seront perdus.',
+        confirmLabel: 'Annuler les modifications',
+        cancelLabel: 'Continuer',
+        destructive: true,
+      }, () => this.exitEdit());
+      return;
     }
 
+    this.exitEdit();
+  }
+
+  private exitEdit(): void {
     this.editMode = false;
     this.populateForms();
   }

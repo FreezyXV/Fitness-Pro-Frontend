@@ -18,7 +18,7 @@
   </header>
 
   <!-- ============ AUCUNE DONNEE ============ -->
-  <section class="onboarding-empty" *ngIf="!hasData()">
+  <section class="onboarding-empty journal-state" *ngIf="!hasData()">
     <div class="empty-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
            stroke-linecap="round" stroke-linejoin="round">
@@ -56,37 +56,39 @@
       </div>
     </section>
 
-    <!-- Volume hebdomadaire -->
-    <section class="card">
-      <div class="card-head">
-        <div>
-          <h2>Volume hebdomadaire</h2>
-          <p class="card-sub">Répétitions × charge, cumulées par semaine.</p>
+    <div class="progress-comparison">
+      <!-- Volume hebdomadaire -->
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2>Volume hebdomadaire</h2>
+            <p class="card-sub">Répétitions × charge, cumulées par semaine.</p>
+          </div>
         </div>
-      </div>
-      <app-chart
-        [points]="weeklyVolume()"
-        type="bar"
-        unit="kg"
-        caption="Volume soulevé par semaine"
-      ></app-chart>
-    </section>
+        <app-chart
+          [points]="weeklyVolume()"
+          type="bar"
+          unit="kg"
+          caption="Volume soulevé par semaine"
+        ></app-chart>
+      </section>
 
-    <!-- Regularite -->
-    <section class="card">
-      <div class="card-head">
-        <div>
-          <h2>Régularité</h2>
-          <p class="card-sub">Nombre de séances par semaine.</p>
+      <!-- Regularite -->
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <h2>Régularité</h2>
+            <p class="card-sub">Nombre de séances par semaine.</p>
+          </div>
         </div>
-      </div>
-      <app-chart
-        [points]="weeklySessions()"
-        type="bar"
-        unit="séances"
-        caption="Séances réalisées par semaine"
-      ></app-chart>
-    </section>
+        <app-chart
+          [points]="weeklySessions()"
+          type="bar"
+          unit="séances"
+          caption="Séances réalisées par semaine"
+        ></app-chart>
+      </section>
+    </div>
 
     <!-- Charge par exercice -->
     <section class="card" *ngIf="exercises().length; else noLoadData">

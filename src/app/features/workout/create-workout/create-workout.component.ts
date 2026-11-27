@@ -1,5 +1,5 @@
 // src/app/workout/create-workout.component.ts - FIXED IMPORTS
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -14,6 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 // FIXED: Correct import paths
 import { WorkoutService } from '@app/services/workout.service';
 import { IconComponent } from '@app/shared/components/icon/icon.component';
+import { ConfirmationService } from '@app/shared/components/confirmation/confirmation.service';
 import {
   WorkoutTemplate,
   WorkoutExercise,
@@ -159,21 +160,20 @@ export class CreateWorkoutComponent
     this.loadInitialData();
   }
 
+  private readonly confirmation = inject(ConfirmationService);
+  private draftTimer?: number;
+  private saveTimer?: number;
+
   ngOnDestroy(): void {
+    window.clearTimeout(this.draftTimer);
+    window.clearInterval(this.saveTimer);
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   ngAfterViewInit(): void {
-    // Check for existing draft
-    window.setTimeout(() => {
-      this.loadDraft();
-    }, 1000);
-
-    // Setup auto-save interval
-    window.setInterval(() => {
-      this.autoSave();
-    }, 30000); // Auto-save every 30 seconds
+    this.draftTimer = window.setTimeout(() => this.loadDraft(), 1000);
+    this.saveTimer = window.setInterval(() => this.autoSave(), 30000);
   }
 
   // =============================================
@@ -582,10 +582,14 @@ export class CreateWorkoutComponent
       this.selectedExercises.length > 0 || this.workoutForm.dirty;
 
     if (hasChanges) {
-      const confirmed = confirm(
-        'Êtes-vous sûr de vouloir annuler ? Vos modifications seront perdues.'
-      );
-      if (!confirmed) return;
+      this.confirmation.open({
+        title: 'Quitter ce programme ?',
+        message: 'Les modifications en cours ne seront pas enregistrées.',
+        confirmLabel: 'Quitter le programme',
+        cancelLabel: 'Continuer',
+        destructive: true,
+      }, () => this.router.navigate(['/workouts']));
+      return;
     }
 
     this.router.navigate(['/workouts']);
@@ -627,16 +631,17 @@ export class CreateWorkoutComponent
       draft.selectedExercises &&
       !this.isEditMode
     ) {
-      const shouldLoad = confirm(
-        'Un brouillon a été trouvé. Voulez-vous le charger ?'
-      );
-      if (shouldLoad) {
+      this.confirmation.open({
+        title: 'Reprendre le brouillon ?',
+        message: 'Un programme est enregistré sur cet appareil.',
+        confirmLabel: 'Reprendre',
+        cancelLabel: 'Ignorer',
+      }, () => {
         this.workoutForm.patchValue(draft.formData);
-        this.selectedExercises = draft.selectedExercises || [];
+        this.selectedExercises = draft.selectedExercises;
         this.currentStep = draft.currentStep || 1;
         this.updateWorkoutSummary();
-        console.info('Brouillon chargé');
-      }
+      });
     }
   }
 

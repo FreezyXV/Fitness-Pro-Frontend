@@ -1,19 +1,16 @@
 @use 'variables' as *;
+@use 'auth-layout';
 
 :host { display: block; }
-.account-layout {
+.account-panel {
   display: grid;
-  place-items: center;
-  min-height: 100dvh;
-  padding: 28px 16px;
-  background: $bg-primary;
+  align-items: center;
+  min-width: 0;
+  padding: max(28px, env(safe-area-inset-top)) clamp(20px, 3vw, 46px) 30px;
 }
 .account-card {
   width: min(100%, 510px);
-  border: 1px solid $border-color;
-  padding: clamp(20px, 5vw, 36px);
-  border-radius: 12px;
-  background: $surface-primary;
+  margin-inline: auto;
   color: $text-primary;
 }
 .logo-section {
@@ -125,6 +122,6 @@ form { gap: 14px; }
 
 .account-card.reset-card { max-width: 440px; }
 @media (max-width: 470px) {
-  .account-layout { align-items: start; padding-inline: 20px; }
+  .account-panel { padding-inline: 20px; }
   .account-card { padding: 0; border: 0; background: transparent; }
 }

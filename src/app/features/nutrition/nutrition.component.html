@@ -20,7 +20,7 @@
 
   <!-- ===== DATE NAVIGATION ===== -->
   <div class="date-navigation-section">
-    <p class="workspace-note">Le journal affiche des exemples. Les ajouts sont conservés pendant la session.</p>
+    <p class="workspace-note">Journal de démonstration · les ajouts restent dans cette session.</p>
     <div class="date-card">
       <button
         class="nav-btn"
@@ -645,30 +645,6 @@
     <!-- ===== DASHBOARD EXISTANT ===== -->
     <div class="tab-content" *ngIf="activeTab === 'dashboard'">
       <!-- Contexte d'entraînement -->
-      <div class="workout-context-card" *ngIf="workoutContext.hasWorkoutToday">
-        <div class="card-header">
-          <div class="header-icon"><app-icon name="dumbbell"></app-icon></div>
-          <div class="header-content">
-            <h3>{{ workoutContext.workoutType }} · exemple de séance</h3>
-            <p>
-              {{ workoutContext.workoutDuration }}min -
-              {{ workoutContext.estimatedCaloriesBurned }}cal
-            </p>
-          </div>
-        </div>
-        <div
-          class="context-tags"
-          *ngIf="workoutContext.isPreWorkout || workoutContext.isPostWorkout"
-        >
-          <span class="tag pre-workout" *ngIf="workoutContext.isPreWorkout">
-            Pré-entraînement
-          </span>
-          <span class="tag post-workout" *ngIf="workoutContext.isPostWorkout">
-            Post-entraînement
-          </span>
-        </div>
-      </div>
-
       <!-- Conseils personnalisés. Masques tant qu'il n'y en a aucun :
            l'en-tete seul laissait une carte vide de 130 px. -->
       <div class="personalized-tips-card" *ngIf="personalizedTips.length > 0">
@@ -718,6 +694,30 @@
           </div>
         </div>
       </section>
+
+      <div class="workout-context-card" *ngIf="workoutContext.hasWorkoutToday">
+        <div class="card-header">
+          <div class="header-icon"><app-icon name="dumbbell"></app-icon></div>
+          <div class="header-content">
+            <h3>{{ workoutContext.workoutType }} · exemple de séance</h3>
+            <p>
+              {{ workoutContext.workoutDuration }}min -
+              {{ workoutContext.estimatedCaloriesBurned }}cal
+            </p>
+          </div>
+        </div>
+        <div
+          class="context-tags"
+          *ngIf="workoutContext.isPreWorkout || workoutContext.isPostWorkout"
+        >
+          <span class="tag pre-workout" *ngIf="workoutContext.isPreWorkout">
+            Pré-entraînement
+          </span>
+          <span class="tag post-workout" *ngIf="workoutContext.isPostWorkout">
+            Post-entraînement
+          </span>
+        </div>
+      </div>
 
       <!-- Suivi du régime actuel -->
       <div class="current-diet-card" *ngIf="currentlyFollowedDiet">
